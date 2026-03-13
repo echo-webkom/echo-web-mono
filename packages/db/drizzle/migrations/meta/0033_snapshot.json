@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "id": "bea29387-e523-408d-a45e-579a2b1e5749",
+=======
+  "id": "f8ba8892-d696-434f-bd28-860d63478610",
+>>>>>>> b6d8799a (updates to db and qr scanner)
   "prevId": "49c79740-f181-4833-94cd-1bfe80b8aa46",
   "version": "7",
   "dialect": "postgresql",
@@ -876,6 +880,7 @@
       "checkConstraints": {},
       "isRLSEnabled": true
     },
+<<<<<<< HEAD
     "public.quote": {
       "name": "quote",
       "schema": "",
@@ -925,6 +930,8 @@
       "checkConstraints": {},
       "isRLSEnabled": true
     },
+=======
+>>>>>>> b6d8799a (updates to db and qr scanner)
     "public.reaction": {
       "name": "reaction",
       "schema": "",
@@ -1780,7 +1787,12 @@
         "unregistered",
         "removed",
         "waiting",
+<<<<<<< HEAD
         "pending"
+=======
+        "pending",
+        "attended"
+>>>>>>> b6d8799a (updates to db and qr scanner)
       ]
     },
     "public.user_type": {

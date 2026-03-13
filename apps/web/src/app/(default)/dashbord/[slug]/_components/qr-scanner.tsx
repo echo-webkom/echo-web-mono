@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
 
 import { type FullHappening, type Group } from "@/api/uno/client";
-import { filterRegistrations } from "../_lib/filter-registrations";
 import { RegistrationWithUser } from "../_lib/types";
-import { useRegistrationFilter } from "../_lib/use-registration-filter";
+import { attend } from "../../../../../actions/attend";
 import { RegistrationList } from "./registration-list";
 
 type QrScannerProps = {
@@ -16,69 +15,91 @@ type QrScannerProps = {
 };
 
 export const QrScanner = ({ registrations, happening, studentGroups }: QrScannerProps) => {
-  const [list, setList] = useState<string[]>(["hello", "hi", "lol"]);
-  const scannerRef = useRef<Html5QrcodeScanner | null>(null);
+  const [localRegistrations, setLocalRegistrations] = useState(registrations);
 
-  const [showIndex, setShowIndex] = useState(false);
-  const { filters, resetFilters, setSearchTerm, setYearFilter, setStatusFilter, setGroupFilter } =
-    useRegistrationFilter();
-  const filteredRegistrations = filterRegistrations(registrations, studentGroups, filters);
+  const scannerRef = useRef<Html5QrcodeScanner | null>(null);
+  const lastScanRef = useRef<string | null>(null);
+  const readerId = useId().replace(/:/g, "");
 
   useEffect(() => {
-    if (scannerRef.current) return;
+    let cancelled = false;
+    let scanner: Html5QrcodeScanner | null = null;
 
-    const scanner = new Html5QrcodeScanner(
-      "reader",
-      { qrbox: { width: 1000, height: 1000 }, fps: 10 },
-      false,
-    );
+    const timeout = window.setTimeout(() => {
+      if (cancelled) return;
 
-    scannerRef.current = scanner;
+      const container = document.getElementById(readerId);
+      if (!container) return;
 
-    const success = (result: string) => {
-      console.log("removing " + result);
-      setList((prev) => prev.filter((item) => item !== result));
-    };
+      container.innerHTML = "";
 
-    const error = (err: any) => {
-      const msg = String(err ?? "");
-      if (msg.includes("NotFoundException")) return;
-      console.warn(err);
-    };
+      scanner = new Html5QrcodeScanner(
+        readerId,
+        {
+          qrbox: { width: 300, height: 300 },
+          fps: 10,
+        },
+        false,
+      );
 
-    scanner.render(success, error);
+      scannerRef.current = scanner;
+
+      const success = async (result: string) => {
+        if (lastScanRef.current === result) return;
+        lastScanRef.current = result;
+
+        const response = await attend(happening.id, result);
+
+        if (response.success) {
+          setLocalRegistrations((prev) =>
+            prev.map((registration) =>
+              registration.userId === result
+                ? {
+                    ...registration,
+                    status: "attended",
+                  }
+                : registration,
+            ),
+          );
+        }
+
+        window.setTimeout(() => {
+          lastScanRef.current = null;
+        }, 1500);
+      };
+
+      const error = (err: unknown) => {
+        const msg = String(err ?? "");
+        if (msg.includes("NotFoundException")) return;
+        console.warn(err);
+      };
+
+      scanner.render(success, error);
+    }, 0);
 
     return () => {
-      scannerRef.current?.clear().catch(() => {});
+      cancelled = true;
+      window.clearTimeout(timeout);
+
+      scanner?.clear().catch(() => {});
       scannerRef.current = null;
+
+      const container = document.getElementById(readerId);
+      if (container) container.innerHTML = "";
     };
-  }, []);
+  }, [happening.id, readerId]);
 
   return (
     <>
-      <div id="reader" />
-      <ul>
-        {list.map((r, i) => (
-          <li key={i}>{r}</li>
-        ))}
-      </ul>
+      <div id={readerId} />
 
       <RegistrationList
-        registrations={registrations}
+        registrations={localRegistrations}
         studentGroups={studentGroups}
         slug={happening.slug}
         isBedpres={happening.type === "bedpres"}
         happeningDate={happening.date}
       />
-
-      {/* <RegistrationTable
-        questions={happening.questions}
-        registrations={registrations}
-        studentGroups={studentGroups}
-        slug={happening.slug}
-        isBedpres={happening.type === "bedpres"}
-        happeningDate={happening.date}
-      /> */}
     </>
   );
 };
