@@ -407,6 +407,31 @@ definitions:
       type:
         type: string
     type: object
+  uno_http_dto.QuoteRequest:
+    properties:
+      context:
+        type: string
+      person:
+        type: string
+      text:
+        type: string
+    required:
+    - person
+    - text
+    type: object
+  uno_http_dto.QuoteResponse:
+    properties:
+      context:
+        type: string
+      id:
+        type: string
+      person:
+        type: string
+      submitted_at:
+        type: string
+      text:
+        type: string
+    type: object
   uno_http_dto.ReactToCommentRequest:
     properties:
       commentId:
@@ -1447,6 +1472,101 @@ paths:
       summary: Get happenings registrations count
       tags:
       - happenings
+  /quotes/:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.QuoteResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get all quotes
+      tags:
+      - quotes
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Quote to create
+        in: body
+        name: quote
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.QuoteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Created
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new quote
+      tags:
+      - quotes
+  /quotes/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Quote ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Deleted
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: Delete a quote by ID
+      tags:
+      - quotes
   /reactions/{key}:
     get:
       consumes:

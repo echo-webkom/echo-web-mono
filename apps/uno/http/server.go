@@ -50,11 +50,13 @@ func RunServer(
 	groupService *service.GroupService,
 	reactionService *service.ReactionService,
 	registrationRepo port.RegistrationRepo,
+	quoteService *service.QuoteService,
 ) {
 	r := router.New(logger, middleware.Logger(logger))
 
 	admin := middleware.NewAdminMiddleware(authService, config.AdminAPIKey)
 	session := middleware.NewSessionMiddleware(authService)
+	sessionOrAdmin := middleware.NewAdminOrSessionMiddleware(authService, config.AdminAPIKey)
 
 	// Health check route
 	r.Handle("GET", "/", api.HealthHandler)
@@ -103,6 +105,9 @@ func RunServer(
 
 	// User routes
 	r.Mount("/users", api.NewUsersMux(logger, userService, registrationRepo, admin, session))
+
+	// Quote routes
+	r.Mount("/quotes", api.NewQuoteMux(logger, quoteService, sessionOrAdmin, session, admin))
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))

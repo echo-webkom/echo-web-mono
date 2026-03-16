@@ -49,6 +49,7 @@ export class UnoClient {
   reactions: ReactionsApi;
   users: UsersApi;
   files: FilesApi;
+  quotes: QuotesApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -77,6 +78,7 @@ export class UnoClient {
     this.reactions = new ReactionsApi(this);
     this.users = new UsersApi(this);
     this.files = new FilesApi(this);
+    this.quotes = new QuotesApi(this);
   }
 
   normalizePath(path: string) {
@@ -724,6 +726,40 @@ class ProfilePicturesApi {
 
   async delete(userId: string) {
     const response = await this.client.request("DELETE", `users/${userId}/image`);
+    return response.status === 200;
+  }
+}
+
+export interface Quote {
+  id: string;
+  text: string;
+  person: string;
+  context: string | null;
+}
+
+class QuotesApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all() {
+    return await this.client.requestJson<Array<Quote>>("GET", "quotes");
+  }
+
+  async create(quote: { text: string; person: string; context?: string | null }) {
+    const response = await this.client.request("POST", "quotes", {
+      body: JSON.stringify(quote),
+    });
+    return {
+      ok: response.status === 200,
+      quote: response.status === 200 ? await response.json<Quote>() : null,
+    };
+  }
+
+  async delete(id: string) {
+    const response = await this.client.request("DELETE", `quotes/${id}`);
     return response.status === 200;
   }
 }

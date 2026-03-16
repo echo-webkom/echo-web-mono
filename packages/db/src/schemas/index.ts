@@ -13,6 +13,7 @@ export * from "./happenings-to-groups";
 export * from "./happenings";
 export * from "./kv";
 export * from "./questions";
+export * from "./quotes";
 export * from "./reactions";
 export * from "./registrations";
 export * from "./sessions";
