@@ -1,17 +1,7 @@
 import "@/styles/globals.css";
 
 import { type Metadata, type Viewport } from "next";
-import {
-  Alfa_Slab_One,
-  IBM_Plex_Mono,
-  Inter,
-  Lexend_Deca,
-  Pacifico,
-  Radley,
-  Ranchers,
-  Unna,
-  VT323,
-} from "next/font/google";
+import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
 import { auth, getSessionToken } from "@/auth/session";
@@ -35,58 +25,10 @@ const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-ibm",
 });
 
-const ibmPlexMonoDisplay = IBM_Plex_Mono({
-  weight: "700",
-  subsets: ["latin"],
-  variable: "--font-ibm-display",
-});
-
 const vt323 = VT323({
   subsets: ["latin"],
   variable: "--font-block",
   weight: ["400"],
-});
-
-const ranchers = Ranchers({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
-  variable: "--font-ranchers",
-});
-
-const lexendDeca = Lexend_Deca({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
-  variable: "--font-lexend",
-});
-
-const unna = Unna({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
-  variable: "--font-unna",
-});
-
-const radley = Radley({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-radley",
-});
-
-const slab = Alfa_Slab_One({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
-  variable: "--font-slab",
-});
-
-const pacifico = Pacifico({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal"],
-  variable: "--font-pacifico",
 });
 
 type RootLayoutProps = {
@@ -150,14 +92,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           "bg-background font-primary min-h-screen antialiased",
           inter.variable,
           ibmPlexMono.variable,
-          ibmPlexMonoDisplay.variable,
           vt323.variable,
-          ranchers.variable,
-          lexendDeca.variable,
-          unna.variable,
-          radley.variable,
-          slab.variable,
-          pacifico.variable,
         )}
       >
         <Providers user={user} sessionToken={sessionToken}>
