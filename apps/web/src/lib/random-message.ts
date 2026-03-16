@@ -90,6 +90,7 @@ export const baseMessages: Array<MessageItem> = [
   { text: "90% bug free!" },
   { text: "Made in Bergen!" },
   { text: "Open Source!" },
+  { text: "Creeper Aw Man", link: "https://www.youtube.com/watch?v=cPJUBQd-PNM" },
 ];
 
 export const getRandomMessage = (): MessageItem => {
