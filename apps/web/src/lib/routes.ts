@@ -11,6 +11,7 @@ import {
   LuMartini,
   LuMegaphone,
   LuPresentation,
+  LuQuote,
   LuScale,
   LuScrollText,
   LuShirt,
@@ -102,6 +103,12 @@ export const headerRoutes: Array<Route> = [
         href: "/for-studenter/motereferater",
         description: "Referater fra møter og generalforsamlinger i echo",
         icon: LuScrollText,
+      },
+      {
+        label: "Sitater",
+        href: "/sitater",
+        description: "Sitater fra hverdagen",
+        icon: LuQuote,
       },
       {
         label: "Masterinfo",
