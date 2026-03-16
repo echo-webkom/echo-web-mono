@@ -91,6 +91,14 @@ export const baseMessages: Array<MessageItem> = [
   { text: "Made in Bergen!" },
   { text: "Open Source!" },
   { text: "Creeper Aw Man", link: "https://www.youtube.com/watch?v=cPJUBQd-PNM" },
+  // ASCII
+  { text: " \\(^Д^)/ " },
+  { text: "¯\\_(ツ)_/¯" },
+  { text: "(╯°□°）╯︵ ┻━┻" },
+  { text: "┬─┬ノ( º _ ºノ)" },
+  { text: "ʕ•ᴥ•ʔ" },
+  { text: "( ͡° ͜ʖ ͡°)" },
+  { text: "༼ つ ◕_◕ ༽つ" },
 ];
 
 export const getRandomMessage = (): MessageItem => {
