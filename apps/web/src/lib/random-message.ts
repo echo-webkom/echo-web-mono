@@ -71,12 +71,25 @@ export const baseMessages: Array<MessageItem> = [
   { text: "God jul! 🎅", when: (date) => getMonth(date) === 11 && getDate(date) >= 24 }, // Christmas
   { text: "Godt nyttår! ✨", when: (date) => getMonth(date) === 0 && getDate(date) === 1 }, // New Year's Day
   { text: "New week, new me?", when: (date) => isMonday(date) },
-  { text: "JavaScript™", link: "https://javascript.tm" },
   { text: "Norge skal til VM 🇳🇴", when: (date) => date <= new Date(2026, 5, 20) },
   { text: "Natürlich" },
+  { text: "Canva-kriger" },
+  { text: "Bouvet!" },
+  { text: "Fonn Group!" },
+  { text: "Spaghettikode" },
+  { text: "Feature not a bug" },
+  // ISO
+  { text: "ISO 8601", link: "https://en.wikipedia.org/wiki/ISO_8601" },
+  // JS
+  { text: "JavaScript™", link: "https://javascript.tm" },
   { text: "[] == 0" },
   { text: "undefined" },
   { text: "[object Object]" },
+  // Minecraft
+  { text: "l33t sp34k" },
+  { text: "90% bug free!" },
+  { text: "Made in Bergen!" },
+  { text: "Open Source!" },
 ];
 
 export const getRandomMessage = (): MessageItem => {
