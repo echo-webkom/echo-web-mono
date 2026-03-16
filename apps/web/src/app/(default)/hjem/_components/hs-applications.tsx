@@ -34,7 +34,7 @@ export const HSApplications = async () => {
         {applications.map((application) => {
           return <Application key={application.profile._id} application={application} />;
         })}
-        <ApplyNow />
+        {/* <ApplyNow /> */}
       </Marquee>
     </div>
   );
