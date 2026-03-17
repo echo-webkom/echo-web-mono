@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
-import { LuArrowRight } from "react-icons/lu";
 
 import { type AllHsApplicationsResult } from "@echo-webkom/cms/types";
 import { cdnClient, urlFor } from "@echo-webkom/sanity";
@@ -72,15 +71,15 @@ const Application = ({ application }: ApplicationProps) => {
   );
 };
 
-const ApplyNow = () => {
-  return (
-    <div>
-      <a
-        href="https://forms.gle/q2E24r5pjksaGNer7"
-        className="group flex items-center text-lg font-medium hover:underline"
-      >
-        ...kanskje deg? <LuArrowRight className="ml-2 transition-all group-hover:ml-3" />
-      </a>
-    </div>
-  );
-};
+// const ApplyNow = () => {
+//   return (
+//     <div>
+//       <a
+//         href="https://forms.gle/q2E24r5pjksaGNer7"
+//         className="group flex items-center text-lg font-medium hover:underline"
+//       >
+//         ...kanskje deg? <LuArrowRight className="ml-2 transition-all group-hover:ml-3" />
+//       </a>
+//     </div>
+//   );
+// };
