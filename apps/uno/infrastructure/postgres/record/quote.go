@@ -10,6 +10,7 @@ type Quote struct {
 	Context     *string `db:"context"`
 	Person      string  `db:"person"`
 	SubmittedAt string  `db:"submitted_at"`
+	Reactions   []QuoteReaction
 }
 
 func (r Quote) ToModel() model.Quote {
@@ -35,5 +36,18 @@ func (r QuoteInsert) FromModel(quote model.Quote, submittedBy string) QuoteInser
 		Context:     quote.Context,
 		Person:      quote.Person,
 		SubmittedBy: submittedBy,
+	}
+}
+
+type QuoteReaction struct {
+	QuoteID      string `db:"quote_id"`
+	UserID       string `db:"user_id"`
+	ReactionType string `db:"reaction_type"`
+}
+
+func (qr QuoteReaction) ToModel() model.QuoteReaction {
+	return model.QuoteReaction{
+		UserID:       qr.UserID,
+		ReactionType: model.QuoteReactionType(qr.ReactionType),
 	}
 }

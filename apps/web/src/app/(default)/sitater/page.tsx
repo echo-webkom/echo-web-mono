@@ -5,6 +5,7 @@ import { Blockquote } from "@/components/typography/blockquote";
 import { Heading } from "@/components/typography/heading";
 import { isWebkom } from "@/lib/memberships";
 import { DeleteQuoteButton } from "./_components/delete-quote-button";
+import { QuoteReactions } from "./_components/quote-reactions";
 import { SubmitQuoteModal } from "./_components/submit-quote-modal";
 
 export default async function Quotes() {
@@ -32,6 +33,13 @@ export default async function Quotes() {
                 — {quote.person}
                 {quote.context && `, ${quote.context}`}
               </p>
+              <div className="mt-2">
+                <QuoteReactions
+                  quoteId={quote.id}
+                  reactions={quote.reactions}
+                  userId={user?.id ?? null}
+                />
+              </div>
             </div>
             {canDelete && <DeleteQuoteButton id={quote.id} />}
           </div>

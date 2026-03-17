@@ -407,6 +407,13 @@ definitions:
       type:
         type: string
     type: object
+  uno_http_dto.QuoteReactionResponse:
+    properties:
+      reaction_type:
+        type: string
+      user_id:
+        type: string
+    type: object
   uno_http_dto.QuoteRequest:
     properties:
       context:
@@ -427,6 +434,10 @@ definitions:
         type: string
       person:
         type: string
+      reactions:
+        items:
+          $ref: '#/definitions/uno_http_dto.QuoteReactionResponse'
+        type: array
       submitted_at:
         type: string
       text:
@@ -1565,6 +1576,74 @@ paths:
       - ApiKeyAuth: []
       - BearerAuth: []
       summary: Delete a quote by ID
+      tags:
+      - quotes
+  /quotes/{id}/dislike:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Quote ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Dislike or undislike a quote
+      tags:
+      - quotes
+  /quotes/{id}/like:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Quote ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Like or unlike a quote
       tags:
       - quotes
   /reactions/{key}:

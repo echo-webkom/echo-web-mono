@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	"net/http"
+	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
@@ -29,6 +30,8 @@ func NewQuoteMux(
 	mux.Handle(http.MethodGet, "/", q.getQuotes, sessionOrAdmin)
 	mux.Handle(http.MethodPost, "/", q.createQuote, session)
 	mux.Handle(http.MethodDelete, "/{id}", q.deleteQuote, admin)
+	mux.Handle(http.MethodPost, "/{id}/like", q.likeQuote, session)
+	mux.Handle(http.MethodPost, "/{id}/dislike", q.dislikeQuote, session)
 
 	return mux
 }
@@ -104,6 +107,64 @@ func (q *quotes) deleteQuote(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("quote ID is required"))
 	}
 	if err := q.quoteService.Repo().DeleteQuote(ctx.Context(), quoteID); err != nil {
+		return ctx.InternalServerError()
+	}
+	return nil
+}
+
+// likeQuote toggles a like reaction for a quote
+// @Summary	     Like or unlike a quote
+// @Tags         quotes
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  true  "Quote ID"
+// @Success      200  {string}  string  "OK"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Router       /quotes/{id}/like [post]
+// @Security     BearerAuth
+func (q *quotes) likeQuote(ctx *handler.Context) error {
+	quoteID := ctx.PathValue("id")
+	if quoteID == "" {
+		return ctx.BadRequest(errors.New("quote ID is required"))
+	}
+
+	user, ok := handler.UserFromContext(ctx.Context())
+	if !ok {
+		return ctx.Unauthorized(errors.New("user not found"))
+	}
+
+	if err := q.quoteService.ToggleReaction(ctx.Context(), quoteID, user.ID, model.QuoteReactionLike); err != nil {
+		return ctx.InternalServerError()
+	}
+	return nil
+}
+
+// dislikeQuote toggles a dislike reaction for a quote
+// @Summary	     Dislike or undislike a quote
+// @Tags         quotes
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string  true  "Quote ID"
+// @Success      200  {string}  string  "OK"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Router       /quotes/{id}/dislike [post]
+// @Security     BearerAuth
+func (q *quotes) dislikeQuote(ctx *handler.Context) error {
+	quoteID := ctx.PathValue("id")
+	if quoteID == "" {
+		return ctx.BadRequest(errors.New("quote ID is required"))
+	}
+
+	user, ok := handler.UserFromContext(ctx.Context())
+	if !ok {
+		return ctx.Unauthorized(errors.New("user not found"))
+	}
+
+	if err := q.quoteService.ToggleReaction(ctx.Context(), quoteID, user.ID, model.QuoteReactionDislike); err != nil {
 		return ctx.InternalServerError()
 	}
 	return nil

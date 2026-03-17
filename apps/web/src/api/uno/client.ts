@@ -730,11 +730,17 @@ class ProfilePicturesApi {
   }
 }
 
+export interface QuoteReaction {
+  user_id: string;
+  reaction_type: "like" | "dislike";
+}
+
 export interface Quote {
   id: string;
   text: string;
   person: string;
   context: string | null;
+  reactions: Array<QuoteReaction>;
 }
 
 class QuotesApi {
@@ -760,6 +766,16 @@ class QuotesApi {
 
   async delete(id: string) {
     const response = await this.client.request("DELETE", `quotes/${id}`);
+    return response.status === 200;
+  }
+
+  async toggleLike(id: string) {
+    const response = await this.client.request("POST", `quotes/${id}/like`);
+    return response.status === 200;
+  }
+
+  async toggleDislike(id: string) {
+    const response = await this.client.request("POST", `quotes/${id}/dislike`);
     return response.status === 200;
   }
 }

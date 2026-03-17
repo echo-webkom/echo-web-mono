@@ -7,21 +7,36 @@ import (
 	"github.com/google/uuid"
 )
 
+type QuoteReactionResponse struct {
+	UserID       string `json:"user_id"`
+	ReactionType string `json:"reaction_type"`
+}
+
 type QuoteResponse struct {
-	ID          string  `json:"id"`
-	Text        string  `json:"text"`
-	Context     *string `json:"context,omitempty"`
-	Person      string  `json:"person"`
-	SubmittedAt string  `json:"submitted_at"`
+	ID          string                  `json:"id"`
+	Text        string                  `json:"text"`
+	Context     *string                 `json:"context"`
+	Person      string                  `json:"person"`
+	SubmittedAt string                  `json:"submitted_at"`
+	Reactions   []QuoteReactionResponse `json:"reactions"`
 }
 
 func QuoteFromDomain(quote model.Quote) QuoteResponse {
+	reactions := make([]QuoteReactionResponse, len(quote.Reactions))
+	for i, r := range quote.Reactions {
+		reactions[i] = QuoteReactionResponse{
+			UserID:       r.UserID,
+			ReactionType: string(r.ReactionType),
+		}
+	}
+
 	return QuoteResponse{
 		ID:          quote.ID,
 		Text:        quote.Text,
 		Context:     quote.Context,
 		Person:      quote.Person,
 		SubmittedAt: quote.SubmittedAt,
+		Reactions:   reactions,
 	}
 }
 
