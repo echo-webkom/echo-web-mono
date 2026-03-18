@@ -91,7 +91,9 @@ export const QrScanner = ({ registrations, happening, studentGroups }: QrScanner
 
   return (
     <>
-      <div id={readerId} />
+      <div className="mx-auto w-full max-w-md py-5">
+        <div id={readerId} className="w-full overflow-hidden rounded-xl" />
+      </div>
 
       <RegistrationList
         registrations={localRegistrations}

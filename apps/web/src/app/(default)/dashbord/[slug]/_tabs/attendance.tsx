@@ -11,7 +11,6 @@ type RegistrationsTabProps = {
 export const AttendanceTab = ({ happening, registrations, groups }: RegistrationsTabProps) => {
   return (
     <div>
-      <h1>qr scanner</h1>
       <QrScanner registrations={registrations} happening={happening} studentGroups={groups} />
     </div>
   );
