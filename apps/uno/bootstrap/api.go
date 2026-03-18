@@ -67,6 +67,7 @@ func RunApi() {
 	adventOfCodeRepo := external.NewAdventOfCodeClient(aocClient, logger)
 	groupRepo := postgres.NewGroupRepo(db, logger)
 	reactionRepo := postgres.NewReactionRepo(db, logger)
+	quoteRepo := postgres.NewQuoteRepo(db, logger)
 	var profilePictureRepo port.ProfilePictureRepo
 	if fileStorage != nil {
 		profilePictureRepo, err = filestorage.NewProfilePictureStore(context.Background(), fileStorage, cfg.ProfilePictureBucketName, logger)
@@ -93,6 +94,7 @@ func RunApi() {
 	adventOfCodeService := service.NewAdventOfCodeService(adventOfCodeRepo)
 	groupService := service.NewGroupService(groupRepo)
 	reactionService := service.NewReactionService(reactionRepo)
+	quoteService := service.NewQuoteService(quoteRepo)
 
 	go http.RunServer(
 		notif,
@@ -114,6 +116,7 @@ func RunApi() {
 		groupService,
 		reactionService,
 		registrationRepo,
+		quoteService,
 	)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)

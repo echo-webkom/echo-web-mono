@@ -232,6 +232,20 @@
       "when": 1770290262270,
       "tag": "0032_loving_justice",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1773672566519,
+      "tag": "0033_rapid_marauders",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1773754700104,
+      "tag": "0034_violet_risque",
+      "breakpoints": true
     }
   ]
 }

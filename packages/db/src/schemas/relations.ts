@@ -1,3 +1,8 @@
+/**
+ * This file defines all the relations between the different tables.
+ * It is in a seperate file to avoid circular dependencies between the schema files.
+ */
+
 import { relations } from "drizzle-orm";
 
 import { answers } from "./answers";
