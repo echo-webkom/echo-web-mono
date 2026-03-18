@@ -298,6 +298,224 @@ func (h *HappeningRepo) GetFullHappeningBySlug(ctx context.Context, slug string)
 	}, nil
 }
 
+func (h *HappeningRepo) UpsertHappening(ctx context.Context, happening model.Happening) error {
+	h.logger.Info(ctx, "upserting happening",
+		"id", happening.ID,
+		"slug", happening.Slug,
+	)
+
+	query := `--sql
+		INSERT INTO happening (id, slug, title, type, date, registration_groups, registration_start_groups, registration_start, registration_end)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+		ON CONFLICT (id) DO UPDATE SET
+			slug = EXCLUDED.slug,
+			title = EXCLUDED.title,
+			type = EXCLUDED.type,
+			date = EXCLUDED.date,
+			registration_groups = EXCLUDED.registration_groups,
+			registration_start_groups = EXCLUDED.registration_start_groups,
+			registration_start = EXCLUDED.registration_start,
+			registration_end = EXCLUDED.registration_end
+	`
+	_, err := h.db.ExecContext(ctx, query,
+		happening.ID,
+		happening.Slug,
+		happening.Title,
+		happening.Type,
+		happening.Date,
+		happening.RegistrationGroups,
+		happening.RegistrationStartGroups,
+		happening.RegistrationStart,
+		happening.RegistrationEnd,
+	)
+	if err != nil {
+		h.logger.Error(ctx, "failed to upsert happening",
+			"error", err,
+			"id", happening.ID,
+		)
+		return err
+	}
+
+	return nil
+}
+
+func (h *HappeningRepo) DeleteHappening(ctx context.Context, id string) error {
+	h.logger.Info(ctx, "deleting happening",
+		"id", id,
+	)
+
+	query := `--sql
+		DELETE FROM happening WHERE id = $1
+	`
+	_, err := h.db.ExecContext(ctx, query, id)
+	if err != nil {
+		h.logger.Error(ctx, "failed to delete happening",
+			"error", err,
+			"id", id,
+		)
+		return err
+	}
+
+	return nil
+}
+
+func (h *HappeningRepo) ReplaceHappeningGroups(ctx context.Context, happeningID string, groupIDs []string) error {
+	h.logger.Info(ctx, "replacing happening groups",
+		"happening_id", happeningID,
+		"group_ids", groupIDs,
+	)
+
+	tx, err := h.db.BeginTxx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = tx.Rollback() }()
+
+	_, err = tx.ExecContext(ctx, `--sql
+		DELETE FROM happenings_to_groups WHERE happening_id = $1
+	`, happeningID)
+	if err != nil {
+		h.logger.Error(ctx, "failed to delete existing happening groups",
+			"error", err,
+			"happening_id", happeningID,
+		)
+		return err
+	}
+
+	if len(groupIDs) > 0 {
+		for _, groupID := range groupIDs {
+			_, err = tx.ExecContext(ctx, `--sql
+				INSERT INTO happenings_to_groups (happening_id, group_id) VALUES ($1, $2)
+			`, happeningID, groupID,
+			)
+			if err != nil {
+				h.logger.Error(ctx, "failed to insert happening group",
+					"error", err,
+					"happening_id", happeningID,
+					"group_id", groupID,
+				)
+				return err
+			}
+		}
+	}
+
+	return tx.Commit()
+}
+
+func (h *HappeningRepo) ReplaceSpotRanges(ctx context.Context, happeningID string, spotRanges []model.SpotRange) error {
+	h.logger.Info(ctx, "replacing spot ranges",
+		"happening_id", happeningID,
+	)
+
+	tx, err := h.db.BeginTxx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = tx.Rollback() }()
+
+	_, err = tx.ExecContext(ctx, `--sql
+		DELETE FROM spot_range WHERE happening_id = $1`, happeningID)
+	if err != nil {
+		h.logger.Error(ctx, "failed to delete existing spot ranges",
+			"error", err,
+			"happening_id", happeningID,
+		)
+		return err
+	}
+
+	for _, sr := range spotRanges {
+		_, err = tx.ExecContext(ctx, `--sql
+			INSERT INTO spot_range (id, happening_id, spots, min_year, max_year) VALUES (gen_random_uuid(), $1, $2, $3, $4)
+		`, happeningID, sr.Spots, sr.MinYear, sr.MaxYear,
+		)
+		if err != nil {
+			h.logger.Error(ctx, "failed to insert spot range",
+				"error", err,
+				"happening_id", happeningID,
+			)
+			return err
+		}
+	}
+
+	return tx.Commit()
+}
+
+// SyncQuestions compares the existing questions for a happening with the new incoming list.
+// The function:
+//   - Deletes questions that are in the existing list but not in the incoming list
+//   - Updates questions that are in both lists
+//   - Inserts questions that are in the incoming list but not in the existing list.
+func (h *HappeningRepo) SyncQuestions(ctx context.Context, happeningID string, incoming []model.Question) error {
+	h.logger.Info(ctx, "syncing questions",
+		"happening_id", happeningID,
+	)
+
+	existing, err := h.GetHappeningQuestions(ctx, happeningID)
+	if err != nil {
+		return err
+	}
+
+	existingIDs := make(map[string]bool)
+	for _, q := range existing {
+		existingIDs[q.ID] = true
+	}
+
+	incomingIDs := make(map[string]bool)
+	for _, q := range incoming {
+		incomingIDs[q.ID] = true
+	}
+
+	// Delete questions that are in existing but not in incoming
+	for _, q := range existing {
+		if !incomingIDs[q.ID] {
+			_, err := h.db.ExecContext(ctx, `--sql
+				DELETE FROM question WHERE id = $1 AND happening_id = $2`,
+				q.ID, happeningID,
+			)
+			if err != nil {
+				h.logger.Error(ctx, "failed to delete question",
+					"error", err,
+					"question_id", q.ID,
+				)
+				return err
+			}
+		}
+	}
+
+	// Insert new questions and update existing ones
+	for _, q := range incoming {
+		if existingIDs[q.ID] {
+			// Update
+			_, err := h.db.ExecContext(ctx, `--sql
+				UPDATE question SET title = $1, required = $2, type = $3, is_sensitive = $4, options = $5 WHERE id = $6 AND happening_id = $7`,
+				q.Title, q.Required, q.Type, q.IsSensitive, q.Options, q.ID, happeningID,
+			)
+			if err != nil {
+				h.logger.Error(ctx, "failed to update question",
+					"error", err,
+					"question_id", q.ID,
+				)
+				return err
+			}
+		} else {
+			// Insert
+			_, err := h.db.ExecContext(ctx, `--sql
+				INSERT INTO question (id, happening_id, title, required, type, is_sensitive, options) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+				q.ID, happeningID, q.Title, q.Required, q.Type, q.IsSensitive, q.Options,
+			)
+			if err != nil {
+				h.logger.Error(ctx, "failed to insert question",
+					"error", err,
+					"question_id", q.ID,
+				)
+				return err
+			}
+		}
+	}
+
+	return nil
+}
+
 func (h *HappeningRepo) GetHappeningRegistrationCounts(
 	ctx context.Context,
 	happeningIDs []string,

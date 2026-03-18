@@ -109,6 +109,9 @@ func RunServer(
 	// Quote routes
 	r.Mount("/quotes", api.NewQuoteMux(logger, quoteService, sessionOrAdmin, session, admin))
 
+	// Sanity webhook route
+	r.Mount("/sanity", api.NewSanityWebhookMux(logger, happeningService, admin))
+
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))
 

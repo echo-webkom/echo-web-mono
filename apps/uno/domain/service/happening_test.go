@@ -20,12 +20,14 @@ func TestHappeningService_HappeningRepo(t *testing.T) {
 	mockUserRepo := mocks.NewUserRepo(t)
 	mockRegistrationRepo := mocks.NewRegistrationRepo(t)
 	mockBanInfoRepo := mocks.NewBanInfoRepo(t)
+	mockGroupRepo := mocks.NewGroupRepo(t)
 
 	happeningService := service.NewHappeningService(
 		mockHappeningRepo,
 		mockUserRepo,
 		mockRegistrationRepo,
 		mockBanInfoRepo,
+		mockGroupRepo,
 	)
 
 	happeningRepo := happeningService.HappeningRepo()
@@ -253,6 +255,7 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 			mockUserRepo := mocks.NewUserRepo(t)
 			mockRegistrationRepo := mocks.NewRegistrationRepo(t)
 			mockBanInfoRepo := mocks.NewBanInfoRepo(t)
+			mockGroupRepo := mocks.NewGroupRepo(t)
 
 			tt.setupMocks(mockHappeningRepo, mockUserRepo, mockRegistrationRepo, mockBanInfoRepo)
 
@@ -261,6 +264,7 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 				mockUserRepo,
 				mockRegistrationRepo,
 				mockBanInfoRepo,
+				mockGroupRepo,
 			)
 
 			questions := []model.QuestionAnswer{}
@@ -336,6 +340,7 @@ func TestHappeningService_Register_RegistrationWindow(t *testing.T) {
 			mockUserRepo := mocks.NewUserRepo(t)
 			mockRegistrationRepo := mocks.NewRegistrationRepo(t)
 			mockBanInfoRepo := mocks.NewBanInfoRepo(t)
+			mockGroupRepo := mocks.NewGroupRepo(t)
 
 			mockUserRepo.EXPECT().GetUserByID(mock.Anything, userID).Return(completeUser, nil).Once()
 			mockHappeningRepo.EXPECT().GetHappeningById(mock.Anything, happeningID).Return(happening, nil).Once()
@@ -348,6 +353,7 @@ func TestHappeningService_Register_RegistrationWindow(t *testing.T) {
 				mockUserRepo,
 				mockRegistrationRepo,
 				mockBanInfoRepo,
+				mockGroupRepo,
 			)
 
 			questions := []model.QuestionAnswer{}
@@ -454,6 +460,7 @@ func TestHappeningService_Register_QuestionValidation(t *testing.T) {
 			mockUserRepo := mocks.NewUserRepo(t)
 			mockRegistrationRepo := mocks.NewRegistrationRepo(t)
 			mockBanInfoRepo := mocks.NewBanInfoRepo(t)
+			mockGroupRepo := mocks.NewGroupRepo(t)
 
 			mockUserRepo.EXPECT().GetUserByID(mock.Anything, userID).Return(completeUser, nil).Once()
 			mockHappeningRepo.EXPECT().GetHappeningById(mock.Anything, happeningID).Return(happening, nil).Once()
@@ -468,6 +475,7 @@ func TestHappeningService_Register_QuestionValidation(t *testing.T) {
 				mockUserRepo,
 				mockRegistrationRepo,
 				mockBanInfoRepo,
+				mockGroupRepo,
 			)
 
 			questions := []model.QuestionAnswer{}
@@ -619,6 +627,7 @@ func TestHappeningService_Register_Success(t *testing.T) {
 			mockUserRepo := mocks.NewUserRepo(t)
 			mockRegistrationRepo := mocks.NewRegistrationRepo(t)
 			mockBanInfoRepo := mocks.NewBanInfoRepo(t)
+			mockGroupRepo := mocks.NewGroupRepo(t)
 
 			mockUserRepo.EXPECT().GetUserByID(mock.Anything, userID).Return(testUser, nil).Once()
 			mockHappeningRepo.EXPECT().GetHappeningById(mock.Anything, happeningID).Return(testHappening, nil).Once()
@@ -634,6 +643,7 @@ func TestHappeningService_Register_Success(t *testing.T) {
 				mockUserRepo,
 				mockRegistrationRepo,
 				mockBanInfoRepo,
+				mockGroupRepo,
 			)
 
 			questions := []model.QuestionAnswer{}
@@ -1067,6 +1077,7 @@ func TestHappeningService_Register_HostCanSkipSpotRangeCheck(t *testing.T) {
 	mockUserRepo := mocks.NewUserRepo(t)
 	mockRegistrationRepo := mocks.NewRegistrationRepo(t)
 	mockBanInfoRepo := mocks.NewBanInfoRepo(t)
+	mockGroupRepo := mocks.NewGroupRepo(t)
 
 	mockUserRepo.EXPECT().
 		GetUserByID(mock.Anything, userID).
@@ -1113,6 +1124,7 @@ func TestHappeningService_Register_HostCanSkipSpotRangeCheck(t *testing.T) {
 		mockUserRepo,
 		mockRegistrationRepo,
 		mockBanInfoRepo,
+		mockGroupRepo,
 	)
 
 	questions := []model.QuestionAnswer{}

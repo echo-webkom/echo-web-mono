@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"slices"
 	"time"
 	"uno/domain/model"
@@ -15,6 +16,7 @@ type HappeningService struct {
 	userRepo         port.UserRepo
 	registrationRepo port.RegistrationRepo
 	banInfoRepo      port.BanInfoRepo
+	groupRepo        port.GroupRepo
 }
 
 func NewHappeningService(
@@ -22,12 +24,14 @@ func NewHappeningService(
 	userRepo port.UserRepo,
 	registrationRepo port.RegistrationRepo,
 	banInfoRepo port.BanInfoRepo,
+	groupRepo port.GroupRepo,
 ) *HappeningService {
 	return &HappeningService{
 		happeningRepo:    happeningRepo,
 		userRepo:         userRepo,
 		registrationRepo: registrationRepo,
 		banInfoRepo:      banInfoRepo,
+		groupRepo:        groupRepo,
 	}
 }
 
@@ -52,7 +56,7 @@ func fitsInSpotrange(user *model.User, spotRange *model.SpotRange) bool {
 	return user.Year.Int() >= spotRange.MinYear && user.Year.Int() <= spotRange.MaxYear
 }
 
-// Checks if there is an available spot for a user in the given spot ranges considering existing registrations
+// IsAvailableSpot checks if there is an available spot for a user in the given spot ranges considering existing registrations
 func IsAvailableSpot(
 	spotRanges []model.SpotRange,
 	registrations []model.Registration,
@@ -444,4 +448,186 @@ func (hs *HappeningService) GetRegisterCount(ctx context.Context, happeningID st
 	}
 
 	return grp, nil
+}
+
+// SanityHappeningData represents the data sent from a Sanity webhook for a happening.
+type SanityHappeningData struct {
+	ID                      string
+	Title                   string
+	Slug                    string
+	Date                    string
+	HappeningType           string
+	RegistrationStartGroups *string
+	RegistrationGroups      []string
+	RegistrationStart       *string
+	RegistrationEnd         *string
+	Groups                  []string
+	SpotRanges              []SanitySpotRange
+	Questions               []SanityQuestion
+}
+
+type SanitySpotRange struct {
+	Spots   int
+	MinYear int
+	MaxYear int
+}
+
+type SanityQuestion struct {
+	ID          string
+	Title       string
+	Required    bool
+	Type        string
+	IsSensitive bool
+	Options     []string
+}
+
+// SyncHappening syncs a happening from Sanity to the database (create or update).
+func (hs *HappeningService) SyncHappening(ctx context.Context, data SanityHappeningData) error {
+	happening, err := mapSanityHappening(data)
+	if err != nil {
+		return fmt.Errorf("failed to map happening: %w", err)
+	}
+
+	if err = hs.happeningRepo.UpsertHappening(ctx, happening); err != nil {
+		return fmt.Errorf("failed to upsert happening: %w", err)
+	}
+
+	groupIDs, err := hs.mapValidGroups(ctx, data.Groups)
+	if err != nil {
+		return fmt.Errorf("failed to map groups: %w", err)
+	}
+
+	if err := hs.happeningRepo.ReplaceHappeningGroups(ctx, happening.ID, groupIDs); err != nil {
+		return fmt.Errorf("failed to replace groups: %w", err)
+	}
+
+	spotRanges := make([]model.SpotRange, len(data.SpotRanges))
+	for i, sr := range data.SpotRanges {
+		spotRanges[i] = model.SpotRange{
+			HappeningID: happening.ID,
+			Spots:       sr.Spots,
+			MinYear:     sr.MinYear,
+			MaxYear:     sr.MaxYear,
+		}
+	}
+
+	if err := hs.happeningRepo.ReplaceSpotRanges(ctx, happening.ID, spotRanges); err != nil {
+		return fmt.Errorf("failed to replace spot ranges: %w", err)
+	}
+
+	questions := make([]model.Question, len(data.Questions))
+	for i, q := range data.Questions {
+		var options *json.RawMessage
+		if len(q.Options) > 0 {
+			mapped := make([]map[string]string, len(q.Options))
+			for j, o := range q.Options {
+				mapped[j] = map[string]string{"id": o, "value": o}
+			}
+			raw, _ := json.Marshal(mapped)
+			rawMsg := json.RawMessage(raw)
+			options = &rawMsg
+		}
+
+		questions[i] = model.Question{
+			ID:          q.ID,
+			HappeningID: happening.ID,
+			Title:       q.Title,
+			Required:    q.Required,
+			Type:        q.Type,
+			IsSensitive: q.IsSensitive,
+			Options:     options,
+		}
+	}
+
+	if err := hs.happeningRepo.SyncQuestions(ctx, happening.ID, questions); err != nil {
+		return fmt.Errorf("failed to sync questions: %w", err)
+	}
+
+	return nil
+}
+
+func mapSanityHappening(data SanityHappeningData) (model.Happening, error) {
+	date, err := time.Parse(time.RFC3339, data.Date)
+	if err != nil {
+		date, err = time.Parse("2006-01-02", data.Date)
+		if err != nil {
+			return model.Happening{}, fmt.Errorf("failed to parse date %q: %w", data.Date, err)
+		}
+	}
+
+	regGroups := make([]string, 0, len(data.RegistrationGroups))
+	for _, g := range data.RegistrationGroups {
+		if model.IsBoardID(g) {
+			regGroups = append(regGroups, "hovedstyre")
+		} else {
+			regGroups = append(regGroups, g)
+		}
+	}
+
+	var registrationGroups *json.RawMessage
+	if len(regGroups) > 0 {
+		raw, _ := json.Marshal(regGroups)
+		rawMsg := json.RawMessage(raw)
+		registrationGroups = &rawMsg
+	}
+
+	happening := model.Happening{
+		ID:                 data.ID,
+		Slug:               data.Slug,
+		Title:              data.Title,
+		Type:               model.HappeningType(data.HappeningType),
+		Date:               &date,
+		RegistrationGroups: registrationGroups,
+	}
+
+	if data.RegistrationStartGroups != nil {
+		t, err := time.Parse(time.RFC3339, *data.RegistrationStartGroups)
+		if err == nil {
+			happening.RegistrationStartGroups = &t
+		}
+	}
+
+	if data.RegistrationStart != nil {
+		t, err := time.Parse(time.RFC3339, *data.RegistrationStart)
+		if err == nil {
+			happening.RegistrationStart = &t
+		}
+	}
+
+	if data.RegistrationEnd != nil {
+		t, err := time.Parse(time.RFC3339, *data.RegistrationEnd)
+		if err == nil {
+			happening.RegistrationEnd = &t
+		}
+	}
+
+	return happening, nil
+}
+
+func (hs *HappeningService) mapValidGroups(ctx context.Context, groups []string) ([]string, error) {
+	validGroups, err := hs.groupRepo.GetAllGroups(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	validGroupIDs := make(map[string]bool)
+	for _, g := range validGroups {
+		validGroupIDs[g.ID] = true
+	}
+
+	seen := make(map[string]bool)
+	var result []string
+	for _, g := range groups {
+		mapped := g
+		if model.IsBoardID(g) {
+			mapped = "hovedstyret"
+		}
+
+		if validGroupIDs[mapped] && !seen[mapped] {
+			result = append(result, mapped)
+			seen[mapped] = true
+		}
+	}
+
+	return result, nil
 }

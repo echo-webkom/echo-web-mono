@@ -38,6 +38,75 @@ func (_m *QuoteRepo) EXPECT() *QuoteRepo_Expecter {
 	return &QuoteRepo_Expecter{mock: &_m.Mock}
 }
 
+// AddReaction provides a mock function for the type QuoteRepo
+func (_mock *QuoteRepo) AddReaction(ctx context.Context, quoteID string, userID string, reactionType model.QuoteReactionType) error {
+	ret := _mock.Called(ctx, quoteID, userID, reactionType)
+
+	if len(ret) == 0 {
+		panic("no return value specified for AddReaction")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, model.QuoteReactionType) error); ok {
+		r0 = returnFunc(ctx, quoteID, userID, reactionType)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// QuoteRepo_AddReaction_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'AddReaction'
+type QuoteRepo_AddReaction_Call struct {
+	*mock.Call
+}
+
+// AddReaction is a helper method to define mock.On call
+//   - ctx context.Context
+//   - quoteID string
+//   - userID string
+//   - reactionType model.QuoteReactionType
+func (_e *QuoteRepo_Expecter) AddReaction(ctx interface{}, quoteID interface{}, userID interface{}, reactionType interface{}) *QuoteRepo_AddReaction_Call {
+	return &QuoteRepo_AddReaction_Call{Call: _e.mock.On("AddReaction", ctx, quoteID, userID, reactionType)}
+}
+
+func (_c *QuoteRepo_AddReaction_Call) Run(run func(ctx context.Context, quoteID string, userID string, reactionType model.QuoteReactionType)) *QuoteRepo_AddReaction_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 model.QuoteReactionType
+		if args[3] != nil {
+			arg3 = args[3].(model.QuoteReactionType)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+		)
+	})
+	return _c
+}
+
+func (_c *QuoteRepo_AddReaction_Call) Return(err error) *QuoteRepo_AddReaction_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *QuoteRepo_AddReaction_Call) RunAndReturn(run func(ctx context.Context, quoteID string, userID string, reactionType model.QuoteReactionType) error) *QuoteRepo_AddReaction_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // CreateQuote provides a mock function for the type QuoteRepo
 func (_mock *QuoteRepo) CreateQuote(ctx context.Context, quote model.Quote, submittedBy string) error {
 	ret := _mock.Called(ctx, quote, submittedBy)
@@ -158,6 +227,74 @@ func (_c *QuoteRepo_DeleteQuote_Call) RunAndReturn(run func(ctx context.Context,
 	return _c
 }
 
+// GetQuoteByID provides a mock function for the type QuoteRepo
+func (_mock *QuoteRepo) GetQuoteByID(ctx context.Context, quoteID string) (*model.Quote, error) {
+	ret := _mock.Called(ctx, quoteID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetQuoteByID")
+	}
+
+	var r0 *model.Quote
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (*model.Quote, error)); ok {
+		return returnFunc(ctx, quoteID)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) *model.Quote); ok {
+		r0 = returnFunc(ctx, quoteID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.Quote)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, quoteID)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// QuoteRepo_GetQuoteByID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetQuoteByID'
+type QuoteRepo_GetQuoteByID_Call struct {
+	*mock.Call
+}
+
+// GetQuoteByID is a helper method to define mock.On call
+//   - ctx context.Context
+//   - quoteID string
+func (_e *QuoteRepo_Expecter) GetQuoteByID(ctx interface{}, quoteID interface{}) *QuoteRepo_GetQuoteByID_Call {
+	return &QuoteRepo_GetQuoteByID_Call{Call: _e.mock.On("GetQuoteByID", ctx, quoteID)}
+}
+
+func (_c *QuoteRepo_GetQuoteByID_Call) Run(run func(ctx context.Context, quoteID string)) *QuoteRepo_GetQuoteByID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *QuoteRepo_GetQuoteByID_Call) Return(quote *model.Quote, err error) *QuoteRepo_GetQuoteByID_Call {
+	_c.Call.Return(quote, err)
+	return _c
+}
+
+func (_c *QuoteRepo_GetQuoteByID_Call) RunAndReturn(run func(ctx context.Context, quoteID string) (*model.Quote, error)) *QuoteRepo_GetQuoteByID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetQuotes provides a mock function for the type QuoteRepo
 func (_mock *QuoteRepo) GetQuotes(ctx context.Context) ([]model.Quote, error) {
 	ret := _mock.Called(ctx)
@@ -216,6 +353,137 @@ func (_c *QuoteRepo_GetQuotes_Call) Return(quotes []model.Quote, err error) *Quo
 }
 
 func (_c *QuoteRepo_GetQuotes_Call) RunAndReturn(run func(ctx context.Context) ([]model.Quote, error)) *QuoteRepo_GetQuotes_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetReactions provides a mock function for the type QuoteRepo
+func (_mock *QuoteRepo) GetReactions(ctx context.Context, quoteID string) ([]model.QuoteReaction, error) {
+	ret := _mock.Called(ctx, quoteID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetReactions")
+	}
+
+	var r0 []model.QuoteReaction
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) ([]model.QuoteReaction, error)); ok {
+		return returnFunc(ctx, quoteID)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) []model.QuoteReaction); ok {
+		r0 = returnFunc(ctx, quoteID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]model.QuoteReaction)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, quoteID)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// QuoteRepo_GetReactions_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetReactions'
+type QuoteRepo_GetReactions_Call struct {
+	*mock.Call
+}
+
+// GetReactions is a helper method to define mock.On call
+//   - ctx context.Context
+//   - quoteID string
+func (_e *QuoteRepo_Expecter) GetReactions(ctx interface{}, quoteID interface{}) *QuoteRepo_GetReactions_Call {
+	return &QuoteRepo_GetReactions_Call{Call: _e.mock.On("GetReactions", ctx, quoteID)}
+}
+
+func (_c *QuoteRepo_GetReactions_Call) Run(run func(ctx context.Context, quoteID string)) *QuoteRepo_GetReactions_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *QuoteRepo_GetReactions_Call) Return(quoteReactions []model.QuoteReaction, err error) *QuoteRepo_GetReactions_Call {
+	_c.Call.Return(quoteReactions, err)
+	return _c
+}
+
+func (_c *QuoteRepo_GetReactions_Call) RunAndReturn(run func(ctx context.Context, quoteID string) ([]model.QuoteReaction, error)) *QuoteRepo_GetReactions_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// RemoveReaction provides a mock function for the type QuoteRepo
+func (_mock *QuoteRepo) RemoveReaction(ctx context.Context, quoteID string, userID string) error {
+	ret := _mock.Called(ctx, quoteID, userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for RemoveReaction")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string) error); ok {
+		r0 = returnFunc(ctx, quoteID, userID)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// QuoteRepo_RemoveReaction_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RemoveReaction'
+type QuoteRepo_RemoveReaction_Call struct {
+	*mock.Call
+}
+
+// RemoveReaction is a helper method to define mock.On call
+//   - ctx context.Context
+//   - quoteID string
+//   - userID string
+func (_e *QuoteRepo_Expecter) RemoveReaction(ctx interface{}, quoteID interface{}, userID interface{}) *QuoteRepo_RemoveReaction_Call {
+	return &QuoteRepo_RemoveReaction_Call{Call: _e.mock.On("RemoveReaction", ctx, quoteID, userID)}
+}
+
+func (_c *QuoteRepo_RemoveReaction_Call) Run(run func(ctx context.Context, quoteID string, userID string)) *QuoteRepo_RemoveReaction_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *QuoteRepo_RemoveReaction_Call) Return(err error) *QuoteRepo_RemoveReaction_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *QuoteRepo_RemoveReaction_Call) RunAndReturn(run func(ctx context.Context, quoteID string, userID string) error) *QuoteRepo_RemoveReaction_Call {
 	_c.Call.Return(run)
 	return _c
 }
