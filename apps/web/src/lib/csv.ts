@@ -53,6 +53,7 @@ export const toCsv = (happening: FullHappening, selectedHeaders: Array<string> =
         unregistered: 2,
         removed: 3,
         pending: 4,
+        attended: 5,
       };
 
       return (

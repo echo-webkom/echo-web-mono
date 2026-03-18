@@ -1,0 +1,1 @@
+ALTER TYPE "public"."registration_status" ADD VALUE 'attended';

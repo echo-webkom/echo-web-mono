@@ -11,6 +11,7 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components
 import { filterRegistrations } from "../_lib/filter-registrations";
 import { type RegistrationWithUser } from "../_lib/types";
 import { useRegistrationFilter } from "../_lib/use-registration-filter";
+import { RegistrationList } from "./registration-list";
 import { RegistrationRow } from "./registration-row";
 import { GroupFilter, SearchFilter, StatusFilter, YearFilter } from "./registration-table-filters";
 
@@ -28,6 +29,7 @@ export const RegistrationTable = ({
   studentGroups,
   isBedpres,
   happeningDate,
+  slug,
 }: RegistrationTableProps) => {
   const [showIndex, setShowIndex] = useState(false);
   const { filters, resetFilters, setSearchTerm, setYearFilter, setStatusFilter, setGroupFilter } =
@@ -66,49 +68,13 @@ export const RegistrationTable = ({
           </div>
         </div>
 
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {showIndex && (
-                <TableHead scope="col" className="w-12">
-                  #
-                </TableHead>
-              )}
-              <TableHead scope="col" className="w-12">
-                Info
-              </TableHead>
-              <TableHead scope="col">Navn</TableHead>
-              <TableHead scope="col">Status</TableHead>
-              <TableHead scope="col" className="w-16">
-                Mer
-              </TableHead>
-              <TableHead scope="col" className="w-12">
-                {/* Empty */}
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredRegistrations.length === 0 && (
-              <TableRow>
-                <td colSpan={showIndex ? 6 : 5}>
-                  <p className="text-muted-foreground py-6 text-center text-xl font-medium">
-                    Ingen resultater
-                  </p>
-                </td>
-              </TableRow>
-            )}
-            {filteredRegistrations.map((registration, i) => (
-              <RegistrationRow
-                key={registration.user.id}
-                index={i}
-                registration={registration}
-                showIndex={showIndex}
-                isBedpres={isBedpres}
-                happeningDate={happeningDate}
-              />
-            ))}
-          </TableBody>
-        </Table>
+        <RegistrationList
+          registrations={registrations}
+          studentGroups={studentGroups}
+          slug={slug}
+          isBedpres={isBedpres}
+          happeningDate={happeningDate}
+        />
       </div>
     </div>
   );

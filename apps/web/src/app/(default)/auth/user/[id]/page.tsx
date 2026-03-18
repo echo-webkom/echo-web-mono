@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
+import QRCode from "react-qr-code";
 
 import { db } from "@echo-webkom/db/serverless";
 
@@ -133,6 +134,9 @@ export default async function ProfilePage({ params }: Props) {
       <div className="max-w-2xl space-y-4">
         <WhitelistNotification />
         <Heading level={2}>{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
+        <h1>HELLO WORLD</h1>
+        <QRCode size={150} bgColor="white" fgColor="black" value={user.id} />
+
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-6 md:flex-row">
             <UploadProfilePicture
