@@ -1,0 +1,1 @@
+ALTER TABLE "users_to_quotes" ADD CONSTRAINT "users_to_quotes_quote_id_quote_id_fk" FOREIGN KEY ("quote_id") REFERENCES "public"."quote"("id") ON DELETE cascade ON UPDATE no action;
