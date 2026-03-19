@@ -43,14 +43,23 @@ func (q *QuoteRepo) CreateQuote(ctx context.Context, quote model.Quote, submitte
 }
 
 // GetQuotes fetches all quotes with their reactions in a single query.
+// Returns the quotes ordered by likes and submission date.
 func (q *QuoteRepo) GetQuotes(ctx context.Context) ([]model.Quote, error) {
 	q.logger.Info(ctx, "fetching quotes")
 
 	query := `--sql
+		WITH like_counts AS (
+			SELECT quote_id, COUNT(*) AS likes
+			FROM users_to_quotes
+			WHERE reaction_type = 'like'
+			GROUP BY quote_id
+		)
 		SELECT q.id, q.text, q.context, q.person, q.submitted_at,
-		       utq.reaction_type, utq.user_id
+			utq.reaction_type, utq.user_id
 		FROM quote q
+		LEFT JOIN like_counts lc ON q.id = lc.quote_id
 		LEFT JOIN users_to_quotes utq ON q.id = utq.quote_id
+		ORDER BY COALESCE(lc.likes, 0) DESC, q.submitted_at DESC
 	`
 
 	rows, err := q.db.QueryContext(ctx, query)
