@@ -104,6 +104,63 @@ func (_c *HappeningRepo_CreateHappening_Call) RunAndReturn(run func(ctx context.
 	return _c
 }
 
+// DeleteHappening provides a mock function for the type HappeningRepo
+func (_mock *HappeningRepo) DeleteHappening(ctx context.Context, id string) error {
+	ret := _mock.Called(ctx, id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteHappening")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = returnFunc(ctx, id)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// HappeningRepo_DeleteHappening_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteHappening'
+type HappeningRepo_DeleteHappening_Call struct {
+	*mock.Call
+}
+
+// DeleteHappening is a helper method to define mock.On call
+//   - ctx context.Context
+//   - id string
+func (_e *HappeningRepo_Expecter) DeleteHappening(ctx interface{}, id interface{}) *HappeningRepo_DeleteHappening_Call {
+	return &HappeningRepo_DeleteHappening_Call{Call: _e.mock.On("DeleteHappening", ctx, id)}
+}
+
+func (_c *HappeningRepo_DeleteHappening_Call) Run(run func(ctx context.Context, id string)) *HappeningRepo_DeleteHappening_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *HappeningRepo_DeleteHappening_Call) Return(err error) *HappeningRepo_DeleteHappening_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *HappeningRepo_DeleteHappening_Call) RunAndReturn(run func(ctx context.Context, id string) error) *HappeningRepo_DeleteHappening_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetAllHappenings provides a mock function for the type HappeningRepo
 func (_mock *HappeningRepo) GetAllHappenings(ctx context.Context) ([]model.Happening, error) {
 	ret := _mock.Called(ctx)
@@ -634,6 +691,252 @@ func (_c *HappeningRepo_GetHappeningSpotRanges_Call) Return(spotRanges []model.S
 }
 
 func (_c *HappeningRepo_GetHappeningSpotRanges_Call) RunAndReturn(run func(ctx context.Context, happeningID string) ([]model.SpotRange, error)) *HappeningRepo_GetHappeningSpotRanges_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ReplaceHappeningGroups provides a mock function for the type HappeningRepo
+func (_mock *HappeningRepo) ReplaceHappeningGroups(ctx context.Context, happeningID string, groupIDs []string) error {
+	ret := _mock.Called(ctx, happeningID, groupIDs)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ReplaceHappeningGroups")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, []string) error); ok {
+		r0 = returnFunc(ctx, happeningID, groupIDs)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// HappeningRepo_ReplaceHappeningGroups_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ReplaceHappeningGroups'
+type HappeningRepo_ReplaceHappeningGroups_Call struct {
+	*mock.Call
+}
+
+// ReplaceHappeningGroups is a helper method to define mock.On call
+//   - ctx context.Context
+//   - happeningID string
+//   - groupIDs []string
+func (_e *HappeningRepo_Expecter) ReplaceHappeningGroups(ctx interface{}, happeningID interface{}, groupIDs interface{}) *HappeningRepo_ReplaceHappeningGroups_Call {
+	return &HappeningRepo_ReplaceHappeningGroups_Call{Call: _e.mock.On("ReplaceHappeningGroups", ctx, happeningID, groupIDs)}
+}
+
+func (_c *HappeningRepo_ReplaceHappeningGroups_Call) Run(run func(ctx context.Context, happeningID string, groupIDs []string)) *HappeningRepo_ReplaceHappeningGroups_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 []string
+		if args[2] != nil {
+			arg2 = args[2].([]string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *HappeningRepo_ReplaceHappeningGroups_Call) Return(err error) *HappeningRepo_ReplaceHappeningGroups_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *HappeningRepo_ReplaceHappeningGroups_Call) RunAndReturn(run func(ctx context.Context, happeningID string, groupIDs []string) error) *HappeningRepo_ReplaceHappeningGroups_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ReplaceSpotRanges provides a mock function for the type HappeningRepo
+func (_mock *HappeningRepo) ReplaceSpotRanges(ctx context.Context, happeningID string, spotRanges []model.SpotRange) error {
+	ret := _mock.Called(ctx, happeningID, spotRanges)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ReplaceSpotRanges")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, []model.SpotRange) error); ok {
+		r0 = returnFunc(ctx, happeningID, spotRanges)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// HappeningRepo_ReplaceSpotRanges_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ReplaceSpotRanges'
+type HappeningRepo_ReplaceSpotRanges_Call struct {
+	*mock.Call
+}
+
+// ReplaceSpotRanges is a helper method to define mock.On call
+//   - ctx context.Context
+//   - happeningID string
+//   - spotRanges []model.SpotRange
+func (_e *HappeningRepo_Expecter) ReplaceSpotRanges(ctx interface{}, happeningID interface{}, spotRanges interface{}) *HappeningRepo_ReplaceSpotRanges_Call {
+	return &HappeningRepo_ReplaceSpotRanges_Call{Call: _e.mock.On("ReplaceSpotRanges", ctx, happeningID, spotRanges)}
+}
+
+func (_c *HappeningRepo_ReplaceSpotRanges_Call) Run(run func(ctx context.Context, happeningID string, spotRanges []model.SpotRange)) *HappeningRepo_ReplaceSpotRanges_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 []model.SpotRange
+		if args[2] != nil {
+			arg2 = args[2].([]model.SpotRange)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *HappeningRepo_ReplaceSpotRanges_Call) Return(err error) *HappeningRepo_ReplaceSpotRanges_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *HappeningRepo_ReplaceSpotRanges_Call) RunAndReturn(run func(ctx context.Context, happeningID string, spotRanges []model.SpotRange) error) *HappeningRepo_ReplaceSpotRanges_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// SyncQuestions provides a mock function for the type HappeningRepo
+func (_mock *HappeningRepo) SyncQuestions(ctx context.Context, happeningID string, questions []model.Question) error {
+	ret := _mock.Called(ctx, happeningID, questions)
+
+	if len(ret) == 0 {
+		panic("no return value specified for SyncQuestions")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, []model.Question) error); ok {
+		r0 = returnFunc(ctx, happeningID, questions)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// HappeningRepo_SyncQuestions_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SyncQuestions'
+type HappeningRepo_SyncQuestions_Call struct {
+	*mock.Call
+}
+
+// SyncQuestions is a helper method to define mock.On call
+//   - ctx context.Context
+//   - happeningID string
+//   - questions []model.Question
+func (_e *HappeningRepo_Expecter) SyncQuestions(ctx interface{}, happeningID interface{}, questions interface{}) *HappeningRepo_SyncQuestions_Call {
+	return &HappeningRepo_SyncQuestions_Call{Call: _e.mock.On("SyncQuestions", ctx, happeningID, questions)}
+}
+
+func (_c *HappeningRepo_SyncQuestions_Call) Run(run func(ctx context.Context, happeningID string, questions []model.Question)) *HappeningRepo_SyncQuestions_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 []model.Question
+		if args[2] != nil {
+			arg2 = args[2].([]model.Question)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *HappeningRepo_SyncQuestions_Call) Return(err error) *HappeningRepo_SyncQuestions_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *HappeningRepo_SyncQuestions_Call) RunAndReturn(run func(ctx context.Context, happeningID string, questions []model.Question) error) *HappeningRepo_SyncQuestions_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpsertHappening provides a mock function for the type HappeningRepo
+func (_mock *HappeningRepo) UpsertHappening(ctx context.Context, happening model.Happening) error {
+	ret := _mock.Called(ctx, happening)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpsertHappening")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.Happening) error); ok {
+		r0 = returnFunc(ctx, happening)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// HappeningRepo_UpsertHappening_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpsertHappening'
+type HappeningRepo_UpsertHappening_Call struct {
+	*mock.Call
+}
+
+// UpsertHappening is a helper method to define mock.On call
+//   - ctx context.Context
+//   - happening model.Happening
+func (_e *HappeningRepo_Expecter) UpsertHappening(ctx interface{}, happening interface{}) *HappeningRepo_UpsertHappening_Call {
+	return &HappeningRepo_UpsertHappening_Call{Call: _e.mock.On("UpsertHappening", ctx, happening)}
+}
+
+func (_c *HappeningRepo_UpsertHappening_Call) Run(run func(ctx context.Context, happening model.Happening)) *HappeningRepo_UpsertHappening_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 model.Happening
+		if args[1] != nil {
+			arg1 = args[1].(model.Happening)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *HappeningRepo_UpsertHappening_Call) Return(err error) *HappeningRepo_UpsertHappening_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *HappeningRepo_UpsertHappening_Call) RunAndReturn(run func(ctx context.Context, happening model.Happening) error) *HappeningRepo_UpsertHappening_Call {
 	_c.Call.Return(run)
 	return _c
 }

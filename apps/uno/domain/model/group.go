@@ -1,5 +1,21 @@
 package model
 
+import (
+	"strconv"
+	"strings"
+)
+
+// IsBoardID checks if a string matches the board slug pattern (e.g. "2023/2024").
+func IsBoardID(s string) bool {
+	parts := strings.SplitN(s, "/", 2)
+	if len(parts) != 2 {
+		return false
+	}
+	_, err1 := strconv.Atoi(parts[0])
+	_, err2 := strconv.Atoi(parts[1])
+	return err1 == nil && err2 == nil
+}
+
 // Group represents a user group in the domain
 type Group struct {
 	ID       string

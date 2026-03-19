@@ -1719,6 +1719,34 @@ paths:
       summary: Toggle a reaction for a given key and user
       tags:
       - reactions
+  /sanity/webhook:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Process Sanity webhook
+      tags:
+      - sanity
   /shopping:
     get:
       produces:
