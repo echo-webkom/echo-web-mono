@@ -225,6 +225,11 @@ func (hs *HappeningService) Register(
 	happeningID string,
 	questions []model.QuestionAnswer,
 ) (*RegisterResult, error) {
+	osloLoc, err := time.LoadLocation("Europe/Oslo")
+	if err != nil {
+		return &RegisterResult{Success: false, Message: "Internal error"}, fmt.Errorf("serveren finner ikke seg selv: %w", err)
+	}
+
 	// 1. Get user
 	user, err := hs.userRepo.GetUserByID(ctx, userID)
 	if err != nil {
@@ -309,7 +314,7 @@ func (hs *HappeningService) Register(
 				Message: "Påmelding er bare for inviterte undergrupper",
 			}, nil
 		}
-		if happening.RegistrationStart.After(time.Now()) {
+		if happening.RegistrationStart.In(osloLoc).After(time.Now()) {
 			return &RegisterResult{
 				Success: false,
 				Message: "Påmeldingen har ikke startet",
@@ -318,7 +323,7 @@ func (hs *HappeningService) Register(
 	}
 
 	// Check if registration is closed
-	if happening.RegistrationEnd != nil && happening.RegistrationEnd.Before(time.Now()) {
+	if happening.RegistrationEnd != nil && happening.RegistrationEnd.In(osloLoc).Before(time.Now()) {
 		return &RegisterResult{
 			Success: false,
 			Message: "Påmeldingen har allerede stengt",
