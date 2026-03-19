@@ -18,25 +18,25 @@ import (
 )
 
 type webhookRequest struct {
-	Operation  string      `json:"operation"`
-	DocumentID string      `json:"documentId"`
-	PastSlug   *string     `json:"pastSlug"`
-	Data       any `json:"data"`
+	Operation  string  `json:"operation"`
+	DocumentID string  `json:"documentId"`
+	PastSlug   *string `json:"pastSlug"`
+	Data       any     `json:"data"`
 }
 
 type webhookData struct {
-	ID                      string              `json:"_id"`
-	Title                   string              `json:"title"`
-	Slug                    string              `json:"slug"`
-	Date                    string              `json:"date"`
-	HappeningType           string              `json:"happeningType"`
-	RegistrationStartGroups *string             `json:"registrationStartGroups,omitempty"`
-	RegistrationGroups      []string            `json:"registrationGroups,omitempty"`
-	RegistrationStart       *string             `json:"registrationStart,omitempty"`
-	RegistrationEnd         *string             `json:"registrationEnd,omitempty"`
-	Groups                  []string            `json:"groups,omitempty"`
-	SpotRanges              []webhookSpotRange  `json:"spotRanges,omitempty"`
-	Questions               []webhookQuestion   `json:"questions,omitempty"`
+	ID                      string             `json:"_id"`
+	Title                   string             `json:"title"`
+	Slug                    string             `json:"slug"`
+	Date                    string             `json:"date"`
+	HappeningType           string             `json:"happeningType"`
+	RegistrationStartGroups *string            `json:"registrationStartGroups,omitempty"`
+	RegistrationGroups      []string           `json:"registrationGroups,omitempty"`
+	RegistrationStart       *string            `json:"registrationStart,omitempty"`
+	RegistrationEnd         *string            `json:"registrationEnd,omitempty"`
+	Groups                  []string           `json:"groups,omitempty"`
+	SpotRanges              []webhookSpotRange `json:"spotRanges,omitempty"`
+	Questions               []webhookQuestion  `json:"questions,omitempty"`
 }
 
 type webhookSpotRange struct {
@@ -100,14 +100,14 @@ func TestSanityWebhook_CreateHappening(t *testing.T) {
 	regEnd := time.Now().Add(48 * time.Hour).Format(time.RFC3339)
 
 	data := webhookData{
-		ID:            "test-happening-1",
-		Title:         "Test Event",
-		Slug:          "test-event",
-		Date:          "2025-06-15T18:00:00Z",
-		HappeningType: "event",
+		ID:                "test-happening-1",
+		Title:             "Test Event",
+		Slug:              "test-event",
+		Date:              "2025-06-15T18:00:00Z",
+		HappeningType:     "event",
 		RegistrationStart: &regStart,
 		RegistrationEnd:   &regEnd,
-		Groups:        []string{"webkom", "tilde"},
+		Groups:            []string{"webkom", "tilde"},
 		SpotRanges: []webhookSpotRange{
 			{Spots: 30, MinYear: 1, MaxYear: 3},
 			{Spots: 20, MinYear: 4, MaxYear: 5},

@@ -10,18 +10,18 @@ type SanityWebhookRequest struct {
 }
 
 type SanityHappeningData struct {
-	ID                      string             `json:"_id"`
-	Title                   string             `json:"title"`
-	Slug                    string             `json:"slug"`
-	Date                    string             `json:"date"`
-	HappeningType           string             `json:"happeningType"`
-	RegistrationStartGroups *string            `json:"registrationStartGroups"`
-	RegistrationGroups      []string           `json:"registrationGroups"`
-	RegistrationStart       *string            `json:"registrationStart"`
-	RegistrationEnd         *string            `json:"registrationEnd"`
-	Groups                  []string           `json:"groups"`
-	SpotRanges              []SanitySpotRange  `json:"spotRanges"`
-	Questions               []SanityQuestion   `json:"questions"`
+	ID                      string            `json:"_id"`
+	Title                   string            `json:"title"`
+	Slug                    string            `json:"slug"`
+	Date                    string            `json:"date"`
+	HappeningType           string            `json:"happeningType"`
+	RegistrationStartGroups *string           `json:"registrationStartGroups"`
+	RegistrationGroups      []string          `json:"registrationGroups"`
+	RegistrationStart       *string           `json:"registrationStart"`
+	RegistrationEnd         *string           `json:"registrationEnd"`
+	Groups                  []string          `json:"groups"`
+	SpotRanges              []SanitySpotRange `json:"spotRanges"`
+	Questions               []SanityQuestion  `json:"questions"`
 }
 
 type SanitySpotRange struct {

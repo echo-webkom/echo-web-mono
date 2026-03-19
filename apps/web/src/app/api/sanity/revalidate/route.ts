@@ -24,11 +24,12 @@ const revalidateTags = (tags: Array<string>) => {
  */
 export const POST = withBasicAuth(async (req) => {
   try {
-    const { type } = (await req.json()) as {
+    const { type, slug, pastSlug } = (await req.json()) as {
       operation: "create" | "update" | "delete";
       documentId: string;
       type: string;
       slug: string | null;
+      pastSlug: string | null;
     };
 
     console.info(`Revalidating static content for ${type}`);
@@ -76,6 +77,11 @@ export const POST = withBasicAuth(async (req) => {
     if (type === "merch") {
       console.log("Revalidating merch");
       revalidateTags(["merch"]);
+    }
+
+    if (type === "happening") {
+      console.log("Revalidating happenings");
+      revalidateTags(["happenings", `happening-${slug}`, `happening-${pastSlug}`]);
     }
 
     return new Response(`Revalidated type: "${type}".`, {

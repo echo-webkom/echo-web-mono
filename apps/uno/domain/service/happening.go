@@ -547,12 +547,19 @@ func (hs *HappeningService) SyncHappening(ctx context.Context, data SanityHappen
 }
 
 func mapSanityHappening(data SanityHappeningData) (model.Happening, error) {
+	loc, err := time.LoadLocation("Europe/Oslo")
+	if err != nil {
+		return model.Happening{}, fmt.Errorf("failed to load timezone: %w", err)
+	}
+
 	date, err := time.Parse(time.RFC3339, data.Date)
 	if err != nil {
-		date, err = time.Parse("2006-01-02", data.Date)
+		date, err = time.ParseInLocation("2006-01-02", data.Date, loc)
 		if err != nil {
 			return model.Happening{}, fmt.Errorf("failed to parse date %q: %w", data.Date, err)
 		}
+	} else {
+		date = date.In(loc)
 	}
 
 	regGroups := make([]string, 0, len(data.RegistrationGroups))
@@ -583,6 +590,7 @@ func mapSanityHappening(data SanityHappeningData) (model.Happening, error) {
 	if data.RegistrationStartGroups != nil {
 		t, err := time.Parse(time.RFC3339, *data.RegistrationStartGroups)
 		if err == nil {
+			t = t.In(loc)
 			happening.RegistrationStartGroups = &t
 		}
 	}
@@ -590,6 +598,7 @@ func mapSanityHappening(data SanityHappeningData) (model.Happening, error) {
 	if data.RegistrationStart != nil {
 		t, err := time.Parse(time.RFC3339, *data.RegistrationStart)
 		if err == nil {
+			t = t.In(loc)
 			happening.RegistrationStart = &t
 		}
 	}
@@ -597,6 +606,7 @@ func mapSanityHappening(data SanityHappeningData) (model.Happening, error) {
 	if data.RegistrationEnd != nil {
 		t, err := time.Parse(time.RFC3339, *data.RegistrationEnd)
 		if err == nil {
+			t = t.In(loc)
 			happening.RegistrationEnd = &t
 		}
 	}
