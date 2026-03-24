@@ -1,7 +1,5 @@
 package model
 
-import "encoding/json"
-
 type CMSProfileSocials struct {
 	Facebook  *string `json:"facebook"`
 	Instagram *string `json:"instagram"`
@@ -12,7 +10,7 @@ type CMSProfileSocials struct {
 type CMSMemberProfile struct {
 	ID      string             `json:"_id"`
 	Name    string             `json:"name"`
-	Picture json.RawMessage    `json:"picture"`
+	Picture Image              `json:"picture"`
 	Socials *CMSProfileSocials `json:"socials"`
 }
 
@@ -37,7 +35,7 @@ type CMSStudentGroup struct {
 	GroupType   string                  `json:"groupType"`
 	Slug        string                  `json:"slug"`
 	Description *string                 `json:"description"`
-	Image       json.RawMessage         `json:"image"`
+	Image       Image                   `json:"image"`
 	Members     []CMSMember             `json:"members"`
-	Socials     *CMSStudentGroupSocials  `json:"socials"`
+	Socials     *CMSStudentGroupSocials `json:"socials"`
 }

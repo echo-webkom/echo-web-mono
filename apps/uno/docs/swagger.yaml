@@ -1,5 +1,12 @@
 basePath: /
 definitions:
+  uno_domain_model.Asset:
+    properties:
+      _ref:
+        type: string
+      _type:
+        type: string
+    type: object
   uno_domain_model.BanInfo:
     properties:
       bannedByID:
@@ -16,6 +23,149 @@ definitions:
         type: string
       userID:
         type: string
+    type: object
+  uno_domain_model.CMSAdditionalQuestion:
+    properties:
+      id:
+        type: string
+      options:
+        items:
+          type: string
+        type: array
+      required:
+        type: boolean
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  uno_domain_model.CMSAuthor:
+    properties:
+      _id:
+        type: string
+      image:
+        $ref: '#/definitions/uno_domain_model.Image'
+      name:
+        type: string
+    type: object
+  uno_domain_model.CMSCompany:
+    properties:
+      _id:
+        type: string
+      image:
+        $ref: '#/definitions/uno_domain_model.Image'
+      name:
+        type: string
+      website:
+        type: string
+    type: object
+  uno_domain_model.CMSContact:
+    properties:
+      email:
+        type: string
+      profile:
+        $ref: '#/definitions/uno_domain_model.CMSContactProfile'
+    type: object
+  uno_domain_model.CMSContactProfile:
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+    type: object
+  uno_domain_model.CMSHSApplicationProfile:
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      picture:
+        $ref: '#/definitions/uno_domain_model.Image'
+    type: object
+  uno_domain_model.CMSJobLocation:
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+    type: object
+  uno_domain_model.CMSLocation:
+    properties:
+      link:
+        type: string
+      name:
+        type: string
+    type: object
+  uno_domain_model.CMSMember:
+    properties:
+      profile:
+        $ref: '#/definitions/uno_domain_model.CMSMemberProfile'
+      role:
+        type: string
+    type: object
+  uno_domain_model.CMSMemberProfile:
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      picture:
+        $ref: '#/definitions/uno_domain_model.Image'
+      socials:
+        $ref: '#/definitions/uno_domain_model.CMSProfileSocials'
+    type: object
+  uno_domain_model.CMSOrganizerRef:
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      slug:
+        type: string
+    type: object
+  uno_domain_model.CMSProfileSocials:
+    properties:
+      email:
+        type: string
+      facebook:
+        type: string
+      instagram:
+        type: string
+      linkedin:
+        type: string
+    type: object
+  uno_domain_model.CMSSpotRange:
+    properties:
+      maxYear:
+        type: integer
+      minYear:
+        type: integer
+      spots:
+        type: integer
+    type: object
+  uno_domain_model.CMSStudentGroupSocials:
+    properties:
+      email:
+        type: string
+      facebook:
+        type: string
+      instagram:
+        type: string
+      linkedin:
+        type: string
+    type: object
+  uno_domain_model.Color:
+    properties:
+      _type:
+        type: string
+      alpha:
+        type: number
+      hsl:
+        $ref: '#/definitions/uno_domain_model.HSL'
+      hsv:
+        $ref: '#/definitions/uno_domain_model.HSV'
+      rgb:
+        $ref: '#/definitions/uno_domain_model.RGB'
     type: object
   uno_domain_model.DotInfo:
     properties:
@@ -34,6 +184,61 @@ definitions:
       strikedByName:
         type: string
       userID:
+        type: string
+    type: object
+  uno_domain_model.HSL:
+    properties:
+      _type:
+        type: string
+      a:
+        type: number
+      h:
+        type: number
+      l:
+        type: number
+      s:
+        type: number
+    type: object
+  uno_domain_model.HSV:
+    properties:
+      _type:
+        type: string
+      a:
+        type: number
+      h:
+        type: number
+      s:
+        type: number
+      v:
+        type: number
+    type: object
+  uno_domain_model.Image:
+    properties:
+      _type:
+        type: string
+      asset:
+        $ref: '#/definitions/uno_domain_model.Asset'
+    type: object
+  uno_domain_model.RGB:
+    properties:
+      _type:
+        type: string
+      a:
+        type: number
+      b:
+        type: number
+      g:
+        type: number
+      r:
+        type: number
+    type: object
+  uno_domain_model.Reference:
+    properties:
+      _key:
+        type: string
+      _ref:
+        type: string
+      reference:
         type: string
     type: object
   uno_domain_model.UserWithBanInfo:
@@ -113,6 +318,310 @@ definitions:
         type: integer
       name:
         type: string
+    type: object
+  uno_http_dto.CMSBannerDTO:
+    properties:
+      backgroundColor:
+        $ref: '#/definitions/uno_domain_model.Color'
+      expiringDate:
+        type: string
+      isExternal:
+        type: boolean
+      linkTo:
+        type: string
+      text:
+        type: string
+      textColor:
+        $ref: '#/definitions/uno_domain_model.Color'
+    type: object
+  uno_http_dto.CMSContactDTO:
+    properties:
+      email:
+        type: string
+      profile:
+        $ref: '#/definitions/uno_domain_model.CMSContactProfile'
+    type: object
+  uno_http_dto.CMSHSApplicationDTO:
+    properties:
+      poster:
+        type: string
+      profile:
+        $ref: '#/definitions/uno_domain_model.CMSHSApplicationProfile'
+    type: object
+  uno_http_dto.CMSHappeningDTO:
+    properties:
+      _createdAt:
+        type: string
+      _id:
+        type: string
+      _type:
+        type: string
+      _updatedAt:
+        type: string
+      additionalQuestions:
+        items:
+          $ref: '#/definitions/uno_domain_model.CMSAdditionalQuestion'
+        type: array
+      body:
+        type: string
+      company:
+        $ref: '#/definitions/uno_domain_model.CMSCompany'
+      contacts:
+        items:
+          $ref: '#/definitions/uno_domain_model.CMSContact'
+        type: array
+      cost:
+        type: integer
+      date:
+        type: string
+      endDate:
+        type: string
+      externalLink:
+        type: string
+      happeningType:
+        type: string
+      hideRegistrations:
+        type: boolean
+      isPinned:
+        type: boolean
+      location:
+        $ref: '#/definitions/uno_domain_model.CMSLocation'
+      organizers:
+        items:
+          $ref: '#/definitions/uno_domain_model.CMSOrganizerRef'
+        type: array
+      registrationEnd:
+        type: string
+      registrationGroups:
+        items:
+          type: string
+        type: array
+      registrationStart:
+        type: string
+      registrationStartGroups:
+        items:
+          $ref: '#/definitions/uno_domain_model.Reference'
+        type: array
+      slug:
+        type: string
+      spotRanges:
+        items:
+          $ref: '#/definitions/uno_domain_model.CMSSpotRange'
+        type: array
+      title:
+        type: string
+    type: object
+  uno_http_dto.CMSHappeningTypeDTO:
+    properties:
+      happeningType:
+        type: string
+    type: object
+  uno_http_dto.CMSHomeHappeningDTO:
+    properties:
+      _id:
+        type: string
+      date:
+        type: string
+      happeningType:
+        type: string
+      image:
+        $ref: '#/definitions/uno_domain_model.Image'
+      isPinned:
+        type: boolean
+      organizers:
+        items:
+          type: string
+        type: array
+      registrationStart:
+        type: string
+      slug:
+        type: string
+      title:
+        type: string
+    type: object
+  uno_http_dto.CMSJobAdDTO:
+    properties:
+      _createdAt:
+        type: string
+      _id:
+        type: string
+      _updatedAt:
+        type: string
+      body:
+        type: string
+      company:
+        $ref: '#/definitions/uno_domain_model.CMSCompany'
+      deadline:
+        type: string
+      degreeYears:
+        items:
+          type: integer
+        type: array
+      expiresAt:
+        type: string
+      jobType:
+        type: string
+      link:
+        type: string
+      locations:
+        items:
+          $ref: '#/definitions/uno_domain_model.CMSJobLocation'
+        type: array
+      slug:
+        type: string
+      title:
+        type: string
+      weight:
+        type: integer
+    type: object
+  uno_http_dto.CMSMeetingMinuteDTO:
+    properties:
+      _id:
+        type: string
+      date:
+        type: string
+      document:
+        type: string
+      isAllMeeting:
+        type: boolean
+      title:
+        type: string
+    type: object
+  uno_http_dto.CMSMerchDTO:
+    properties:
+      _createdAt:
+        type: string
+      _id:
+        type: string
+      _updatedAt:
+        type: string
+      body:
+        type: string
+      image:
+        $ref: '#/definitions/uno_domain_model.Image'
+      price:
+        type: integer
+      slug:
+        type: string
+      title:
+        type: string
+    type: object
+  uno_http_dto.CMSMovieDTO:
+    properties:
+      _id:
+        type: string
+      date:
+        type: string
+      image:
+        $ref: '#/definitions/uno_domain_model.Image'
+      link:
+        type: string
+      title:
+        type: string
+    type: object
+  uno_http_dto.CMSPostDTO:
+    properties:
+      _createdAt:
+        type: string
+      _id:
+        type: string
+      _updatedAt:
+        type: string
+      authors:
+        items:
+          $ref: '#/definitions/uno_domain_model.CMSAuthor'
+        type: array
+      body:
+        type: string
+      image:
+        $ref: '#/definitions/uno_domain_model.Image'
+      slug:
+        type: string
+      title:
+        type: string
+    type: object
+  uno_http_dto.CMSRepeatingHappeningDTO:
+    properties:
+      _id:
+        type: string
+      _type:
+        type: string
+      body:
+        type: string
+      contacts:
+        items:
+          $ref: '#/definitions/uno_domain_model.CMSContact'
+        type: array
+      cost:
+        type: integer
+      dayOfWeek:
+        type: string
+      endDate:
+        type: string
+      endTime:
+        type: string
+      externalLink:
+        type: string
+      happeningType:
+        type: string
+      ignoredDates:
+        items:
+          type: string
+        type: array
+      interval:
+        type: integer
+      location:
+        $ref: '#/definitions/uno_domain_model.CMSLocation'
+      organizers:
+        items:
+          $ref: '#/definitions/uno_domain_model.CMSOrganizerRef'
+        type: array
+      slug:
+        type: string
+      startDate:
+        type: string
+      startTime:
+        type: string
+      title:
+        type: string
+    type: object
+  uno_http_dto.CMSStaticInfoDTO:
+    properties:
+      body:
+        type: string
+      pageType:
+        type: string
+      slug:
+        type: string
+      title:
+        type: string
+    type: object
+  uno_http_dto.CMSStudentGroupDTO:
+    properties:
+      _createdAt:
+        type: string
+      _id:
+        type: string
+      _updatedAt:
+        type: string
+      description:
+        type: string
+      groupType:
+        type: string
+      image:
+        $ref: '#/definitions/uno_domain_model.Image'
+      isActive:
+        type: boolean
+      members:
+        items:
+          $ref: '#/definitions/uno_domain_model.CMSMember'
+        type: array
+      name:
+        type: string
+      slug:
+        type: string
+      socials:
+        $ref: '#/definitions/uno_domain_model.CMSStudentGroupSocials'
     type: object
   uno_http_dto.CommentResponse:
     properties:
@@ -1719,6 +2228,343 @@ paths:
       summary: Toggle a reaction for a given key and user
       tags:
       - reactions
+  /sanity/banner:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.CMSBannerDTO'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get site banner from CMS
+      tags:
+      - sanity
+  /sanity/happenings:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.CMSHappeningDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all happenings from CMS
+      tags:
+      - sanity
+  /sanity/happenings/{slug}:
+    get:
+      parameters:
+      - description: Happening slug
+        in: path
+        name: slug
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.CMSHappeningDTO'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get happening by slug from CMS
+      tags:
+      - sanity
+  /sanity/happenings/{slug}/contacts:
+    get:
+      parameters:
+      - description: Happening slug
+        in: path
+        name: slug
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.CMSContactDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get happening contacts by slug from CMS
+      tags:
+      - sanity
+  /sanity/happenings/{slug}/type:
+    get:
+      parameters:
+      - description: Happening slug
+        in: path
+        name: slug
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.CMSHappeningTypeDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get happening type by slug from CMS
+      tags:
+      - sanity
+  /sanity/happenings/home:
+    get:
+      parameters:
+      - collectionFormat: csv
+        description: Happening types (e.g. bedpres, event)
+        in: query
+        items:
+          type: string
+        name: types[]
+        type: array
+      - description: Max number of results (default 5)
+        in: query
+        name: "n"
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.CMSHomeHappeningDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get home page happenings from CMS
+      tags:
+      - sanity
+  /sanity/hs-applications:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.CMSHSApplicationDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all HS applications from CMS
+      tags:
+      - sanity
+  /sanity/job-ads:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.CMSJobAdDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all job ads from CMS
+      tags:
+      - sanity
+  /sanity/merch:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.CMSMerchDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all merch items from CMS
+      tags:
+      - sanity
+  /sanity/minutes:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.CMSMeetingMinuteDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all meeting minutes from CMS
+      tags:
+      - sanity
+  /sanity/movies:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.CMSMovieDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all movies from CMS
+      tags:
+      - sanity
+  /sanity/posts:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.CMSPostDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all posts from CMS
+      tags:
+      - sanity
+  /sanity/repeating-happenings:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.CMSRepeatingHappeningDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all repeating happenings from CMS
+      tags:
+      - sanity
+  /sanity/static-info:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.CMSStaticInfoDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all static info pages from CMS
+      tags:
+      - sanity
+  /sanity/student-groups:
+    get:
+      parameters:
+      - description: Group type
+        in: query
+        name: type
+        type: string
+      - description: Max number of results (default 50)
+        in: query
+        name: "n"
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.CMSStudentGroupDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get student groups from CMS
+      tags:
+      - sanity
+  /sanity/student-groups/{slug}:
+    get:
+      parameters:
+      - description: Student group slug
+        in: path
+        name: slug
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.CMSStudentGroupDTO'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get student group by slug from CMS
+      tags:
+      - sanity
   /sanity/webhook:
     get:
       consumes:

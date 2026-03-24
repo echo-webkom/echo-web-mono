@@ -29,9 +29,10 @@ func NewMovieRepo(client *sanity.Client, logger port.Logger) port.CMSMovieRepo {
 }
 
 func (r *MovieRepo) GetAllMovies(ctx context.Context) ([]model.CMSMovie, error) {
+	r.logger.Info(ctx, "getting all movies from sanity")
 	result, err := sanity.Query[[]model.CMSMovie](ctx, r.client, moviesQuery, nil)
 	if err != nil {
-		r.logger.Error(ctx, "failed to fetch movies from sanity", "error", err)
+		r.logger.Error(ctx, "failed to get all movies from sanity", "error", err)
 		return nil, err
 	}
 	return result, nil

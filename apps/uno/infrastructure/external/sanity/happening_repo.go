@@ -175,54 +175,59 @@ func NewHappeningRepo(client *sanity.Client, logger port.Logger) port.CMSHappeni
 }
 
 func (r *HappeningRepo) GetAllHappenings(ctx context.Context) ([]model.CMSHappening, error) {
+	r.logger.Info(ctx, "getting all happenings from sanity")
 	result, err := sanity.Query[[]model.CMSHappening](ctx, r.client, allHappeningsQuery, nil)
 	if err != nil {
-		r.logger.Error(ctx, "failed to fetch all happenings from sanity", "error", err)
+		r.logger.Error(ctx, "failed to get all happenings from sanity", "error", err)
 		return nil, err
 	}
 	return result, nil
 }
 
 func (r *HappeningRepo) GetHappeningBySlug(ctx context.Context, slug string) (*model.CMSHappening, error) {
+	r.logger.Info(ctx, "getting happening by slug from sanity", "slug", slug)
 	result, err := sanity.Query[*model.CMSHappening](ctx, r.client, happeningBySlugQuery, map[string]any{
 		"slug": slug,
 	})
 	if err != nil {
-		r.logger.Error(ctx, "failed to fetch happening by slug from sanity", "slug", slug, "error", err)
+		r.logger.Error(ctx, "failed to get happening by slug from sanity", "slug", slug, "error", err)
 		return nil, err
 	}
 	return result, nil
 }
 
 func (r *HappeningRepo) GetHomeHappenings(ctx context.Context, types []string, n int) ([]model.CMSHomeHappening, error) {
+	r.logger.Info(ctx, "getting home happenings from sanity", "types", types, "n", n)
 	result, err := sanity.Query[[]model.CMSHomeHappening](ctx, r.client, homeHappeningsQuery, map[string]any{
 		"happeningTypes": types,
 		"n":              n,
 	})
 	if err != nil {
-		r.logger.Error(ctx, "failed to fetch home happenings from sanity", "error", err)
+		r.logger.Error(ctx, "failed to get home happenings from sanity", "error", err)
 		return nil, err
 	}
 	return result, nil
 }
 
 func (r *HappeningRepo) GetHappeningTypeBySlug(ctx context.Context, slug string) (string, error) {
+	r.logger.Info(ctx, "getting happening type by slug from sanity", "slug", slug)
 	result, err := sanity.Query[string](ctx, r.client, happeningTypeBySlugQuery, map[string]any{
 		"slug": slug,
 	})
 	if err != nil {
-		r.logger.Error(ctx, "failed to fetch happening type from sanity", "slug", slug, "error", err)
+		r.logger.Error(ctx, "failed to get happening type from sanity", "slug", slug, "error", err)
 		return "", err
 	}
 	return result, nil
 }
 
 func (r *HappeningRepo) GetHappeningContactsBySlug(ctx context.Context, slug string) ([]model.CMSContact, error) {
+	r.logger.Info(ctx, "getting happening contacts by slug from sanity", "slug", slug)
 	result, err := sanity.Query[[]model.CMSContact](ctx, r.client, happeningContactsBySlugQuery, map[string]any{
 		"slug": slug,
 	})
 	if err != nil {
-		r.logger.Error(ctx, "failed to fetch happening contacts from sanity", "slug", slug, "error", err)
+		r.logger.Error(ctx, "failed to get happening contacts from sanity", "slug", slug, "error", err)
 		return nil, err
 	}
 	return result, nil

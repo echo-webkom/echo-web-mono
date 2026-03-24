@@ -26,9 +26,10 @@ func NewStaticInfoRepo(client *sanity.Client, logger port.Logger) port.CMSStatic
 }
 
 func (r *StaticInfoRepo) GetAllStaticInfo(ctx context.Context) ([]model.CMSStaticInfo, error) {
+	r.logger.Info(ctx, "getting all static info from sanity")
 	result, err := sanity.Query[[]model.CMSStaticInfo](ctx, r.client, staticInfoQuery, nil)
 	if err != nil {
-		r.logger.Error(ctx, "failed to fetch static info from sanity", "error", err)
+		r.logger.Error(ctx, "failed to get all static info from sanity", "error", err)
 		return nil, err
 	}
 	return result, nil

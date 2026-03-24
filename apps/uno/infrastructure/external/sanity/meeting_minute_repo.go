@@ -27,9 +27,10 @@ func NewMeetingMinuteRepo(client *sanity.Client, logger port.Logger) port.CMSMee
 }
 
 func (r *MeetingMinuteRepo) GetAllMeetingMinutes(ctx context.Context) ([]model.CMSMeetingMinute, error) {
+	r.logger.Info(ctx, "getting all meeting minutes from sanity")
 	result, err := sanity.Query[[]model.CMSMeetingMinute](ctx, r.client, allMeetingMinutesQuery, nil)
 	if err != nil {
-		r.logger.Error(ctx, "failed to fetch meeting minutes from sanity", "error", err)
+		r.logger.Error(ctx, "failed to get all meeting minutes from sanity", "error", err)
 		return nil, err
 	}
 	return result, nil

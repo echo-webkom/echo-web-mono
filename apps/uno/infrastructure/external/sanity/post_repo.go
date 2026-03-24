@@ -34,9 +34,10 @@ func NewPostRepo(client *sanity.Client, logger port.Logger) port.CMSPostRepo {
 }
 
 func (r *PostRepo) GetAllPosts(ctx context.Context) ([]model.CMSPost, error) {
+	r.logger.Info(ctx, "getting all posts from sanity")
 	result, err := sanity.Query[[]model.CMSPost](ctx, r.client, allPostsQuery, nil)
 	if err != nil {
-		r.logger.Error(ctx, "failed to fetch posts from sanity", "error", err)
+		r.logger.Error(ctx, "failed to get all posts from sanity", "error", err)
 		return nil, err
 	}
 	return result, nil

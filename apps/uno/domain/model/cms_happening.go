@@ -1,17 +1,15 @@
 package model
 
-import "encoding/json"
-
 type CMSLocation struct {
 	Name string `json:"name"`
 	Link string `json:"link"`
 }
 
 type CMSCompany struct {
-	ID      string          `json:"_id"`
-	Name    string          `json:"name"`
-	Website string          `json:"website"`
-	Image   json.RawMessage `json:"image"`
+	ID      string `json:"_id"`
+	Name    string `json:"name"`
+	Website string `json:"website"`
+	Image   Image  `json:"image"`
 }
 
 type CMSSpotRange struct {
@@ -60,7 +58,7 @@ type CMSHappening struct {
 	Date                    *string                 `json:"date"`
 	EndDate                 *string                 `json:"endDate"`
 	Cost                    *int                    `json:"cost"`
-	RegistrationStartGroups json.RawMessage         `json:"registrationStartGroups"`
+	RegistrationStartGroups []Reference             `json:"registrationStartGroups"`
 	RegistrationGroups      []string                `json:"registrationGroups"`
 	RegistrationStart       *string                 `json:"registrationStart"`
 	RegistrationEnd         *string                 `json:"registrationEnd"`
@@ -68,7 +66,7 @@ type CMSHappening struct {
 	SpotRanges              []CMSSpotRange          `json:"spotRanges"`
 	AdditionalQuestions     []CMSAdditionalQuestion `json:"additionalQuestions"`
 	ExternalLink            *string                 `json:"externalLink"`
-	Body                    json.RawMessage         `json:"body"`
+	Body                    *string                 `json:"body"`
 }
 
 type CMSHappeningType struct {
@@ -76,13 +74,13 @@ type CMSHappeningType struct {
 }
 
 type CMSHomeHappening struct {
-	ID                string          `json:"_id"`
-	Title             string          `json:"title"`
-	IsPinned          *bool           `json:"isPinned"`
-	HappeningType     string          `json:"happeningType"`
-	Date              *string         `json:"date"`
-	RegistrationStart *string         `json:"registrationStart"`
-	Slug              string          `json:"slug"`
-	Image             json.RawMessage `json:"image"`
-	Organizers        []string        `json:"organizers"`
+	ID                string   `json:"_id"`
+	Title             string   `json:"title"`
+	IsPinned          *bool    `json:"isPinned"`
+	HappeningType     string   `json:"happeningType"`
+	Date              *string  `json:"date"`
+	RegistrationStart *string  `json:"registrationStart"`
+	Slug              string   `json:"slug"`
+	Image             Image    `json:"image"`
+	Organizers        []string `json:"organizers"`
 }

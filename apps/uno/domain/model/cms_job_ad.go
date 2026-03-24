@@ -1,7 +1,5 @@
 package model
 
-import "encoding/json"
-
 type CMSJobLocation struct {
 	ID   string `json:"_id"`
 	Name string `json:"name"`
@@ -21,5 +19,5 @@ type CMSJobAd struct {
 	Link        *string          `json:"link"`
 	Deadline    *string          `json:"deadline"`
 	DegreeYears []int            `json:"degreeYears"`
-	Body        json.RawMessage  `json:"body"`
+	Body        *string          `json:"body"`
 }

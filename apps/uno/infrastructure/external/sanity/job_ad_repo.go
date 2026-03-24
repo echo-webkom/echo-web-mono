@@ -47,9 +47,10 @@ func NewJobAdRepo(client *sanity.Client, logger port.Logger) port.CMSJobAdRepo {
 }
 
 func (r *JobAdRepo) GetAllJobAds(ctx context.Context) ([]model.CMSJobAd, error) {
+	r.logger.Info(ctx, "getting all job ads from sanity")
 	result, err := sanity.Query[[]model.CMSJobAd](ctx, r.client, jobAdsQuery, nil)
 	if err != nil {
-		r.logger.Error(ctx, "failed to fetch job ads from sanity", "error", err)
+		r.logger.Error(ctx, "failed to get all job ads from sanity", "error", err)
 		return nil, err
 	}
 	return result, nil

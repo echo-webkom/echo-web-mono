@@ -54,9 +54,10 @@ func NewRepeatingHappeningRepo(client *sanity.Client, logger port.Logger) port.C
 }
 
 func (r *RepeatingHappeningRepo) GetAllRepeatingHappenings(ctx context.Context) ([]model.CMSRepeatingHappening, error) {
+	r.logger.Info(ctx, "getting all repeating happenings from sanity")
 	result, err := sanity.Query[[]model.CMSRepeatingHappening](ctx, r.client, allRepeatingHappeningsQuery, nil)
 	if err != nil {
-		r.logger.Error(ctx, "failed to fetch repeating happenings from sanity", "error", err)
+		r.logger.Error(ctx, "failed to get all repeating happenings from sanity", "error", err)
 		return nil, err
 	}
 	return result, nil

@@ -30,9 +30,10 @@ func NewMerchRepo(client *sanity.Client, logger port.Logger) port.CMSMerchRepo {
 }
 
 func (r *MerchRepo) GetAllMerch(ctx context.Context) ([]model.CMSMerch, error) {
+	r.logger.Info(ctx, "getting all merch from sanity")
 	result, err := sanity.Query[[]model.CMSMerch](ctx, r.client, allMerchQuery, nil)
 	if err != nil {
-		r.logger.Error(ctx, "failed to fetch merch from sanity", "error", err)
+		r.logger.Error(ctx, "failed to get all merch from sanity", "error", err)
 		return nil, err
 	}
 	return result, nil

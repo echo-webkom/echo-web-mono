@@ -79,23 +79,25 @@ func NewStudentGroupRepo(client *sanity.Client, logger port.Logger) port.CMSStud
 }
 
 func (r *StudentGroupRepo) GetStudentGroupsByType(ctx context.Context, groupType string, n int) ([]model.CMSStudentGroup, error) {
+	r.logger.Info(ctx, "getting student groups by type from sanity", "type", groupType, "n", n)
 	result, err := sanity.Query[[]model.CMSStudentGroup](ctx, r.client, studentGroupsByTypeQuery, map[string]any{
 		"type": groupType,
 		"n":    n,
 	})
 	if err != nil {
-		r.logger.Error(ctx, "failed to fetch student groups from sanity", "type", groupType, "error", err)
+		r.logger.Error(ctx, "failed to get student groups from sanity", "type", groupType, "error", err)
 		return nil, err
 	}
 	return result, nil
 }
 
 func (r *StudentGroupRepo) GetStudentGroupBySlug(ctx context.Context, slug string) (*model.CMSStudentGroup, error) {
+	r.logger.Info(ctx, "getting student group by slug from sanity", "slug", slug)
 	result, err := sanity.Query[*model.CMSStudentGroup](ctx, r.client, studentGroupBySlugQuery, map[string]any{
 		"slug": slug,
 	})
 	if err != nil {
-		r.logger.Error(ctx, "failed to fetch student group by slug from sanity", "slug", slug, "error", err)
+		r.logger.Error(ctx, "failed to get student group by slug from sanity", "slug", slug, "error", err)
 		return nil, err
 	}
 	return result, nil

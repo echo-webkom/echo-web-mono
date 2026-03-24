@@ -1,7 +1,5 @@
 package model
 
-import "encoding/json"
-
 type CMSRepeatingHappening struct {
 	ID            string            `json:"_id"`
 	Type          string            `json:"_type"`
@@ -20,5 +18,5 @@ type CMSRepeatingHappening struct {
 	Cost          *int              `json:"cost"`
 	IgnoredDates  []string          `json:"ignoredDates"`
 	ExternalLink  *string           `json:"externalLink"`
-	Body          json.RawMessage   `json:"body"`
+	Body          *string           `json:"body"`
 }
