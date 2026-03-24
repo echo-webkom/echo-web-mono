@@ -18,6 +18,11 @@ type Config struct {
 	ProfilePictureBucketName      string
 	ProfilePictureAccessKeyID     string
 	ProfilePictureSecretAccessKey string
+
+	SanityProjectID  string
+	SanityDataset    string
+	SanityAPIToken   string
+	SanityAPIVersion string
 }
 
 type CronConfig struct {
@@ -57,6 +62,12 @@ func Load() *Config {
 		ProfilePictureBucketName:      getEnvOrDefault("PROFILE_PICTURE_BUCKET_NAME", "profile-pictures"),
 		ProfilePictureAccessKeyID:     os.Getenv("PROFILE_PICTURE_ACCESS_KEY_ID"),
 		ProfilePictureSecretAccessKey: os.Getenv("PROFILE_PICTURE_SECRET_ACCESS_KEY"),
+
+		// Sanity CMS configuration
+		SanityProjectID:  getEnvOrDefault("SANITY_PROJECT_ID", "pgq2pd26"),
+		SanityDataset:    getEnvOrDefault("SANITY_DATASET", "production"),
+		SanityAPIToken:   os.Getenv("SANITY_API_TOKEN"),
+		SanityAPIVersion: getEnvOrDefault("SANITY_API_VERSION", "2023-05-03"),
 	}
 }
 

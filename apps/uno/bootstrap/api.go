@@ -10,10 +10,12 @@ import (
 	"uno/domain/service"
 	"uno/http"
 	"uno/infrastructure/external"
+	sanityinfra "uno/infrastructure/external/sanity"
 	"uno/infrastructure/filestorage"
 	"uno/infrastructure/logging"
 	"uno/infrastructure/postgres"
 	"uno/pkg/adventofcode"
+	"uno/pkg/sanity"
 
 	"github.com/jesperkha/notifier"
 )
@@ -78,6 +80,29 @@ func RunApi() {
 		logger.Warn(context.Background(), "file storage not configured, profile picture features disabled")
 	}
 
+	// Initialize Sanity client and CMS repos
+	sanityClient, err := sanity.New(sanity.Config{
+		ProjectID:  cfg.SanityProjectID,
+		Dataset:    cfg.SanityDataset,
+		APIVersion: cfg.SanityAPIVersion,
+		Token:      cfg.SanityAPIToken,
+	})
+	if err != nil {
+		logger.Error(context.Background(), "failed to create sanity client", "error", err)
+		log.Fatal(err)
+	}
+	cmsHappeningRepo := sanityinfra.NewHappeningRepo(sanityClient, logger)
+	cmsRepeatingHappeningRepo := sanityinfra.NewRepeatingHappeningRepo(sanityClient, logger)
+	cmsPostRepo := sanityinfra.NewPostRepo(sanityClient, logger)
+	cmsStudentGroupRepo := sanityinfra.NewStudentGroupRepo(sanityClient, logger)
+	cmsJobAdRepo := sanityinfra.NewJobAdRepo(sanityClient, logger)
+	cmsBannerRepo := sanityinfra.NewBannerRepo(sanityClient, logger)
+	cmsStaticInfoRepo := sanityinfra.NewStaticInfoRepo(sanityClient, logger)
+	cmsMerchRepo := sanityinfra.NewMerchRepo(sanityClient, logger)
+	cmsMeetingMinuteRepo := sanityinfra.NewMeetingMinuteRepo(sanityClient, logger)
+	cmsMovieRepo := sanityinfra.NewMovieRepo(sanityClient, logger)
+	cmsHSApplicationRepo := sanityinfra.NewHSApplicationRepo(sanityClient, logger)
+
 	// Initialize services
 	authService := service.NewAuthService(sessionRepo, userRepo, cfg.AuthSecret)
 	happeningService := service.NewHappeningService(happeningRepo, userRepo, registrationRepo, banInfoRepo, groupRepo)
@@ -95,6 +120,19 @@ func RunApi() {
 	groupService := service.NewGroupService(groupRepo)
 	reactionService := service.NewReactionService(reactionRepo)
 	quoteService := service.NewQuoteService(quoteRepo)
+	cmsService := service.NewCMSService(
+		cmsHappeningRepo,
+		cmsRepeatingHappeningRepo,
+		cmsPostRepo,
+		cmsStudentGroupRepo,
+		cmsJobAdRepo,
+		cmsBannerRepo,
+		cmsStaticInfoRepo,
+		cmsMerchRepo,
+		cmsMeetingMinuteRepo,
+		cmsMovieRepo,
+		cmsHSApplicationRepo,
+	)
 
 	go http.RunServer(
 		notif,
@@ -117,6 +155,7 @@ func RunApi() {
 		reactionService,
 		registrationRepo,
 		quoteService,
+		cmsService,
 	)
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)

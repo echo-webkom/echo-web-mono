@@ -51,6 +51,7 @@ func RunServer(
 	reactionService *service.ReactionService,
 	registrationRepo port.RegistrationRepo,
 	quoteService *service.QuoteService,
+	cmsService *service.CMSService,
 ) {
 	r := router.New(logger, middleware.Logger(logger))
 
@@ -109,8 +110,8 @@ func RunServer(
 	// Quote routes
 	r.Mount("/quotes", api.NewQuoteMux(logger, quoteService, sessionOrAdmin, session, admin))
 
-	// Sanity webhook route
-	r.Mount("/sanity", api.NewSanityWebhookMux(logger, happeningService, admin))
+	// Sanity routes
+	r.Mount("/sanity", api.NewSanityMux(logger, happeningService, admin, cmsService))
 
 	// Swagger UI
 	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))
