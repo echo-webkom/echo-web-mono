@@ -1840,40 +1840,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/sanity/happenings/{slug}/type": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "sanity"
-                ],
-                "summary": "Get happening type by slug from CMS",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Happening slug",
-                        "name": "slug",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.CMSHappeningTypeDTO"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/sanity/hs-applications": {
             "get": {
                 "produces": [
@@ -3670,14 +3636,6 @@ const docTemplate = `{
                     }
                 },
                 "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.CMSHappeningTypeDTO": {
-            "type": "object",
-            "properties": {
-                "happeningType": {
                     "type": "string"
                 }
             }

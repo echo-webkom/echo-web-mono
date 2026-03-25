@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/http/dto"
+	_ "uno/http/dto"
 	"uno/http/handler"
 	"uno/http/router"
 )
@@ -36,18 +36,26 @@ func NewSanityMux(
 	mux.Handle("GET", "/happenings", s.getAllHappenings)
 	mux.Handle("GET", "/happenings/home", s.getHomeHappenings)
 	mux.Handle("GET", "/happenings/{slug}", s.getHappeningBySlug)
-	mux.Handle("GET", "/happenings/{slug}/type", s.getHappeningTypeBySlug)
 	mux.Handle("GET", "/happenings/{slug}/contacts", s.getHappeningContactsBySlug)
 	mux.Handle("GET", "/repeating-happenings", s.getAllRepeatingHappenings)
+
 	mux.Handle("GET", "/posts", s.getAllPosts)
+
 	mux.Handle("GET", "/student-groups", s.getStudentGroups)
 	mux.Handle("GET", "/student-groups/{slug}", s.getStudentGroupBySlug)
+
 	mux.Handle("GET", "/job-ads", s.getAllJobAds)
+
 	mux.Handle("GET", "/banner", s.getBanner)
+
 	mux.Handle("GET", "/static-info", s.getAllStaticInfo)
+
 	mux.Handle("GET", "/merch", s.getAllMerch)
+
 	mux.Handle("GET", "/minutes", s.getAllMeetingMinutes)
+
 	mux.Handle("GET", "/movies", s.getAllMovies)
+
 	mux.Handle("GET", "/hs-applications", s.getAllHSApplications)
 
 	return mux
@@ -116,23 +124,6 @@ func (s *sanityCMS) getHomeHappenings(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 	return ctx.JSON(happenings)
-}
-
-// getHappeningTypeBySlug returns the happeningType for a given slug
-// @Summary      Get happening type by slug from CMS
-// @Tags         sanity
-// @Produce      json
-// @Param        slug  path      string                   true  "Happening slug"
-// @Success      200   {object}  dto.CMSHappeningTypeDTO  "OK"
-// @Failure      500   {string}  string                   "Internal Server Error"
-// @Router       /sanity/happenings/{slug}/type [get]
-func (s *sanityCMS) getHappeningTypeBySlug(ctx *handler.Context) error {
-	slug := ctx.PathValue("slug")
-	happeningType, err := s.cmsService.HappeningRepo().GetHappeningTypeBySlug(ctx.Context(), slug)
-	if err != nil {
-		return ctx.InternalServerError()
-	}
-	return ctx.JSON(dto.CMSHappeningTypeDTO{HappeningType: happeningType})
 }
 
 // getHappeningContactsBySlug returns the contacts for a happening by slug

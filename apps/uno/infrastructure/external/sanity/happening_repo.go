@@ -144,15 +144,6 @@ const homeHappeningsQuery = `
 }[0...$n]
 `
 
-const happeningTypeBySlugQuery = `
-*[_type == "happening"
-  && !(_id in path('drafts.**'))
-  && slug.current == $slug
- ] {
-  happeningType,
-}[0].happeningType
-`
-
 const happeningContactsBySlugQuery = `
 *[_type == "happening" && slug.current == $slug] {
 "contacts": contacts[] {
@@ -205,18 +196,6 @@ func (r *HappeningRepo) GetHomeHappenings(ctx context.Context, types []string, n
 	if err != nil {
 		r.logger.Error(ctx, "failed to get home happenings from sanity", "error", err)
 		return nil, err
-	}
-	return result, nil
-}
-
-func (r *HappeningRepo) GetHappeningTypeBySlug(ctx context.Context, slug string) (string, error) {
-	r.logger.Info(ctx, "getting happening type by slug from sanity", "slug", slug)
-	result, err := sanity.Query[string](ctx, r.client, happeningTypeBySlugQuery, map[string]any{
-		"slug": slug,
-	})
-	if err != nil {
-		r.logger.Error(ctx, "failed to get happening type from sanity", "slug", slug, "error", err)
-		return "", err
 	}
 	return result, nil
 }

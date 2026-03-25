@@ -411,11 +411,6 @@ definitions:
       title:
         type: string
     type: object
-  uno_http_dto.CMSHappeningTypeDTO:
-    properties:
-      happeningType:
-        type: string
-    type: object
   uno_http_dto.CMSHomeHappeningDTO:
     properties:
       _id:
@@ -2314,28 +2309,6 @@ paths:
           schema:
             type: string
       summary: Get happening contacts by slug from CMS
-      tags:
-      - sanity
-  /sanity/happenings/{slug}/type:
-    get:
-      parameters:
-      - description: Happening slug
-        in: path
-        name: slug
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/uno_http_dto.CMSHappeningTypeDTO'
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Get happening type by slug from CMS
       tags:
       - sanity
   /sanity/happenings/home:

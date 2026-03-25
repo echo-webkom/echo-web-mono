@@ -9,7 +9,6 @@ type CMSHappeningRepo interface {
 	GetAllHappenings(ctx context.Context) ([]model.CMSHappening, error)
 	GetHappeningBySlug(ctx context.Context, slug string) (*model.CMSHappening, error)
 	GetHomeHappenings(ctx context.Context, types []string, n int) ([]model.CMSHomeHappening, error)
-	GetHappeningTypeBySlug(ctx context.Context, slug string) (string, error)
 	GetHappeningContactsBySlug(ctx context.Context, slug string) ([]model.CMSContact, error)
 }
 
