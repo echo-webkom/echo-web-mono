@@ -27,7 +27,7 @@ export const makeJobAds = () => [
       "Søk nå for å bli en del av Bekk sitt sommerjobbprogram!",
       "",
       "For mer informasjon og søknad, besøk: https://bekk.no/karriere",
-    ],
+    ].join("\n"),
   },
   {
     _id: "seed-job-2",
@@ -54,7 +54,7 @@ export const makeJobAds = () => [
       "Søknadsprosessen er åpen for studenter på bachelor- og masternivå, og Sportradar ser etter engasjerte og talentfulle individer som ønsker å lære og vokse i et dynamisk miljø. Søk nå for å bli en del av Sportradars internship-program!",
       "",
       "For mer informasjon og søknad, besøk: https://sportradar.com/careers",
-    ],
+    ].join("\n"),
   },
   {
     _id: "seed-job-3",
@@ -103,6 +103,6 @@ export const makeJobAds = () => [
       "Dette er en flott mulighet for studenter som er lidenskapelig opptatt av teknologi og ønsker å bygge nettverk i bransjen. Søk nå for å bli en del av JetBrains sitt ambassadørprogram!",
       "",
       "For mer informasjon og søknad, besøk: https://jetbrains.com/community/education",
-    ],
+    ].join("\n"),
   },
 ];
