@@ -8,8 +8,8 @@ import { db } from "@echo-webkom/db/serverless";
 import { DeregistrationNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
-import { getContactsBySlug } from "@/sanity/utils/contacts";
 
 const deregisterPayloadSchema = z.object({
   reason: z.string(),
@@ -56,7 +56,10 @@ export const deregister = async (id: string, payload: z.infer<typeof deregisterP
       db.delete(answers).where(and(eq(answers.userId, user.id), eq(answers.happeningId, id))),
     ]);
 
-    const contacts = await getContactsBySlug(exisitingRegistration.happening.slug);
+    const contacts = await unoWithAdmin.sanity.happenings
+      .contacts(exisitingRegistration.happening.slug)
+      .catch(() => []);
+
     if (contacts.length > 0) {
       await emailClient.sendEmail(
         contacts.map((contact) => contact.email),

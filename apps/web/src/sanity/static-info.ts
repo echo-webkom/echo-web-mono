@@ -1,22 +1,15 @@
-import { type StaticInfoQueryResult } from "@echo-webkom/cms/types";
-import { staticInfoQuery } from "@echo-webkom/sanity/queries";
-
-import { sanityFetch } from "./client";
+import { unoWithAdmin } from "@/api/server";
 import { pageTypeToUrl } from "./utils/mappers";
 
 /**
  * Fetches all static info pages.
  */
-export const fetchStaticInfo = async () => {
-  try {
-    return await sanityFetch<StaticInfoQueryResult>({
-      query: staticInfoQuery,
-      tags: ["static-info"],
-    });
-  } catch {
+export async function fetchStaticInfo() {
+  return await unoWithAdmin.sanity.staticInfo.all().catch(() => {
+    console.error("Failed to fetch all static info pages");
     return [];
-  }
-};
+  });
+}
 
 /**
  * Fetches a static info page by its slug.

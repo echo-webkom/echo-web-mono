@@ -1,54 +1,38 @@
 import { subMinutes } from "date-fns";
 
-import {
-  type AllHappeningsQueryResult,
-  type HappeningQueryResult,
-  type HomeHappeningsQueryResult,
-} from "@echo-webkom/cms/types";
 import { type HappeningType } from "@echo-webkom/lib";
-import {
-  allHappeningsQuery,
-  happeningQuery,
-  homeHappeningsQuery,
-} from "@echo-webkom/sanity/queries";
 
+import { unoWithAdmin } from "@/api/server";
 import { type DateInterval, type FilteredHappeningQuery } from "@/components/events-view";
-import { sanityFetch } from "./client";
 
 /**
  * Fetches all happenings
  *
  * @returns all happenings
  */
-export const fetchAllHappenings = async () => {
-  return await sanityFetch<AllHappeningsQueryResult>({
-    query: allHappeningsQuery,
-    tags: ["happenings"],
-  }).catch(() => {
+export async function fetchAllHappenings() {
+  return unoWithAdmin.sanity.happenings.all().catch(() => {
     console.error("Failed to fetch all happenings");
 
     return [];
   });
-};
+}
 
 /**
  * Fetches the upcoming happenings of a given type
  */
-export const fetchHomeHappenings = async (types: Array<HappeningType>, n: number) => {
-  return await sanityFetch<HomeHappeningsQueryResult>({
-    query: homeHappeningsQuery,
-    params: {
-      happeningTypes: types,
+export async function fetchHomeHappenings(types: Array<HappeningType>, n: number) {
+  return unoWithAdmin.sanity.happenings
+    .home({
+      types,
       n,
-    },
-    cdn: true,
-    revalidate: 1000,
-  }).catch(() => {
-    console.error("Failed to fetch home happenings");
+    })
+    .catch(() => {
+      console.error("Failed to fetch home happenings");
 
-    return [];
-  });
-};
+      return [];
+    });
+}
 
 /**
  * Fetches a happening by its slug
@@ -57,13 +41,7 @@ export const fetchHomeHappenings = async (types: Array<HappeningType>, n: number
  * @returns the happening or null if not found
  */
 export const fetchHappeningBySlug = async (slug: string) => {
-  return await sanityFetch<HappeningQueryResult>({
-    query: happeningQuery,
-    tags: [`happening-${slug}`],
-    params: {
-      slug,
-    },
-  }).catch(() => {
+  return unoWithAdmin.sanity.happenings.bySlug(slug).catch(() => {
     console.error("Failed to fetch happening by slug", {
       slug,
     });
@@ -81,7 +59,7 @@ export const fetchHappeningBySlug = async (slug: string) => {
 export const fetchFilteredHappening = async (
   q: FilteredHappeningQuery,
   dateFilter?: Array<DateInterval>,
-): Promise<{ happenings: AllHappeningsQueryResult }> => {
+): Promise<{ happenings: Awaited<ReturnType<typeof fetchAllHappenings>> }> => {
   const filteredHappenings = await fetchAllHappenings().then((res) =>
     res
       .filter((happening) => {
@@ -146,22 +124,4 @@ export const fetchFilteredHappening = async (
           })
         : filteredHappenings,
   };
-};
-
-/**
- * Gets the happening type of a happening by its slug
- *
- * @param slug the slug of the happening you want the type of
- * @returns the happening type or null if not found
- */
-export const getHappeningTypeBySlug = async (slug: string) => {
-  return await fetchHappeningBySlug(slug)
-    .then((happening) => (happening ? happening.happeningType : null))
-    .catch(() => {
-      console.error("Failed to fetch happening type by slug", {
-        slug,
-      });
-
-      return null;
-    });
 };

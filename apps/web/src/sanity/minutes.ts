@@ -1,21 +1,15 @@
-import { type AllMeetingMinuteQueryResult } from "@echo-webkom/cms/types";
-import { allMeetingMinuteQuery } from "@echo-webkom/sanity/queries";
-
-import { sanityFetch } from "./client";
+import { unoWithAdmin } from "@/api/server";
 
 /**
  * Get all meeting minutes.
  */
-export const fetchMinutes = async () => {
-  return await sanityFetch<AllMeetingMinuteQueryResult>({
-    query: allMeetingMinuteQuery,
-    tags: ["minutes"],
-  }).catch(() => {
+export async function fetchMinutes() {
+  return await unoWithAdmin.sanity.minutes.all().catch(() => {
     console.error("Failed to fetch meeting minutes");
 
     return [];
   });
-};
+}
 
 /**
  * Fetches a meeting minute by id.
@@ -23,6 +17,6 @@ export const fetchMinutes = async () => {
  * @param id the id of the meeting minute you want to fetch
  * @returns the meeting minute or null if not found
  */
-export const fetchMinuteById = async (id: string) => {
+export async function fetchMinuteById(id: string) {
   return await fetchMinutes().then((res) => res.find((minute) => minute._id === id));
-};
+}

@@ -20,6 +20,479 @@ function dateReviver(_key: string, value: unknown): unknown {
 
 export type UnoClientType = (typeof UnoClient)["prototype"];
 
+export interface CMSAsset {
+  _type: string;
+  _ref: string;
+}
+
+export interface CMSImage {
+  _type: string;
+  asset: CMSAsset;
+}
+
+export interface CMSReference {
+  _key: string;
+  _ref: string;
+  reference: string;
+}
+
+export interface CMSHsl {
+  _type: string;
+  a: number;
+  h: number;
+  l: number;
+  s: number;
+}
+
+export interface CMSHsv {
+  _type: string;
+  a: number;
+  h: number;
+  s: number;
+  v: number;
+}
+
+export interface CMSRgb {
+  _type: string;
+  a: number;
+  r: number;
+  g: number;
+  b: number;
+}
+
+export interface CMSColor {
+  _type: string;
+  alpha: number;
+  hex: string;
+  hsl: CMSHsl;
+  hsv: CMSHsv;
+  rgb: CMSRgb;
+}
+
+export interface CMSLocation {
+  name: string;
+  link: string;
+}
+
+export interface CMSCompany {
+  _id: string;
+  name: string;
+  website: string;
+  image: CMSImage;
+}
+
+export interface CMSSpotRange {
+  spots: number;
+  minYear: number;
+  maxYear: number;
+}
+
+export interface CMSAdditionalQuestion {
+  id: string;
+  title: string;
+  required: boolean;
+  type: string;
+  options: Array<string>;
+}
+
+export interface CMSOrganizerRef {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
+export interface CMSContactProfile {
+  _id: string;
+  name: string;
+}
+
+export interface CMSContact {
+  email: string;
+  profile: CMSContactProfile;
+}
+
+export interface CMSHappening {
+  _id: string;
+  _createdAt: string;
+  _updatedAt: string;
+  _type: string;
+  title: string;
+  slug: string;
+  isPinned: boolean | null;
+  happeningType: string;
+  hideRegistrations: boolean | null;
+  company: CMSCompany | null;
+  organizers: Array<CMSOrganizerRef>;
+  contacts: Array<CMSContact>;
+  date: string | null;
+  endDate: string | null;
+  cost: number | null;
+  registrationStartGroups: Array<CMSReference>;
+  registrationGroups: Array<string>;
+  registrationStart: string | null;
+  registrationEnd: string | null;
+  location: CMSLocation | null;
+  spotRanges: Array<CMSSpotRange>;
+  additionalQuestions: Array<CMSAdditionalQuestion>;
+  externalLink: string | null;
+  body: string | null;
+}
+
+export interface CMSHomeHappening {
+  _id: string;
+  title: string;
+  isPinned: boolean | null;
+  happeningType: string;
+  date: string | null;
+  registrationStart: string | null;
+  slug: string;
+  image: CMSImage;
+  organizers: Array<string>;
+}
+
+export interface CMSRepeatingHappening {
+  _id: string;
+  _type: string;
+  title: string;
+  slug: string;
+  happeningType: string;
+  organizers: Array<CMSOrganizerRef>;
+  contacts: Array<CMSContact>;
+  location: CMSLocation | null;
+  dayOfWeek: string | null;
+  startTime: string | null;
+  endTime: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  interval: number | null;
+  cost: number | null;
+  ignoredDates: Array<string>;
+  externalLink: string | null;
+  body: string | null;
+}
+
+export interface CMSAuthor {
+  _id: string;
+  name: string;
+  image: CMSImage;
+}
+
+export interface CMSPost {
+  _id: string;
+  _createdAt: string;
+  _updatedAt: string;
+  title: string;
+  slug: string;
+  authors: Array<CMSAuthor>;
+  image: CMSImage;
+  body: string | null;
+}
+
+export interface CMSProfileSocials {
+  facebook: string | null;
+  instagram: string | null;
+  linkedin: string | null;
+  email: string | null;
+}
+
+export interface CMSMemberProfile {
+  _id: string;
+  name: string;
+  picture: CMSImage;
+  socials: CMSProfileSocials | null;
+}
+
+export interface CMSMember {
+  role: string;
+  profile: CMSMemberProfile;
+}
+
+export interface CMSStudentGroupSocials {
+  facebook: string | null;
+  instagram: string | null;
+  linkedin: string | null;
+  email: string | null;
+}
+
+export interface CMSStudentGroup {
+  _id: string;
+  _createdAt: Date;
+  _updatedAt: Date;
+  name: string;
+  isActive: boolean | null;
+  groupType: string;
+  slug: string;
+  description: string | null;
+  image: CMSImage;
+  members: Array<CMSMember>;
+  socials: CMSStudentGroupSocials | null;
+}
+
+export interface CMSJobLocation {
+  _id: string;
+  name: string;
+}
+
+export interface CMSJobAd {
+  _id: string;
+  _createdAt: Date;
+  _updatedAt: Date;
+  weight: number | null;
+  title: string;
+  slug: string;
+  company: CMSCompany | null;
+  expiresAt: Date;
+  locations: Array<CMSJobLocation>;
+  jobType: string | null;
+  link: string | null;
+  deadline: string | null;
+  degreeYears: Array<number>;
+  body: string | null;
+}
+
+export interface CMSBanner {
+  backgroundColor: CMSColor | null;
+  textColor: CMSColor | null;
+  text: string | null;
+  expiringDate: string | null;
+  linkTo: string | null;
+  isExternal: boolean | null;
+}
+
+export interface CMSStaticInfo {
+  title: string;
+  slug: string;
+  pageType: string | null;
+  body: string | null;
+}
+
+export interface CMSMerch {
+  _id: string;
+  _createdAt: string;
+  _updatedAt: string;
+  title: string;
+  slug: string;
+  price: number | null;
+  image: CMSImage;
+  body: string | null;
+}
+
+export interface CMSMeetingMinute {
+  _id: string;
+  isAllMeeting: boolean | null;
+  date: string | null;
+  title: string | null;
+  document: string | null;
+}
+
+export interface CMSMovie {
+  _id: string;
+  title: string;
+  date: string;
+  link: string | null;
+  image: CMSImage;
+}
+
+export interface CMSHSApplicationProfile {
+  _id: string;
+  name: string;
+  picture: CMSImage | null;
+}
+
+export interface CMSHSApplication {
+  profile: CMSHSApplicationProfile;
+  poster: string;
+}
+
+class SanityHappeningsApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all() {
+    return await this.client.requestJson<Array<CMSHappening>>("GET", "sanity/happenings");
+  }
+
+  async home(params?: { types?: Array<string>; n?: number }) {
+    const query = new URLSearchParams();
+    if (params?.types) {
+      for (const t of params.types) {
+        query.append("types[]", t);
+      }
+    }
+    if (params?.n !== undefined) {
+      query.set("n", String(params.n));
+    }
+    const qs = query.toString();
+    return await this.client.requestJson<Array<CMSHomeHappening>>(
+      "GET",
+      `sanity/happenings/home${qs ? `?${qs}` : ""}`,
+    );
+  }
+
+  async bySlug(slug: string) {
+    return await this.client.requestJson<CMSHappening>("GET", `sanity/happenings/${slug}`);
+  }
+
+  async contacts(slug: string) {
+    return await this.client.requestJson<Array<CMSContact>>(
+      "GET",
+      `sanity/happenings/${slug}/contacts`,
+    );
+  }
+
+  async repeating() {
+    return await this.client.requestJson<Array<CMSRepeatingHappening>>(
+      "GET",
+      "sanity/repeating-happenings",
+    );
+  }
+}
+
+class SanityPostsApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all() {
+    return await this.client.requestJson<Array<CMSPost>>("GET", "sanity/posts");
+  }
+}
+
+class SanityStudentGroupsApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all(params?: { type?: string; n?: number }) {
+    const query = new URLSearchParams();
+    if (params?.type !== undefined) {
+      query.set("type", params.type);
+    }
+    if (params?.n !== undefined) {
+      query.set("n", String(params.n));
+    }
+    const qs = query.toString();
+    return await this.client.requestJson<Array<CMSStudentGroup>>(
+      "GET",
+      `sanity/student-groups${qs ? `?${qs}` : ""}`,
+    );
+  }
+
+  async bySlug(slug: string) {
+    return await this.client.requestJson<CMSStudentGroup>("GET", `sanity/student-groups/${slug}`);
+  }
+}
+
+class SanityJobAdsApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all() {
+    return await this.client.requestJson<Array<CMSJobAd>>("GET", "sanity/job-ads");
+  }
+}
+
+class SanityStaticInfoApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all() {
+    return await this.client.requestJson<Array<CMSStaticInfo>>("GET", "sanity/static-info");
+  }
+}
+
+class SanityMerchApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all() {
+    return await this.client.requestJson<Array<CMSMerch>>("GET", "sanity/merch");
+  }
+}
+
+class SanityMinutesApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all() {
+    return await this.client.requestJson<Array<CMSMeetingMinute>>("GET", "sanity/minutes");
+  }
+}
+
+class SanityMoviesApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all() {
+    return await this.client.requestJson<Array<CMSMovie>>("GET", "sanity/movies");
+  }
+}
+
+class SanityHSApplicationsApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all() {
+    return await this.client.requestJson<Array<CMSHSApplication>>("GET", "sanity/hs-applications");
+  }
+}
+
+export class SanityApi {
+  happenings: SanityHappeningsApi;
+  posts: SanityPostsApi;
+  studentGroups: SanityStudentGroupsApi;
+  jobAds: SanityJobAdsApi;
+  staticInfo: SanityStaticInfoApi;
+  merch: SanityMerchApi;
+  minutes: SanityMinutesApi;
+  movies: SanityMoviesApi;
+  hsApplications: SanityHSApplicationsApi;
+
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+    this.happenings = new SanityHappeningsApi(client);
+    this.posts = new SanityPostsApi(client);
+    this.studentGroups = new SanityStudentGroupsApi(client);
+    this.jobAds = new SanityJobAdsApi(client);
+    this.staticInfo = new SanityStaticInfoApi(client);
+    this.merch = new SanityMerchApi(client);
+    this.minutes = new SanityMinutesApi(client);
+    this.movies = new SanityMoviesApi(client);
+    this.hsApplications = new SanityHSApplicationsApi(client);
+  }
+
+  async banner() {
+    return await this.client.requestJson<CMSBanner | null>("GET", "sanity/banner");
+  }
+}
+
 type HttpMethod =
   | "GET"
   | "POST"
@@ -50,6 +523,7 @@ export class UnoClient {
   users: UsersApi;
   files: FilesApi;
   quotes: QuotesApi;
+  sanity: SanityApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -79,6 +553,7 @@ export class UnoClient {
     this.users = new UsersApi(this);
     this.files = new FilesApi(this);
     this.quotes = new QuotesApi(this);
+    this.sanity = new SanityApi(this);
   }
 
   normalizePath(path: string) {

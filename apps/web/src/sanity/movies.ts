@@ -1,7 +1,4 @@
-import { type MoviesQueryResult } from "@echo-webkom/cms/types";
-import { moviesQuery } from "@echo-webkom/sanity/queries";
-
-import { sanityFetch } from "./client";
+import { unoWithAdmin } from "@/api/server";
 
 /**
  * Fetches a number of movies
@@ -10,12 +7,9 @@ import { sanityFetch } from "./client";
  * @returns movies or null if not found
  */
 
-export const fetchMovies = async () => {
-  return await sanityFetch<MoviesQueryResult>({
-    query: moviesQuery,
-    tags: ["movies"],
-  });
-};
+export async function fetchMovies() {
+  return await unoWithAdmin.sanity.movies.all();
+}
 
 /**
  * Fettches latest movies
@@ -23,8 +17,8 @@ export const fetchMovies = async () => {
  * @param n the number of movies to fetch
  * @returns newest movies or an empty array if error
  */
-export const fetchNewestMovie = async (n: number): Promise<MoviesQueryResult> => {
+export async function fetchNewestMovie(n: number) {
   return await fetchMovies().then((res) =>
     res.filter((movie) => new Date(movie.date) > new Date()).slice(0, n),
   );
-};
+}

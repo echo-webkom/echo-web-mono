@@ -43,6 +43,7 @@ type RGB struct {
 type Color struct {
 	Type  string  `json:"_type"`
 	Alpha float32 `json:"alpha"`
+	Hex   string  `json:"hex"`
 	HSL   HSL     `json:"hsl"`
 	HSV   HSV     `json:"hsv"`
 	RGB   RGB     `json:"rgb"`

@@ -1,21 +1,12 @@
-import {
-  type StudentGroupBySlugQueryResult,
-  type StudentGroupsByTypeQueryResult,
-} from "@echo-webkom/cms/types";
 import { type StudentGroupType } from "@echo-webkom/lib";
-import { studentGroupBySlugQuery, studentGroupsByTypeQuery } from "@echo-webkom/sanity/queries";
 
-import { sanityFetch } from "./client";
+import { unoWithAdmin } from "@/api/server";
 
 export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number) => {
   try {
-    const studentGroups = await sanityFetch<StudentGroupsByTypeQueryResult>({
-      query: studentGroupsByTypeQuery,
-      params: {
-        type,
-        n,
-      },
-      tags: ["student-groups"],
+    const studentGroups = await unoWithAdmin.sanity.studentGroups.all({
+      type,
+      n,
     });
 
     if (type !== "board") {
@@ -31,15 +22,8 @@ export const fetchStudentGroupsByType = async (type: StudentGroupType, n: number
 };
 
 export const fetchStudentGroupBySlug = async (slug: string) => {
-  try {
-    return await sanityFetch<StudentGroupBySlugQueryResult>({
-      query: studentGroupBySlugQuery,
-      params: {
-        slug,
-      },
-      tags: ["student-groups"],
-    });
-  } catch {
+  return await unoWithAdmin.sanity.studentGroups.bySlug(slug).catch(() => {
+    console.error(`Failed to fetch student group with slug ${slug}`);
     return null;
-  }
+  });
 };

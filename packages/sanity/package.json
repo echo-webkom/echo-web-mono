@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "main": "./src/index.ts",
   "exports": {
-    ".": "./src/index.ts",
-    "./queries": "./src/queries/index.ts"
+    ".": "./src/index.ts"
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",

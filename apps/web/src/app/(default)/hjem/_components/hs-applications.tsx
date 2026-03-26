@@ -1,21 +1,17 @@
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
 
-import { type AllHsApplicationsResult } from "@echo-webkom/cms/types";
-import { cdnClient, urlFor } from "@echo-webkom/sanity";
-import { allHsApplications } from "@echo-webkom/sanity/queries";
+import { urlFor } from "@echo-webkom/sanity";
 
+import { unoWithAdmin } from "@/api/server";
+import type { UnoClientType } from "@/api/uno/client";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ellipsis, initials } from "@/utils/string";
 
-const fetchAllHsApplications = async () => {
-  return await cdnClient.fetch<AllHsApplicationsResult>(allHsApplications);
-};
-
 export const HSApplications = async () => {
-  const applications = await fetchAllHsApplications();
+  const applications = await unoWithAdmin.sanity.hsApplications.all();
 
   return (
     <div>
@@ -40,7 +36,7 @@ export const HSApplications = async () => {
 };
 
 type ApplicationProps = {
-  application: AllHsApplicationsResult[number];
+  application: Awaited<ReturnType<UnoClientType["sanity"]["hsApplications"]["all"]>>[number];
 };
 
 const Application = ({ application }: ApplicationProps) => {
@@ -56,7 +52,7 @@ const Application = ({ application }: ApplicationProps) => {
         target="_blank"
         rel="noreferrer"
       >
-        <Avatar size="lg" className="mx-auto flex-shrink-0">
+        <Avatar size="lg" className="mx-auto shrink-0">
           <AvatarImage src={imageUrl} />
           <AvatarFallback className="bg-background text-foreground">
             {initials(application.profile.name)}

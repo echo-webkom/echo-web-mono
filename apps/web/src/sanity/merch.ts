@@ -1,28 +1,21 @@
-import { type AllMerchQueryResult } from "@echo-webkom/cms/types";
-import { allMerchQuery } from "@echo-webkom/sanity/queries";
-
-import { sanityFetch } from "./client";
+import { unoWithAdmin } from "@/api/server";
 
 /**
  * Fetches all merch.
  */
-export const fetchAllMerch = async () => {
-  return await sanityFetch<AllMerchQueryResult>({
-    query: allMerchQuery,
-    cdn: true,
-    tags: ["merch"],
-  }).catch(() => {
+export async function fetchAllMerch() {
+  return await unoWithAdmin.sanity.merch.all().catch(() => {
     console.error("Failed to fetch all merch");
 
     return [];
   });
-};
+}
 
-export const fetchMerch = async (n?: number) => {
+export async function fetchMerch(n?: number) {
   const merch = await fetchAllMerch();
 
   return n ? merch.slice(0, n) : merch;
-};
+}
 
 /**
  * Fetches a merch item by its slug
@@ -30,8 +23,6 @@ export const fetchMerch = async (n?: number) => {
  * @param slug the slug of the merch items you want to fetch
  * @returns the merch item or null if not found
  */
-export const fetchMerchBySlug = async (
-  slug: string,
-): Promise<AllMerchQueryResult[number] | null> => {
+export async function fetchMerchBySlug(slug: string) {
   return await fetchMerch().then((res) => res.find((item) => item.slug === slug) ?? null);
-};
+}

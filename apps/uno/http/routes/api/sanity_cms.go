@@ -317,7 +317,10 @@ func (s *sanityCMS) getBanner(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 	if banner == nil {
-		return ctx.Error(errors.New("banner not found"), http.StatusNotFound)
+		return ctx.JSON(nil)
+	}
+	if banner.HasExpired() {
+		return ctx.JSON(nil)
 	}
 	return ctx.JSON(banner)
 }

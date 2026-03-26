@@ -65,8 +65,7 @@ func Load() *Config {
 
 		// Sanity CMS configuration
 		SanityProjectID:  getEnvOrDefault("SANITY_PROJECT_ID", "pgq2pd26"),
-		SanityDataset:    getEnvOrDefault("SANITY_DATASET", "production"),
-		SanityAPIToken:   os.Getenv("SANITY_API_TOKEN"),
+		SanityDataset:    getEnvOrDefault("NEXT_PUBLIC_SANITY_DATASET", "production"),
 		SanityAPIVersion: getEnvOrDefault("SANITY_API_VERSION", "2023-05-03"),
 	}
 }
