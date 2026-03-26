@@ -12,7 +12,6 @@ export const AttendanceTab = async ({ happening, registrations }: RegistrationsT
   const groups = await unoWithAdmin.groups.all();
   return (
     <div>
-      <h1>qr scanner</h1>
       <QrScanner registrations={registrations} happening={happening} studentGroups={groups} />
     </div>
   );
