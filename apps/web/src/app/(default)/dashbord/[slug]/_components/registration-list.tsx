@@ -1,0 +1,76 @@
+import { useState } from "react";
+
+import { type Group, type Question } from "@echo-webkom/db/schemas";
+
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { filterRegistrations } from "../_lib/filter-registrations";
+import { RegistrationWithUser } from "../_lib/types";
+import { useRegistrationFilter } from "../_lib/use-registration-filter";
+import { RegistrationRow } from "./registration-row";
+
+type RegistrationTableProps = {
+  registrations: Array<RegistrationWithUser>;
+  studentGroups: Array<Group>;
+  slug: string;
+  isBedpres: boolean;
+  happeningDate: Date | null;
+  hideHeader?: boolean;
+};
+
+export const RegistrationList = ({
+  registrations,
+  studentGroups,
+  isBedpres,
+  happeningDate,
+}: RegistrationTableProps) => {
+  const [showIndex, setShowIndex] = useState(false);
+  const { filters, resetFilters, setSearchTerm, setYearFilter, setStatusFilter, setGroupFilter } =
+    useRegistrationFilter();
+  const filteredRegistrations = filterRegistrations(registrations, studentGroups, filters);
+
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          {showIndex && (
+            <TableHead scope="col" className="w-12">
+              #
+            </TableHead>
+          )}
+          <TableHead scope="col" className="w-12">
+            Info
+          </TableHead>
+          <TableHead scope="col">Navn</TableHead>
+          <TableHead scope="col">Status</TableHead>
+          <TableHead scope="col" className="w-16">
+            Mer
+          </TableHead>
+          <TableHead scope="col" className="w-12">
+            {/* Empty */}
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {filteredRegistrations.length === 0 && (
+          <TableRow>
+            <td colSpan={showIndex ? 6 : 5}>
+              <p className="text-muted-foreground py-6 text-center text-xl font-medium">
+                Ingen resultater
+              </p>
+            </td>
+          </TableRow>
+        )}
+        {filteredRegistrations.map((registration, i) => (
+          <RegistrationRow
+            key={registration.user.id}
+            index={i}
+            registration={registration}
+            showIndex={showIndex}
+            isBedpres={isBedpres}
+            happeningDate={happeningDate}
+          />
+        ))}
+      </TableBody>
+    </Table>
+  );
+};

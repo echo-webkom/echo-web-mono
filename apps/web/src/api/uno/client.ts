@@ -198,7 +198,13 @@ export interface Question {
   happeningId: string;
 }
 
-export type RegistrationStatus = "registered" | "unregistered" | "removed" | "waiting" | "pending";
+export type RegistrationStatus =
+  | "registered"
+  | "unregistered"
+  | "removed"
+  | "waiting"
+  | "pending"
+  | "attended";
 
 export interface Registration {
   userId: string;
@@ -524,7 +530,7 @@ class AdventOfCodeApi {
   }
 }
 
-interface Group {
+export interface Group {
   id: string;
   name: string;
 }

@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
+import { ShowQrCode } from "./_components/show-qr-code";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
 import WhitelistNotification from "./_components/whitelist-notification";
 
@@ -150,6 +151,9 @@ export default async function ProfilePage({ params }: Props) {
                 <Text>{profileOwner.email}</Text>
               </div>
             </div>
+          </div>
+          <div className="mt-5">
+            <ShowQrCode userId={user.id} />
           </div>
 
           {memberships.length > 0 && (
