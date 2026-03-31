@@ -25,7 +25,7 @@ const studentGroupsByTypeQuery = `
     "profile": profile->{
       _id,
       name,
-      picture,
+      "image": picture,
       socials,
     },
   },
@@ -56,7 +56,7 @@ const studentGroupBySlugQuery = `
     "profile": profile->{
       _id,
       name,
-      picture,
+      "image": picture,
       socials,
     },
   },

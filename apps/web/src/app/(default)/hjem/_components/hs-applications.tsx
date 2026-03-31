@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
 
-import { urlFor } from "@echo-webkom/sanity";
+import { urlFor } from "@/lib/sanity";
 
 import { unoWithAdmin } from "@/api/server";
 import type { UnoClientType } from "@/api/uno/client";
@@ -40,7 +40,10 @@ type ApplicationProps = {
 };
 
 const Application = ({ application }: ApplicationProps) => {
-  const imageUrl = application.profile.picture ? urlFor(application.profile.picture).url() : "";
+  const imageUrl =
+    application.profile.image?.asset._ref
+      ? urlFor(application.profile.image).url()
+      : "";
 
   const name = ellipsis(application.profile.name, 13);
 

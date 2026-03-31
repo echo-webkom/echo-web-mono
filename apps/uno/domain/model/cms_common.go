@@ -48,3 +48,9 @@ type Color struct {
 	HSV   HSV     `json:"hsv"`
 	RGB   RGB     `json:"rgb"`
 }
+
+type CMSTtime struct {
+	Type   string `json:"_type"`
+	Hour   int    `json:"hour"`
+	Minute int    `json:"minute"`
+}

@@ -58,7 +58,7 @@ type CMSHappening struct {
 	Date                    *string                 `json:"date"`
 	EndDate                 *string                 `json:"endDate"`
 	Cost                    *int                    `json:"cost"`
-	RegistrationStartGroups []Reference             `json:"registrationStartGroups"`
+	RegistrationStartGroups *string                 `json:"registrationStartGroups"`
 	RegistrationGroups      []string                `json:"registrationGroups"`
 	RegistrationStart       *string                 `json:"registrationStart"`
 	RegistrationEnd         *string                 `json:"registrationEnd"`

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { isFuture, isToday } from "date-fns";
 
-import { urlFor } from "@echo-webkom/sanity";
+import { urlFor } from "@/lib/sanity";
 
 import { Chip } from "@/components/typography/chip";
 import { createHappeningLink } from "@/lib/create-link";

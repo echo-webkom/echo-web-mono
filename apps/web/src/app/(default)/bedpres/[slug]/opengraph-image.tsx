@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-import { urlFor } from "@echo-webkom/sanity";
+import { urlFor } from "@/lib/sanity";
 
 import { fetchHappeningBySlug } from "@/sanity/happening";
 

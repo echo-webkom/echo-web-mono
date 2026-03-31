@@ -5,6 +5,15 @@ type CMSJobLocation struct {
 	Name string `json:"name"`
 }
 
+type CMSDegreeYears struct {
+	First  *bool `json:"FIRST"`
+	Second *bool `json:"SECOND"`
+	Third  *bool `json:"THIRD"`
+	Fourth *bool `json:"FOURTH"`
+	Fifth  *bool `json:"FIFTH"`
+	PhD    *bool `json:"PHD"`
+}
+
 type CMSJobAd struct {
 	ID          string           `json:"_id"`
 	CreatedAt   string           `json:"_createdAt"`
@@ -18,6 +27,6 @@ type CMSJobAd struct {
 	JobType     *string          `json:"jobType"`
 	Link        *string          `json:"link"`
 	Deadline    *string          `json:"deadline"`
-	DegreeYears []int            `json:"degreeYears"`
+	DegreeYears *CMSDegreeYears  `json:"degreeYears"`
 	Body        *string          `json:"body"`
 }

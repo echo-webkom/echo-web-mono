@@ -14,7 +14,6 @@ const config = {
     "@echo-webkom/db",
     "@echo-webkom/lib",
     "@echo-webkom/email",
-    "@echo-webkom/sanity",
   ],
 
   logging: {

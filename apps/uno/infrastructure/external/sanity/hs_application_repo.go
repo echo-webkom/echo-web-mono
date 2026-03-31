@@ -12,7 +12,7 @@ const allHSApplicationsQuery = `
   "profile": profile->{
     _id,
     name,
-    picture
+    "image": picture
   },
   "poster": poster.asset->url
 }

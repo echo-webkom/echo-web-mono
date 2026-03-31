@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { isPast } from "date-fns/isPast";
 
-import { urlFor } from "@echo-webkom/sanity";
+import { urlFor } from "@/lib/sanity";
 
 import { fetchNewestMovie } from "@/sanity/movies";
 import { shortDateNoTimeNoYear, shortDateNoYear } from "@/utils/date";

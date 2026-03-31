@@ -7,7 +7,7 @@ export default defineCliConfig({
   },
   deployment: {
     appId: "93dce57be57512d8cd4d7a5c",
-    autoUpdates: true,
+    autoUpdates: false,
   },
   typegen: {
     enabled: true,

@@ -4,7 +4,7 @@ import { RxArrowRight as ArrowRight } from "react-icons/rx";
 import removeMd from "remove-markdown";
 
 import { type AllMerchQueryResult } from "@echo-webkom/cms/types";
-import { urlFor } from "@echo-webkom/sanity";
+import { urlFor } from "@/lib/sanity";
 
 type MerchPreviewProps = {
   item: AllMerchQueryResult[number];

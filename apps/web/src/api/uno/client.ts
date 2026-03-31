@@ -159,12 +159,12 @@ export interface CMSRepeatingHappening {
   organizers: Array<CMSOrganizerRef>;
   contacts: Array<CMSContact>;
   location: CMSLocation | null;
-  dayOfWeek: string | null;
-  startTime: string | null;
-  endTime: string | null;
+  dayOfWeek: number | null;
+  startTime: { hour: number; minute: number } | null;
+  endTime: { hour: number; minute: number } | null;
   startDate: string | null;
   endDate: string | null;
-  interval: number | null;
+  interval: string | null;
   cost: number | null;
   ignoredDates: Array<string>;
   externalLink: string | null;
@@ -198,7 +198,7 @@ export interface CMSProfileSocials {
 export interface CMSMemberProfile {
   _id: string;
   name: string;
-  picture: CMSImage;
+  image: CMSImage;
   socials: CMSProfileSocials | null;
 }
 
@@ -246,7 +246,7 @@ export interface CMSJobAd {
   jobType: string | null;
   link: string | null;
   deadline: string | null;
-  degreeYears: Array<number>;
+  degreeYears: { FIRST?: boolean; SECOND?: boolean; THIRD?: boolean; FOURTH?: boolean; FIFTH?: boolean; PHD?: boolean } | null;
   body: string | null;
 }
 
@@ -256,7 +256,6 @@ export interface CMSBanner {
   text: string | null;
   expiringDate: string | null;
   linkTo: string | null;
-  isExternal: boolean | null;
 }
 
 export interface CMSStaticInfo {
@@ -296,7 +295,7 @@ export interface CMSMovie {
 export interface CMSHSApplicationProfile {
   _id: string;
   name: string;
-  picture: CMSImage | null;
+  image: CMSImage | null;
 }
 
 export interface CMSHSApplication {

@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 )
 
 const (
@@ -24,7 +25,9 @@ var (
 	ErrFailedToDecodeData    = errors.New("failed to decode sanity data")
 )
 
-var HttpClient = &http.Client{}
+var HttpClient = &http.Client{
+	Timeout: 5 * time.Second,
+}
 
 type Config struct {
 	ProjectID   string

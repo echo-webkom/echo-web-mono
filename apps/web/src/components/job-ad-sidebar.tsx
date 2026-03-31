@@ -3,7 +3,7 @@ import Link from "next/link";
 import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
 import { type JobAdsQueryResult } from "@echo-webkom/cms/types";
-import { urlFor } from "@echo-webkom/sanity";
+import { urlFor } from "@/lib/sanity";
 
 import { degreeYearsToList, degreeYearText } from "@/lib/degree-year-text";
 import { jobTypeString } from "@/sanity/utils/mappers";

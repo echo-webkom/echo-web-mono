@@ -137,7 +137,7 @@ func (s *sanityCMS) handleWebhook(ctx *handler.Context) error {
 // @Failure      500  {string}  string               "Internal Server Error"
 // @Router       /sanity/happenings [get]
 func (s *sanityCMS) getAllHappenings(ctx *handler.Context) error {
-	happenings, err := s.cmsService.HappeningRepo().GetAllHappenings(ctx.Context())
+	happenings, err := s.cmsService.GetAllHappenings(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -155,7 +155,7 @@ func (s *sanityCMS) getAllHappenings(ctx *handler.Context) error {
 // @Router       /sanity/happenings/{slug} [get]
 func (s *sanityCMS) getHappeningBySlug(ctx *handler.Context) error {
 	slug := ctx.PathValue("slug")
-	happening, err := s.cmsService.HappeningRepo().GetHappeningBySlug(ctx.Context(), slug)
+	happening, err := s.cmsService.GetHappeningBySlug(ctx.Context(), slug)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -169,15 +169,15 @@ func (s *sanityCMS) getHappeningBySlug(ctx *handler.Context) error {
 // @Summary      Get home page happenings from CMS
 // @Tags         sanity
 // @Produce      json
-// @Param        types[]  query     []string                 false  "Happening types (e.g. bedpres, event)"
-// @Param        n        query     int                      false  "Max number of results (default 5)"
+// @Param        types[]  query     []string                 false  "Happening types (bedpres, event, external)"
+// @Param        n        query     int                      false  "Max number of results (default: 5)"
 // @Success      200      {array}   dto.CMSHomeHappeningDTO  "OK"
 // @Failure      500      {string}  string                   "Internal Server Error"
 // @Router       /sanity/happenings/home [get]
 func (s *sanityCMS) getHomeHappenings(ctx *handler.Context) error {
 	types := ctx.R.URL.Query()["types[]"]
 	if len(types) == 0 {
-		types = []string{"bedpres", "event"}
+		types = []string{"bedpres", "event", "external"}
 	}
 
 	n := 5
@@ -187,7 +187,7 @@ func (s *sanityCMS) getHomeHappenings(ctx *handler.Context) error {
 		}
 	}
 
-	happenings, err := s.cmsService.HappeningRepo().GetHomeHappenings(ctx.Context(), types, n)
+	happenings, err := s.cmsService.GetHomeHappenings(ctx.Context(), types, n)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -204,9 +204,12 @@ func (s *sanityCMS) getHomeHappenings(ctx *handler.Context) error {
 // @Router       /sanity/happenings/{slug}/contacts [get]
 func (s *sanityCMS) getHappeningContactsBySlug(ctx *handler.Context) error {
 	slug := ctx.PathValue("slug")
-	contacts, err := s.cmsService.HappeningRepo().GetHappeningContactsBySlug(ctx.Context(), slug)
+	contacts, err := s.cmsService.GetHappeningContactsBySlug(ctx.Context(), slug)
 	if err != nil {
 		return ctx.InternalServerError()
+	}
+	if contacts == nil {
+		return ctx.JSON([]dto.CMSContactDTO{})
 	}
 	return ctx.JSON(contacts)
 }
@@ -219,7 +222,7 @@ func (s *sanityCMS) getHappeningContactsBySlug(ctx *handler.Context) error {
 // @Failure      500  {string}  string                        "Internal Server Error"
 // @Router       /sanity/repeating-happenings [get]
 func (s *sanityCMS) getAllRepeatingHappenings(ctx *handler.Context) error {
-	happenings, err := s.cmsService.RepeatingHappeningRepo().GetAllRepeatingHappenings(ctx.Context())
+	happenings, err := s.cmsService.GetAllRepeatingHappenings(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -234,7 +237,7 @@ func (s *sanityCMS) getAllRepeatingHappenings(ctx *handler.Context) error {
 // @Failure      500  {string}  string          "Internal Server Error"
 // @Router       /sanity/posts [get]
 func (s *sanityCMS) getAllPosts(ctx *handler.Context) error {
-	posts, err := s.cmsService.PostRepo().GetAllPosts(ctx.Context())
+	posts, err := s.cmsService.GetAllPosts(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -260,7 +263,7 @@ func (s *sanityCMS) getStudentGroups(ctx *handler.Context) error {
 		}
 	}
 
-	groups, err := s.cmsService.StudentGroupRepo().GetStudentGroupsByType(ctx.Context(), groupType, n)
+	groups, err := s.cmsService.GetStudentGroupsByType(ctx.Context(), groupType, n)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -278,7 +281,7 @@ func (s *sanityCMS) getStudentGroups(ctx *handler.Context) error {
 // @Router       /sanity/student-groups/{slug} [get]
 func (s *sanityCMS) getStudentGroupBySlug(ctx *handler.Context) error {
 	slug := ctx.PathValue("slug")
-	group, err := s.cmsService.StudentGroupRepo().GetStudentGroupBySlug(ctx.Context(), slug)
+	group, err := s.cmsService.GetStudentGroupBySlug(ctx.Context(), slug)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -296,7 +299,7 @@ func (s *sanityCMS) getStudentGroupBySlug(ctx *handler.Context) error {
 // @Failure      500  {string}  string           "Internal Server Error"
 // @Router       /sanity/job-ads [get]
 func (s *sanityCMS) getAllJobAds(ctx *handler.Context) error {
-	ads, err := s.cmsService.JobAdRepo().GetAllJobAds(ctx.Context())
+	ads, err := s.cmsService.GetAllJobAds(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -312,7 +315,7 @@ func (s *sanityCMS) getAllJobAds(ctx *handler.Context) error {
 // @Failure      500  {string}  string            "Internal Server Error"
 // @Router       /sanity/banner [get]
 func (s *sanityCMS) getBanner(ctx *handler.Context) error {
-	banner, err := s.cmsService.BannerRepo().GetBanner(ctx.Context())
+	banner, err := s.cmsService.GetBanner(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -333,7 +336,7 @@ func (s *sanityCMS) getBanner(ctx *handler.Context) error {
 // @Failure      500  {string}  string                "Internal Server Error"
 // @Router       /sanity/static-info [get]
 func (s *sanityCMS) getAllStaticInfo(ctx *handler.Context) error {
-	info, err := s.cmsService.StaticInfoRepo().GetAllStaticInfo(ctx.Context())
+	info, err := s.cmsService.GetAllStaticInfo(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -348,7 +351,7 @@ func (s *sanityCMS) getAllStaticInfo(ctx *handler.Context) error {
 // @Failure      500  {string}  string           "Internal Server Error"
 // @Router       /sanity/merch [get]
 func (s *sanityCMS) getAllMerch(ctx *handler.Context) error {
-	merch, err := s.cmsService.MerchRepo().GetAllMerch(ctx.Context())
+	merch, err := s.cmsService.GetAllMerch(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -363,7 +366,7 @@ func (s *sanityCMS) getAllMerch(ctx *handler.Context) error {
 // @Failure      500  {string}  string                   "Internal Server Error"
 // @Router       /sanity/minutes [get]
 func (s *sanityCMS) getAllMeetingMinutes(ctx *handler.Context) error {
-	minutes, err := s.cmsService.MeetingMinuteRepo().GetAllMeetingMinutes(ctx.Context())
+	minutes, err := s.cmsService.GetAllMeetingMinutes(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -378,7 +381,7 @@ func (s *sanityCMS) getAllMeetingMinutes(ctx *handler.Context) error {
 // @Failure      500  {string}  string           "Internal Server Error"
 // @Router       /sanity/movies [get]
 func (s *sanityCMS) getAllMovies(ctx *handler.Context) error {
-	movies, err := s.cmsService.MovieRepo().GetAllMovies(ctx.Context())
+	movies, err := s.cmsService.GetAllMovies(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -393,7 +396,7 @@ func (s *sanityCMS) getAllMovies(ctx *handler.Context) error {
 // @Failure      500  {string}  string                   "Internal Server Error"
 // @Router       /sanity/hs-applications [get]
 func (s *sanityCMS) getAllHSApplications(ctx *handler.Context) error {
-	applications, err := s.cmsService.HSApplicationRepo().GetAllHSApplications(ctx.Context())
+	applications, err := s.cmsService.GetAllHSApplications(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}

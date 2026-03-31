@@ -4,7 +4,7 @@ import Link from "next/link";
 import { isFuture, isPast } from "date-fns";
 import { RxArrowRight as ArrowRight, RxExternalLink as ExternalLink } from "react-icons/rx";
 
-import { urlFor } from "@echo-webkom/sanity";
+import { urlFor } from "@/lib/sanity";
 
 import { auth } from "@/auth/session";
 import { AddToCalender } from "@/components/add-to-calender";

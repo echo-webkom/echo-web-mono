@@ -1,9 +1,9 @@
 package model
 
 type CMSHSApplicationProfile struct {
-	ID      string `json:"_id"`
-	Name    string `json:"name"`
-	Picture Image  `json:"picture"`
+	ID    string `json:"_id"`
+	Name  string `json:"name"`
+	Image Image  `json:"image"`
 }
 
 type CMSHSApplication struct {

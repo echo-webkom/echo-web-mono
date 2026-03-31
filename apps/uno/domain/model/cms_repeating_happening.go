@@ -9,12 +9,12 @@ type CMSRepeatingHappening struct {
 	Organizers    []CMSOrganizerRef `json:"organizers"`
 	Contacts      []CMSContact      `json:"contacts"`
 	Location      *CMSLocation      `json:"location"`
-	DayOfWeek     *string           `json:"dayOfWeek"`
-	StartTime     *string           `json:"startTime"`
-	EndTime       *string           `json:"endTime"`
+	DayOfWeek     *int              `json:"dayOfWeek"`
+	StartTime     *CMSTtime         `json:"startTime"`
+	EndTime       *CMSTtime         `json:"endTime"`
 	StartDate     *string           `json:"startDate"`
 	EndDate       *string           `json:"endDate"`
-	Interval      *int              `json:"interval"`
+	Interval      *string           `json:"interval"`
 	Cost          *int              `json:"cost"`
 	IgnoredDates  []string          `json:"ignoredDates"`
 	ExternalLink  *string           `json:"externalLink"`

@@ -24,7 +24,6 @@
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
-    "@echo-webkom/sanity": "workspace:^",
     "@faker-js/faker": "10.2.0",
     "@sanity/client": "7.14.1",
     "chalk": "5.6.2",

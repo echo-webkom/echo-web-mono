@@ -4,7 +4,7 @@ import { RxArrowRight as ArrowRight } from "react-icons/rx";
 import removeMd from "remove-markdown";
 
 import { type StudentGroupsByTypeQueryResult } from "@echo-webkom/cms/types";
-import { urlFor } from "@echo-webkom/sanity";
+import { urlFor } from "@/lib/sanity";
 
 import { Chip } from "./typography/chip";
 

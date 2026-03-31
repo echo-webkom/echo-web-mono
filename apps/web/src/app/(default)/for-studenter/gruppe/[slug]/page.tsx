@@ -8,7 +8,7 @@ import { FaLinkedin } from "react-icons/fa";
 import { IoCloudOfflineSharp, IoMail } from "react-icons/io5";
 import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
-import { urlFor } from "@echo-webkom/sanity";
+import { urlFor } from "@/lib/sanity";
 
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
@@ -159,7 +159,7 @@ export default async function GroupPage(props: Props) {
 
           <div className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {group.members.map((member) => {
-              const image = member.profile?.picture;
+              const image = member.profile?.image;
               const initials = member.profile?.name
                 .split(" ")
                 .map((name) => name[0])

@@ -84,6 +84,10 @@ export const deregister = async (id: string, payload: z.infer<typeof deregisterP
       };
     }
 
+    console.error("failed to deregister", {
+      error: error instanceof Error ? error.message : error,
+    });
+
     return {
       success: false,
       message: "En feil har oppstått",

@@ -14,7 +14,6 @@ const bannerQuery = `
   text,
   expiringDate,
   linkTo,
-  isExternal,
 }[0]
 `
 
