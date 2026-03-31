@@ -37,7 +37,7 @@ export const generateMetadata = async (props: Props) => {
 
   return {
     title: event.title,
-    description: `Ny bedriftspresentasjon med ${event.company?.name}, ${norwegianDateString(new Date(event.date)).toLowerCase()},
+    description: `Ny bedriftspresentasjon med ${event.company?.name}, ${event.date ? norwegianDateString(new Date(event.date)).toLowerCase() : ""},
     ${event.location?.name}. ${regDate}`,
   };
 };

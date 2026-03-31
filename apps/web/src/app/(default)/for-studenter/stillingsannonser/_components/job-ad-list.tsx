@@ -3,9 +3,9 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 
-import type { JobAdsQueryResult } from "@echo-webkom/cms/types";
 import { type JobType } from "@echo-webkom/lib";
 
+import type { UnoReturnType } from "@/api/uno/client";
 import { Container } from "@/components/container";
 import { JobAdPreview } from "@/components/job-ad-preview";
 import { Heading } from "@/components/typography/heading";
@@ -16,7 +16,7 @@ import { Select } from "@/components/ui/select";
 import { jobTypeString } from "@/sanity/utils/mappers";
 
 type JobAdListProps = {
-  jobAds: JobAdsQueryResult;
+  jobAds: UnoReturnType["sanity"]["jobAds"]["all"];
 };
 
 type Sort = "newest" | "oldest" | "expiresSoon" | "expiresLate";
@@ -30,8 +30,12 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
 
   const workTypes = useMemo(() => {
     return jobAds.reduce<Array<JobType>>((acc, jobAd) => {
-      if (!acc.includes(jobAd.jobType)) {
-        return [...acc, jobAd.jobType];
+      if (!jobAd.jobType) {
+        return acc;
+      }
+
+      if (!acc.includes(jobAd.jobType as JobType)) {
+        return [...acc, jobAd.jobType as JobType];
       }
 
       return acc;
@@ -64,7 +68,11 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
 
   const companies = useMemo(() => {
     return jobAds.reduce<Array<{ id: string; name: string }>>((acc, jobAd) => {
-      if (!acc.find((company) => company.id === jobAd.company._id)) {
+      if (!jobAd.company) {
+        return acc;
+      }
+
+      if (!acc.find((company) => company.id === jobAd.company!._id)) {
         return [
           ...acc,
           {
@@ -83,11 +91,11 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
       .filter((jobAd) => {
         return (
           jobAd.title.toLowerCase().includes(search.toLowerCase()) ||
-          jobAd.company.name.toLowerCase().includes(search.toLowerCase())
+          jobAd.company?.name.toLowerCase().includes(search.toLowerCase())
         );
       })
       .filter((jobAd) => {
-        return companyFilter ? jobAd.company._id === companyFilter : true;
+        return companyFilter ? jobAd.company?._id === companyFilter : true;
       })
       .filter((jobAd) => {
         return workTypeFilter ? jobAd.jobType === workTypeFilter : true;

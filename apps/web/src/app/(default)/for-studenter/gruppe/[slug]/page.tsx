@@ -8,8 +8,6 @@ import { FaLinkedin } from "react-icons/fa";
 import { IoCloudOfflineSharp, IoMail } from "react-icons/io5";
 import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
-import { urlFor } from "@/lib/sanity";
-
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Callout } from "@/components/typography/callout";
@@ -24,6 +22,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { urlFor } from "@/lib/sanity";
 import { fetchStudentGroupBySlug } from "@/sanity/student-group";
 import { studentGroupTypeName } from "@/sanity/utils/mappers";
 import { mailTo } from "@/utils/prefixes";

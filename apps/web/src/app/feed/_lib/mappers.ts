@@ -1,14 +1,9 @@
-import {
-  type AllHappeningsQueryResult,
-  type AllMeetingMinuteQueryResult,
-  type AllPostsQueryResult,
-} from "@echo-webkom/cms/types";
-
+import type { UnoReturnType } from "@/api/uno/client";
 import { type RSSItem } from "@/lib/rss";
 
-type Post = AllPostsQueryResult[number];
-type Happening = AllHappeningsQueryResult[number];
-type MeetingMinute = AllMeetingMinuteQueryResult[number];
+type Post = UnoReturnType["sanity"]["posts"]["all"][number];
+type Happening = UnoReturnType["sanity"]["happenings"]["all"][number];
+type MeetingMinute = UnoReturnType["sanity"]["minutes"]["all"][number];
 
 const POST_DESCRIPTION_LENGTH = 300;
 const HAPPENING_DESCRIPTION_LENGTH = 300;

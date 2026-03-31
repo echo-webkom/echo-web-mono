@@ -2,45 +2,48 @@ import Image from "next/image";
 import Link from "next/link";
 import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
-import { type JobAdsQueryResult } from "@echo-webkom/cms/types";
-import { urlFor } from "@/lib/sanity";
-
+import type { UnoReturnType } from "@/api/uno/client";
 import { degreeYearsToList, degreeYearText } from "@/lib/degree-year-text";
+import { urlFor } from "@/lib/sanity";
 import { jobTypeString } from "@/sanity/utils/mappers";
 import { shortDate } from "@/utils/date";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
 import { Button } from "./ui/button";
 
 type JobAdSidebarProps = {
-  jobAd: JobAdsQueryResult[number];
+  jobAd: UnoReturnType["sanity"]["jobAds"]["all"][number];
 };
 
 export const JobAdSidebar = ({ jobAd }: JobAdSidebarProps) => {
   return (
     <Sidebar className="flex h-fit w-full flex-col gap-4 lg:max-w-[360px]">
-      <SidebarItem>
-        <Link href={jobAd.company.website}>
-          <div className="overflow-hidden rounded-xl border-2 bg-white">
-            <div className="relative aspect-square w-full">
-              <Image
-                src={urlFor(jobAd.company.image).url()}
-                alt={`${jobAd.company.name} logo`}
-                fill
-              />
+      {jobAd.company && (
+        <SidebarItem>
+          <Link href={jobAd.company.website}>
+            <div className="overflow-hidden rounded-xl border-2 bg-white">
+              <div className="relative aspect-square w-full">
+                <Image
+                  src={urlFor(jobAd.company.image).url()}
+                  alt={`${jobAd.company.name} logo`}
+                  fill
+                />
+              </div>
             </div>
-          </div>
-        </Link>
-      </SidebarItem>
+          </Link>
+        </SidebarItem>
+      )}
 
-      <SidebarItem>
-        <SidebarItemTitle>Bedrift</SidebarItemTitle>
-        <SidebarItemContent>
-          <a className="hover:underline" href={jobAd.company.website}>
-            {jobAd.company.name}
-            <ExternalLink className="ml-1 inline-block h-4 w-4" />
-          </a>
-        </SidebarItemContent>
-      </SidebarItem>
+      {jobAd.company && (
+        <SidebarItem>
+          <SidebarItemTitle>Bedrift</SidebarItemTitle>
+          <SidebarItemContent>
+            <a className="hover:underline" href={jobAd.company.website}>
+              {jobAd.company.name}
+              <ExternalLink className="ml-1 inline-block h-4 w-4" />
+            </a>
+          </SidebarItemContent>
+        </SidebarItem>
+      )}
       <SidebarItem>
         <SidebarItemTitle>Sted</SidebarItemTitle>
         <SidebarItemContent>
@@ -56,18 +59,26 @@ export const JobAdSidebar = ({ jobAd }: JobAdSidebarProps) => {
       <SidebarItem>
         <SidebarItemTitle>Årstrinn</SidebarItemTitle>
         <SidebarItemContent>
-          {degreeYearText(degreeYearsToList(jobAd.degreeYears))}
+          {degreeYearText(
+            degreeYearsToList(jobAd.degreeYears as Parameters<typeof degreeYearsToList>[0]),
+          )}
         </SidebarItemContent>
       </SidebarItem>
-      <SidebarItem>
-        <SidebarItemTitle>Stillingstype</SidebarItemTitle>
-        <SidebarItemContent>{jobTypeString(jobAd.jobType)}</SidebarItemContent>
-      </SidebarItem>
-      <SidebarItem>
-        <Button data-attr="apply-link" className="w-full hover:underline" asChild>
-          <Link href={jobAd.link}>Søk her!</Link>
-        </Button>
-      </SidebarItem>
+      {jobAd.jobType && (
+        <SidebarItem>
+          <SidebarItemTitle>Stillingstype</SidebarItemTitle>
+          <SidebarItemContent>
+            {jobTypeString(jobAd.jobType as Parameters<typeof jobTypeString>[0])}
+          </SidebarItemContent>
+        </SidebarItem>
+      )}
+      {jobAd.link && (
+        <SidebarItem>
+          <Button data-attr="apply-link" className="w-full hover:underline" asChild>
+            <Link href={jobAd.link}>Søk her!</Link>
+          </Button>
+        </SidebarItem>
+      )}
     </Sidebar>
   );
 };

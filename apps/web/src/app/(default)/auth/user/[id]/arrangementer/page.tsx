@@ -8,7 +8,7 @@ import {
 } from "@echo-webkom/lib";
 
 import { unoWithAdmin } from "@/api/server";
-import { type UnoClientType } from "@/api/uno/client";
+import { type UnoReturnType } from "@/api/uno/client";
 import { auth } from "@/auth/session";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
@@ -84,7 +84,7 @@ export default async function UserHappenings({ params }: Props) {
   );
 }
 
-type Registrations = Awaited<ReturnType<UnoClientType["users"]["registrationsByUserId"]>>;
+type Registrations = UnoReturnType["users"]["registrationsByUserId"];
 
 function EventCards({
   registrations,

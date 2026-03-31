@@ -8,7 +8,6 @@ import type { IdentifiedSanityDocumentStub, SanityClient } from "@sanity/client"
 import groq from "groq";
 
 import { clientWith, writeClientWith, type Dataset } from "./client";
-
 import { companies, locations, makeHappenings, makeJobAds } from "./fixtures";
 
 export type Options = {

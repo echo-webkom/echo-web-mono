@@ -29,7 +29,7 @@ export const JobAds = async ({ className }: { className?: string }) => {
 
 export const BedpresJobAds = async ({ companyId }: { companyId: string }) => {
   const jobAds = await fetchAvailableJobAds().then((res) =>
-    res.filter((jobAd) => jobAd.company._id === companyId),
+    res.filter((jobAd) => jobAd.company?._id === companyId),
   );
 
   if (!jobAds.length) {

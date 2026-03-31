@@ -73,14 +73,29 @@ definitions:
       name:
         type: string
     type: object
+  uno_domain_model.CMSDegreeYears:
+    properties:
+      FIFTH:
+        type: boolean
+      FIRST:
+        type: boolean
+      FOURTH:
+        type: boolean
+      PHD:
+        type: boolean
+      SECOND:
+        type: boolean
+      THIRD:
+        type: boolean
+    type: object
   uno_domain_model.CMSHSApplicationProfile:
     properties:
       _id:
         type: string
+      image:
+        $ref: '#/definitions/uno_domain_model.Image'
       name:
         type: string
-      picture:
-        $ref: '#/definitions/uno_domain_model.Image'
     type: object
   uno_domain_model.CMSJobLocation:
     properties:
@@ -107,10 +122,10 @@ definitions:
     properties:
       _id:
         type: string
+      image:
+        $ref: '#/definitions/uno_domain_model.Image'
       name:
         type: string
-      picture:
-        $ref: '#/definitions/uno_domain_model.Image'
       socials:
         $ref: '#/definitions/uno_domain_model.CMSProfileSocials'
     type: object
@@ -154,12 +169,23 @@ definitions:
       linkedin:
         type: string
     type: object
+  uno_domain_model.CMSTtime:
+    properties:
+      _type:
+        type: string
+      hour:
+        type: integer
+      minute:
+        type: integer
+    type: object
   uno_domain_model.Color:
     properties:
       _type:
         type: string
       alpha:
         type: number
+      hex:
+        type: string
       hsl:
         $ref: '#/definitions/uno_domain_model.HSL'
       hsv:
@@ -231,15 +257,6 @@ definitions:
         type: number
       r:
         type: number
-    type: object
-  uno_domain_model.Reference:
-    properties:
-      _key:
-        type: string
-      _ref:
-        type: string
-      reference:
-        type: string
     type: object
   uno_domain_model.UserWithBanInfo:
     properties:
@@ -325,8 +342,6 @@ definitions:
         $ref: '#/definitions/uno_domain_model.Color'
       expiringDate:
         type: string
-      isExternal:
-        type: boolean
       linkTo:
         type: string
       text:
@@ -399,9 +414,7 @@ definitions:
       registrationStart:
         type: string
       registrationStartGroups:
-        items:
-          $ref: '#/definitions/uno_domain_model.Reference'
-        type: array
+        type: string
       slug:
         type: string
       spotRanges:
@@ -449,9 +462,7 @@ definitions:
       deadline:
         type: string
       degreeYears:
-        items:
-          type: integer
-        type: array
+        $ref: '#/definitions/uno_domain_model.CMSDegreeYears'
       expiresAt:
         type: string
       jobType:
@@ -550,11 +561,11 @@ definitions:
       cost:
         type: integer
       dayOfWeek:
-        type: string
+        type: integer
       endDate:
         type: string
       endTime:
-        type: string
+        $ref: '#/definitions/uno_domain_model.CMSTtime'
       externalLink:
         type: string
       happeningType:
@@ -564,7 +575,7 @@ definitions:
           type: string
         type: array
       interval:
-        type: integer
+        type: string
       location:
         $ref: '#/definitions/uno_domain_model.CMSLocation'
       organizers:
@@ -576,7 +587,7 @@ definitions:
       startDate:
         type: string
       startTime:
-        type: string
+        $ref: '#/definitions/uno_domain_model.CMSTtime'
       title:
         type: string
     type: object
@@ -2315,13 +2326,13 @@ paths:
     get:
       parameters:
       - collectionFormat: csv
-        description: Happening types (e.g. bedpres, event)
+        description: Happening types (bedpres, event, external)
         in: query
         items:
           type: string
         name: types[]
         type: array
-      - description: Max number of results (default 5)
+      - description: 'Max number of results (default: 5)'
         in: query
         name: "n"
         type: integer

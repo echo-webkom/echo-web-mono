@@ -3,7 +3,6 @@ import Link from "next/link";
 import { isPast } from "date-fns/isPast";
 
 import { urlFor } from "@/lib/sanity";
-
 import { fetchNewestMovie } from "@/sanity/movies";
 import { shortDateNoTimeNoYear, shortDateNoYear } from "@/utils/date";
 

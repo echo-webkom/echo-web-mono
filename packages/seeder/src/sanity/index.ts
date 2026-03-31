@@ -10,8 +10,8 @@ import {
 } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 import { isBoard } from "@echo-webkom/lib";
-import { clientWith, type Dataset } from "./client";
 
+import { clientWith, type Dataset } from "./client";
 import { happeningQueryList, type SanityHappening } from "./query";
 
 export type Options = {

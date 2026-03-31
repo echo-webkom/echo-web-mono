@@ -31,7 +31,7 @@ export const generateMetadata = async (props: Props) => {
 
   return {
     title: jobAd.title,
-    description: `Ny stillingsannonse hos ${jobAd.company.name}, ${jobAd.locations[0]?.name}.`,
+    description: `Ny stillingsannonse hos ${jobAd.company?.name}, ${jobAd.locations[0]?.name}.`,
   };
 };
 

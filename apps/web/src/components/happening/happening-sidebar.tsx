@@ -4,8 +4,6 @@ import Link from "next/link";
 import { isFuture, isPast } from "date-fns";
 import { RxArrowRight as ArrowRight, RxExternalLink as ExternalLink } from "react-icons/rx";
 
-import { urlFor } from "@/lib/sanity";
-
 import { auth } from "@/auth/session";
 import { AddToCalender } from "@/components/add-to-calender";
 import { DeregisterButton } from "@/components/deregister-button";
@@ -14,6 +12,7 @@ import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/co
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
 import { isHost, isWebkom } from "@/lib/memberships";
+import { urlFor } from "@/lib/sanity";
 import { type fetchHappeningBySlug } from "@/sanity/happening";
 import { cn } from "@/utils/cn";
 import {
@@ -301,7 +300,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
             </SidebarItem>
           )}
 
-          {event.endDate && !isSameDate(event.date, event.endDate) && (
+          {event.date && event.endDate && !isSameDate(event.date, event.endDate) && (
             <SidebarItem>
               <SidebarItemTitle>Slutt:</SidebarItemTitle>
               <SidebarItemContent>{shortDateNoYear(event.endDate)}</SidebarItemContent>

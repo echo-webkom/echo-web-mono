@@ -1,12 +1,12 @@
-import { type AllPostsQueryResult } from "@echo-webkom/cms/types";
 import { isBoard } from "@echo-webkom/lib";
-import { urlFor } from "@/lib/sanity";
 
+import type { UnoReturnType } from "@/api/uno/client";
+import { urlFor } from "@/lib/sanity";
 import { initials } from "@/utils/string";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 type AuthorsProps = {
-  authors: AllPostsQueryResult[number]["authors"];
+  authors: UnoReturnType["sanity"]["posts"]["all"][number]["authors"];
 };
 
 export const Authors = ({ authors }: AuthorsProps) => {

@@ -2,10 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { isFuture, isToday } from "date-fns";
 
-import { urlFor } from "@/lib/sanity";
-
 import { Chip } from "@/components/typography/chip";
 import { createHappeningLink } from "@/lib/create-link";
+import { urlFor } from "@/lib/sanity";
 import { getSpotRangeInfo } from "@/lib/spot-range-info";
 import { type fetchHomeHappenings } from "@/sanity/happening";
 import { cn } from "@/utils/cn";
@@ -66,7 +65,7 @@ export const HappeningPreview = ({
 
           <ul className="sm:text-md text-md my-auto flex-none text-right">
             <li className="text-muted-foreground flex justify-end text-xs">
-              <time>{shortDateNoTimeNoYear(happening.date)}</time>
+              <time>{happening.date ? shortDateNoTimeNoYear(happening.date) : ""}</time>
             </li>
             <li className="text-muted-foreground">
               <HappeningRegistrationInfo

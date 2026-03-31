@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og";
 
 import { urlFor } from "@/lib/sanity";
-
 import { fetchHappeningBySlug } from "@/sanity/happening";
 
 export const size = {

@@ -1733,13 +1733,13 @@ const docTemplate = `{
                             "type": "string"
                         },
                         "collectionFormat": "csv",
-                        "description": "Happening types (e.g. bedpres, event)",
+                        "description": "Happening types (bedpres, event, external)",
                         "name": "types[]",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "description": "Max number of results (default 5)",
+                        "description": "Max number of results (default: 5)",
                         "name": "n",
                         "in": "query"
                     }
@@ -3120,17 +3120,40 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_domain_model.CMSDegreeYears": {
+            "type": "object",
+            "properties": {
+                "FIFTH": {
+                    "type": "boolean"
+                },
+                "FIRST": {
+                    "type": "boolean"
+                },
+                "FOURTH": {
+                    "type": "boolean"
+                },
+                "PHD": {
+                    "type": "boolean"
+                },
+                "SECOND": {
+                    "type": "boolean"
+                },
+                "THIRD": {
+                    "type": "boolean"
+                }
+            }
+        },
         "uno_domain_model.CMSHSApplicationProfile": {
             "type": "object",
             "properties": {
                 "_id": {
                     "type": "string"
                 },
+                "image": {
+                    "$ref": "#/definitions/uno_domain_model.Image"
+                },
                 "name": {
                     "type": "string"
-                },
-                "picture": {
-                    "$ref": "#/definitions/uno_domain_model.Image"
                 }
             }
         },
@@ -3173,11 +3196,11 @@ const docTemplate = `{
                 "_id": {
                     "type": "string"
                 },
+                "image": {
+                    "$ref": "#/definitions/uno_domain_model.Image"
+                },
                 "name": {
                     "type": "string"
-                },
-                "picture": {
-                    "$ref": "#/definitions/uno_domain_model.Image"
                 },
                 "socials": {
                     "$ref": "#/definitions/uno_domain_model.CMSProfileSocials"
@@ -3246,6 +3269,20 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_domain_model.CMSTtime": {
+            "type": "object",
+            "properties": {
+                "_type": {
+                    "type": "string"
+                },
+                "hour": {
+                    "type": "integer"
+                },
+                "minute": {
+                    "type": "integer"
+                }
+            }
+        },
         "uno_domain_model.Color": {
             "type": "object",
             "properties": {
@@ -3254,6 +3291,9 @@ const docTemplate = `{
                 },
                 "alpha": {
                     "type": "number"
+                },
+                "hex": {
+                    "type": "string"
                 },
                 "hsl": {
                     "$ref": "#/definitions/uno_domain_model.HSL"
@@ -3363,20 +3403,6 @@ const docTemplate = `{
                 },
                 "r": {
                     "type": "number"
-                }
-            }
-        },
-        "uno_domain_model.Reference": {
-            "type": "object",
-            "properties": {
-                "_key": {
-                    "type": "string"
-                },
-                "_ref": {
-                    "type": "string"
-                },
-                "reference": {
-                    "type": "string"
                 }
             }
         },
@@ -3509,9 +3535,6 @@ const docTemplate = `{
                 "expiringDate": {
                     "type": "string"
                 },
-                "isExternal": {
-                    "type": "boolean"
-                },
                 "linkTo": {
                     "type": "string"
                 },
@@ -3621,10 +3644,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "registrationStartGroups": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/uno_domain_model.Reference"
-                    }
+                    "type": "string"
                 },
                 "slug": {
                     "type": "string"
@@ -3697,10 +3717,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "degreeYears": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
+                    "$ref": "#/definitions/uno_domain_model.CMSDegreeYears"
                 },
                 "expiresAt": {
                     "type": "string"
@@ -3851,13 +3868,13 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "dayOfWeek": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "endDate": {
                     "type": "string"
                 },
                 "endTime": {
-                    "type": "string"
+                    "$ref": "#/definitions/uno_domain_model.CMSTtime"
                 },
                 "externalLink": {
                     "type": "string"
@@ -3872,7 +3889,7 @@ const docTemplate = `{
                     }
                 },
                 "interval": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "location": {
                     "$ref": "#/definitions/uno_domain_model.CMSLocation"
@@ -3890,7 +3907,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "startTime": {
-                    "type": "string"
+                    "$ref": "#/definitions/uno_domain_model.CMSTtime"
                 },
                 "title": {
                     "type": "string"

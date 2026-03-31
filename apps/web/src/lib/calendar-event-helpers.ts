@@ -47,11 +47,11 @@ export const happeningsToCalendarEvent = (
   happenings: FetchAllHappeningsResult,
 ): Array<CalendarEvent> => {
   return happenings
-    .filter((happening) => Boolean(happening.date))
+    .filter((happening) => happening.date !== null)
     .map((happening) => ({
       id: happening._id,
       title: happening.title,
-      date: new Date(happening.date),
+      date: new Date(happening.date!),
       endDate: happening.endDate ? new Date(happening.endDate) : undefined,
       body: removeMd(happening.body ?? ""),
       link: createHappeningLink(happening),

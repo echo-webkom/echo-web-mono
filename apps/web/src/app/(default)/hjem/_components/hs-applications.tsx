@@ -1,13 +1,12 @@
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
 
-import { urlFor } from "@/lib/sanity";
-
 import { unoWithAdmin } from "@/api/server";
-import type { UnoClientType } from "@/api/uno/client";
+import type { UnoReturnType } from "@/api/uno/client";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { urlFor } from "@/lib/sanity";
 import { ellipsis, initials } from "@/utils/string";
 
 export const HSApplications = async () => {
@@ -36,14 +35,13 @@ export const HSApplications = async () => {
 };
 
 type ApplicationProps = {
-  application: Awaited<ReturnType<UnoClientType["sanity"]["hsApplications"]["all"]>>[number];
+  application: UnoReturnType["sanity"]["hsApplications"]["all"][number];
 };
 
 const Application = ({ application }: ApplicationProps) => {
-  const imageUrl =
-    application.profile.image?.asset._ref
-      ? urlFor(application.profile.image).url()
-      : "";
+  const imageUrl = application.profile.image?.asset._ref
+    ? urlFor(application.profile.image).url()
+    : "";
 
   const name = ellipsis(application.profile.name, 13);
 

@@ -3,12 +3,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import { urlFor } from "@/lib/sanity";
-
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
+import { urlFor } from "@/lib/sanity";
 import { fetchMerchBySlug } from "@/sanity/merch";
 
 type Props = {

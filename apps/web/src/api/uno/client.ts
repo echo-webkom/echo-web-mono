@@ -1,5 +1,7 @@
 import ky, { type KyInstance, type Options } from "ky";
 
+import { type HappeningType, type PageType, type StudentGroupType } from "@echo-webkom/lib";
+
 const DEFAULT_BASE_URL = "https://uno.echo-webkom.no";
 
 export type UnoClientOptions = {
@@ -19,6 +21,18 @@ function dateReviver(_key: string, value: unknown): unknown {
 }
 
 export type UnoClientType = (typeof UnoClient)["prototype"];
+
+type AwaitedMethods<T> = {
+  [K in keyof T]: T[K] extends (...args: Array<never>) => Promise<infer R>
+    ? R
+    : {
+        [M in keyof T[K]]: T[K][M] extends (...args: Array<never>) => Promise<infer R> ? R : never;
+      };
+};
+
+export type UnoReturnType = {
+  [NS in keyof UnoClientType]: AwaitedMethods<UnoClientType[NS]>;
+};
 
 export interface CMSAsset {
   _type: string;
@@ -115,11 +129,11 @@ export interface CMSHappening {
   _id: string;
   _createdAt: string;
   _updatedAt: string;
-  _type: string;
+  _type: "happening";
   title: string;
   slug: string;
   isPinned: boolean | null;
-  happeningType: string;
+  happeningType: HappeningType;
   hideRegistrations: boolean | null;
   company: CMSCompany | null;
   organizers: Array<CMSOrganizerRef>;
@@ -127,7 +141,7 @@ export interface CMSHappening {
   date: string | null;
   endDate: string | null;
   cost: number | null;
-  registrationStartGroups: Array<CMSReference>;
+  registrationStartGroups: string | null;
   registrationGroups: Array<string>;
   registrationStart: string | null;
   registrationEnd: string | null;
@@ -142,8 +156,8 @@ export interface CMSHomeHappening {
   _id: string;
   title: string;
   isPinned: boolean | null;
-  happeningType: string;
-  date: string | null;
+  happeningType: HappeningType;
+  date: string;
   registrationStart: string | null;
   slug: string;
   image: CMSImage;
@@ -152,19 +166,19 @@ export interface CMSHomeHappening {
 
 export interface CMSRepeatingHappening {
   _id: string;
-  _type: string;
+  _type: "repeatingHappening";
   title: string;
   slug: string;
-  happeningType: string;
+  happeningType: HappeningType;
   organizers: Array<CMSOrganizerRef>;
   contacts: Array<CMSContact>;
   location: CMSLocation | null;
-  dayOfWeek: number | null;
-  startTime: { hour: number; minute: number } | null;
-  endTime: { hour: number; minute: number } | null;
-  startDate: string | null;
-  endDate: string | null;
-  interval: string | null;
+  dayOfWeek: number;
+  startTime: { hour: number; minute: number };
+  endTime: { hour: number; minute: number };
+  startDate: string;
+  endDate: string;
+  interval: "weekly" | "bi-weekly" | "monthly";
   cost: number | null;
   ignoredDates: Array<string>;
   externalLink: string | null;
@@ -185,7 +199,7 @@ export interface CMSPost {
   slug: string;
   authors: Array<CMSAuthor>;
   image: CMSImage;
-  body: string | null;
+  body: string;
 }
 
 export interface CMSProfileSocials {
@@ -220,7 +234,7 @@ export interface CMSStudentGroup {
   _updatedAt: Date;
   name: string;
   isActive: boolean | null;
-  groupType: string;
+  groupType: StudentGroupType;
   slug: string;
   description: string | null;
   image: CMSImage;
@@ -246,7 +260,14 @@ export interface CMSJobAd {
   jobType: string | null;
   link: string | null;
   deadline: string | null;
-  degreeYears: { FIRST?: boolean; SECOND?: boolean; THIRD?: boolean; FOURTH?: boolean; FIFTH?: boolean; PHD?: boolean } | null;
+  degreeYears: {
+    FIRST?: boolean;
+    SECOND?: boolean;
+    THIRD?: boolean;
+    FOURTH?: boolean;
+    FIFTH?: boolean;
+    PHD?: boolean;
+  } | null;
   body: string | null;
 }
 
@@ -261,7 +282,7 @@ export interface CMSBanner {
 export interface CMSStaticInfo {
   title: string;
   slug: string;
-  pageType: string | null;
+  pageType: PageType;
   body: string | null;
 }
 
@@ -279,8 +300,8 @@ export interface CMSMerch {
 export interface CMSMeetingMinute {
   _id: string;
   isAllMeeting: boolean | null;
-  date: string | null;
-  title: string | null;
+  date: string;
+  title: string;
   document: string | null;
 }
 
