@@ -22,7 +22,7 @@ type CMSJobAd struct {
 	Title       string           `json:"title"`
 	Slug        string           `json:"slug"`
 	Company     *CMSCompany      `json:"company"`
-	ExpiresAt   *string          `json:"expiresAt"`
+	ExpiresAt   string           `json:"expiresAt"`
 	Locations   []CMSJobLocation `json:"locations"`
 	JobType     *string          `json:"jobType"`
 	Link        *string          `json:"link"`

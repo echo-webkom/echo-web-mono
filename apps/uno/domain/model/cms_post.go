@@ -14,5 +14,5 @@ type CMSPost struct {
 	Slug      string      `json:"slug"`
 	Authors   []CMSAuthor `json:"authors"`
 	Image     Image       `json:"image"`
-	Body      *string     `json:"body"`
+	Body      string      `json:"body"`
 }

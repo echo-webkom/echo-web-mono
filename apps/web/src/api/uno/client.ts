@@ -274,8 +274,8 @@ export interface CMSJobAd {
 export interface CMSBanner {
   backgroundColor: CMSColor | null;
   textColor: CMSColor | null;
-  text: string | null;
-  expiringDate: string | null;
+  text: string;
+  expiringDate: string;
   linkTo: string | null;
 }
 
