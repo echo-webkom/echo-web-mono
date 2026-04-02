@@ -212,7 +212,7 @@ export interface CMSProfileSocials {
 export interface CMSMemberProfile {
   _id: string;
   name: string;
-  image: CMSImage;
+  image: CMSImage | null;
   socials: CMSProfileSocials | null;
 }
 
@@ -237,7 +237,7 @@ export interface CMSStudentGroup {
   groupType: StudentGroupType;
   slug: string;
   description: string | null;
-  image: CMSImage;
+  image: CMSImage | null;
   members: Array<CMSMember>;
   socials: CMSStudentGroupSocials | null;
 }

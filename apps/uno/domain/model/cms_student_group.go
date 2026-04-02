@@ -10,7 +10,7 @@ type CMSProfileSocials struct {
 type CMSMemberProfile struct {
 	ID      string             `json:"_id"`
 	Name    string             `json:"name"`
-	Image   Image              `json:"image"`
+	Image   *Image             `json:"image"`
 	Socials *CMSProfileSocials `json:"socials"`
 }
 
@@ -35,7 +35,7 @@ type CMSStudentGroup struct {
 	GroupType   string                  `json:"groupType"`
 	Slug        string                  `json:"slug"`
 	Description *string                 `json:"description"`
-	Image       Image                   `json:"image"`
+	Image       *Image                  `json:"image"`
 	Members     []CMSMember             `json:"members"`
 	Socials     *CMSStudentGroupSocials `json:"socials"`
 }
