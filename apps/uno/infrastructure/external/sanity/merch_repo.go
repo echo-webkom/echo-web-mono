@@ -38,3 +38,28 @@ func (r *MerchRepo) GetAllMerch(ctx context.Context) ([]model.CMSMerch, error) {
 	}
 	return result, nil
 }
+
+const merchBySlugQuery = `
+*[_type == "merch" && slug.current == $slug && !(_id in path('drafts.**'))] {
+  _id,
+  _createdAt,
+  _updatedAt,
+  title,
+  "slug": slug.current,
+  price,
+  image,
+  body
+}[0]
+`
+
+func (r *MerchRepo) GetMerchBySlug(ctx context.Context, slug string) (*model.CMSMerch, error) {
+	r.logger.Info(ctx, "getting merch by slug from sanity", "slug", slug)
+	result, err := sanity.Query[*model.CMSMerch](ctx, r.client, merchBySlugQuery, map[string]any{
+		"slug": slug,
+	})
+	if err != nil {
+		r.logger.Error(ctx, "failed to get merch by slug from sanity", "slug", slug, "error", err)
+		return nil, err
+	}
+	return result, nil
+}

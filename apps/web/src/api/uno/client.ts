@@ -352,6 +352,35 @@ class SanityHappeningsApi {
     );
   }
 
+  async filtered(params: {
+    search?: string;
+    type: string;
+    open: boolean;
+    past: boolean;
+    dateFrom?: Array<Date | undefined>;
+    dateTo?: Array<Date | undefined>;
+  }) {
+    const query = new URLSearchParams();
+    if (params.search) query.set("search", params.search);
+    query.set("type", params.type);
+    query.set("open", String(params.open));
+    query.set("past", String(params.past));
+    if (params.dateFrom) {
+      for (const d of params.dateFrom) {
+        query.append("from[]", d ? d.toISOString() : "");
+      }
+    }
+    if (params.dateTo) {
+      for (const d of params.dateTo) {
+        query.append("to[]", d ? d.toISOString() : "");
+      }
+    }
+    return await this.client.requestJson<Array<CMSHappening>>(
+      "GET",
+      `sanity/happenings/filtered?${query.toString()}`,
+    );
+  }
+
   async bySlug(slug: string) {
     return await this.client.requestJson<CMSHappening>("GET", `sanity/happenings/${slug}`);
   }
@@ -369,6 +398,13 @@ class SanityHappeningsApi {
       "sanity/repeating-happenings",
     );
   }
+
+  async repeatingBySlug(slug: string) {
+    return await this.client.requestJson<CMSRepeatingHappening | null>(
+      "GET",
+      `sanity/repeating-happenings/${slug}`,
+    );
+  }
 }
 
 class SanityPostsApi {
@@ -378,8 +414,18 @@ class SanityPostsApi {
     this.client = client;
   }
 
-  async all() {
-    return await this.client.requestJson<Array<CMSPost>>("GET", "sanity/posts");
+  async all(params?: { n?: number }) {
+    const query = new URLSearchParams();
+    if (params?.n !== undefined) query.set("n", String(params.n));
+    const qs = query.toString();
+    return await this.client.requestJson<Array<CMSPost>>(
+      "GET",
+      `sanity/posts${qs ? `?${qs}` : ""}`,
+    );
+  }
+
+  async bySlug(slug: string) {
+    return await this.client.requestJson<CMSPost | null>("GET", `sanity/posts/${slug}`);
   }
 }
 
@@ -417,8 +463,18 @@ class SanityJobAdsApi {
     this.client = client;
   }
 
-  async all() {
-    return await this.client.requestJson<Array<CMSJobAd>>("GET", "sanity/job-ads");
+  async all(params?: { n?: number }) {
+    const query = new URLSearchParams();
+    if (params?.n !== undefined) query.set("n", String(params.n));
+    const qs = query.toString();
+    return await this.client.requestJson<Array<CMSJobAd>>(
+      "GET",
+      `sanity/job-ads${qs ? `?${qs}` : ""}`,
+    );
+  }
+
+  async bySlug(slug: string) {
+    return await this.client.requestJson<CMSJobAd | null>("GET", `sanity/job-ads/${slug}`);
   }
 }
 
@@ -432,6 +488,14 @@ class SanityStaticInfoApi {
   async all() {
     return await this.client.requestJson<Array<CMSStaticInfo>>("GET", "sanity/static-info");
   }
+
+  async bySlug(pageType: string, slug: string) {
+    const query = new URLSearchParams({ pageType, slug });
+    return await this.client.requestJson<CMSStaticInfo | null>(
+      "GET",
+      `sanity/static-info/by-slug?${query.toString()}`,
+    );
+  }
 }
 
 class SanityMerchApi {
@@ -441,8 +505,18 @@ class SanityMerchApi {
     this.client = client;
   }
 
-  async all() {
-    return await this.client.requestJson<Array<CMSMerch>>("GET", "sanity/merch");
+  async all(params?: { n?: number }) {
+    const query = new URLSearchParams();
+    if (params?.n !== undefined) query.set("n", String(params.n));
+    const qs = query.toString();
+    return await this.client.requestJson<Array<CMSMerch>>(
+      "GET",
+      `sanity/merch${qs ? `?${qs}` : ""}`,
+    );
+  }
+
+  async bySlug(slug: string) {
+    return await this.client.requestJson<CMSMerch | null>("GET", `sanity/merch/${slug}`);
   }
 }
 
@@ -456,6 +530,10 @@ class SanityMinutesApi {
   async all() {
     return await this.client.requestJson<Array<CMSMeetingMinute>>("GET", "sanity/minutes");
   }
+
+  async byId(id: string) {
+    return await this.client.requestJson<CMSMeetingMinute | null>("GET", `sanity/minutes/${id}`);
+  }
 }
 
 class SanityMoviesApi {
@@ -467,6 +545,10 @@ class SanityMoviesApi {
 
   async all() {
     return await this.client.requestJson<Array<CMSMovie>>("GET", "sanity/movies");
+  }
+
+  async upcoming(n: number) {
+    return await this.client.requestJson<Array<CMSMovie>>("GET", `sanity/movies/upcoming?n=${n}`);
   }
 }
 

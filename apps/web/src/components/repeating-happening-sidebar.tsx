@@ -1,11 +1,11 @@
 import { eachDayOfInterval } from "date-fns";
 import { RxExternalLink as ExternalLink } from "react-icons/rx";
 
+import { type CMSRepeatingHappening } from "@/api/uno/client";
 import { auth } from "@/auth/session";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/components/sidebar";
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
-import { type fetchRepeatingHappening } from "@/sanity/repeating-happening";
 import { getDate } from "@/utils/date";
 import { mailTo } from "@/utils/prefixes";
 import { capitalize } from "@/utils/string";
@@ -14,7 +14,7 @@ import { ReactionButtonGroup } from "./reaction-button-group";
 const DAYS = ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"];
 
 type EventSidebarProps = {
-  event: Exclude<Awaited<ReturnType<typeof fetchRepeatingHappening>>, null>;
+  event: CMSRepeatingHappening;
 };
 
 const intervalToText = (interval: "bi-weekly" | "monthly" | "weekly") => {
@@ -28,9 +28,7 @@ const intervalToText = (interval: "bi-weekly" | "monthly" | "weekly") => {
   }
 };
 
-const getNextOccurrence = (
-  happening: Exclude<Awaited<ReturnType<typeof fetchRepeatingHappening>>, null>,
-) => {
+const getNextOccurrence = (happening: CMSRepeatingHappening) => {
   return eachDayOfInterval({
     start: new Date(happening.startDate),
     end: new Date(happening.endDate),

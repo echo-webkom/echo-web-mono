@@ -5,14 +5,14 @@ import { eq } from "drizzle-orm";
 import { registrations } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 import { isHost } from "@/lib/memberships";
-import { fetchHappeningBySlug } from "@/sanity/happening";
 
 export const removeAllRegistrations = async (slug: string) => {
   try {
     const user = await auth();
-    const happening = await fetchHappeningBySlug(slug);
+    const happening = await unoWithAdmin.sanity.happenings.bySlug(slug).catch(() => null);
 
     const groups = happening?.organizers?.map((organizer) => organizer.slug) ?? [];
     if (!user || !happening || !isHost(user, groups)) {

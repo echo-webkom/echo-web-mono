@@ -2372,6 +2372,11 @@ paths:
       - sanity
   /sanity/job-ads:
     get:
+      parameters:
+      - description: Max number of results
+        in: query
+        name: "n"
+        type: integer
       produces:
       - application/json
       responses:
@@ -2390,6 +2395,11 @@ paths:
       - sanity
   /sanity/merch:
     get:
+      parameters:
+      - description: Max number of results
+        in: query
+        name: "n"
+        type: integer
       produces:
       - application/json
       responses:
@@ -2444,6 +2454,11 @@ paths:
       - sanity
   /sanity/posts:
     get:
+      parameters:
+      - description: Max number of results
+        in: query
+        name: "n"
+        type: integer
       produces:
       - application/json
       responses:

@@ -1,17 +1,16 @@
 import type { MetadataRoute } from "next";
 
+import { unoWithAdmin } from "@/api/server";
 import { BASE_URL } from "@/config";
 import { createHappeningLink } from "@/lib/create-link";
-import { fetchAllHappenings } from "@/sanity/happening";
-import { fetchJobAds } from "@/sanity/job-ad";
-import { fetchAllPosts } from "@/sanity/posts";
-import { fetchStaticInfo } from "@/sanity/static-info";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const happenings = await fetchAllHappenings();
-  const jobs = await fetchJobAds();
-  const posts = await fetchAllPosts();
-  const staticPages = await fetchStaticInfo();
+  const [happenings, jobs, posts, staticPages] = await Promise.all([
+    unoWithAdmin.sanity.happenings.all().catch(() => []),
+    unoWithAdmin.sanity.jobAds.all().catch(() => []),
+    unoWithAdmin.sanity.posts.all().catch(() => []),
+    unoWithAdmin.sanity.staticInfo.all().catch(() => []),
+  ]);
 
   return [
     ...happenings.map((e): MetadataRoute.Sitemap[number] => {

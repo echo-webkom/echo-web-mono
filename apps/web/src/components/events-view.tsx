@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { subMinutes } from "date-fns";
 
-import { fetchFilteredHappening } from "@/sanity/happening";
+import { unoWithAdmin } from "@/api/server";
 import { startOfNextWeek, startOfTheWeekAfterNext } from "@/utils/date";
 import { CombinedHappeningPreview } from "./happening/happening-preview-box";
 import { Callout } from "./typography/callout";
@@ -81,8 +81,18 @@ const getDateIntervals = (params: SearchParams) => {
 
 export const EventsView = async ({ searchParams }: { searchParams: SearchParams }) => {
   const query: FilteredHappeningQuery = createFilteredHappeningQuery(searchParams);
+  const dateFilter = getDateIntervals(searchParams);
 
-  const { happenings } = await fetchFilteredHappening(query, getDateIntervals(searchParams));
+  const happenings = await unoWithAdmin.sanity.happenings
+    .filtered({
+      search: query.search,
+      type: query.type,
+      open: query.open,
+      past: query.past,
+      dateFrom: dateFilter?.map((i) => i.start),
+      dateTo: dateFilter?.map((i) => i.end),
+    })
+    .catch(() => null);
 
   if (!happenings)
     return (

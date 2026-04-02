@@ -1,8 +1,8 @@
 import { cache } from "react";
 import { notFound } from "next/navigation";
 
+import { unoWithAdmin } from "@/api/server";
 import { EventPage } from "@/components/happening/event-page";
-import { fetchHappeningBySlug } from "@/sanity/happening";
 import { norwegianDateString } from "@/utils/date";
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
 };
 
 const getData = cache(async (slug: string) => {
-  const event = await fetchHappeningBySlug(slug);
+  const event = await unoWithAdmin.sanity.happenings.bySlug(slug).catch(() => null);
 
   if (!event) {
     console.info(

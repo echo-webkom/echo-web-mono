@@ -99,3 +99,77 @@ func (_c *CMSStaticInfoRepo_GetAllStaticInfo_Call) RunAndReturn(run func(ctx con
 	_c.Call.Return(run)
 	return _c
 }
+
+// GetStaticInfoBySlug provides a mock function for the type CMSStaticInfoRepo
+func (_mock *CMSStaticInfoRepo) GetStaticInfoBySlug(ctx context.Context, pageType string, slug string) (*model.CMSStaticInfo, error) {
+	ret := _mock.Called(ctx, pageType, slug)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetStaticInfoBySlug")
+	}
+
+	var r0 *model.CMSStaticInfo
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string) (*model.CMSStaticInfo, error)); ok {
+		return returnFunc(ctx, pageType, slug)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string) *model.CMSStaticInfo); ok {
+		r0 = returnFunc(ctx, pageType, slug)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.CMSStaticInfo)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string, string) error); ok {
+		r1 = returnFunc(ctx, pageType, slug)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// CMSStaticInfoRepo_GetStaticInfoBySlug_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetStaticInfoBySlug'
+type CMSStaticInfoRepo_GetStaticInfoBySlug_Call struct {
+	*mock.Call
+}
+
+// GetStaticInfoBySlug is a helper method to define mock.On call
+//   - ctx context.Context
+//   - pageType string
+//   - slug string
+func (_e *CMSStaticInfoRepo_Expecter) GetStaticInfoBySlug(ctx interface{}, pageType interface{}, slug interface{}) *CMSStaticInfoRepo_GetStaticInfoBySlug_Call {
+	return &CMSStaticInfoRepo_GetStaticInfoBySlug_Call{Call: _e.mock.On("GetStaticInfoBySlug", ctx, pageType, slug)}
+}
+
+func (_c *CMSStaticInfoRepo_GetStaticInfoBySlug_Call) Run(run func(ctx context.Context, pageType string, slug string)) *CMSStaticInfoRepo_GetStaticInfoBySlug_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *CMSStaticInfoRepo_GetStaticInfoBySlug_Call) Return(cMSStaticInfo *model.CMSStaticInfo, err error) *CMSStaticInfoRepo_GetStaticInfoBySlug_Call {
+	_c.Call.Return(cMSStaticInfo, err)
+	return _c
+}
+
+func (_c *CMSStaticInfoRepo_GetStaticInfoBySlug_Call) RunAndReturn(run func(ctx context.Context, pageType string, slug string) (*model.CMSStaticInfo, error)) *CMSStaticInfoRepo_GetStaticInfoBySlug_Call {
+	_c.Call.Return(run)
+	return _c
+}

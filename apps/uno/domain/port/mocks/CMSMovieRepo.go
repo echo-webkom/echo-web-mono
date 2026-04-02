@@ -99,3 +99,71 @@ func (_c *CMSMovieRepo_GetAllMovies_Call) RunAndReturn(run func(ctx context.Cont
 	_c.Call.Return(run)
 	return _c
 }
+
+// GetUpcomingMovies provides a mock function for the type CMSMovieRepo
+func (_mock *CMSMovieRepo) GetUpcomingMovies(ctx context.Context, n int) ([]model.CMSMovie, error) {
+	ret := _mock.Called(ctx, n)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetUpcomingMovies")
+	}
+
+	var r0 []model.CMSMovie
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) ([]model.CMSMovie, error)); ok {
+		return returnFunc(ctx, n)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int) []model.CMSMovie); ok {
+		r0 = returnFunc(ctx, n)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]model.CMSMovie)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, int) error); ok {
+		r1 = returnFunc(ctx, n)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// CMSMovieRepo_GetUpcomingMovies_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetUpcomingMovies'
+type CMSMovieRepo_GetUpcomingMovies_Call struct {
+	*mock.Call
+}
+
+// GetUpcomingMovies is a helper method to define mock.On call
+//   - ctx context.Context
+//   - n int
+func (_e *CMSMovieRepo_Expecter) GetUpcomingMovies(ctx interface{}, n interface{}) *CMSMovieRepo_GetUpcomingMovies_Call {
+	return &CMSMovieRepo_GetUpcomingMovies_Call{Call: _e.mock.On("GetUpcomingMovies", ctx, n)}
+}
+
+func (_c *CMSMovieRepo_GetUpcomingMovies_Call) Run(run func(ctx context.Context, n int)) *CMSMovieRepo_GetUpcomingMovies_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *CMSMovieRepo_GetUpcomingMovies_Call) Return(cMSMovies []model.CMSMovie, err error) *CMSMovieRepo_GetUpcomingMovies_Call {
+	_c.Call.Return(cMSMovies, err)
+	return _c
+}
+
+func (_c *CMSMovieRepo_GetUpcomingMovies_Call) RunAndReturn(run func(ctx context.Context, n int) ([]model.CMSMovie, error)) *CMSMovieRepo_GetUpcomingMovies_Call {
+	_c.Call.Return(run)
+	return _c
+}

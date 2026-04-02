@@ -1877,6 +1877,14 @@ const docTemplate = `{
                     "sanity"
                 ],
                 "summary": "Get all job ads from CMS",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Max number of results",
+                        "name": "n",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1905,6 +1913,14 @@ const docTemplate = `{
                     "sanity"
                 ],
                 "summary": "Get all merch items from CMS",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Max number of results",
+                        "name": "n",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1989,6 +2005,14 @@ const docTemplate = `{
                     "sanity"
                 ],
                 "summary": "Get all posts from CMS",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Max number of results",
+                        "name": "n",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

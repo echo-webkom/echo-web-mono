@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 import { ChevronRight } from "lucide-react";
 
+import { unoWithAdmin } from "@/api/server";
 import { ParticlesBackdrop } from "@/components/animations/particles";
 import { Reveal } from "@/components/animations/reveal";
 import { BlurLogo } from "@/components/blur-logo";
@@ -10,7 +11,6 @@ import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { createHappeningLink } from "@/lib/create-link";
 import { ensureAnonymous } from "@/lib/ensure";
-import { fetchHomeHappenings } from "@/sanity/happening";
 import { Banner } from "./hjem/_components/banner";
 
 export default async function HomePage() {
@@ -19,8 +19,8 @@ export default async function HomePage() {
   });
 
   const [bedpresses, events] = await Promise.all([
-    fetchHomeHappenings(["bedpres"], 4),
-    fetchHomeHappenings(["event", "external"], 4),
+    unoWithAdmin.sanity.happenings.home({ types: ["bedpres"], n: 4 }).catch(() => []),
+    unoWithAdmin.sanity.happenings.home({ types: ["event", "external"], n: 4 }).catch(() => []),
   ]);
 
   const studieretninger: Record<string, Record<string, string>> = {

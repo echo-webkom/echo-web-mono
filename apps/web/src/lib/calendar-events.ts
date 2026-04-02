@@ -1,8 +1,6 @@
 import "server-only";
 
-import { fetchAllHappenings } from "@/sanity/happening";
-import { fetchMovies } from "@/sanity/movies";
-import { fetchAllRepeatingHappenings } from "@/sanity/repeating-happening";
+import { unoWithAdmin } from "@/api/server";
 import {
   happeningsToCalendarEvent,
   moviesToCalendarEvent,
@@ -11,9 +9,9 @@ import {
 
 export const getCalendarEvents = async () => {
   const [happenings, repeatingHappenings, movies] = await Promise.all([
-    fetchAllHappenings(),
-    fetchAllRepeatingHappenings(),
-    fetchMovies(),
+    unoWithAdmin.sanity.happenings.all().catch(() => []),
+    unoWithAdmin.sanity.happenings.repeating().catch(() => []),
+    unoWithAdmin.sanity.movies.all().catch(() => []),
   ]);
 
   return happeningsToCalendarEvent(happenings)

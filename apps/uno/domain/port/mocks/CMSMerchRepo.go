@@ -99,3 +99,71 @@ func (_c *CMSMerchRepo_GetAllMerch_Call) RunAndReturn(run func(ctx context.Conte
 	_c.Call.Return(run)
 	return _c
 }
+
+// GetMerchBySlug provides a mock function for the type CMSMerchRepo
+func (_mock *CMSMerchRepo) GetMerchBySlug(ctx context.Context, slug string) (*model.CMSMerch, error) {
+	ret := _mock.Called(ctx, slug)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetMerchBySlug")
+	}
+
+	var r0 *model.CMSMerch
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (*model.CMSMerch, error)); ok {
+		return returnFunc(ctx, slug)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) *model.CMSMerch); ok {
+		r0 = returnFunc(ctx, slug)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.CMSMerch)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, slug)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// CMSMerchRepo_GetMerchBySlug_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetMerchBySlug'
+type CMSMerchRepo_GetMerchBySlug_Call struct {
+	*mock.Call
+}
+
+// GetMerchBySlug is a helper method to define mock.On call
+//   - ctx context.Context
+//   - slug string
+func (_e *CMSMerchRepo_Expecter) GetMerchBySlug(ctx interface{}, slug interface{}) *CMSMerchRepo_GetMerchBySlug_Call {
+	return &CMSMerchRepo_GetMerchBySlug_Call{Call: _e.mock.On("GetMerchBySlug", ctx, slug)}
+}
+
+func (_c *CMSMerchRepo_GetMerchBySlug_Call) Run(run func(ctx context.Context, slug string)) *CMSMerchRepo_GetMerchBySlug_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *CMSMerchRepo_GetMerchBySlug_Call) Return(cMSMerch *model.CMSMerch, err error) *CMSMerchRepo_GetMerchBySlug_Call {
+	_c.Call.Return(cMSMerch, err)
+	return _c
+}
+
+func (_c *CMSMerchRepo_GetMerchBySlug_Call) RunAndReturn(run func(ctx context.Context, slug string) (*model.CMSMerch, error)) *CMSMerchRepo_GetMerchBySlug_Call {
+	_c.Call.Return(run)
+	return _c
+}

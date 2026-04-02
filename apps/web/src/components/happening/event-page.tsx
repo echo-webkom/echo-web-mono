@@ -1,9 +1,8 @@
 import { Suspense } from "react";
 import Image from "next/image";
 
+import { type CMSHappening, type CMSRepeatingHappening } from "@/api/uno/client";
 import { BedpresJobAds } from "@/app/(default)/hjem/_components/job-ads";
-import { type fetchHappeningBySlug } from "@/sanity/happening";
-import { type fetchRepeatingHappening } from "@/sanity/repeating-happening";
 import { CommentSection } from "../comments/comment-section";
 import { CompanyLeagueBanner } from "../company-league-banner";
 import { Container } from "../container";
@@ -15,11 +14,7 @@ import { HappeningSidebar } from "./happening-sidebar";
 const FOOTBALL_KEYWORDS = ["fotball", "databrus fc", "futsal", "bedriftsliga", "innefotball"];
 
 type EventPageProps = {
-  // The awaited return type of fetchHappeningBySlug or fetchRepeatingHappening with null excluded from the type
-  event: Exclude<
-    Awaited<ReturnType<typeof fetchHappeningBySlug | typeof fetchRepeatingHappening>>,
-    null
-  >;
+  event: CMSHappening | CMSRepeatingHappening;
 };
 
 export const EventPage = ({ event }: EventPageProps) => {

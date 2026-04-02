@@ -35,3 +35,25 @@ func (r *MeetingMinuteRepo) GetAllMeetingMinutes(ctx context.Context) ([]model.C
 	}
 	return result, nil
 }
+
+const meetingMinuteByIdQuery = `
+*[_type == "meetingMinute" && _id == $id && !(_id in path('drafts.**'))] {
+  _id,
+  isAllMeeting,
+  date,
+  title,
+  "document": document.asset->url
+}[0]
+`
+
+func (r *MeetingMinuteRepo) GetMeetingMinuteById(ctx context.Context, id string) (*model.CMSMeetingMinute, error) {
+	r.logger.Info(ctx, "getting meeting minute by id from sanity", "id", id)
+	result, err := sanity.Query[*model.CMSMeetingMinute](ctx, r.client, meetingMinuteByIdQuery, map[string]any{
+		"id": id,
+	})
+	if err != nil {
+		r.logger.Error(ctx, "failed to get meeting minute by id from sanity", "id", id, "error", err)
+		return nil, err
+	}
+	return result, nil
+}

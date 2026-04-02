@@ -99,3 +99,71 @@ func (_c *CMSPostRepo_GetAllPosts_Call) RunAndReturn(run func(ctx context.Contex
 	_c.Call.Return(run)
 	return _c
 }
+
+// GetPostBySlug provides a mock function for the type CMSPostRepo
+func (_mock *CMSPostRepo) GetPostBySlug(ctx context.Context, slug string) (*model.CMSPost, error) {
+	ret := _mock.Called(ctx, slug)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetPostBySlug")
+	}
+
+	var r0 *model.CMSPost
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (*model.CMSPost, error)); ok {
+		return returnFunc(ctx, slug)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) *model.CMSPost); ok {
+		r0 = returnFunc(ctx, slug)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.CMSPost)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, slug)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// CMSPostRepo_GetPostBySlug_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetPostBySlug'
+type CMSPostRepo_GetPostBySlug_Call struct {
+	*mock.Call
+}
+
+// GetPostBySlug is a helper method to define mock.On call
+//   - ctx context.Context
+//   - slug string
+func (_e *CMSPostRepo_Expecter) GetPostBySlug(ctx interface{}, slug interface{}) *CMSPostRepo_GetPostBySlug_Call {
+	return &CMSPostRepo_GetPostBySlug_Call{Call: _e.mock.On("GetPostBySlug", ctx, slug)}
+}
+
+func (_c *CMSPostRepo_GetPostBySlug_Call) Run(run func(ctx context.Context, slug string)) *CMSPostRepo_GetPostBySlug_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *CMSPostRepo_GetPostBySlug_Call) Return(cMSPost *model.CMSPost, err error) *CMSPostRepo_GetPostBySlug_Call {
+	_c.Call.Return(cMSPost, err)
+	return _c
+}
+
+func (_c *CMSPostRepo_GetPostBySlug_Call) RunAndReturn(run func(ctx context.Context, slug string) (*model.CMSPost, error)) *CMSPostRepo_GetPostBySlug_Call {
+	_c.Call.Return(run)
+	return _c
+}

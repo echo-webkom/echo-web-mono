@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
@@ -35,26 +36,34 @@ func NewSanityMux(
 
 	mux.Handle("GET", "/happenings", s.getAllHappenings)
 	mux.Handle("GET", "/happenings/home", s.getHomeHappenings)
+	mux.Handle("GET", "/happenings/filtered", s.getFilteredHappenings)
 	mux.Handle("GET", "/happenings/{slug}", s.getHappeningBySlug)
 	mux.Handle("GET", "/happenings/{slug}/contacts", s.getHappeningContactsBySlug)
 	mux.Handle("GET", "/repeating-happenings", s.getAllRepeatingHappenings)
+	mux.Handle("GET", "/repeating-happenings/{slug}", s.getRepeatingHappeningBySlug)
 
 	mux.Handle("GET", "/posts", s.getAllPosts)
+	mux.Handle("GET", "/posts/{slug}", s.getPostBySlug)
 
 	mux.Handle("GET", "/student-groups", s.getStudentGroups)
 	mux.Handle("GET", "/student-groups/{slug}", s.getStudentGroupBySlug)
 
 	mux.Handle("GET", "/job-ads", s.getAllJobAds)
+	mux.Handle("GET", "/job-ads/{slug}", s.getJobAdBySlug)
 
 	mux.Handle("GET", "/banner", s.getBanner)
 
 	mux.Handle("GET", "/static-info", s.getAllStaticInfo)
+	mux.Handle("GET", "/static-info/by-slug", s.getStaticInfoBySlug)
 
 	mux.Handle("GET", "/merch", s.getAllMerch)
+	mux.Handle("GET", "/merch/{slug}", s.getMerchBySlug)
 
 	mux.Handle("GET", "/minutes", s.getAllMeetingMinutes)
+	mux.Handle("GET", "/minutes/{id}", s.getMeetingMinuteById)
 
 	mux.Handle("GET", "/movies", s.getAllMovies)
+	mux.Handle("GET", "/movies/upcoming", s.getUpcomingMovies)
 
 	mux.Handle("GET", "/hs-applications", s.getAllHSApplications)
 
@@ -233,6 +242,7 @@ func (s *sanityCMS) getAllRepeatingHappenings(ctx *handler.Context) error {
 // @Summary      Get all posts from CMS
 // @Tags         sanity
 // @Produce      json
+// @Param        n  query     int             false  "Max number of results"
 // @Success      200  {array}   dto.CMSPostDTO  "OK"
 // @Failure      500  {string}  string          "Internal Server Error"
 // @Router       /sanity/posts [get]
@@ -240,6 +250,11 @@ func (s *sanityCMS) getAllPosts(ctx *handler.Context) error {
 	posts, err := s.cmsService.GetAllPosts(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
+	}
+	if nStr, ok := ctx.QueryParam("n"); ok {
+		if n, err := strconv.Atoi(nStr); err == nil && n > 0 && n < len(posts) {
+			posts = posts[:n]
+		}
 	}
 	return ctx.JSON(posts)
 }
@@ -295,6 +310,7 @@ func (s *sanityCMS) getStudentGroupBySlug(ctx *handler.Context) error {
 // @Summary      Get all job ads from CMS
 // @Tags         sanity
 // @Produce      json
+// @Param        n  query     int              false  "Max number of results"
 // @Success      200  {array}   dto.CMSJobAdDTO  "OK"
 // @Failure      500  {string}  string           "Internal Server Error"
 // @Router       /sanity/job-ads [get]
@@ -302,6 +318,11 @@ func (s *sanityCMS) getAllJobAds(ctx *handler.Context) error {
 	ads, err := s.cmsService.GetAllJobAds(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
+	}
+	if nStr, ok := ctx.QueryParam("n"); ok {
+		if n, err := strconv.Atoi(nStr); err == nil && n > 0 && n < len(ads) {
+			ads = ads[:n]
+		}
 	}
 	return ctx.JSON(ads)
 }
@@ -347,6 +368,7 @@ func (s *sanityCMS) getAllStaticInfo(ctx *handler.Context) error {
 // @Summary      Get all merch items from CMS
 // @Tags         sanity
 // @Produce      json
+// @Param        n  query     int              false  "Max number of results"
 // @Success      200  {array}   dto.CMSMerchDTO  "OK"
 // @Failure      500  {string}  string           "Internal Server Error"
 // @Router       /sanity/merch [get]
@@ -354,6 +376,11 @@ func (s *sanityCMS) getAllMerch(ctx *handler.Context) error {
 	merch, err := s.cmsService.GetAllMerch(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
+	}
+	if nStr, ok := ctx.QueryParam("n"); ok {
+		if n, err := strconv.Atoi(nStr); err == nil && n > 0 && n < len(merch) {
+			merch = merch[:n]
+		}
 	}
 	return ctx.JSON(merch)
 }
@@ -401,4 +428,128 @@ func (s *sanityCMS) getAllHSApplications(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 	return ctx.JSON(applications)
+}
+
+func (s *sanityCMS) getRepeatingHappeningBySlug(ctx *handler.Context) error {
+	slug := ctx.PathValue("slug")
+	happening, err := s.cmsService.GetRepeatingHappeningBySlug(ctx.Context(), slug)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+	if happening == nil {
+		return ctx.NotFound(errors.New("repeating happening not found"))
+	}
+	return ctx.JSON(happening)
+}
+
+func (s *sanityCMS) getPostBySlug(ctx *handler.Context) error {
+	slug := ctx.PathValue("slug")
+	post, err := s.cmsService.GetPostBySlug(ctx.Context(), slug)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+	if post == nil {
+		return ctx.NotFound(errors.New("post not found"))
+	}
+	return ctx.JSON(post)
+}
+
+func (s *sanityCMS) getMerchBySlug(ctx *handler.Context) error {
+	slug := ctx.PathValue("slug")
+	merch, err := s.cmsService.GetMerchBySlug(ctx.Context(), slug)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+	if merch == nil {
+		return ctx.NotFound(errors.New("merch not found"))
+	}
+	return ctx.JSON(merch)
+}
+
+func (s *sanityCMS) getJobAdBySlug(ctx *handler.Context) error {
+	slug := ctx.PathValue("slug")
+	ad, err := s.cmsService.GetJobAdBySlug(ctx.Context(), slug)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+	if ad == nil {
+		return ctx.NotFound(errors.New("job ad not found"))
+	}
+	return ctx.JSON(ad)
+}
+
+func (s *sanityCMS) getStaticInfoBySlug(ctx *handler.Context) error {
+	pageType, _ := ctx.QueryParam("pageType")
+	slug, _ := ctx.QueryParam("slug")
+	info, err := s.cmsService.GetStaticInfoBySlug(ctx.Context(), pageType, slug)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+	if info == nil {
+		return ctx.NotFound(errors.New("static info not found"))
+	}
+	return ctx.JSON(info)
+}
+
+func (s *sanityCMS) getMeetingMinuteById(ctx *handler.Context) error {
+	id := ctx.PathValue("id")
+	minute, err := s.cmsService.GetMeetingMinuteById(ctx.Context(), id)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+	if minute == nil {
+		return ctx.NotFound(errors.New("meeting minute not found"))
+	}
+	return ctx.JSON(minute)
+}
+
+func (s *sanityCMS) getUpcomingMovies(ctx *handler.Context) error {
+	n := 5
+	if nStr, ok := ctx.QueryParam("n"); ok {
+		if parsed, err := strconv.Atoi(nStr); err == nil && parsed > 0 {
+			n = parsed
+		}
+	}
+	movies, err := s.cmsService.GetUpcomingMovies(ctx.Context(), n)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+	return ctx.JSON(movies)
+}
+
+func (s *sanityCMS) getFilteredHappenings(ctx *handler.Context) error {
+	search, _ := ctx.QueryParam("search")
+	happeningType, _ := ctx.QueryParam("type")
+	openStr, _ := ctx.QueryParam("open")
+	pastStr, _ := ctx.QueryParam("past")
+
+	filter := service.CMSHappeningFilter{
+		Search: search,
+		Type:   happeningType,
+		Open:   openStr == "true",
+		Past:   pastStr == "true",
+	}
+
+	fromStrs := ctx.R.URL.Query()["from[]"]
+	toStrs := ctx.R.URL.Query()["to[]"]
+	for _, s := range fromStrs {
+		if s == "" {
+			filter.DateFrom = append(filter.DateFrom, time.Time{})
+		} else if t, err := time.Parse(time.RFC3339, s); err == nil {
+			filter.DateFrom = append(filter.DateFrom, t)
+		}
+	}
+	for _, s := range toStrs {
+		if s == "" {
+			filter.DateTo = append(filter.DateTo, time.Time{})
+		} else if t, err := time.Parse(time.RFC3339, s); err == nil {
+			filter.DateTo = append(filter.DateTo, t)
+		}
+	}
+
+	happenings, err := s.cmsService.GetFilteredHappenings(ctx.Context(), filter)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+	return ctx.JSON(happenings)
 }

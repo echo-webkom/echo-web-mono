@@ -1,10 +1,10 @@
+import { unoWithAdmin } from "@/api/server";
 import { JobAdPreview } from "@/components/job-ad-preview";
-import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { BentoBox } from "./bento-box";
 import { JobAdCarousel } from "./job-ads-client";
 
 export const JobAds = async ({ className }: { className?: string }) => {
-  const jobAds = await fetchAvailableJobAds(4);
+  const jobAds = await unoWithAdmin.sanity.jobAds.all({ n: 4 }).catch(() => []);
 
   if (!jobAds.length) {
     return null;
@@ -28,9 +28,10 @@ export const JobAds = async ({ className }: { className?: string }) => {
 };
 
 export const BedpresJobAds = async ({ companyId }: { companyId: string }) => {
-  const jobAds = await fetchAvailableJobAds().then((res) =>
-    res.filter((jobAd) => jobAd.company?._id === companyId),
-  );
+  const jobAds = await unoWithAdmin.sanity.jobAds
+    .all()
+    .then((res) => res.filter((jobAd) => jobAd.company?._id === companyId))
+    .catch(() => []);
 
   if (!jobAds.length) {
     return null;

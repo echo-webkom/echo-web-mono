@@ -99,3 +99,71 @@ func (_c *CMSJobAdRepo_GetAllJobAds_Call) RunAndReturn(run func(ctx context.Cont
 	_c.Call.Return(run)
 	return _c
 }
+
+// GetJobAdBySlug provides a mock function for the type CMSJobAdRepo
+func (_mock *CMSJobAdRepo) GetJobAdBySlug(ctx context.Context, slug string) (*model.CMSJobAd, error) {
+	ret := _mock.Called(ctx, slug)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetJobAdBySlug")
+	}
+
+	var r0 *model.CMSJobAd
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (*model.CMSJobAd, error)); ok {
+		return returnFunc(ctx, slug)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) *model.CMSJobAd); ok {
+		r0 = returnFunc(ctx, slug)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.CMSJobAd)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, slug)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// CMSJobAdRepo_GetJobAdBySlug_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetJobAdBySlug'
+type CMSJobAdRepo_GetJobAdBySlug_Call struct {
+	*mock.Call
+}
+
+// GetJobAdBySlug is a helper method to define mock.On call
+//   - ctx context.Context
+//   - slug string
+func (_e *CMSJobAdRepo_Expecter) GetJobAdBySlug(ctx interface{}, slug interface{}) *CMSJobAdRepo_GetJobAdBySlug_Call {
+	return &CMSJobAdRepo_GetJobAdBySlug_Call{Call: _e.mock.On("GetJobAdBySlug", ctx, slug)}
+}
+
+func (_c *CMSJobAdRepo_GetJobAdBySlug_Call) Run(run func(ctx context.Context, slug string)) *CMSJobAdRepo_GetJobAdBySlug_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *CMSJobAdRepo_GetJobAdBySlug_Call) Return(cMSJobAd *model.CMSJobAd, err error) *CMSJobAdRepo_GetJobAdBySlug_Call {
+	_c.Call.Return(cMSJobAd, err)
+	return _c
+}
+
+func (_c *CMSJobAdRepo_GetJobAdBySlug_Call) RunAndReturn(run func(ctx context.Context, slug string) (*model.CMSJobAd, error)) *CMSJobAdRepo_GetJobAdBySlug_Call {
+	_c.Call.Return(run)
+	return _c
+}

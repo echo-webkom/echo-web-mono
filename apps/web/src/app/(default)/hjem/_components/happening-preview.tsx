@@ -2,11 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { isFuture, isToday } from "date-fns";
 
+import { type CMSHomeHappening } from "@/api/uno/client";
 import { Chip } from "@/components/typography/chip";
 import { createHappeningLink } from "@/lib/create-link";
 import { urlFor } from "@/lib/sanity";
 import { getSpotRangeInfo } from "@/lib/spot-range-info";
-import { type fetchHomeHappenings } from "@/sanity/happening";
 import { cn } from "@/utils/cn";
 import { shortDateNoTimeNoYear, shortDateNoYear, time } from "@/utils/date";
 
@@ -14,7 +14,7 @@ export const HappeningPreview = ({
   happening,
   registrationCount,
 }: {
-  happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
+  happening: CMSHomeHappening;
   registrationCount: {
     waiting: number;
     registered: number;
@@ -84,7 +84,7 @@ const HappeningRegistrationInfo = ({
   happening,
   registrationCount,
 }: {
-  happening: Awaited<ReturnType<typeof fetchHomeHappenings>>[number];
+  happening: CMSHomeHappening;
   registrationCount: {
     waiting: number;
     registered: number;

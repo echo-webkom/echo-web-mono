@@ -99,3 +99,71 @@ func (_c *CMSRepeatingHappeningRepo_GetAllRepeatingHappenings_Call) RunAndReturn
 	_c.Call.Return(run)
 	return _c
 }
+
+// GetRepeatingHappeningBySlug provides a mock function for the type CMSRepeatingHappeningRepo
+func (_mock *CMSRepeatingHappeningRepo) GetRepeatingHappeningBySlug(ctx context.Context, slug string) (*model.CMSRepeatingHappening, error) {
+	ret := _mock.Called(ctx, slug)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetRepeatingHappeningBySlug")
+	}
+
+	var r0 *model.CMSRepeatingHappening
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (*model.CMSRepeatingHappening, error)); ok {
+		return returnFunc(ctx, slug)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) *model.CMSRepeatingHappening); ok {
+		r0 = returnFunc(ctx, slug)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.CMSRepeatingHappening)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, slug)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// CMSRepeatingHappeningRepo_GetRepeatingHappeningBySlug_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetRepeatingHappeningBySlug'
+type CMSRepeatingHappeningRepo_GetRepeatingHappeningBySlug_Call struct {
+	*mock.Call
+}
+
+// GetRepeatingHappeningBySlug is a helper method to define mock.On call
+//   - ctx context.Context
+//   - slug string
+func (_e *CMSRepeatingHappeningRepo_Expecter) GetRepeatingHappeningBySlug(ctx interface{}, slug interface{}) *CMSRepeatingHappeningRepo_GetRepeatingHappeningBySlug_Call {
+	return &CMSRepeatingHappeningRepo_GetRepeatingHappeningBySlug_Call{Call: _e.mock.On("GetRepeatingHappeningBySlug", ctx, slug)}
+}
+
+func (_c *CMSRepeatingHappeningRepo_GetRepeatingHappeningBySlug_Call) Run(run func(ctx context.Context, slug string)) *CMSRepeatingHappeningRepo_GetRepeatingHappeningBySlug_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *CMSRepeatingHappeningRepo_GetRepeatingHappeningBySlug_Call) Return(cMSRepeatingHappening *model.CMSRepeatingHappening, err error) *CMSRepeatingHappeningRepo_GetRepeatingHappeningBySlug_Call {
+	_c.Call.Return(cMSRepeatingHappening, err)
+	return _c
+}
+
+func (_c *CMSRepeatingHappeningRepo_GetRepeatingHappeningBySlug_Call) RunAndReturn(run func(ctx context.Context, slug string) (*model.CMSRepeatingHappening, error)) *CMSRepeatingHappeningRepo_GetRepeatingHappeningBySlug_Call {
+	_c.Call.Return(run)
+	return _c
+}

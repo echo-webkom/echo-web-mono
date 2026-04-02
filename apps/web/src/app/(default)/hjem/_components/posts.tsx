@@ -1,9 +1,9 @@
+import { unoWithAdmin } from "@/api/server";
 import { PostPreview } from "@/components/post-preview";
-import { fetchPosts } from "@/sanity/posts";
 import { BentoBox } from "./bento-box";
 
 export const Posts = async ({ className }: { className?: string }) => {
-  const posts = await fetchPosts(2);
+  const posts = await unoWithAdmin.sanity.posts.all({ n: 2 }).catch(() => []);
 
   return (
     <BentoBox title="Siste nytt" href="/for-studenter/innlegg" className={className}>

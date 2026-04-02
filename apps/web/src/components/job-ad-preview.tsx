@@ -3,8 +3,8 @@ import Link from "next/link";
 import { LuBriefcase, LuCalendarClock, LuCoffee, LuPin } from "react-icons/lu";
 
 import type { UnoReturnType } from "@/api/uno/client";
+import { jobTypeString } from "@/lib/mappers";
 import { urlFor } from "@/lib/sanity";
-import { jobTypeString } from "@/sanity/utils/mappers";
 import { cn } from "@/utils/cn";
 import { shortDateNoTime } from "@/utils/date";
 

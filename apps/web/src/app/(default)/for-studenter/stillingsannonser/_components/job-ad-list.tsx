@@ -13,7 +13,7 @@ import { Text } from "@/components/typography/text";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
-import { jobTypeString } from "@/sanity/utils/mappers";
+import { jobTypeString } from "@/lib/mappers";
 
 type JobAdListProps = {
   jobAds: UnoReturnType["sanity"]["jobAds"]["all"];

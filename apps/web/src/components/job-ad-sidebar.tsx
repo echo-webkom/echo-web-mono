@@ -4,8 +4,8 @@ import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
 import type { UnoReturnType } from "@/api/uno/client";
 import { degreeYearsToList, degreeYearText } from "@/lib/degree-year-text";
+import { jobTypeString } from "@/lib/mappers";
 import { urlFor } from "@/lib/sanity";
-import { jobTypeString } from "@/sanity/utils/mappers";
 import { shortDate } from "@/utils/date";
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
 import { Button } from "./ui/button";

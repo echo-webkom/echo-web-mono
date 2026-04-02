@@ -1,9 +1,8 @@
 import { cache } from "react";
 import { notFound } from "next/navigation";
 
+import { unoWithAdmin } from "@/api/server";
 import { EventPage } from "@/components/happening/event-page";
-import { fetchHappeningBySlug } from "@/sanity/happening";
-import { fetchRepeatingHappening } from "@/sanity/repeating-happening";
 
 type Props = {
   params: Promise<{
@@ -12,12 +11,14 @@ type Props = {
 };
 
 const getData = cache(async (slug: string) => {
-  const event = await fetchHappeningBySlug(slug);
+  const event = await unoWithAdmin.sanity.happenings.bySlug(slug).catch(() => null);
   if (event) {
     return event;
   }
 
-  const repeatingEvent = await fetchRepeatingHappening(slug);
+  const repeatingEvent = await unoWithAdmin.sanity.happenings
+    .repeatingBySlug(slug)
+    .catch(() => null);
   if (repeatingEvent) {
     return repeatingEvent;
   }

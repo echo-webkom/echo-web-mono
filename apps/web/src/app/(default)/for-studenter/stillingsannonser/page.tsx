@@ -1,8 +1,8 @@
 import { type Metadata } from "next";
 
+import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
-import { fetchAvailableJobAds } from "@/sanity/job-ad";
 import { JobAdList } from "./_components/job-ad-list";
 
 export const metadata = {
@@ -10,7 +10,7 @@ export const metadata = {
 } satisfies Metadata;
 
 export default async function JobAdsOverviewPage() {
-  const jobAds = await fetchAvailableJobAds();
+  const jobAds = await unoWithAdmin.sanity.jobAds.all().catch(() => []);
 
   return (
     <Container className="flex flex-row py-10">
