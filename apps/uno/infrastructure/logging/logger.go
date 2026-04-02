@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"os"
 	"time"
+	"uno/config"
 	"uno/domain/port"
 
 	"github.com/lmittmann/tint"
@@ -20,12 +21,12 @@ func New(logger *slog.Logger) port.Logger {
 	}
 }
 
-func NewWithConfig(env string) port.Logger {
+func NewWithConfig(env config.Environment) port.Logger {
 	var baseHandler slog.Handler
 
 	// In production we want to use a structured JSON handler for better integration with log aggregation tools.
 	// While in development we just want a more human-friendly console output.
-	if env == "production" {
+	if env == config.Production {
 		baseHandler = slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
 			Level: slog.LevelInfo,
 		})

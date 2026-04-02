@@ -3,8 +3,18 @@ package config
 import (
 	"log"
 	"os"
+	"strings"
 
 	"github.com/echo-webkom/cenv"
+)
+
+type Environment string
+
+const (
+	Testing     Environment = "testing"
+	Development Environment = "development"
+	Staging     Environment = "staging"
+	Production  Environment = "production"
 )
 
 type Config struct {
@@ -12,7 +22,7 @@ type Config struct {
 	ApiPort     string
 	AdminAPIKey string
 	AuthSecret  string
-	Environment string
+	Environment Environment
 
 	ProfilePictureEndpointURL     string
 	ProfilePictureBucketName      string
@@ -28,7 +38,7 @@ type Config struct {
 type CronConfig struct {
 	DatabaseURL  string
 	CronTimezone string
-	Environment  string
+	Environment  Environment
 
 	ProfilePictureEndpointURL     string
 	ProfilePictureBucketName      string
@@ -37,9 +47,9 @@ type CronConfig struct {
 }
 
 func Load() *Config {
-	environment := getEnvOrDefault("ENVIRONMENT", "development")
+	environment := parseEnvironment(os.Getenv("ENVIRONMENT"))
 
-	if environment == "development" {
+	if environment == Development {
 		if err := cenv.VerifyEx("../../.env", "../../cenv.schema.json"); err != nil {
 			log.Println(err)
 		}
@@ -71,9 +81,9 @@ func Load() *Config {
 }
 
 func LoadCronConfig() *CronConfig {
-	environment := getEnvOrDefault("ENVIRONMENT", "development")
+	environment := parseEnvironment(os.Getenv("ENVIRONMENT"))
 
-	if environment == "development" {
+	if environment == Development {
 		if err := cenv.VerifyEx("../../.env", "../../cenv.schema.json"); err != nil {
 			log.Println(err)
 		}
@@ -107,4 +117,26 @@ func getEnvOrDefault(key, defaultValue string) string {
 		return value
 	}
 	return defaultValue
+}
+
+// parseEnvironment determines the environment based on the prefix of the input string.
+// Since all the environments start with different letters, we can use the first letter to determine the environment.
+func parseEnvironment(env string) Environment {
+	// Lowercase the input to make it case-insensitive
+	env = strings.ToLower(env)
+
+	if strings.HasPrefix(env, "t") {
+		return Testing
+	}
+	if strings.HasPrefix(env, "s") {
+		return Staging
+	}
+	if strings.HasPrefix(env, "d") {
+		return Development
+	}
+	if strings.HasPrefix(env, "p") {
+		return Production
+	}
+	// We default to production if the environment can not be determined, since this is the safest option.
+	return Production
 }
