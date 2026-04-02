@@ -1,8 +1,8 @@
 "use client";
 
-import { type ComponentPropsWithoutRef } from "react";
-import Image from "next/image";
 import { motion } from "motion/react";
+import Image from "next/image";
+import { type ComponentPropsWithoutRef } from "react";
 
 import EchoLogo from "@/assets/images/echo-logo.png";
 import { cn } from "@/utils/cn";

@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
-import Link from "next/link";
 import {
   addDays,
   addMonths,
@@ -15,6 +13,8 @@ import {
   startOfMonth,
   subDays,
 } from "date-fns";
+import Link from "next/link";
+import { useEffect, useMemo } from "react";
 
 import { EventHoverPreview } from "@/components/calendar/event-hover-prev";
 import { Heading } from "@/components/typography/heading";

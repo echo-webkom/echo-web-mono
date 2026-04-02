@@ -1,7 +1,7 @@
 {
   "name": "@echo-webkom/docs",
-  "type": "module",
   "version": "0.0.1",
+  "type": "module",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -11,11 +11,8 @@
     "deploy": "astro build && wrangler deploy",
     "typegen": "wrangler types",
     "sync": "astro sync",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "typecheck": "astro check"
+    "check": "oxlint . && oxfmt --check . && astro check",
+    "check:fix": "oxlint . --fix && oxfmt . && astro check"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
@@ -28,15 +25,7 @@
     "typescript": "5.9.3"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "@ianvs/prettier-plugin-sort-imports": "4.7.1",
     "@types/node": "22.19.7",
-    "eslint": "^10.1.0",
-    "eslint-plugin-astro": "^1.6.0",
-    "globals": "^17.4.0",
-    "prettier": "3.8.1",
-    "prettier-plugin-tailwindcss": "0.7.2",
-    "typescript-eslint": "^8.58.0",
     "wrangler": "^4.62.0"
   }
 }

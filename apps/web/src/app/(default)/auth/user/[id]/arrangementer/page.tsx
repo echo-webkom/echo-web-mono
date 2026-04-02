@@ -1,11 +1,10 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
-
 import {
   happeningTypeToPath,
   happeningTypeToString,
   registrationStatusToString,
 } from "@echo-webkom/lib";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { unoWithAdmin } from "@/api/server";
 import { type UnoReturnType } from "@/api/uno/client";

@@ -11,18 +11,15 @@
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
     "db:generate": "pnpm with-env drizzle-kit generate",
     "db:migrate": "pnpm with-env tsx ./drizzle/migrate.ts",
     "db:check": "pnpm with-env drizzle-kit check && tsx ./drizzle/check.ts",
     "db:reset": "pnpm with-env tsx ./scripts/reset.ts",
     "kit:up": "drizzle-kit up",
     "dev": "pnpm with-env drizzle-kit studio",
-    "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "check": "oxlint . && oxfmt --check . && tsc --noEmit",
+    "check:fix": "oxlint . --fix && oxfmt . && tsc --noEmit"
   },
   "dependencies": {
     "drizzle-orm": "0.45.1",
@@ -38,10 +35,7 @@
     "dotenv-cli": "11.0.0",
     "drizzle-kit": "0.31.8",
     "drizzle-seed": "^0.3.1",
-    "eslint": "10.1.0",
-    "globals": "^17.4.0",
     "tsx": "4.21.0",
-    "typescript": "5.9.3",
-    "typescript-eslint": "^8.58.0"
+    "typescript": "5.9.3"
   }
 }

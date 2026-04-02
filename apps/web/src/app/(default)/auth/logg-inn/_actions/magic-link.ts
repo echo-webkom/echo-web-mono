@@ -1,12 +1,12 @@
 "use server";
 
 import crypto from "crypto";
-import { eq } from "drizzle-orm";
 
 import { verificationTokens } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 import { MagicLinkEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
+import { eq } from "drizzle-orm";
 
 import { BASE_URL, DEV } from "@/config";
 import { checkRateLimit } from "@/lib/rate-limit";

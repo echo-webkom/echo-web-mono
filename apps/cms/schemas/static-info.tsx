@@ -1,7 +1,6 @@
+import { PAGE_TYPES } from "@echo-webkom/lib";
 import { DocumentTextIcon } from "@sanity/icons";
 import { defineField } from "sanity";
-
-import { PAGE_TYPES } from "@echo-webkom/lib";
 
 export default defineField({
   name: "staticInfo",

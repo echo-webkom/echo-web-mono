@@ -7,6 +7,7 @@ import { Heading } from "@/components/typography/heading";
 import { UnorderedList } from "@/components/typography/list";
 import { ListItem } from "@/components/typography/list-item";
 import { Text } from "@/components/typography/text";
+
 import Andreas from "./god-1.png";
 import Bo from "./god-2.png";
 

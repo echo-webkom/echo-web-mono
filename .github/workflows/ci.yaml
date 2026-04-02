@@ -63,14 +63,8 @@ jobs:
       - name: 🆎 Typegen
         run: pnpm --filter=web typegen
 
-      - name: 📝 Lint
-        run: pnpm lint
-
-      - name: 💄 Check style
-        run: pnpm format:check
-
-      - name: 🛫 Type check
-        run: pnpm typecheck
+      - name: ✅ Check
+        run: pnpm check
 
       - name: 🐹 Lint Go code
         working-directory: apps/uno

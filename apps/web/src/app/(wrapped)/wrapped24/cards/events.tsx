@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
 import { motion } from "motion/react";
+import { useMemo } from "react";
 import { TiStarburst } from "react-icons/ti";
 
 import { useSound } from "@/hooks/use-sound";
+
 import { AppearingText, InYourFace } from "../components/Text";
 import { useUserStatsContext } from "../components/UserContext";
 import { WrappedCard } from "../components/WrappedCard";

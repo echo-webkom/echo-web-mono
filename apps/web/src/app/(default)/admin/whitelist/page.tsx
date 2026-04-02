@@ -2,6 +2,7 @@ import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
+
 import { AccessRequestTable } from "./_components/access-request-table";
 import { WhitelistButton } from "./_components/whitelist-button";
 import { WhitelistTable } from "./_components/whitelist-table";

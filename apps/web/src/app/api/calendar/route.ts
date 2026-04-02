@@ -1,9 +1,8 @@
-import { type NextRequest } from "next/server";
+import { happeningTypeToPath, happeningTypeToString } from "@echo-webkom/lib";
 import { isFuture, isPast, subMinutes } from "date-fns";
 import { createEvents, type EventAttributes } from "ics";
+import { type NextRequest } from "next/server";
 import removeMarkdown from "remove-markdown";
-
-import { happeningTypeToPath, happeningTypeToString } from "@echo-webkom/lib";
 
 import { unoWithAdmin } from "@/api/server";
 import {

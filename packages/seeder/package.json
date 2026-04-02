@@ -5,21 +5,9 @@
   "scripts": {
     "seed:start": "pnpm with-env tsx ./src/index.ts",
     "clean": "rm -rf .turbo node_modules",
-    "lint": "eslint",
-    "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
-  },
-  "devDependencies": {
-    "@types/node": "22.19.7",
-    "dotenv-cli": "11.0.0",
-    "eslint": "10.1.0",
-    "globals": "^17.4.0",
-    "tsx": "4.21.0",
-    "typescript": "5.9.3",
-    "typescript-eslint": "^8.58.0"
+    "check": "oxlint . && oxfmt --check . && tsc --noEmit",
+    "check:fix": "oxlint . --fix && oxfmt . && tsc --noEmit"
   },
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
@@ -30,5 +18,11 @@
     "commander": "14.0.3",
     "drizzle-orm": "0.45.1",
     "groq": "5.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.7",
+    "dotenv-cli": "11.0.0",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3"
   }
 }

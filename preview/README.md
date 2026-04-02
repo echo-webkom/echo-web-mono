@@ -9,4 +9,3 @@ docker run -it --rm amir20/dozzle generate --name <name> --email <email> --passw
 ```
 
 Paste the output into the `users.yaml`.
-

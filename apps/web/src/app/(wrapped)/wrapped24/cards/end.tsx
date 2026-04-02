@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { useSound } from "@/hooks/use-sound";
+
 import AnimatedBg from "../components/AnimatedBg";
 import { AppearingText } from "../components/Text";
 

@@ -1,4 +1,5 @@
 import { type FullHappening } from "@/api/uno/client";
+
 import { Box } from "../_components/box";
 import { DownloadCsvButton } from "../_components/download-csv-button";
 import { Heading } from "../_components/heading";

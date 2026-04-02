@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Body,
   Button,
@@ -12,6 +11,7 @@ import {
   Tailwind,
   Text,
 } from "@react-email/components";
+import * as React from "react";
 
 type EmailVerificationProps = {
   verificationUrl: string;
@@ -60,7 +60,7 @@ export default function EmailVerificationEmail({
                 nettleseren din:
               </Text>
 
-              <Text className="break-all text-sm text-gray-400">{verificationUrl}</Text>
+              <Text className="text-sm break-all text-gray-400">{verificationUrl}</Text>
 
               <Text className="text-sm text-gray-500">
                 Hvis du ikke vet hva echo er, eller ikke har lagt til denne e-postadressen selv, kan

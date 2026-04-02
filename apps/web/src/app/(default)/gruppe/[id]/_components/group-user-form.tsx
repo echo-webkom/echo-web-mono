@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { LuTrash as Trash } from "react-icons/lu";
 import { TbUserEdit } from "react-icons/tb";
 import { toast } from "sonner";
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+
 import { removeFromGroup, setGroupLeader } from "../actions";
 
 type GroupUserFormProps = {

@@ -1,8 +1,9 @@
-import Image from "next/image";
 import { subMinutes } from "date-fns";
+import Image from "next/image";
 
 import { unoWithAdmin } from "@/api/server";
 import { startOfNextWeek, startOfTheWeekAfterNext } from "@/utils/date";
+
 import { CombinedHappeningPreview } from "./happening/happening-preview-box";
 import { Callout } from "./typography/callout";
 

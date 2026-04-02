@@ -1,6 +1,7 @@
 import { auth } from "@/auth/session";
 import { Callout } from "@/components/typography/callout";
 import { shortDateNoTime } from "@/utils/date";
+
 import { unoWithAdmin } from "../../../../../../api/server";
 
 export default async function WhitelistNotification() {

@@ -2,7 +2,6 @@
   "name": "echo-web",
   "version": "1.0.0",
   "private": true,
-  "packageManager": "pnpm@10.20.0",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --filter=@echo-webkom/web --filter=@echo-webkom/cms --filter=@echo-webkom/uno --filter=@echo-webkom/db",
@@ -25,11 +24,13 @@
     "seed": "pnpm --filter=seeder seed:start",
     "sleep2s": "node -e \"setTimeout(() => process.exit(0), 2000)\"",
     "email:preview": "pnpm --filter=email preview",
-    "lint": "turbo run lint",
-    "lint:fix": "turbo run lint:fix",
-    "format": "turbo run format",
-    "format:check": "turbo run format:check",
-    "typecheck": "turbo run typecheck",
+    "lint": "echo 'Use pnpm check or pnpm check:fix instead'",
+    "lint:fix": "echo 'Use pnpm check or pnpm check:fix instead'",
+    "format": "echo 'Use pnpm check or pnpm check:fix instead'",
+    "format:check": "echo 'Use pnpm check or pnpm check:fix instead'",
+    "typecheck": "echo 'Use pnpm check or pnpm check:fix instead'",
+    "check": "turbo run check",
+    "check:fix": "turbo run check:fix",
     "test:unit": "turbo run test:unit",
     "test:e2e": "turbo run test:e2e",
     "test:e2e:ui": "turbo run test:e2e:ui",
@@ -41,5 +42,10 @@
   "dependencies": {
     "turbo": "2.8.12",
     "typescript": "5.9.3"
-  }
+  },
+  "devDependencies": {
+    "oxfmt": "0.43.0",
+    "oxlint": "1.58.0"
+  },
+  "packageManager": "pnpm@10.20.0"
 }

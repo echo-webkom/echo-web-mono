@@ -1,7 +1,7 @@
 "use client";
 
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 interface ScrollerContextType {
   scrollToSlide: (index: number, instant?: boolean) => void;

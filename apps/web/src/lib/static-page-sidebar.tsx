@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/utils/cn";
+
 import { headerRoutes } from "./routes";
 
 export const StaticPageSidebar = () => {

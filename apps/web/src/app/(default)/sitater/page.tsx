@@ -4,6 +4,7 @@ import { Container } from "@/components/container";
 import { Blockquote } from "@/components/typography/blockquote";
 import { Heading } from "@/components/typography/heading";
 import { isWebkom } from "@/lib/memberships";
+
 import { DeleteQuoteButton } from "./_components/delete-quote-button";
 import { QuoteReactions } from "./_components/quote-reactions";
 import { SubmitQuoteModal } from "./_components/submit-quote-modal";

@@ -1,5 +1,4 @@
 import "@/styles/globals.css";
-
 import { type Metadata, type Viewport } from "next";
 import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
@@ -12,6 +11,7 @@ import { FeedbackBlob } from "@/components/feedback-blob";
 import { Toaster } from "@/components/toaster";
 import { BASE_URL, IS_DEVTOOLS_ENABLED } from "@/config";
 import { cn } from "@/utils/cn";
+
 import { Providers } from "./providers";
 
 const inter = Inter({

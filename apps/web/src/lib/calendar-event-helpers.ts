@@ -3,6 +3,7 @@ import removeMd from "remove-markdown";
 
 import { type CMSHappening, type CMSMovie, type CMSRepeatingHappening } from "@/api/uno/client";
 import { getDate } from "@/utils/date";
+
 import { createHappeningLink } from "./create-link";
 
 type CalendarEventType = "event" | "bedpres" | "movie" | "boardgame" | "other";

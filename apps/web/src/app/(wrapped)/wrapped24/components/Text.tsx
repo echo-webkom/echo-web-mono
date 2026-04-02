@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import { useEffect, useState } from "react";
 
 export function AppearingText({ children, delay }: { children: React.ReactNode; delay: number }) {
   return (

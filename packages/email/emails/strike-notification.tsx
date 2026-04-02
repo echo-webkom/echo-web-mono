@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Body,
   Container,
@@ -11,6 +10,7 @@ import {
   Tailwind,
   Text,
 } from "@react-email/components";
+import * as React from "react";
 
 type StrikeNotificationEmailProps = {
   name?: string;
@@ -51,7 +51,7 @@ export default function StrikeNotificationEmail({
                   Du har motatt {amount} prikk{amount > 1 ? "er" : ""} grunnet:
                 </Text>
 
-                <Text className="mt-4 italic text-gray-600">
+                <Text className="mt-4 text-gray-600 italic">
                   {'"'}
                   {reason}
                   {'"'}

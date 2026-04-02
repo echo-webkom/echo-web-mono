@@ -2,6 +2,7 @@ import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
 import { createProfilePictureUrl } from "@/api/client";
 import { initials } from "@/utils/string";
+
 import { Text } from "../typography/text";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {

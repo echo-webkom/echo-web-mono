@@ -43,6 +43,7 @@ swag:init
 ```
 
 This runs:
+
 ```
 swag init --dir ./ --generalInfo http/server.go --output ./docs --parseDependency --parseInternal
 ```

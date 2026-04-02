@@ -1,5 +1,6 @@
 import { auth } from "@/auth/session";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
+
 import { unoWithAdmin } from "../../../../api/server";
 import { BentoBox } from "./bento-box";
 

@@ -1,12 +1,12 @@
-import Link from "next/link";
-import { addDays } from "date-fns";
-import removeMd from "remove-markdown";
-
 import { isBoard } from "@echo-webkom/lib";
+import { addDays } from "date-fns";
+import Link from "next/link";
+import removeMd from "remove-markdown";
 
 import type { UnoReturnType } from "@/api/uno/client";
 import { cn } from "@/utils/cn";
 import { shortDateNoTimeNoYear } from "@/utils/date";
+
 import { Chip } from "./typography/chip";
 
 type PostPreviewProps = {

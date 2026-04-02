@@ -1,8 +1,7 @@
-import { cache } from "react";
+import { type StudentGroupType } from "@echo-webkom/lib";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-
-import { type StudentGroupType } from "@echo-webkom/lib";
+import { cache } from "react";
 
 import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";

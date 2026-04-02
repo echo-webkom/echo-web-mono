@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useState } from "react";
 
 import type { UnoReturnType } from "@/api/uno/client";
 import { JobAdPreview } from "@/components/job-ad-preview";

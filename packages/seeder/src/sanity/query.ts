@@ -1,6 +1,5 @@
-import groq from "groq";
-
 import { type HappeningType, type QuestionType } from "@echo-webkom/lib";
+import groq from "groq";
 
 export type SanityHappening = {
   _id: string;

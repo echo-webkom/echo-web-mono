@@ -1,7 +1,10 @@
 {
   "name": "@echo-webkom/cms",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
+  "keywords": [
+    "sanity"
+  ],
   "type": "module",
   "exports": {
     "./types": "./sanity.types.ts"
@@ -15,15 +18,9 @@
     "typegen": "sanity typegen generate",
     "clean": "rm -rf node_modules .sanity dist",
     "deploy-graphql": "sanity graphql deploy",
-    "lint": "eslint '**/*.{js,ts,jsx,tsx}'",
-    "lint:fix": "eslint '**/*.{js,ts,jsx,tsx}' --fix",
-    "typecheck": "tsc --noEmit",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "check": "oxlint . && oxfmt --check . && tsc --noEmit",
+    "check:fix": "oxlint . --fix && oxfmt . && tsc --noEmit"
   },
-  "keywords": [
-    "sanity"
-  ],
   "dependencies": {
     "@echo-webkom/lib": "workspace:*",
     "@sanity/client": "7.15.0",
@@ -43,17 +40,9 @@
     "styled-components": "6.3.8"
   },
   "devDependencies": {
-    "@sanity/eslint-config-studio": "6.0.0",
     "@types/react": "19.2.9",
     "@types/styled-components": "5.1.36",
     "dotenv": "17.2.3",
-    "eslint": "10.1.0",
-    "eslint-plugin-jsx-a11y": "6.10.2",
-    "eslint-plugin-react": "7.37.5",
-    "eslint-plugin-react-hooks": "7.0.1",
-    "globals": "^17.4.0",
-    "prettier": "3.8.1",
-    "typescript": "5.9.3",
-    "typescript-eslint": "^8.58.0"
+    "typescript": "5.9.3"
   }
 }

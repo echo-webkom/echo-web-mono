@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { unoWithAdmin } from "@/api/server";
 import { type FullHappening, type SpotRange } from "@/api/uno/client";
+
 import { RegistrationTable } from "../_components/registration-table";
 import { type RegistrationWithUser } from "../_lib/types";
 

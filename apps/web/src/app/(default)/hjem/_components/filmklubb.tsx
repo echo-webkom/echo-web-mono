@@ -1,5 +1,6 @@
 import { unoWithAdmin } from "@/api/server";
 import { MovieClubCard } from "@/components/movie-club-card";
+
 import { BentoBox } from "./bento-box";
 
 export const FilmklubbMovies = async ({ className }: { className?: string }) => {

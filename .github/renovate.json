@@ -13,11 +13,7 @@
   "schedule": ["every weekend"],
   "packageRules": [
     {
-      "matchPackagePatterns": [
-        "^@echo-webkom/",
-        "eslint-config-custom",
-        "tsconfig"
-      ],
+      "matchPackagePatterns": ["^@echo-webkom/", "eslint-config-custom", "tsconfig"],
       "enabled": false
     }
   ],

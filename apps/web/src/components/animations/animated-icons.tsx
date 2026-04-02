@@ -1,11 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { getMonth } from "date-fns";
 import { motion } from "motion/react";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 
 import { useIsMounted } from "@/hooks/use-is-mounted";
+
 import { Snowflake } from "../icons/snowflake";
 
 type AnimatedIconsProps = {

@@ -1,5 +1,4 @@
 import "server-only";
-
 import { UnoClient } from "./uno/client";
 
 export const unoWithAdmin = new UnoClient({

@@ -1,6 +1,6 @@
+import { isFuture, isToday } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
-import { isFuture, isToday } from "date-fns";
 
 import { type CMSHomeHappening } from "@/api/uno/client";
 import { Chip } from "@/components/typography/chip";

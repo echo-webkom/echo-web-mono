@@ -1,6 +1,6 @@
+import { isPast } from "date-fns/isPast";
 import Image from "next/image";
 import Link from "next/link";
-import { isPast } from "date-fns/isPast";
 
 import { unoWithAdmin } from "@/api/server";
 import { urlFor } from "@/lib/sanity";

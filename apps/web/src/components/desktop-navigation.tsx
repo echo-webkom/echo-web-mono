@@ -1,5 +1,8 @@
 "use client";
 
+import { AnimatePresence, motion } from "motion/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, {
   createContext,
   useContext,
@@ -9,9 +12,6 @@ import React, {
   useState,
   type FC,
 } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "motion/react";
 import { type IconBaseProps } from "react-icons";
 import { RxChevronDown as ChevronDown } from "react-icons/rx";
 

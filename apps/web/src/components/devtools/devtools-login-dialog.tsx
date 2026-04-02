@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
+import { useCallback, useState, useSyncExternalStore } from "react";
 import { LuLogIn as LogIn, LuSettings as Settings, LuWrench as Wrench } from "react-icons/lu";
 
 import { devtoolsLogin } from "@/actions/devtools-login";

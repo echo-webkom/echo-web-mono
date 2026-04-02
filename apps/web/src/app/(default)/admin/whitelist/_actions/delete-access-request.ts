@@ -1,11 +1,10 @@
 "use server";
 
-import { eq } from "drizzle-orm";
-
 import { accessRequests } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 import { AccessDeniedEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
+import { eq } from "drizzle-orm";
 
 import { auth } from "@/auth/session";
 import { isMemberOf } from "@/lib/memberships";

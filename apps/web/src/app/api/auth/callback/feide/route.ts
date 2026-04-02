@@ -1,11 +1,10 @@
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { accounts, sessions, users } from "@echo-webkom/db/schemas";
+import { db } from "@echo-webkom/db/serverless";
 import { addDays, isFuture } from "date-fns";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
-
-import { accounts, sessions, users } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 import { feide, type FeideUserInfo } from "@/auth/feide";
 import { isMemberOfecho } from "@/auth/is-member-of-echo";

@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 import { toast } from "sonner";
-
-import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 
 import { updateRegistration } from "@/actions/update-registration";
 import { type RegistrationWithUser } from "@/app/(default)/dashbord/[slug]/_lib/types";
@@ -26,6 +25,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { editRegistrationSchema, type editRegistrationForm } from "@/lib/schemas/editregistration";
 import { cn } from "@/utils/cn";
+
 import { DropdownMenuItem } from "./ui/dropdown-menu";
 
 type EditRegistrationFormProps = {

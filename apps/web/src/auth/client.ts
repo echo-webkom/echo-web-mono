@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
 import ky from "ky";
+import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
 
 type SignOutOptions = {
   redirectUrl?: string;

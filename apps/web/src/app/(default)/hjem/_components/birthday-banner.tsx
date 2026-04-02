@@ -1,4 +1,5 @@
 import { auth } from "@/auth/session";
+
 import ConfettiForBDay from "./confetti";
 
 export default async function BirthdayBanner() {

@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import "server-only";
-
 import { Resend } from "resend";
 
 const API_KEY = process.env.RESEND_API_KEY;

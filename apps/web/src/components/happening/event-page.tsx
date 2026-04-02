@@ -1,8 +1,9 @@
-import { Suspense } from "react";
 import Image from "next/image";
+import { Suspense } from "react";
 
 import { type CMSHappening, type CMSRepeatingHappening } from "@/api/uno/client";
 import { BedpresJobAds } from "@/app/(default)/hjem/_components/job-ads";
+
 import { CommentSection } from "../comments/comment-section";
 import { CompanyLeagueBanner } from "../company-league-banner";
 import { Container } from "../container";

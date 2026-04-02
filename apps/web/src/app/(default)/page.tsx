@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
 import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 import { unoWithAdmin } from "@/api/server";
 import { ParticlesBackdrop } from "@/components/animations/particles";
@@ -11,6 +11,7 @@ import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { createHappeningLink } from "@/lib/create-link";
 import { ensureAnonymous } from "@/lib/ensure";
+
 import { Banner } from "./hjem/_components/banner";
 
 export default async function HomePage() {

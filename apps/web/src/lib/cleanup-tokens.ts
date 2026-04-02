@@ -1,7 +1,6 @@
-import { lt } from "drizzle-orm";
-
 import { verificationTokens } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
+import { lt } from "drizzle-orm";
 
 /**
  * Clean up expired verification tokens from the database.

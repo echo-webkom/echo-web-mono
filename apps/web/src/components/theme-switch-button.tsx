@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { useTheme } from "next-themes";
+import { useState } from "react";
 import { LuMoon, LuSun } from "react-icons/lu";
 
 import { cn } from "@/utils/cn";

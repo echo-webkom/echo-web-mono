@@ -1,5 +1,4 @@
 import "server-only";
-
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 

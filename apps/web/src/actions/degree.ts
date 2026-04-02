@@ -1,16 +1,16 @@
 "use server";
 
-import { z } from "zod";
-
 import {
   insertDegreeSchema,
   selectDegreeSchema,
   type Degree,
   type DegreeInsert,
 } from "@echo-webkom/db/schemas";
+import { z } from "zod";
 
 import { auth } from "@/auth/session";
 import { isMemberOf, isWebkom } from "@/lib/memberships";
+
 import { unoWithAdmin } from "../api/server";
 
 export const addDegree = async (payload: DegreeInsert) => {

@@ -1,5 +1,6 @@
 import { unoWithAdmin } from "@/api/server";
 import { PostPreview } from "@/components/post-preview";
+
 import { BentoBox } from "./bento-box";
 
 export const Posts = async ({ className }: { className?: string }) => {

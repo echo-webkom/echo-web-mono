@@ -1,10 +1,11 @@
 "use client";
 
-import { type ComponentProps } from "react";
 import { useRouter } from "next/navigation";
+import { type ComponentProps } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+
 import { grantAccessAction } from "../_actions/grant-access";
 
 type GrantAccessButtonProps = ComponentProps<typeof Button> & {

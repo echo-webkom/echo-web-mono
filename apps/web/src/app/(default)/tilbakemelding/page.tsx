@@ -1,6 +1,7 @@
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
+
 import { FeedbackForm } from "./feedback-form";
 
 export default function FeedbackPage() {
