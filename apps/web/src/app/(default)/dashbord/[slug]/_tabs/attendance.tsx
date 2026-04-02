@@ -1,7 +1,7 @@
 import { unoWithAdmin } from "@/api/server";
 import { type FullHappening, type Group } from "@/api/uno/client";
 import { QrScanner } from "../_components/qr-scanner";
-import { RegistrationWithUser } from "../_lib/types";
+import { type RegistrationWithUser } from "../_lib/types";
 
 type RegistrationsTabProps = {
   happening: FullHappening;

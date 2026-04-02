@@ -4,7 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 
 import { type FullHappening, type Group } from "@/api/uno/client";
-import { RegistrationWithUser } from "../_lib/types";
+import { type RegistrationWithUser } from "../_lib/types";
 import { attend } from "../../../../../actions/attend";
 import { RegistrationList } from "./registration-list";
 

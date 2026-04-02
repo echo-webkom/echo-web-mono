@@ -4,7 +4,7 @@ import { type Group, type Question } from "@echo-webkom/db/schemas";
 
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { filterRegistrations } from "../_lib/filter-registrations";
-import { RegistrationWithUser } from "../_lib/types";
+import { type RegistrationWithUser } from "../_lib/types";
 import { useRegistrationFilter } from "../_lib/use-registration-filter";
 import { RegistrationRow } from "./registration-row";
 
