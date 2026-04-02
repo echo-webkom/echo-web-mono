@@ -46,7 +46,7 @@ jobs:
       - name: 🐹 Setup Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.25.3
+          go-version: 1.26.1
           cache-dependency-path: apps/uno/go.sum
 
       - name: 🔎 Install golangci-lint
@@ -87,7 +87,7 @@ jobs:
       - name: 🐹 Setup Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.25.3
+          go-version: 1.26.1
           cache-dependency-path: apps/uno/go.sum
 
       - name: 📦 Install swag
@@ -113,7 +113,7 @@ jobs:
       - name: 🐹 Setup Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.25.3
+          go-version: 1.26.1
           cache-dependency-path: apps/uno/go.sum
 
       - name: 📦 Install mockery
@@ -163,7 +163,7 @@ jobs:
       - name: 🐹 Setup Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.25.3
+          go-version: 1.26.1
           cache-dependency-path: apps/uno/go.sum
 
       - name: 🧪 Run backend unit tests with coverage
@@ -212,7 +212,7 @@ jobs:
       - name: 🐹 Setup Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.25.3
+          go-version: 1.26.1
           cache-dependency-path: apps/uno/go.sum
 
       - name: 📦 Install dependencies
