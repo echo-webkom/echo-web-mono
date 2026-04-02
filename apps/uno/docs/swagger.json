@@ -1651,6 +1651,518 @@
                 }
             }
         },
+        "/sanity/banner": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get site banner from CMS",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.CMSBannerDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sanity/happenings": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get all happenings from CMS",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.CMSHappeningDTO"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sanity/happenings/home": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get home page happenings from CMS",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "Happening types (bedpres, event, external)",
+                        "name": "types[]",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Max number of results (default: 5)",
+                        "name": "n",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.CMSHomeHappeningDTO"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sanity/happenings/{slug}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get happening by slug from CMS",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Happening slug",
+                        "name": "slug",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.CMSHappeningDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sanity/happenings/{slug}/contacts": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get happening contacts by slug from CMS",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Happening slug",
+                        "name": "slug",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.CMSContactDTO"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sanity/hs-applications": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get all HS applications from CMS",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.CMSHSApplicationDTO"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sanity/job-ads": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get all job ads from CMS",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Max number of results",
+                        "name": "n",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.CMSJobAdDTO"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sanity/merch": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get all merch items from CMS",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Max number of results",
+                        "name": "n",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.CMSMerchDTO"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sanity/minutes": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get all meeting minutes from CMS",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.CMSMeetingMinuteDTO"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sanity/movies": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get all movies from CMS",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.CMSMovieDTO"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sanity/posts": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get all posts from CMS",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Max number of results",
+                        "name": "n",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.CMSPostDTO"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sanity/repeating-happenings": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get all repeating happenings from CMS",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.CMSRepeatingHappeningDTO"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sanity/static-info": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get all static info pages from CMS",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.CMSStaticInfoDTO"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sanity/student-groups": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get student groups from CMS",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Group type",
+                        "name": "type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Max number of results (default 50)",
+                        "name": "n",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.CMSStudentGroupDTO"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/sanity/student-groups/{slug}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Get student group by slug from CMS",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Student group slug",
+                        "name": "slug",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.CMSStudentGroupDTO"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/sanity/webhook": {
             "get": {
                 "consumes": [
@@ -2512,6 +3024,17 @@
         }
     },
     "definitions": {
+        "uno_domain_model.Asset": {
+            "type": "object",
+            "properties": {
+                "_ref": {
+                    "type": "string"
+                },
+                "_type": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_domain_model.BanInfo": {
             "type": "object",
             "properties": {
@@ -2535,6 +3058,268 @@
                 },
                 "userID": {
                     "type": "string"
+                }
+            }
+        },
+        "uno_domain_model.CMSAdditionalQuestion": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "options": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "required": {
+                    "type": "boolean"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_domain_model.CMSAuthor": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "image": {
+                    "$ref": "#/definitions/uno_domain_model.Image"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_domain_model.CMSCompany": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "image": {
+                    "$ref": "#/definitions/uno_domain_model.Image"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "website": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_domain_model.CMSContact": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "profile": {
+                    "$ref": "#/definitions/uno_domain_model.CMSContactProfile"
+                }
+            }
+        },
+        "uno_domain_model.CMSContactProfile": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_domain_model.CMSDegreeYears": {
+            "type": "object",
+            "properties": {
+                "FIFTH": {
+                    "type": "boolean"
+                },
+                "FIRST": {
+                    "type": "boolean"
+                },
+                "FOURTH": {
+                    "type": "boolean"
+                },
+                "PHD": {
+                    "type": "boolean"
+                },
+                "SECOND": {
+                    "type": "boolean"
+                },
+                "THIRD": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "uno_domain_model.CMSHSApplicationProfile": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "image": {
+                    "$ref": "#/definitions/uno_domain_model.Image"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_domain_model.CMSJobLocation": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_domain_model.CMSLocation": {
+            "type": "object",
+            "properties": {
+                "link": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_domain_model.CMSMember": {
+            "type": "object",
+            "properties": {
+                "profile": {
+                    "$ref": "#/definitions/uno_domain_model.CMSMemberProfile"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_domain_model.CMSMemberProfile": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "image": {
+                    "$ref": "#/definitions/uno_domain_model.Image"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "socials": {
+                    "$ref": "#/definitions/uno_domain_model.CMSProfileSocials"
+                }
+            }
+        },
+        "uno_domain_model.CMSOrganizerRef": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_domain_model.CMSProfileSocials": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "facebook": {
+                    "type": "string"
+                },
+                "instagram": {
+                    "type": "string"
+                },
+                "linkedin": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_domain_model.CMSSpotRange": {
+            "type": "object",
+            "properties": {
+                "maxYear": {
+                    "type": "integer"
+                },
+                "minYear": {
+                    "type": "integer"
+                },
+                "spots": {
+                    "type": "integer"
+                }
+            }
+        },
+        "uno_domain_model.CMSStudentGroupSocials": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "facebook": {
+                    "type": "string"
+                },
+                "instagram": {
+                    "type": "string"
+                },
+                "linkedin": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_domain_model.CMSTtime": {
+            "type": "object",
+            "properties": {
+                "_type": {
+                    "type": "string"
+                },
+                "hour": {
+                    "type": "integer"
+                },
+                "minute": {
+                    "type": "integer"
+                }
+            }
+        },
+        "uno_domain_model.Color": {
+            "type": "object",
+            "properties": {
+                "_type": {
+                    "type": "string"
+                },
+                "alpha": {
+                    "type": "number"
+                },
+                "hex": {
+                    "type": "string"
+                },
+                "hsl": {
+                    "$ref": "#/definitions/uno_domain_model.HSL"
+                },
+                "hsv": {
+                    "$ref": "#/definitions/uno_domain_model.HSV"
+                },
+                "rgb": {
+                    "$ref": "#/definitions/uno_domain_model.RGB"
                 }
             }
         },
@@ -2564,6 +3349,77 @@
                 },
                 "userID": {
                     "type": "string"
+                }
+            }
+        },
+        "uno_domain_model.HSL": {
+            "type": "object",
+            "properties": {
+                "_type": {
+                    "type": "string"
+                },
+                "a": {
+                    "type": "number"
+                },
+                "h": {
+                    "type": "number"
+                },
+                "l": {
+                    "type": "number"
+                },
+                "s": {
+                    "type": "number"
+                }
+            }
+        },
+        "uno_domain_model.HSV": {
+            "type": "object",
+            "properties": {
+                "_type": {
+                    "type": "string"
+                },
+                "a": {
+                    "type": "number"
+                },
+                "h": {
+                    "type": "number"
+                },
+                "s": {
+                    "type": "number"
+                },
+                "v": {
+                    "type": "number"
+                }
+            }
+        },
+        "uno_domain_model.Image": {
+            "type": "object",
+            "properties": {
+                "_type": {
+                    "type": "string"
+                },
+                "asset": {
+                    "$ref": "#/definitions/uno_domain_model.Asset"
+                }
+            }
+        },
+        "uno_domain_model.RGB": {
+            "type": "object",
+            "properties": {
+                "_type": {
+                    "type": "string"
+                },
+                "a": {
+                    "type": "number"
+                },
+                "b": {
+                    "type": "number"
+                },
+                "g": {
+                    "type": "number"
+                },
+                "r": {
+                    "type": "number"
                 }
             }
         },
@@ -2684,6 +3540,452 @@
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.CMSBannerDTO": {
+            "type": "object",
+            "properties": {
+                "backgroundColor": {
+                    "$ref": "#/definitions/uno_domain_model.Color"
+                },
+                "expiringDate": {
+                    "type": "string"
+                },
+                "linkTo": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "textColor": {
+                    "$ref": "#/definitions/uno_domain_model.Color"
+                }
+            }
+        },
+        "uno_http_dto.CMSContactDTO": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "profile": {
+                    "$ref": "#/definitions/uno_domain_model.CMSContactProfile"
+                }
+            }
+        },
+        "uno_http_dto.CMSHSApplicationDTO": {
+            "type": "object",
+            "properties": {
+                "poster": {
+                    "type": "string"
+                },
+                "profile": {
+                    "$ref": "#/definitions/uno_domain_model.CMSHSApplicationProfile"
+                }
+            }
+        },
+        "uno_http_dto.CMSHappeningDTO": {
+            "type": "object",
+            "properties": {
+                "_createdAt": {
+                    "type": "string"
+                },
+                "_id": {
+                    "type": "string"
+                },
+                "_type": {
+                    "type": "string"
+                },
+                "_updatedAt": {
+                    "type": "string"
+                },
+                "additionalQuestions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_domain_model.CMSAdditionalQuestion"
+                    }
+                },
+                "body": {
+                    "type": "string"
+                },
+                "company": {
+                    "$ref": "#/definitions/uno_domain_model.CMSCompany"
+                },
+                "contacts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_domain_model.CMSContact"
+                    }
+                },
+                "cost": {
+                    "type": "integer"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "endDate": {
+                    "type": "string"
+                },
+                "externalLink": {
+                    "type": "string"
+                },
+                "happeningType": {
+                    "type": "string"
+                },
+                "hideRegistrations": {
+                    "type": "boolean"
+                },
+                "isPinned": {
+                    "type": "boolean"
+                },
+                "location": {
+                    "$ref": "#/definitions/uno_domain_model.CMSLocation"
+                },
+                "organizers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_domain_model.CMSOrganizerRef"
+                    }
+                },
+                "registrationEnd": {
+                    "type": "string"
+                },
+                "registrationGroups": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "registrationStart": {
+                    "type": "string"
+                },
+                "registrationStartGroups": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "spotRanges": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_domain_model.CMSSpotRange"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.CMSHomeHappeningDTO": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "happeningType": {
+                    "type": "string"
+                },
+                "image": {
+                    "$ref": "#/definitions/uno_domain_model.Image"
+                },
+                "isPinned": {
+                    "type": "boolean"
+                },
+                "organizers": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "registrationStart": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.CMSJobAdDTO": {
+            "type": "object",
+            "properties": {
+                "_createdAt": {
+                    "type": "string"
+                },
+                "_id": {
+                    "type": "string"
+                },
+                "_updatedAt": {
+                    "type": "string"
+                },
+                "body": {
+                    "type": "string"
+                },
+                "company": {
+                    "$ref": "#/definitions/uno_domain_model.CMSCompany"
+                },
+                "deadline": {
+                    "type": "string"
+                },
+                "degreeYears": {
+                    "$ref": "#/definitions/uno_domain_model.CMSDegreeYears"
+                },
+                "expiresAt": {
+                    "type": "string"
+                },
+                "jobType": {
+                    "type": "string"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "locations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_domain_model.CMSJobLocation"
+                    }
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "weight": {
+                    "type": "integer"
+                }
+            }
+        },
+        "uno_http_dto.CMSMeetingMinuteDTO": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "document": {
+                    "type": "string"
+                },
+                "isAllMeeting": {
+                    "type": "boolean"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.CMSMerchDTO": {
+            "type": "object",
+            "properties": {
+                "_createdAt": {
+                    "type": "string"
+                },
+                "_id": {
+                    "type": "string"
+                },
+                "_updatedAt": {
+                    "type": "string"
+                },
+                "body": {
+                    "type": "string"
+                },
+                "image": {
+                    "$ref": "#/definitions/uno_domain_model.Image"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.CMSMovieDTO": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "image": {
+                    "$ref": "#/definitions/uno_domain_model.Image"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.CMSPostDTO": {
+            "type": "object",
+            "properties": {
+                "_createdAt": {
+                    "type": "string"
+                },
+                "_id": {
+                    "type": "string"
+                },
+                "_updatedAt": {
+                    "type": "string"
+                },
+                "authors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_domain_model.CMSAuthor"
+                    }
+                },
+                "body": {
+                    "type": "string"
+                },
+                "image": {
+                    "$ref": "#/definitions/uno_domain_model.Image"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.CMSRepeatingHappeningDTO": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "_type": {
+                    "type": "string"
+                },
+                "body": {
+                    "type": "string"
+                },
+                "contacts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_domain_model.CMSContact"
+                    }
+                },
+                "cost": {
+                    "type": "integer"
+                },
+                "dayOfWeek": {
+                    "type": "integer"
+                },
+                "endDate": {
+                    "type": "string"
+                },
+                "endTime": {
+                    "$ref": "#/definitions/uno_domain_model.CMSTtime"
+                },
+                "externalLink": {
+                    "type": "string"
+                },
+                "happeningType": {
+                    "type": "string"
+                },
+                "ignoredDates": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "interval": {
+                    "type": "string"
+                },
+                "location": {
+                    "$ref": "#/definitions/uno_domain_model.CMSLocation"
+                },
+                "organizers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_domain_model.CMSOrganizerRef"
+                    }
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "startDate": {
+                    "type": "string"
+                },
+                "startTime": {
+                    "$ref": "#/definitions/uno_domain_model.CMSTtime"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.CMSStaticInfoDTO": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "pageType": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.CMSStudentGroupDTO": {
+            "type": "object",
+            "properties": {
+                "_createdAt": {
+                    "type": "string"
+                },
+                "_id": {
+                    "type": "string"
+                },
+                "_updatedAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "groupType": {
+                    "type": "string"
+                },
+                "image": {
+                    "$ref": "#/definitions/uno_domain_model.Image"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "members": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_domain_model.CMSMember"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "socials": {
+                    "$ref": "#/definitions/uno_domain_model.CMSStudentGroupSocials"
                 }
             }
         },

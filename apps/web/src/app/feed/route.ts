@@ -1,16 +1,14 @@
+import { unoWithAdmin } from "@/api/server";
 import { createRSSFeed } from "@/lib/rss";
-import { fetchAllHappenings } from "@/sanity/happening";
-import { fetchMinutes } from "@/sanity/minutes";
-import { fetchAllPosts } from "@/sanity/posts";
 import { happeningToRSSItem, meetingMinuteToRSSItem, postToRSSItem } from "./_lib/mappers";
 
 export const revalidate = 1800;
 
 export const GET = async () => {
   const [posts, happenings, minutes] = await Promise.all([
-    fetchAllPosts(),
-    fetchAllHappenings(),
-    fetchMinutes(),
+    unoWithAdmin.sanity.posts.all().catch(() => []),
+    unoWithAdmin.sanity.happenings.all().catch(() => []),
+    unoWithAdmin.sanity.minutes.all().catch(() => []),
   ]);
 
   const lastBuildDate = new Date();

@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { type Group, type Question } from "@echo-webkom/db/schemas";
 
+import { type SpotRange } from "@/api/uno/client";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -21,6 +22,7 @@ type RegistrationTableProps = {
   questions: Array<Question>;
   isBedpres: boolean;
   happeningDate: Date | null;
+  spotRanges: Array<SpotRange>;
 };
 
 export const RegistrationTable = ({
@@ -28,6 +30,7 @@ export const RegistrationTable = ({
   studentGroups,
   isBedpres,
   happeningDate,
+  spotRanges,
 }: RegistrationTableProps) => {
   const [showIndex, setShowIndex] = useState(false);
   const { filters, resetFilters, setSearchTerm, setYearFilter, setStatusFilter, setGroupFilter } =
@@ -105,6 +108,7 @@ export const RegistrationTable = ({
                 showIndex={showIndex}
                 isBedpres={isBedpres}
                 happeningDate={happeningDate}
+                spotRanges={spotRanges}
               />
             ))}
           </TableBody>

@@ -4,8 +4,7 @@ import Link from "next/link";
 import { isFuture, isPast } from "date-fns";
 import { RxArrowRight as ArrowRight, RxExternalLink as ExternalLink } from "react-icons/rx";
 
-import { urlFor } from "@echo-webkom/sanity";
-
+import { type CMSHappening } from "@/api/uno/client";
 import { auth } from "@/auth/session";
 import { AddToCalender } from "@/components/add-to-calender";
 import { DeregisterButton } from "@/components/deregister-button";
@@ -14,7 +13,7 @@ import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "@/co
 import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
 import { isHost, isWebkom } from "@/lib/memberships";
-import { type fetchHappeningBySlug } from "@/sanity/happening";
+import { urlFor } from "@/lib/sanity";
 import { cn } from "@/utils/cn";
 import {
   isBetween,
@@ -33,7 +32,7 @@ import { RegistrationCount } from "../registration-count";
 import { RegistrationsPreview } from "./registrations-preview";
 
 type EventSidebarProps = {
-  event: Exclude<Awaited<ReturnType<typeof fetchHappeningBySlug>>, null>;
+  event: CMSHappening;
 };
 
 export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
@@ -301,7 +300,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
             </SidebarItem>
           )}
 
-          {event.endDate && !isSameDate(event.date, event.endDate) && (
+          {event.date && event.endDate && !isSameDate(event.date, event.endDate) && (
             <SidebarItem>
               <SidebarItemTitle>Slutt:</SidebarItemTitle>
               <SidebarItemContent>{shortDateNoYear(event.endDate)}</SidebarItemContent>

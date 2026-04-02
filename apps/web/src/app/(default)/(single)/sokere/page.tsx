@@ -1,24 +1,17 @@
 import { type Metadata } from "next";
 import Image from "next/image";
 
-import { type AllHsApplicationsResult } from "@echo-webkom/cms/types";
-import { cdnClient } from "@echo-webkom/sanity";
-import { allHsApplications } from "@echo-webkom/sanity/queries";
-
+import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { shuffle } from "@/utils/list";
-
-const fetchAllHsApplications = async () => {
-  return await cdnClient.fetch<AllHsApplicationsResult>(allHsApplications);
-};
 
 export const metadata: Metadata = {
   title: "Søkere til Hovedstyret 2026/2027",
 };
 
 export default async function HSApplicationsPage() {
-  const applications = await fetchAllHsApplications();
+  const applications = await unoWithAdmin.sanity.hsApplications.all();
   const shuffled = shuffle(applications);
 
   return (

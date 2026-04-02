@@ -4,12 +4,12 @@ import { notFound } from "next/navigation";
 
 import { type StudentGroupType } from "@echo-webkom/lib";
 
+import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
 import { StudentGroupPreview } from "@/components/student-group-preview";
 import { Heading } from "@/components/typography/heading";
+import { studentGroupTypeName } from "@/lib/mappers";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
-import { fetchStudentGroupsByType } from "@/sanity/student-group";
-import { studentGroupTypeName } from "@/sanity/utils/mappers";
 
 type Props = {
   params: Promise<{
@@ -36,7 +36,9 @@ export default async function StudentGroupOverview(props: Props) {
   const { groupType } = params;
   const groupTypeFromPath = pathToGroupType(groupType);
 
-  const groups = await fetchStudentGroupsByType(groupTypeFromPath, -1);
+  const groups = await unoWithAdmin.sanity.studentGroups
+    .all({ type: groupTypeFromPath })
+    .catch(() => []);
 
   groups.sort((a, b) => {
     const aValue = a.isActive;

@@ -1,12 +1,12 @@
 import { cache, Suspense } from "react";
 import { notFound } from "next/navigation";
 
+import { unoWithAdmin } from "@/api/server";
 import { Authors } from "@/components/authors";
 import { CommentSection } from "@/components/comments/comment-section";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
-import { fetchPostBySlug } from "@/sanity/posts";
 
 type Props = {
   params: Promise<{
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const getData = cache(async (slug: string) => {
-  const post = await fetchPostBySlug(slug);
+  const post = await unoWithAdmin.sanity.posts.bySlug(slug).catch(() => null);
 
   if (!post) {
     return notFound();

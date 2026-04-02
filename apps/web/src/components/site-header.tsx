@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { auth } from "@/auth/session";
-import { getProgrammerbarStatus } from "@/lib/get-programmerbar-status";
 import { getRandomMessage } from "@/lib/random-message";
 import { ENVIRONMENT } from "../config";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
@@ -11,6 +10,18 @@ import { Chip } from "./typography/chip";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
+
+export const getProgrammerbarStatus = async () => {
+  try {
+    return (await fetch("https://programmer.bar/api/status").then((res) => res.json())) as {
+      message: string;
+    };
+  } catch {
+    return {
+      message: "",
+    };
+  }
+};
 
 export const SiteHeader = async () => {
   const user = await auth();

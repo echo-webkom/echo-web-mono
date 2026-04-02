@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 )
 
 const (
@@ -24,7 +25,9 @@ var (
 	ErrFailedToDecodeData    = errors.New("failed to decode sanity data")
 )
 
-var HttpClient = &http.Client{}
+var HttpClient = &http.Client{
+	Timeout: 5 * time.Second,
+}
 
 type Config struct {
 	ProjectID   string
@@ -116,14 +119,14 @@ func Query[T any](ctx context.Context, client *Client, query string, params map[
 
 	response := QueryResponse[json.RawMessage]{}
 	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
-		return out, ErrFailedToDecodeData
+		return out, fmt.Errorf("%w: %w", ErrFailedToDecodeData, err)
 	}
 
 	if err := json.Unmarshal(response.Result, &out); err != nil {
 		// Return zero value of T and the error
 		// This is because unmarshalling can fail with a partial result.
 		var zero T
-		return zero, ErrFailedToDecodeData
+		return zero, fmt.Errorf("%w: %w", ErrFailedToDecodeData, err)
 	}
 
 	return out, nil

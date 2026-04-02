@@ -1,18 +1,18 @@
 import { cache } from "react";
 import type { Metadata } from "next";
 
+import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
 import { MerchPreview } from "@/components/merchPreview";
 import { Heading } from "@/components/typography/heading";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
-import { fetchAllMerch } from "@/sanity/merch";
 
 export const metadata: Metadata = {
   title: "Merch",
 };
 
 const getData = cache(async () => {
-  return await fetchAllMerch();
+  return await unoWithAdmin.sanity.merch.all().catch(() => []);
 });
 
 export default async function MerchOverviewPage() {

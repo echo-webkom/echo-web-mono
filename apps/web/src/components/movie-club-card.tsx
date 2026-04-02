@@ -2,13 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { isPast } from "date-fns/isPast";
 
-import { urlFor } from "@echo-webkom/sanity";
-
-import { fetchNewestMovie } from "@/sanity/movies";
+import { unoWithAdmin } from "@/api/server";
+import { urlFor } from "@/lib/sanity";
 import { shortDateNoTimeNoYear, shortDateNoYear } from "@/utils/date";
 
 export const MovieClubCard = async () => {
-  const movies = await fetchNewestMovie(3);
+  const movies = await unoWithAdmin.sanity.movies.upcoming(3).catch(() => []);
 
   const thisWeekMovie = movies[0];
   const nextWeekMovie = movies[1];

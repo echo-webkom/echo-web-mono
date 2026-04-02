@@ -4,10 +4,10 @@ import { useState } from "react";
 import { LuChevronDown as ChevronDown, LuChevronUp as ChevronUp } from "react-icons/lu";
 
 import { type unoWithAdmin } from "@/api/server";
-import { type fetchHappeningBySlug } from "@/sanity/happening";
+import { type CMSHappening } from "@/api/uno/client";
 
 type HappeningDebugPanelProps = {
-  event: Exclude<Awaited<ReturnType<typeof fetchHappeningBySlug>>, null>;
+  event: CMSHappening;
   spotRanges: Awaited<ReturnType<typeof unoWithAdmin.happenings.spotRanges>>;
   registrations: Awaited<ReturnType<typeof unoWithAdmin.happenings.registrations>>;
   questionsCount: number;

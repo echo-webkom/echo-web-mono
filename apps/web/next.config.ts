@@ -10,12 +10,7 @@ const config = {
   reactCompiler: true,
   output: NEXT_OUTPUT,
 
-  transpilePackages: [
-    "@echo-webkom/db",
-    "@echo-webkom/lib",
-    "@echo-webkom/email",
-    "@echo-webkom/sanity",
-  ],
+  transpilePackages: ["@echo-webkom/db", "@echo-webkom/lib", "@echo-webkom/email"],
 
   logging: {
     fetches: {

@@ -8,8 +8,7 @@ import { FaLinkedin } from "react-icons/fa";
 import { IoCloudOfflineSharp, IoMail } from "react-icons/io5";
 import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
-import { urlFor } from "@echo-webkom/sanity";
-
+import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Callout } from "@/components/typography/callout";
@@ -24,8 +23,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { fetchStudentGroupBySlug } from "@/sanity/student-group";
-import { studentGroupTypeName } from "@/sanity/utils/mappers";
+import { studentGroupTypeName } from "@/lib/mappers";
+import { urlFor } from "@/lib/sanity";
 import { mailTo } from "@/utils/prefixes";
 
 type Props = {
@@ -35,7 +34,7 @@ type Props = {
 };
 
 const getData = cache(async (slug: string) => {
-  const group = await fetchStudentGroupBySlug(slug);
+  const group = await unoWithAdmin.sanity.studentGroups.bySlug(slug).catch(() => null);
 
   if (!group) {
     return notFound();
@@ -159,7 +158,7 @@ export default async function GroupPage(props: Props) {
 
           <div className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {group.members.map((member) => {
-              const image = member.profile?.picture;
+              const image = member.profile?.image;
               const initials = member.profile?.name
                 .split(" ")
                 .map((name) => name[0])

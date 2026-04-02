@@ -1,8 +1,7 @@
 import { ImageResponse } from "next/og";
 
-import { urlFor } from "@echo-webkom/sanity";
-
-import { fetchHappeningBySlug } from "@/sanity/happening";
+import { unoWithAdmin } from "@/api/server";
+import { urlFor } from "@/lib/sanity";
 
 export const size = {
   width: 1200,
@@ -20,7 +19,7 @@ type ImageProps = {
 export default async function Image({ params }: ImageProps) {
   const slug = (await params).slug;
 
-  const event = await fetchHappeningBySlug(slug);
+  const event = await unoWithAdmin.sanity.happenings.bySlug(slug).catch(() => null);
 
   if (!event) {
     return new Response("Event not found", {

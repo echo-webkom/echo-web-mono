@@ -866,7 +866,7 @@ func TestIsAvailableSpot(t *testing.T) {
 			hostGroups:          []string{},
 			user:                &model.User{Year: degreeYearPtr(2)},
 			canSkip:             false,
-			expected:            true,
+			expected:            false,
 		},
 		{
 			name: "WaitlistedUserNotInSpotRange",
@@ -1010,6 +1010,24 @@ func TestIsAvailableSpot(t *testing.T) {
 			hostGroups:          []string{},
 			user:                &model.User{Year: degreeYearPtr(5)},
 			canSkip:             true,
+			expected:            false,
+		},
+		{
+			name: "RegisteredUserYearChangedOutOfRangeStillConsumesSpot",
+			spotRanges: []model.SpotRange{
+				{ID: "sr1", Spots: 1, MinYear: 1, MaxYear: 3},
+			},
+			registrations: []model.Registration{
+				{UserID: "user1", Status: model.RegistrationStatusRegistered},
+			},
+			usersByID: map[string]*model.User{
+				// user1 registered when year was 2, but has since updated to year 5
+				"user1": {ID: "user1", Year: degreeYearPtr(5)},
+			},
+			membershipsByUserID: map[string][]string{},
+			hostGroups:          []string{},
+			user:                &model.User{Year: degreeYearPtr(2)},
+			canSkip:             false,
 			expected:            false,
 		},
 	}

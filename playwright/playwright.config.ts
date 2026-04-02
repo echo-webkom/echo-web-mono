@@ -20,16 +20,16 @@ export default defineConfig({
   webServer: [
     {
       command: "pnpm run start",
-      cwd: "../apps/web",
-      url: "http://localhost:3000",
-      reuseExistingServer: !isCI,
-    },
-    {
-      command: "pnpm run start",
       cwd: "../apps/uno",
       url: "http://localhost:8000",
       reuseExistingServer: !isCI,
       stdout: "pipe",
+    },
+    {
+      command: "pnpm run start",
+      cwd: "../apps/web",
+      url: "http://localhost:3000",
+      reuseExistingServer: !isCI,
     },
   ],
 

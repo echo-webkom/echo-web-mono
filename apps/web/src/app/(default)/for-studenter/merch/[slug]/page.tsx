@@ -3,13 +3,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import { urlFor } from "@echo-webkom/sanity";
-
+import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { fetchMerchBySlug } from "@/sanity/merch";
+import { urlFor } from "@/lib/sanity";
 
 type Props = {
   params: Promise<{
@@ -18,7 +17,7 @@ type Props = {
 };
 
 const getData = cache(async (slug: string) => {
-  const merch = await fetchMerchBySlug(slug);
+  const merch = await unoWithAdmin.sanity.merch.bySlug(slug).catch(() => null);
 
   if (!merch) {
     return notFound();

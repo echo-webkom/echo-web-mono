@@ -1,19 +1,13 @@
 import { eachDayOfInterval } from "date-fns";
 import removeMd from "remove-markdown";
 
-import { type fetchAllHappenings } from "@/sanity/happening";
-import { type fetchMovies } from "@/sanity/movies";
-import { type fetchAllRepeatingHappenings } from "@/sanity/repeating-happening";
+import { type CMSHappening, type CMSMovie, type CMSRepeatingHappening } from "@/api/uno/client";
 import { getDate } from "@/utils/date";
 import { createHappeningLink } from "./create-link";
 
 type CalendarEventType = "event" | "bedpres" | "movie" | "boardgame" | "other";
 
-type FetchAllRepeatingHappeningsResult = Awaited<ReturnType<typeof fetchAllRepeatingHappenings>>;
-type FetchAllHappeningsResult = Awaited<ReturnType<typeof fetchAllHappenings>>;
-type FetchMoviesResult = Awaited<ReturnType<typeof fetchMovies>>;
-
-type Happening = FetchAllHappeningsResult[number] | FetchAllRepeatingHappeningsResult[number];
+type Happening = CMSHappening | CMSRepeatingHappening;
 
 export type CalendarEvent = {
   id: string;
@@ -44,14 +38,14 @@ const getCalendarEventType = (happening: Happening): CalendarEventType => {
 };
 
 export const happeningsToCalendarEvent = (
-  happenings: FetchAllHappeningsResult,
+  happenings: Array<CMSHappening>,
 ): Array<CalendarEvent> => {
   return happenings
-    .filter((happening) => Boolean(happening.date))
+    .filter((happening) => happening.date !== null)
     .map((happening) => ({
       id: happening._id,
       title: happening.title,
-      date: new Date(happening.date),
+      date: new Date(happening.date!),
       endDate: happening.endDate ? new Date(happening.endDate) : undefined,
       body: removeMd(happening.body ?? ""),
       link: createHappeningLink(happening),
@@ -59,7 +53,7 @@ export const happeningsToCalendarEvent = (
     }));
 };
 
-export const moviesToCalendarEvent = (movies: FetchMoviesResult): Array<CalendarEvent> => {
+export const moviesToCalendarEvent = (movies: Array<CMSMovie>): Array<CalendarEvent> => {
   return movies.map((movie) => ({
     id: movie._id,
     title: `Film: ${movie.title}`,
@@ -71,7 +65,7 @@ export const moviesToCalendarEvent = (movies: FetchMoviesResult): Array<Calendar
 };
 
 export const repeatingEventsToCalendarEvent = (
-  repeatingHappenings: FetchAllRepeatingHappeningsResult,
+  repeatingHappenings: Array<CMSRepeatingHappening>,
 ): Array<CalendarEvent> => {
   return repeatingHappenings.flatMap((happening) => {
     return eachDayOfInterval({

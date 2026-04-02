@@ -2,11 +2,11 @@ import { cache } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
 import { JobAdSidebar } from "@/components/job-ad-sidebar";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
-import { fetchJobAdBySlug } from "@/sanity/job-ad";
 
 type Props = {
   params: Promise<{
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const getData = cache(async (slug: string) => {
-  const jobAd = await fetchJobAdBySlug(slug);
+  const jobAd = await unoWithAdmin.sanity.jobAds.bySlug(slug).catch(() => null);
 
   if (!jobAd) {
     return notFound();
@@ -31,7 +31,7 @@ export const generateMetadata = async (props: Props) => {
 
   return {
     title: jobAd.title,
-    description: `Ny stillingsannonse hos ${jobAd.company.name}, ${jobAd.locations[0]?.name}.`,
+    description: `Ny stillingsannonse hos ${jobAd.company?.name}, ${jobAd.locations[0]?.name}.`,
   };
 };
 

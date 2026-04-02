@@ -34,7 +34,10 @@ export default async function EventDashboard(props: Props) {
     return notFound();
   }
 
-  const registrations = await getRegistrations(happening.id);
+  const [registrations, spotRanges] = await Promise.all([
+    getRegistrations(happening.id),
+    unoWithAdmin.happenings.spotRanges(happening.id),
+  ]);
 
   return (
     <Container layout="larger" className="flex flex-col gap-10 py-10">
@@ -47,7 +50,11 @@ export default async function EventDashboard(props: Props) {
           <TabsTrigger value="utilities">Verktøy</TabsTrigger>
         </TabsList>
         <TabsContent value="registrations">
-          <RegistrationsTab happening={happening} registrations={registrations} />
+          <RegistrationsTab
+            happening={happening}
+            registrations={registrations}
+            spotRanges={spotRanges}
+          />
         </TabsContent>
         <TabsContent value="statistics">
           <StatisticsTab happening={happening} registrations={registrations} />

@@ -1,12 +1,12 @@
 import { cache } from "react";
 import { notFound } from "next/navigation";
 
+import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
 import { Markdown } from "@/components/markdown";
 import { Heading } from "@/components/typography/heading";
+import { pageTypeToUrl } from "@/lib/mappers";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
-import { fetchStaticInfo, fetchStaticInfoBySlug } from "@/sanity/static-info";
-import { pageTypeToUrl } from "@/sanity/utils/mappers";
 
 export const dynamicParams = false;
 
@@ -17,14 +17,21 @@ type Props = {
 };
 
 export const generateStaticParams = async () => {
-  const pages = await fetchStaticInfo();
+  const pages = await unoWithAdmin.sanity.staticInfo.all().catch(() => []);
   return pages.map((page) => ({
     path: [pageTypeToUrl[page.pageType], page.slug],
   }));
 };
 
 const getData = cache(async (path: Array<string>) => {
-  const page = await fetchStaticInfoBySlug(path[0]!, path[1]!);
+  const urlSegment = path[0]!;
+  const slug = path[1]!;
+  const pageType = Object.keys(pageTypeToUrl).find(
+    (key) => pageTypeToUrl[key as keyof typeof pageTypeToUrl] === urlSegment,
+  );
+  const page = pageType
+    ? await unoWithAdmin.sanity.staticInfo.bySlug(pageType, slug).catch(() => null)
+    : null;
 
   if (!page) {
     return notFound();

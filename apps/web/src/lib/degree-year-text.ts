@@ -1,4 +1,4 @@
-import { type JobAdsQueryResult } from "@echo-webkom/cms/types";
+import type { UnoReturnType } from "@/api/uno/client";
 
 const YEARS: Record<string, number> = {
   FIRST: 1,
@@ -9,7 +9,9 @@ const YEARS: Record<string, number> = {
   PHD: 6,
 };
 
-export const degreeYearsToList = (degreeYears: JobAdsQueryResult[number]["degreeYears"]) => {
+type JobAdsQueryResult = UnoReturnType["sanity"]["jobAds"]["all"][number];
+
+export const degreeYearsToList = (degreeYears: JobAdsQueryResult) => {
   const list: Array<number> = [];
 
   for (const [key, value] of Object.entries(degreeYears ?? {})) {

@@ -3,11 +3,11 @@ import Link from "next/link";
 import { RxArrowRight as ArrowRight } from "react-icons/rx";
 import removeMd from "remove-markdown";
 
-import { type AllMerchQueryResult } from "@echo-webkom/cms/types";
-import { urlFor } from "@echo-webkom/sanity";
+import type { UnoReturnType } from "@/api/uno/client";
+import { urlFor } from "@/lib/sanity";
 
 type MerchPreviewProps = {
-  item: AllMerchQueryResult[number];
+  item: UnoReturnType["sanity"]["merch"]["all"][number];
 };
 export const MerchPreview = ({ item }: MerchPreviewProps) => {
   return (

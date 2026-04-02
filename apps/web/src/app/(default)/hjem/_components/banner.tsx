@@ -1,19 +1,20 @@
 import Link from "next/link";
 import { isPast } from "date-fns";
 
-import { fetchBannerInfo } from "@/sanity/banner";
+import { unoWithAdmin } from "@/api/server";
 
 export const Banner = async () => {
-  const bannerInfo = await fetchBannerInfo();
-  const linkTo = bannerInfo?.linkTo ?? "/";
-  const backgroundColor = bannerInfo?.backgroundColor?.hex ?? "var(--primary)";
-  const color = bannerInfo?.textColor?.hex ?? "white";
+  const banner = await unoWithAdmin.sanity.banner();
 
-  if (!bannerInfo?.text) {
+  if (!banner?.text) {
     return null;
   }
 
-  if (bannerInfo.expiringDate && isPast(new Date(bannerInfo.expiringDate))) {
+  const linkTo = banner.linkTo ?? "/";
+  const backgroundColor = banner.backgroundColor?.hex ?? "var(--primary)";
+  const color = banner.textColor?.hex ?? "white";
+
+  if (banner.expiringDate && isPast(new Date(banner.expiringDate))) {
     return null;
   }
 
@@ -29,7 +30,7 @@ export const Banner = async () => {
               className="flex items-center gap-3 py-4 text-center text-xl font-bold sm:py-0"
               style={{ color }}
             >
-              {bannerInfo.text}
+              {banner.text}
             </p>
           </div>
         </Link>

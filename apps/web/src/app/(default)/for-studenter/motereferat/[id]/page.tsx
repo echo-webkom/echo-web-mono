@@ -2,10 +2,10 @@ import { cache } from "react";
 import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Button } from "@/components/ui/button";
-import { fetchMinuteById } from "@/sanity/minutes";
 
 type Props = {
   params: Promise<{
@@ -14,7 +14,7 @@ type Props = {
 };
 
 const getData = cache(async (id: string) => {
-  const minute = await fetchMinuteById(id);
+  const minute = await unoWithAdmin.sanity.minutes.byId(id).catch(() => null);
 
   if (!minute) {
     return notFound();

@@ -5,14 +5,13 @@ import removeMarkdown from "remove-markdown";
 
 import { happeningTypeToPath, happeningTypeToString } from "@echo-webkom/lib";
 
+import { unoWithAdmin } from "@/api/server";
 import {
   HAPPENING_TYPE_PARAM,
   INCLUDE_BEDPRES_REGISTRATION_PARAM,
   INCLUDE_MOVIES_PARAM,
   INCLUDE_PAST_PARAM,
 } from "@/lib/calendar-url-builder";
-import { fetchAllHappenings } from "@/sanity/happening";
-import { fetchMovies } from "@/sanity/movies";
 
 export const GET = async (req: NextRequest) => {
   const includePast = req.nextUrl.searchParams.has(INCLUDE_PAST_PARAM);
@@ -22,8 +21,10 @@ export const GET = async (req: NextRequest) => {
     INCLUDE_BEDPRES_REGISTRATION_PARAM,
   );
 
-  const happenings = await fetchAllHappenings();
-  const movies = await fetchMovies();
+  const [happenings, movies] = await Promise.all([
+    unoWithAdmin.sanity.happenings.all().catch(() => []),
+    unoWithAdmin.sanity.movies.all().catch(() => []),
+  ]);
 
   const filteredHappenings = happenings
     .filter((happening) => {

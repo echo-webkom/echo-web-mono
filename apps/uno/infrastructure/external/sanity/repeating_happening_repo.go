@@ -1,0 +1,114 @@
+package sanityinfra
+
+import (
+	"context"
+	"uno/domain/model"
+	"uno/domain/port"
+	"uno/pkg/sanity"
+)
+
+const allRepeatingHappeningsQuery = `
+*[_type == "repeatingHappening"
+  && !(_id in path('drafts.**'))] {
+  _id,
+  _type,
+  title,
+  "slug": slug.current,
+  happeningType,
+  "organizers": organizers[]->{
+    _id,
+    name,
+    "slug": slug.current
+  },
+  "contacts": contacts[] {
+    email,
+    "profile": profile->{
+      _id,
+      name,
+    },
+  },
+  "location": location->{
+    name,
+    link,
+  },
+  dayOfWeek,
+  startTime,
+  endTime,
+  startDate,
+  endDate,
+  interval,
+  cost,
+  ignoredDates,
+  externalLink,
+  body,
+}
+`
+
+type RepeatingHappeningRepo struct {
+	client *sanity.Client
+	logger port.Logger
+}
+
+func NewRepeatingHappeningRepo(client *sanity.Client, logger port.Logger) port.CMSRepeatingHappeningRepo {
+	return &RepeatingHappeningRepo{client: client, logger: logger}
+}
+
+func (r *RepeatingHappeningRepo) GetAllRepeatingHappenings(ctx context.Context) ([]model.CMSRepeatingHappening, error) {
+	r.logger.Info(ctx, "getting all repeating happenings from sanity")
+	result, err := sanity.Query[[]model.CMSRepeatingHappening](ctx, r.client, allRepeatingHappeningsQuery, nil)
+	if err != nil {
+		r.logger.Error(ctx, "failed to get all repeating happenings from sanity", "error", err)
+		return nil, err
+	}
+	return result, nil
+}
+
+const repeatingHappeningBySlugQuery = `
+*[_type == "repeatingHappening"
+  && slug.current == $slug
+  && !(_id in path('drafts.**'))] {
+  _id,
+  _type,
+  title,
+  "slug": slug.current,
+  happeningType,
+  "organizers": organizers[]->{
+    _id,
+    name,
+    "slug": slug.current
+  },
+  "contacts": contacts[] {
+    email,
+    "profile": profile->{
+      _id,
+      name,
+    },
+  },
+  "location": location->{
+    name,
+    link,
+  },
+  dayOfWeek,
+  startTime,
+  endTime,
+  startDate,
+  endDate,
+  interval,
+  cost,
+  ignoredDates,
+  externalLink,
+  body,
+}[0]
+`
+
+func (r *RepeatingHappeningRepo) GetRepeatingHappeningBySlug(ctx context.Context, slug string) (*model.CMSRepeatingHappening, error) {
+	r.logger.Info(ctx, "getting repeating happening by slug from sanity", "slug", slug)
+	result, err := sanity.Query[*model.CMSRepeatingHappening](ctx, r.client, repeatingHappeningBySlugQuery, map[string]any{
+		"slug": slug,
+	})
+	if err != nil {
+		r.logger.Error(ctx, "failed to get repeating happening by slug from sanity", "slug", slug, "error", err)
+		return nil, err
+	}
+	return result, nil
+}

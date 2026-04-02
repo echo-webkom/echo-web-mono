@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { RxArrowRight } from "react-icons/rx";
 
+import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
-import { fetchMinutes } from "@/sanity/minutes";
 import { shortDateNoTime } from "@/utils/date";
 
 export default async function MinuteOverview() {
-  const minutes = await fetchMinutes();
+  const minutes = await unoWithAdmin.sanity.minutes.all().catch(() => []);
 
   return (
     <Container className="flex flex-row py-10">

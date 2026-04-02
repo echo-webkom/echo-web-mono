@@ -3,13 +3,12 @@ import Link from "next/link";
 import { RxArrowRight as ArrowRight } from "react-icons/rx";
 import removeMd from "remove-markdown";
 
-import { type StudentGroupsByTypeQueryResult } from "@echo-webkom/cms/types";
-import { urlFor } from "@echo-webkom/sanity";
-
+import type { UnoReturnType } from "@/api/uno/client";
+import { urlFor } from "@/lib/sanity";
 import { Chip } from "./typography/chip";
 
 type StudentGroupPreviewProps = {
-  group: StudentGroupsByTypeQueryResult[number];
+  group: UnoReturnType["sanity"]["studentGroups"]["bySlug"];
 };
 
 export const StudentGroupPreview = ({ group }: StudentGroupPreviewProps) => {

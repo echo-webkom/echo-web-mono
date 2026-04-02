@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-import { type JobAdsQueryResult } from "@echo-webkom/cms/types";
-
+import type { UnoReturnType } from "@/api/uno/client";
 import { JobAdPreview } from "@/components/job-ad-preview";
 
-export const JobAdCarousel = ({ jobAds }: { jobAds: Array<JobAdsQueryResult[number]> }) => {
+type JobAd = UnoReturnType["sanity"]["jobAds"]["all"][number];
+
+export const JobAdCarousel = ({ jobAds }: { jobAds: Array<JobAd> }) => {
   const [page, setPage] = useState(0);
   const adsPerPage = 2;
 
