@@ -14,6 +14,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default defineConfig([
+  {
+    settings: { react: { version: "19" } },
+  },
   ...nextVitals,
   ...nextTs,
   prettier,
@@ -71,7 +74,7 @@ export default defineConfig([
         React: "writable",
       },
     },
-    settings: { react: { version: "detect" } },
+    settings: { react: { version: "19" } },
     rules: {
       eqeqeq: "error",
       "no-console": ["warn", { allow: ["warn", "error", "info"] }],

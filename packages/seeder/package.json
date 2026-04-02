@@ -15,11 +15,11 @@
   "devDependencies": {
     "@types/node": "22.19.7",
     "dotenv-cli": "11.0.0",
-    "eslint": "9.39.2",
-    "globals": "^17.3.0",
+    "eslint": "10.1.0",
+    "globals": "^17.4.0",
     "tsx": "4.21.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "^8.54.0"
+    "typescript-eslint": "^8.58.0"
   },
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
