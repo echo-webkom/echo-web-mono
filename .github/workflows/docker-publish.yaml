@@ -197,6 +197,15 @@ jobs:
             echo "value=https://uno.echo-webkom.no" >> $GITHUB_OUTPUT
           fi
 
+      - name: 🗃️ Set Sanity dataset
+        id: sanity-dataset
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "value=develop" >> $GITHUB_OUTPUT
+          else
+            echo "value=production" >> $GITHUB_OUTPUT
+          fi
+
       - name: 🏗️ Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -211,6 +220,7 @@ jobs:
           build-args: |
             GIT_COMMIT_SHA=${{ github.sha }}
             NEXT_PUBLIC_API_URL=${{ steps.api-url.outputs.value }}
+            NEXT_PUBLIC_SANITY_DATASET=${{ steps.sanity-dataset.outputs.value }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64

@@ -40,6 +40,8 @@ services:
       PROFILE_PICTURE_BUCKET_NAME: profile-pictures
       PROFILE_PICTURE_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
       PROFILE_PICTURE_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
+      NEXT_PUBLIC_SANITY_DATASET: develop
+      NEXT_PUBLIC_SANITY_PROJECT_ID: pgq2pd26
     labels:
       caddy: pr-${PR_NUMBER}.uno.${PREVIEW_DOMAIN}
       caddy.reverse_proxy: "{{upstreams 8000}}"
