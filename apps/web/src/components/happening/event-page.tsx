@@ -44,7 +44,7 @@ export const EventPage = ({ event }: EventPageProps) => {
         <div>
           {event.happeningType === "bedpres" && "company" in event && event.company && (
             <div className="mb-10">
-              <BedpresJobAds companyId={(event.company as { _id: string })._id} />
+              <BedpresJobAds companyId={event.company._id} />
             </div>
           )}
           <article>

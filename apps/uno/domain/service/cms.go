@@ -7,7 +7,7 @@ import (
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/pkg/cache"
+	infracache "uno/infrastructure/cache"
 )
 
 const cmsCacheTTL = 10 * time.Minute
@@ -25,21 +25,21 @@ type CMSService struct {
 	movieRepo              port.CMSMovieRepo
 	hsApplicationRepo      port.CMSHSApplicationRepo
 
-	happeningsCache          *cache.Cache[string, []model.CMSHappening]
-	happeningBySlugCache     *cache.Cache[string, *model.CMSHappening]
-	homeHappeningsCache      *cache.Cache[string, []model.CMSHomeHappening]
-	contactsBySlugCache      *cache.Cache[string, []model.CMSContact]
-	repeatingHappeningsCache *cache.Cache[string, []model.CMSRepeatingHappening]
-	postsCache               *cache.Cache[string, []model.CMSPost]
-	studentGroupsByTypeCache *cache.Cache[string, []model.CMSStudentGroup]
-	studentGroupBySlugCache  *cache.Cache[string, *model.CMSStudentGroup]
-	jobAdsCache              *cache.Cache[string, []model.CMSJobAd]
-	bannerCache              *cache.Cache[string, *model.CMSBanner]
-	staticInfoCache          *cache.Cache[string, []model.CMSStaticInfo]
-	merchCache               *cache.Cache[string, []model.CMSMerch]
-	meetingMinutesCache      *cache.Cache[string, []model.CMSMeetingMinute]
-	moviesCache              *cache.Cache[string, []model.CMSMovie]
-	hsApplicationsCache      *cache.Cache[string, []model.CMSHSApplication]
+	happeningsCache          port.Cache[[]model.CMSHappening]
+	happeningBySlugCache     port.Cache[*model.CMSHappening]
+	homeHappeningsCache      port.Cache[[]model.CMSHomeHappening]
+	contactsBySlugCache      port.Cache[[]model.CMSContact]
+	repeatingHappeningsCache port.Cache[[]model.CMSRepeatingHappening]
+	postsCache               port.Cache[[]model.CMSPost]
+	studentGroupsByTypeCache  port.Cache[[]model.CMSStudentGroup]
+	studentGroupBySlugCache  port.Cache[*model.CMSStudentGroup]
+	jobAdsCache              port.Cache[[]model.CMSJobAd]
+	bannerCache              port.Cache[*model.CMSBanner]
+	staticInfoCache          port.Cache[[]model.CMSStaticInfo]
+	merchCache               port.Cache[[]model.CMSMerch]
+	meetingMinutesCache      port.Cache[[]model.CMSMeetingMinute]
+	moviesCache              port.Cache[[]model.CMSMovie]
+	hsApplicationsCache      port.Cache[[]model.CMSHSApplication]
 }
 
 func NewCMSService(
@@ -68,92 +68,202 @@ func NewCMSService(
 		movieRepo:              movieRepo,
 		hsApplicationRepo:      hsApplicationRepo,
 
-		happeningsCache:          cache.New[string, []model.CMSHappening](cmsCacheTTL),
-		happeningBySlugCache:     cache.New[string, *model.CMSHappening](cmsCacheTTL),
-		homeHappeningsCache:      cache.New[string, []model.CMSHomeHappening](cmsCacheTTL),
-		contactsBySlugCache:      cache.New[string, []model.CMSContact](cmsCacheTTL),
-		repeatingHappeningsCache: cache.New[string, []model.CMSRepeatingHappening](cmsCacheTTL),
-		postsCache:               cache.New[string, []model.CMSPost](cmsCacheTTL),
-		studentGroupsByTypeCache: cache.New[string, []model.CMSStudentGroup](cmsCacheTTL),
-		studentGroupBySlugCache:  cache.New[string, *model.CMSStudentGroup](cmsCacheTTL),
-		jobAdsCache:              cache.New[string, []model.CMSJobAd](cmsCacheTTL),
-		bannerCache:              cache.New[string, *model.CMSBanner](cmsCacheTTL),
-		staticInfoCache:          cache.New[string, []model.CMSStaticInfo](cmsCacheTTL),
-		merchCache:               cache.New[string, []model.CMSMerch](cmsCacheTTL),
-		meetingMinutesCache:      cache.New[string, []model.CMSMeetingMinute](cmsCacheTTL),
-		moviesCache:              cache.New[string, []model.CMSMovie](cmsCacheTTL),
-		hsApplicationsCache:      cache.New[string, []model.CMSHSApplication](cmsCacheTTL),
+		happeningsCache:          infracache.NewInMemoryCache[[]model.CMSHappening](),
+		happeningBySlugCache:     infracache.NewInMemoryCache[*model.CMSHappening](),
+		homeHappeningsCache:      infracache.NewInMemoryCache[[]model.CMSHomeHappening](),
+		contactsBySlugCache:      infracache.NewInMemoryCache[[]model.CMSContact](),
+		repeatingHappeningsCache: infracache.NewInMemoryCache[[]model.CMSRepeatingHappening](),
+		postsCache:               infracache.NewInMemoryCache[[]model.CMSPost](),
+		studentGroupsByTypeCache:  infracache.NewInMemoryCache[[]model.CMSStudentGroup](),
+		studentGroupBySlugCache:  infracache.NewInMemoryCache[*model.CMSStudentGroup](),
+		jobAdsCache:              infracache.NewInMemoryCache[[]model.CMSJobAd](),
+		bannerCache:              infracache.NewInMemoryCache[*model.CMSBanner](),
+		staticInfoCache:          infracache.NewInMemoryCache[[]model.CMSStaticInfo](),
+		merchCache:               infracache.NewInMemoryCache[[]model.CMSMerch](),
+		meetingMinutesCache:      infracache.NewInMemoryCache[[]model.CMSMeetingMinute](),
+		moviesCache:              infracache.NewInMemoryCache[[]model.CMSMovie](),
+		hsApplicationsCache:      infracache.NewInMemoryCache[[]model.CMSHSApplication](),
 	}
 }
 
 func (s *CMSService) GetAllHappenings(ctx context.Context) ([]model.CMSHappening, error) {
-	return s.happeningsCache.GetOrSet(ctx, "all", s.happeningRepo.GetAllHappenings)
+	if v, ok := s.happeningsCache.Get("all"); ok {
+		return v, nil
+	}
+	result, err := s.happeningRepo.GetAllHappenings(ctx)
+	if err != nil {
+		return nil, err
+	}
+	s.happeningsCache.Set("all", result, cmsCacheTTL)
+	return result, nil
 }
 
 func (s *CMSService) GetHappeningBySlug(ctx context.Context, slug string) (*model.CMSHappening, error) {
-	return s.happeningBySlugCache.GetOrSet(ctx, slug, func(ctx context.Context) (*model.CMSHappening, error) {
-		return s.happeningRepo.GetHappeningBySlug(ctx, slug)
-	})
+	if v, ok := s.happeningBySlugCache.Get(slug); ok {
+		return v, nil
+	}
+	result, err := s.happeningRepo.GetHappeningBySlug(ctx, slug)
+	if err != nil {
+		return nil, err
+	}
+	s.happeningBySlugCache.Set(slug, result, cmsCacheTTL)
+	return result, nil
 }
 
 func (s *CMSService) GetHomeHappenings(ctx context.Context, types []string, n int) ([]model.CMSHomeHappening, error) {
 	key := fmt.Sprintf("%s:%d", strings.Join(types, ","), n)
-	return s.homeHappeningsCache.GetOrSet(ctx, key, func(ctx context.Context) ([]model.CMSHomeHappening, error) {
-		return s.happeningRepo.GetHomeHappenings(ctx, types, n)
-	})
+	if v, ok := s.homeHappeningsCache.Get(key); ok {
+		return v, nil
+	}
+	result, err := s.happeningRepo.GetHomeHappenings(ctx, types, n)
+	if err != nil {
+		return nil, err
+	}
+	s.homeHappeningsCache.Set(key, result, cmsCacheTTL)
+	return result, nil
 }
 
 func (s *CMSService) GetHappeningContactsBySlug(ctx context.Context, slug string) ([]model.CMSContact, error) {
-	return s.contactsBySlugCache.GetOrSet(ctx, slug, func(ctx context.Context) ([]model.CMSContact, error) {
-		return s.happeningRepo.GetHappeningContactsBySlug(ctx, slug)
-	})
+	if v, ok := s.contactsBySlugCache.Get(slug); ok {
+		return v, nil
+	}
+	result, err := s.happeningRepo.GetHappeningContactsBySlug(ctx, slug)
+	if err != nil {
+		return nil, err
+	}
+	s.contactsBySlugCache.Set(slug, result, cmsCacheTTL)
+	return result, nil
 }
 
 func (s *CMSService) GetAllRepeatingHappenings(ctx context.Context) ([]model.CMSRepeatingHappening, error) {
-	return s.repeatingHappeningsCache.GetOrSet(ctx, "all", s.repeatingHappeningRepo.GetAllRepeatingHappenings)
+	if v, ok := s.repeatingHappeningsCache.Get("all"); ok {
+		return v, nil
+	}
+	result, err := s.repeatingHappeningRepo.GetAllRepeatingHappenings(ctx)
+	if err != nil {
+		return nil, err
+	}
+	s.repeatingHappeningsCache.Set("all", result, cmsCacheTTL)
+	return result, nil
 }
 
 func (s *CMSService) GetAllPosts(ctx context.Context) ([]model.CMSPost, error) {
-	return s.postsCache.GetOrSet(ctx, "all", s.postRepo.GetAllPosts)
+	if v, ok := s.postsCache.Get("all"); ok {
+		return v, nil
+	}
+	result, err := s.postRepo.GetAllPosts(ctx)
+	if err != nil {
+		return nil, err
+	}
+	s.postsCache.Set("all", result, cmsCacheTTL)
+	return result, nil
 }
 
 func (s *CMSService) GetStudentGroupsByType(ctx context.Context, groupType string, n int) ([]model.CMSStudentGroup, error) {
 	key := fmt.Sprintf("%s:%d", groupType, n)
-	return s.studentGroupsByTypeCache.GetOrSet(ctx, key, func(ctx context.Context) ([]model.CMSStudentGroup, error) {
-		return s.studentGroupRepo.GetStudentGroupsByType(ctx, groupType, n)
-	})
+	if v, ok := s.studentGroupsByTypeCache.Get(key); ok {
+		return v, nil
+	}
+	result, err := s.studentGroupRepo.GetStudentGroupsByType(ctx, groupType, n)
+	if err != nil {
+		return nil, err
+	}
+	s.studentGroupsByTypeCache.Set(key, result, cmsCacheTTL)
+	return result, nil
 }
 
 func (s *CMSService) GetStudentGroupBySlug(ctx context.Context, slug string) (*model.CMSStudentGroup, error) {
-	return s.studentGroupBySlugCache.GetOrSet(ctx, slug, func(ctx context.Context) (*model.CMSStudentGroup, error) {
-		return s.studentGroupRepo.GetStudentGroupBySlug(ctx, slug)
-	})
+	if v, ok := s.studentGroupBySlugCache.Get(slug); ok {
+		return v, nil
+	}
+	result, err := s.studentGroupRepo.GetStudentGroupBySlug(ctx, slug)
+	if err != nil {
+		return nil, err
+	}
+	s.studentGroupBySlugCache.Set(slug, result, cmsCacheTTL)
+	return result, nil
 }
 
 func (s *CMSService) GetAllJobAds(ctx context.Context) ([]model.CMSJobAd, error) {
-	return s.jobAdsCache.GetOrSet(ctx, "all", s.jobAdRepo.GetAllJobAds)
+	if v, ok := s.jobAdsCache.Get("all"); ok {
+		return v, nil
+	}
+	result, err := s.jobAdRepo.GetAllJobAds(ctx)
+	if err != nil {
+		return nil, err
+	}
+	s.jobAdsCache.Set("all", result, cmsCacheTTL)
+	return result, nil
 }
 
 func (s *CMSService) GetBanner(ctx context.Context) (*model.CMSBanner, error) {
-	return s.bannerCache.GetOrSet(ctx, "banner", s.bannerRepo.GetBanner)
+	if v, ok := s.bannerCache.Get("banner"); ok {
+		return v, nil
+	}
+	result, err := s.bannerRepo.GetBanner(ctx)
+	if err != nil {
+		return nil, err
+	}
+	s.bannerCache.Set("banner", result, cmsCacheTTL)
+	return result, nil
 }
 
 func (s *CMSService) GetAllStaticInfo(ctx context.Context) ([]model.CMSStaticInfo, error) {
-	return s.staticInfoCache.GetOrSet(ctx, "all", s.staticInfoRepo.GetAllStaticInfo)
+	if v, ok := s.staticInfoCache.Get("all"); ok {
+		return v, nil
+	}
+	result, err := s.staticInfoRepo.GetAllStaticInfo(ctx)
+	if err != nil {
+		return nil, err
+	}
+	s.staticInfoCache.Set("all", result, cmsCacheTTL)
+	return result, nil
 }
 
 func (s *CMSService) GetAllMerch(ctx context.Context) ([]model.CMSMerch, error) {
-	return s.merchCache.GetOrSet(ctx, "all", s.merchRepo.GetAllMerch)
+	if v, ok := s.merchCache.Get("all"); ok {
+		return v, nil
+	}
+	result, err := s.merchRepo.GetAllMerch(ctx)
+	if err != nil {
+		return nil, err
+	}
+	s.merchCache.Set("all", result, cmsCacheTTL)
+	return result, nil
 }
 
 func (s *CMSService) GetAllMeetingMinutes(ctx context.Context) ([]model.CMSMeetingMinute, error) {
-	return s.meetingMinutesCache.GetOrSet(ctx, "all", s.meetingMinuteRepo.GetAllMeetingMinutes)
+	if v, ok := s.meetingMinutesCache.Get("all"); ok {
+		return v, nil
+	}
+	result, err := s.meetingMinuteRepo.GetAllMeetingMinutes(ctx)
+	if err != nil {
+		return nil, err
+	}
+	s.meetingMinutesCache.Set("all", result, cmsCacheTTL)
+	return result, nil
 }
 
 func (s *CMSService) GetAllMovies(ctx context.Context) ([]model.CMSMovie, error) {
-	return s.moviesCache.GetOrSet(ctx, "all", s.movieRepo.GetAllMovies)
+	if v, ok := s.moviesCache.Get("all"); ok {
+		return v, nil
+	}
+	result, err := s.movieRepo.GetAllMovies(ctx)
+	if err != nil {
+		return nil, err
+	}
+	s.moviesCache.Set("all", result, cmsCacheTTL)
+	return result, nil
 }
 
 func (s *CMSService) GetAllHSApplications(ctx context.Context) ([]model.CMSHSApplication, error) {
-	return s.hsApplicationsCache.GetOrSet(ctx, "all", s.hsApplicationRepo.GetAllHSApplications)
+	if v, ok := s.hsApplicationsCache.Get("all"); ok {
+		return v, nil
+	}
+	result, err := s.hsApplicationRepo.GetAllHSApplications(ctx)
+	if err != nil {
+		return nil, err
+	}
+	s.hsApplicationsCache.Set("all", result, cmsCacheTTL)
+	return result, nil
 }
