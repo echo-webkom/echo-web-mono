@@ -24,6 +24,7 @@ const ACCEPTED_FILE_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/gif"
 export const UploadProfilePicture = ({ userId, name, image }: UploadProfilePictureProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [hasImage, setHasImage] = useState(image !== null);
+  const [imageVersion, setImageVersion] = useState(() => Date.now());
   const router = useRouter();
 
   const handleChooseFile = () => {
@@ -60,6 +61,7 @@ export const UploadProfilePicture = ({ userId, name, image }: UploadProfilePictu
       }
 
       setHasImage(true);
+      setImageVersion(Date.now());
       router.refresh();
     } catch (err) {
       console.error("Upload threw an exception:", err);
@@ -74,13 +76,14 @@ export const UploadProfilePicture = ({ userId, name, image }: UploadProfilePictu
       return;
     }
     setHasImage(false);
+    setImageVersion(Date.now());
     router.refresh();
   };
 
   return (
     <div className="space-y-2">
       <Avatar size="xl">
-        <AvatarImage src={createProfilePictureUrl(userId, 2)} />
+        <AvatarImage src={createProfilePictureUrl(userId, 2, imageVersion)} />
         <AvatarFallback className="text-2xl">{initials(name)}</AvatarFallback>
       </Avatar>
 
