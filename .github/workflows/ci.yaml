@@ -102,6 +102,32 @@ jobs:
             exit 1
           fi
 
+  check-mocks:
+    name: 🤡 Check Backend Mocks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v6
+
+      - name: 🐹 Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25.3
+          cache-dependency-path: apps/uno/go.sum
+
+      - name: 📦 Install mockery
+        run: go install github.com/vektra/mockery/v3@latest
+
+      - name: 🤡 Check mocks are up to date
+        working-directory: apps/uno
+        run: |
+          mockery
+          if ! git diff --exit-code -- domain/port/mocks/; then
+            echo "Error: Mocks are out of sync. Please run 'pnpm --filter=uno mocks:generate' and commit the changes."
+            exit 1
+          fi
+
   test-unit-frontend:
     name: 🧪 Unit Tests (Frontend)
     runs-on: ubuntu-latest
