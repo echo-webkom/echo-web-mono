@@ -130,26 +130,47 @@ func IsAvailableSpot(
 		spotsLeft[i] = sr.Spots
 	}
 
-	// Allocate spots for existing registrations
+	// Allocate spots for existing registrations.
+	// Track registered users that could not be placed in any relevant spot range
+	// (e.g. their year changed after registration). We cannot know which range
+	// they originally occupied, so we treat them as a budget to subtract from
+	// the new user's available spots. This prevents over registraiton, but may cause some false
+	// negatives where a user is waitlisted even though a spot in a different range is available.
+	unallocatedRegistered := 0
 	for _, reg := range registrations {
 		regUser := usersByID[reg.UserID]
-		if regUser == nil {
-			continue
+
+		allocated := false
+		if regUser != nil {
+			for i, sr := range sortedSpotRanges {
+				if (fitsInSpotrange(regUser, &sr) || isHost(reg.UserID)) && spotsLeft[i] > 0 {
+					spotsLeft[i]--
+					allocated = true
+					break
+				}
+			}
 		}
 
-		for i, sr := range sortedSpotRanges {
-			if (fitsInSpotrange(regUser, &sr) || isHost(reg.UserID)) && spotsLeft[i] > 0 {
-				spotsLeft[i]--
-				break
-			}
+		if !allocated && reg.Status == model.RegistrationStatusRegistered {
+			unallocatedRegistered++
 		}
 	}
 
-	// Check if user can fit
+	// Check if user can fit, consuming the unallocated budget against each
+	// fitting range in turn. This may can false negatives in multi-range
+	// events (user waitlisted when a spot in a different range is free), but
+	// it never allows over-registration.
 	for i, sr := range sortedSpotRanges {
 		if fitsInSpotrange(user, &sr) || canSkip {
-			if spotsLeft[i] > 0 || sr.Spots == 0 {
+			if sr.Spots == 0 {
 				return true
+			}
+			if spotsLeft[i]-unallocatedRegistered > 0 {
+				return true
+			}
+			unallocatedRegistered -= spotsLeft[i]
+			if unallocatedRegistered < 0 {
+				unallocatedRegistered = 0
 			}
 		}
 	}

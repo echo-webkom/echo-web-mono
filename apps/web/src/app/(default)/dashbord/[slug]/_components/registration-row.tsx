@@ -3,10 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
-import { RxDotsHorizontal as Dots } from "react-icons/rx";
+import { RxDotsHorizontal as Dots, RxExclamationTriangle as Warning } from "react-icons/rx";
 
+import { type SpotRange } from "@/api/uno/client";
 import { EditRegistrationForm } from "@/components/edit-registration-button";
 import { HoverProfileView } from "@/components/hover-profile-view";
+import { Callout } from "@/components/typography/callout";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -28,6 +30,7 @@ type RegistrationRowProps = {
   showIndex: boolean;
   isBedpres: boolean;
   happeningDate: Date | null;
+  spotRanges: Array<SpotRange>;
 };
 
 export const RegistrationRow = ({
@@ -36,11 +39,19 @@ export const RegistrationRow = ({
   showIndex,
   isBedpres,
   happeningDate,
+  spotRanges,
 }: RegistrationRowProps) => {
   const [showMore, setShowMore] = useState(false);
   const group = registration.user.memberships
     .map((membership) => " " + membership.group?.name)
     .join(",");
+
+  const userYear = registration.user.year;
+  const outsideAllRanges =
+    registration.status === "registered" &&
+    spotRanges.length > 0 &&
+    (userYear === null ||
+      !spotRanges.some((sr) => userYear >= sr.minYear && userYear <= sr.maxYear));
 
   return (
     <>
@@ -50,9 +61,17 @@ export const RegistrationRow = ({
           <HoverProfileView user={registration.user} group={group} />
         </TableCell>
         <TableCell>
-          <Link href={`/auth/user/${registration.user.id}`} className="hover:underline">
-            {registration.user.name}
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link href={`/auth/user/${registration.user.id}`} className="hover:underline">
+              {registration.user.name}
+            </Link>
+            {outsideAllRanges && (
+              <Warning
+                className="text-warning-dark h-4 w-4 shrink-0"
+                title="Brukeren passer ikke til noen spot ranges"
+              />
+            )}
+          </div>
         </TableCell>
         <TableCell className={cn(statusColor[registration.status])}>
           {getRegistrationStatus(registration, happeningDate)}
@@ -108,6 +127,13 @@ export const RegistrationRow = ({
       {showMore && (
         <TableRow className="bg-muted col-span-6 p-4">
           <TableCell colSpan={showIndex ? 6 : 5}>
+            {outsideAllRanges && (
+              <Callout type="warning" className="mb-4 text-sm">
+                Brukeren sitt årstrinn ({userYear ?? "ukjent"}) passer ikke til noen av
+                plassintervallene for dette arrangementet. Dette kan påvirke beregningen av ledige
+                plasser.
+              </Callout>
+            )}
             <p className="text-muted-foreground text-sm">
               <span className="font-semibold">Epost:</span>{" "}
               {registration.user.alternativeEmail ?? registration.user.email}

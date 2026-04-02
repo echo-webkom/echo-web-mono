@@ -1,16 +1,21 @@
 import Image from "next/image";
 
 import { unoWithAdmin } from "@/api/server";
-import { type FullHappening } from "@/api/uno/client";
+import { type FullHappening, type SpotRange } from "@/api/uno/client";
 import { RegistrationTable } from "../_components/registration-table";
 import { type RegistrationWithUser } from "../_lib/types";
 
 type RegistrationsTabProps = {
   happening: FullHappening;
   registrations: Array<RegistrationWithUser>;
+  spotRanges: Array<SpotRange>;
 };
 
-export const RegistrationsTab = async ({ happening, registrations }: RegistrationsTabProps) => {
+export const RegistrationsTab = async ({
+  happening,
+  registrations,
+  spotRanges,
+}: RegistrationsTabProps) => {
   const groups = await unoWithAdmin.groups.all();
 
   if (registrations.length < 1) {
@@ -38,6 +43,7 @@ export const RegistrationsTab = async ({ happening, registrations }: Registratio
         slug={happening.slug}
         isBedpres={happening.type === "bedpres"}
         happeningDate={happening.date}
+        spotRanges={spotRanges}
       />
     </div>
   );
