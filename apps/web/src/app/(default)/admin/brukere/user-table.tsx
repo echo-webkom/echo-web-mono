@@ -1,9 +1,8 @@
 "use client";
 
+import { type Group } from "@echo-webkom/db/schemas";
 import { useMemo, useState } from "react";
 import { RxArrowLeft, RxArrowRight } from "react-icons/rx";
-
-import { type Group } from "@echo-webkom/db/schemas";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
@@ -11,6 +10,7 @@ import { HoldableButton } from "@/components/ui/holdable-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+
 import { type AllUsers } from "./page";
 import { UserTable } from "./user-table-row";
 

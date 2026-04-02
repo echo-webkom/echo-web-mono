@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { signInAttempt } from "@/data/kv/namespaces";
+
 import { RequestAccessForm } from "./_components/request-access-form";
 
 type Props = {

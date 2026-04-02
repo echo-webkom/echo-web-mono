@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+
 import { describe, expect, it } from "vitest";
 
 import { isHost, isMemberOf, isWebkom, type TUser } from "../memberships";

@@ -1,7 +1,0 @@
-.sanity
-node_modules
-.turbo
-dist
-package.json
-sanity.types.ts
-schema.json

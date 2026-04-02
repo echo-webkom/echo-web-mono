@@ -1,11 +1,11 @@
 "use server";
 
-import { z } from "zod";
-
 import { insertGroupSchema, type GroupInsert } from "@echo-webkom/db/schemas";
+import { z } from "zod";
 
 import { auth } from "@/auth/session";
 import { isMemberOf } from "@/lib/memberships";
+
 import { unoWithAdmin } from "../api/server";
 
 export const addGroup = async (group: GroupInsert) => {

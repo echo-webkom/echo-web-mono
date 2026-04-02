@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type ElementType } from "react";
 import { gsap } from "gsap";
+import { useCallback, useEffect, useMemo, useRef, useState, type ElementType } from "react";
 
 interface TextTypeProps {
   className?: string;

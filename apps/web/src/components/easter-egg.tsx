@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useEffectEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useEffectEvent, useState } from "react";
 
 const konamiCode = [
   "ArrowUp",

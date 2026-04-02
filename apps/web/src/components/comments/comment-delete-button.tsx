@@ -1,7 +1,7 @@
 "use client";
 
-import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { LuTrash } from "react-icons/lu";
 
 import { deleteCommentAction } from "@/actions/delete-comment";

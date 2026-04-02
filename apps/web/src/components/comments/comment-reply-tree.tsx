@@ -1,14 +1,14 @@
 "use client";
 
-import Link from "next/link";
-
 import { type User } from "@echo-webkom/db/schemas";
+import Link from "next/link";
 
 import { createProfilePictureUrl } from "@/api/client";
 import { type CommentTree } from "@/lib/comment-tree";
 import { cn } from "@/utils/cn";
 import { shortDate } from "@/utils/date";
 import { initials } from "@/utils/string";
+
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { CommentCollapseButton } from "./comment-collapse-button";
 import { CommentDeleteButton } from "./comment-delete-button";

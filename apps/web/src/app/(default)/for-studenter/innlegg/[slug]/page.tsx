@@ -1,5 +1,5 @@
-import { cache, Suspense } from "react";
 import { notFound } from "next/navigation";
+import { cache, Suspense } from "react";
 
 import { unoWithAdmin } from "@/api/server";
 import { Authors } from "@/components/authors";

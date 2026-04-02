@@ -1,9 +1,8 @@
 "use server";
 
-import { eq } from "drizzle-orm";
-
 import { registrations } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
+import { eq } from "drizzle-orm";
 
 import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";

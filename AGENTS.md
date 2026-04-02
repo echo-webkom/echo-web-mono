@@ -32,11 +32,8 @@ Before starting development:
 
 ### Code Quality
 
-- `pnpm lint` - Run ESLint on all packages
-- `pnpm lint:fix` - Fix auto-fixable linting issues
-- `pnpm typecheck` - Run TypeScript type checking
-- `pnpm format` - Format code with Prettier
-- `pnpm format:check` - Check code formatting
+- `pnpm check` - Run linting, formatting check, and type checking across all packages
+- `pnpm check:fix` - Auto-fix linting and formatting issues, then type check
 
 ### Database Operations
 
@@ -137,7 +134,7 @@ This is a full-stack monorepo for echo – Linjeforeningen for informatikk (stud
 
 ## Important Notes
 
-- Always run lint and typecheck commands before committing changes
+- Always run `pnpm check` before committing changes
 - The project uses pnpm for package management - never use npm or yarn
 - Environment variables are managed through `.env` file - use `cenv` to validate
 - Database changes require running migrations with `pnpm db:generate` and `pnpm db:migrate`

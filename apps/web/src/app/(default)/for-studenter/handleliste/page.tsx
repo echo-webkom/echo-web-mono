@@ -4,6 +4,7 @@ import { HyggkomShoppingForm } from "@/components/hyggkom-shopping-form";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 import { isMemberOf } from "@/lib/memberships";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
+
 import { unoWithAdmin } from "../../../../api/server";
 
 export default async function HyggkomHandleliste() {

@@ -5,22 +5,22 @@ on:
     branches:
       - main
     paths:
-      - 'apps/web/**'
-      - 'apps/uno/**'
-      - 'packages/**'
-      - 'pnpm-lock.yaml'
-      - 'turbo.json'
-      - '.github/workflows/docker-publish.yaml'
+      - "apps/web/**"
+      - "apps/uno/**"
+      - "packages/**"
+      - "pnpm-lock.yaml"
+      - "turbo.json"
+      - ".github/workflows/docker-publish.yaml"
   pull_request:
     branches:
       - main
     paths:
-      - 'apps/web/**'
-      - 'apps/uno/**'
-      - 'packages/**'
-      - 'pnpm-lock.yaml'
-      - 'turbo.json'
-      - '.github/workflows/docker-publish.yaml'
+      - "apps/web/**"
+      - "apps/uno/**"
+      - "packages/**"
+      - "pnpm-lock.yaml"
+      - "turbo.json"
+      - ".github/workflows/docker-publish.yaml"
 
 concurrency:
   group: docker-publish-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'main' }}

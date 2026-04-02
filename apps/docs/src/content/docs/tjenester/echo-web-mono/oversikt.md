@@ -87,9 +87,8 @@ pnpm seed database --mode <prod | dev | test>
 ```bash
 pnpm test:unit   # Unit tests
 pnpm test:e2e    # End-to-end tests
-pnpm lint        # ESLint alle pakker
-pnpm typecheck   # TypeScript type checking
-pnpm format      # Prettier formatering
+pnpm check       # Lint, formatsjekk og type checking
+pnpm check:fix   # Fiks lint og formatering automatisk, deretter type check
 ```
 
 Se [Testing](/tjenester/echo-web-mono/testing) for detaljert guide om unit testing og E2E-testing.

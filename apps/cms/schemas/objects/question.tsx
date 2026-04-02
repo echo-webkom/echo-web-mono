@@ -1,8 +1,7 @@
+import { QUESTION_TYPES } from "@echo-webkom/lib";
 import { InfoOutlineIcon } from "@sanity/icons";
 import { nanoid } from "nanoid";
 import { defineArrayMember, defineField, defineType } from "sanity";
-
-import { QUESTION_TYPES } from "@echo-webkom/lib";
 
 import { IdInput } from "../../components/id-input";
 

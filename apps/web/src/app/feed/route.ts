@@ -1,5 +1,6 @@
 import { unoWithAdmin } from "@/api/server";
 import { createRSSFeed } from "@/lib/rss";
+
 import { happeningToRSSItem, meetingMinuteToRSSItem, postToRSSItem } from "./_lib/mappers";
 
 export const revalidate = 1800;

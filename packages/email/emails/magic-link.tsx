@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Body,
   Button,
@@ -12,6 +11,7 @@ import {
   Tailwind,
   Text,
 } from "@react-email/components";
+import * as React from "react";
 
 type MagicLinkProps = {
   magicLinkUrl: string;
@@ -69,7 +69,7 @@ export default function MagicLinkEmail({ magicLinkUrl, code, firstName = "der" }
                 nettleseren din:
               </Text>
 
-              <Text className="break-all text-sm text-gray-400">{magicLinkUrl}</Text>
+              <Text className="text-sm break-all text-gray-400">{magicLinkUrl}</Text>
 
               <Text className="text-sm text-gray-500">
                 Hvis du ikke har bedt om en innloggingslenke, kan du trygt ignorere denne e-posten.

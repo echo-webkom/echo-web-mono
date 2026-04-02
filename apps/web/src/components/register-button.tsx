@@ -1,14 +1,13 @@
 "use client";
 
-import { Activity, useEffect, useEffectEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import { type Question } from "@echo-webkom/db/schemas";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { useRouter } from "next/navigation";
+import { Activity, useEffect, useEffectEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineLoading } from "react-icons/ai";
 import { toast } from "sonner";
 import { type z } from "zod";
-
-import { type Question } from "@echo-webkom/db/schemas";
 
 import { register } from "@/actions/register";
 import { Button } from "@/components/ui/button";
@@ -24,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { registrationFormSchema } from "@/lib/schemas/registration";
+
 import { Countdown } from "./countdown";
 import { Checkbox } from "./ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";

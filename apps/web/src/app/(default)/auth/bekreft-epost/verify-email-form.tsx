@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 import { verifyEmail } from "@/actions/verify-email";
 import { Button } from "@/components/ui/button";

@@ -1,6 +1,6 @@
+import { generateState } from "arctic";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { generateState } from "arctic";
 
 import { feide } from "@/auth/feide";
 

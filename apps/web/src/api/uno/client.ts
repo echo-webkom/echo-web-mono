@@ -1,6 +1,5 @@
-import ky, { type KyInstance, type Options } from "ky";
-
 import { type HappeningType, type PageType, type StudentGroupType } from "@echo-webkom/lib";
+import ky, { type KyInstance, type Options } from "ky";
 
 const DEFAULT_BASE_URL = "https://uno.echo-webkom.no";
 

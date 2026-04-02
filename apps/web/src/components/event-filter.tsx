@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import {
   usePathname,
@@ -8,6 +7,7 @@ import {
   useSearchParams,
   type ReadonlyURLSearchParams,
 } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   LuArrowDownNarrowWide as ArrowDownNarrowWide,
   LuChevronDown as ChevronDown,
@@ -15,6 +15,7 @@ import {
 } from "react-icons/lu";
 
 import { cn } from "@/utils/cn";
+
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";

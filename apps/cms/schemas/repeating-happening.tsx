@@ -1,3 +1,4 @@
+import { HAPPENING_TYPES } from "@echo-webkom/lib";
 import { CalendarIcon } from "@sanity/icons";
 import {
   defineArrayMember,
@@ -7,8 +8,6 @@ import {
   type SlugSourceContext,
 } from "sanity";
 import slugify from "slugify";
-
-import { HAPPENING_TYPES } from "@echo-webkom/lib";
 
 export default defineType({
   name: "repeatingHappening",

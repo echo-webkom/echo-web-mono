@@ -1,8 +1,7 @@
+import { db } from "@echo-webkom/db/serverless";
+import { eq } from "drizzle-orm";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { eq } from "drizzle-orm";
-
-import { db } from "@echo-webkom/db/serverless";
 
 import { createProfilePictureUrl, uno } from "@/api/client";
 import { auth, getProfileOwner } from "@/auth/session";
@@ -13,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
+
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
 import WhitelistNotification from "./_components/whitelist-notification";
 

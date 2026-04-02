@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "motion/react";
+import { useState } from "react";
 import { FaRegThumbsUp, FaReply } from "react-icons/fa";
 import { SlSpeech } from "react-icons/sl";
 
 import { useSound } from "@/hooks/use-sound";
+
 import { Confetti } from "../components/Confetti";
 import { AnimatedNumber, AppearingText } from "../components/Text";
 import { useUserStatsContext } from "../components/UserContext";

@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useState } from "react";
 
 import { useSound } from "@/hooks/use-sound";
+
 import { EndScreen } from "../cards/end";
 import {
   AgendaEvent,

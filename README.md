@@ -53,8 +53,8 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 
 - **web** - Hovednettsiden bygget med Next.js 16, React 19 og Tailwind CSS
 - **uno** - Vår Go backend, som inneholder to applikasjoner. Bygget med DDD og hexagonal arkitektur
-   - **web** - HTTP REST API bygget med Chi-router
-   - **cron** - Jobber som kjøres regelmessig. Deler pakker med Uno.
+  - **web** - HTTP REST API bygget med Chi-router
+  - **cron** - Jobber som kjøres regelmessig. Deler pakker med Uno.
 - **cms** - Sanity Studio for administrering av innhold på nettsiden
 
 ### Delte pakker (`/packages`)
@@ -72,7 +72,6 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 ## Hvordan kjøre?
 
 1. **Før du starter må du passe på at det følgende er installert:**
-
    - [pnpm](https://pnpm.io/installation)
    - [node](https://nodejs.org/https://nodejs.org/en/download) (vi anbefaler siste LTS med `fnm`)
    - [docker](https://docs.docker.com/engine/install/)
@@ -130,4 +129,3 @@ Sidene som starter er:
 - [cenv](https://github.com/echo-webkom/cenv) - Environment-fil-sjekker
 - [verv](https://github.com/echo-webkom/verv.echo.uib.no) - Nettsiden for verving av nye studenter i undergrupper
 - [screen](https://github.com/echo-webkom/echo-screen) - Nettsiden for skjermen på lesesalen
-

@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Body,
   Container,
@@ -10,6 +9,7 @@ import {
   Section,
   Tailwind,
 } from "@react-email/components";
+import * as React from "react";
 
 export default function AccessGranted() {
   return (

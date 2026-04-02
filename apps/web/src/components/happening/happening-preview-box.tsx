@@ -1,7 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
 import { format } from "date-fns";
 import { nb } from "date-fns/locale/nb";
+import Image from "next/image";
+import Link from "next/link";
 
 import type { UnoReturnType } from "@/api/uno/client";
 import { urlFor } from "@/lib/sanity";

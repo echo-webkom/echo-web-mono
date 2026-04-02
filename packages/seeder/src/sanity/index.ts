@@ -1,5 +1,3 @@
-import { inArray, sql } from "drizzle-orm";
-
 import {
   happenings,
   happeningsToGroups,
@@ -10,6 +8,7 @@ import {
 } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
 import { isBoard } from "@echo-webkom/lib";
+import { inArray, sql } from "drizzle-orm";
 
 import { clientWith, type Dataset } from "./client";
 import { happeningQueryList, type SanityHappening } from "./query";

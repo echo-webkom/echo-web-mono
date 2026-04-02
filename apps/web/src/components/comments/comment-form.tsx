@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { LuArrowRight as ArrowRight } from "react-icons/lu";
 import { toast } from "sonner";
 
 import { addCommentAction } from "@/actions/add-comment";
+
 import { CommentTextarea } from "./comment-textarea";
 
 type CommentFormProps = {

@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { auth } from "@/auth/session";
 import { getRandomMessage } from "@/lib/random-message";
+
 import { ENVIRONMENT } from "../config";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import { MobileNavigation } from "./mobile-navigation";

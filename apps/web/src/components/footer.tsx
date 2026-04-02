@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useEffectEvent, useState } from "react";
 import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useEffectEvent, useState } from "react";
 import { BiRss } from "react-icons/bi";
 import { MdCommit } from "react-icons/md";
 import { RxExternalLink as ExternalLink } from "react-icons/rx";

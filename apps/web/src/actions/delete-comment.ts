@@ -1,9 +1,8 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
-
 import { comments } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
+import { and, eq } from "drizzle-orm";
 
 import { auth } from "@/auth/session";
 

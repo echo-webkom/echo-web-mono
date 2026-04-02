@@ -10,13 +10,10 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "dev": "pnpm with-env email dev --port 9000",
-    "lint": "eslint",
-    "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit",
     "export": "pnpm with-env email export",
     "with-env": "dotenv -e ../../.env --",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "check": "oxlint . && oxfmt --check . && tsc --noEmit",
+    "check:fix": "oxlint . --fix && oxfmt . && tsc --noEmit"
   },
   "dependencies": {
     "@react-email/components": "1.0.6",
@@ -31,13 +28,7 @@
     "@types/node": "22.19.7",
     "@types/react": "19.2.10",
     "dotenv-cli": "11.0.0",
-    "eslint": "10.1.0",
-    "eslint-plugin-jsx-a11y": "6.10.2",
-    "eslint-plugin-react": "7.37.5",
-    "eslint-plugin-react-hooks": "7.0.1",
-    "globals": "^17.4.0",
     "react-email": "5.2.5",
-    "typescript": "5.9.3",
-    "typescript-eslint": "^8.58.0"
+    "typescript": "5.9.3"
   }
 }

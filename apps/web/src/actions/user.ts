@@ -1,10 +1,9 @@
 "use server";
 
-import { eq } from "drizzle-orm";
-import { z } from "zod";
-
 import { insertUserSchema, users, usersToGroups } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
+import { eq } from "drizzle-orm";
+import { z } from "zod";
 
 import { auth } from "@/auth/session";
 import { sendVerificationEmail } from "@/lib/email-verification";

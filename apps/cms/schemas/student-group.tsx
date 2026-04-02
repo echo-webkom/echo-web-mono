@@ -1,7 +1,6 @@
+import { GROUP_TYPES } from "@echo-webkom/lib";
 import { UsersIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
-
-import { GROUP_TYPES } from "@echo-webkom/lib";
 
 export default defineType({
   name: "studentGroup",

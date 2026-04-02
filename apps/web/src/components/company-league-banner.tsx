@@ -1,9 +1,10 @@
-import Link from "next/link";
 import { format } from "date-fns";
 import ky from "ky";
+import Link from "next/link";
 import Marquee from "react-fast-marquee";
 
 import { cn } from "@/utils/cn";
+
 import { UNO_BASE_URL } from "../config";
 
 const DATABRUS_FC = "Databrus FC";

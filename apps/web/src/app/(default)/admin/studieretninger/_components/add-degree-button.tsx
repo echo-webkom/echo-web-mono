@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { type Degree } from "@echo-webkom/db/schemas";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-
-import { type Degree } from "@echo-webkom/db/schemas";
 
 import { addDegree, editDegree, removeDegree } from "@/actions/degree";
 import { Text } from "@/components/typography/text";

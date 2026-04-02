@@ -1,8 +1,8 @@
+import { type HappeningType } from "@echo-webkom/lib";
 import { LuClock10 } from "react-icons/lu";
 
-import { type HappeningType } from "@echo-webkom/lib";
-
 import { unoWithAdmin } from "@/api/server";
+
 import { BentoBox } from "./bento-box";
 import { HappeningPreview } from "./happening-preview";
 

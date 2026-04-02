@@ -1,5 +1,6 @@
 import { type FullHappening } from "@/api/uno/client";
 import { getFullNorwegianDate } from "@/utils/date";
+
 import { type RegistrationWithUser } from "../_lib/types";
 import { Box } from "./box";
 

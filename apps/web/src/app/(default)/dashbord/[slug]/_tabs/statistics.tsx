@@ -1,6 +1,8 @@
 import { uno } from "@/api/client";
 import { type FullHappening } from "@/api/uno/client";
 import { PizzaFormel } from "@/components/pizza-formel";
+
+import { unoWithAdmin } from "../../../../../api/server";
 import { Box } from "../_components/box";
 import { AreaChartRegistrationsOverTime } from "../_components/charts/area-chart-registrations-over-time";
 import { BarChartYear } from "../_components/charts/bar-chart-year-registrations";
@@ -9,7 +11,6 @@ import { PieChartGroups } from "../_components/charts/pie-chart-group-registrati
 import { FastestRegistrations } from "../_components/fastest-registrations";
 import { Heading } from "../_components/heading";
 import { type RegistrationWithUser } from "../_lib/types";
-import { unoWithAdmin } from "../../../../../api/server";
 
 const Stat = ({ title, value }: { title: string; value: string }) => (
   <Box className="text-center">

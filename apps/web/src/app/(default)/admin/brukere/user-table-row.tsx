@@ -1,3 +1,4 @@
+import { type Group } from "@echo-webkom/db/schemas";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,10 +8,9 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { RxDotsHorizontal as Dots } from "react-icons/rx";
 
-import { type Group } from "@echo-webkom/db/schemas";
-
 import { Button } from "@/components/ui/button";
 import { TableCell, TableRow } from "@/components/ui/table";
+
 import { type AllUsers } from "./page";
 import { UserForm } from "./user-form";
 

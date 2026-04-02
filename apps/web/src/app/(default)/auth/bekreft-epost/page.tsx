@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import { Heading } from "@/components/typography/heading";
+
 import VerifyEmailForm from "./verify-email-form";
 
 export default function VerifyEmailPage() {

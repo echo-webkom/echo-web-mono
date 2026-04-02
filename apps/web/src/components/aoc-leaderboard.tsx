@@ -1,5 +1,6 @@
 import { BentoBox } from "@/app/(default)/hjem/_components/bento-box";
 import { cn } from "@/utils/cn";
+
 import { unoWithAdmin } from "../api/server";
 
 export const LEADERBOARD_ID = "3293269";

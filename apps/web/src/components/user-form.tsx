@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { type Degree } from "@echo-webkom/db/schemas";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { type Degree } from "@echo-webkom/db/schemas";
-
 import { resendVerificationEmail } from "@/actions/resend-verification-email";
 import { updateSelf } from "@/actions/user";
+
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Checkbox } from "./ui/checkbox";

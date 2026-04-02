@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
+
 import { uno } from "../../../../api/client";
 import { AddDegreeButton } from "./_components/add-degree-button";
 

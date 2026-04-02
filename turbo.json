@@ -35,21 +35,14 @@
       "cache": false
     },
     "test:unit": {},
-    "lint": {},
-    "lint:fix": {
+    "check": {},
+    "check:fix": {
       "cache": false
     },
-    "typecheck": {},
     "clean": {
       "cache": false
     },
     "//#clean": {
-      "cache": false
-    },
-    "format": {
-      "cache": false
-    },
-    "format:check": {
       "cache": false
     }
   },

@@ -1,12 +1,13 @@
 "use client";
 
-import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { createProfilePictureUrl } from "@/api/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { initials } from "@/utils/string";
+
 import {
   deleteProfilePictureAction,
   uploadProfilePictureAction,

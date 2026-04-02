@@ -1,8 +1,8 @@
-// @ts-check
-import { defineConfig } from "astro/config";
 import cloudflare from "@astrojs/cloudflare";
 import starlight from "@astrojs/starlight";
 import mermaid from "astro-mermaid";
+// @ts-check
+import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { LuArrowRight } from "react-icons/lu";
 
 import { useIsMounted } from "@/hooks/use-is-mounted";
+
 import AnimatedBg from "./AnimatedBg";
 
 export const WrappedBanner = () => {

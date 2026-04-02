@@ -1,9 +1,8 @@
 "use server";
 
-import { eq } from "drizzle-orm";
-
 import { insertWhitelistSchema, whitelist } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
+import { eq } from "drizzle-orm";
 
 import { auth } from "@/auth/session";
 import { isMemberOf } from "@/lib/memberships";

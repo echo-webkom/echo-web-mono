@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import EchoLogo from "@/assets/images/echo-logo.png";
 import { Feide } from "@/components/icons/feide";
@@ -11,6 +11,7 @@ import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
 import { sendMagicLink } from "../_actions/magic-link";
 import { verifyCode } from "../_actions/verify-code";
 

@@ -3,6 +3,7 @@
 import { useEffect, useEffectEvent, useState } from "react";
 
 import { useIsMounted } from "@/hooks/use-is-mounted";
+
 import ConfettiForBDay from "./confetti";
 
 export default function EchoBirthdayBanner() {

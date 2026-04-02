@@ -1,8 +1,7 @@
+import { type User } from "@echo-webkom/db/schemas";
 import Link from "next/link";
 import { LuGraduationCap, LuMail, LuUsers } from "react-icons/lu";
 import { RxInfoCircled } from "react-icons/rx";
-
-import { type User } from "@echo-webkom/db/schemas";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { mailTo } from "@/utils/prefixes";

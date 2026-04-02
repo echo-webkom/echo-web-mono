@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
 import { ChevronDown } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 import { RxDotsHorizontal as Dots, RxExclamationTriangle as Warning } from "react-icons/rx";
 
 import { type SpotRange } from "@/api/uno/client";
@@ -21,6 +21,7 @@ import {
 import { TableCell, TableRow } from "@/components/ui/table";
 import { getRegistrationStatus } from "@/lib/registrations";
 import { cn } from "@/utils/cn";
+
 import { statusColor } from "../_lib/status-color";
 import { type RegistrationWithUser } from "../_lib/types";
 

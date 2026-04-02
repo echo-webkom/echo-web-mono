@@ -3,6 +3,7 @@ import { type Metadata } from "next";
 import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
+
 import { JobAdList } from "./_components/job-ad-list";
 
 export const metadata = {

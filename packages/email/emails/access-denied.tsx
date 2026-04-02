@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Body,
   Container,
@@ -10,6 +9,7 @@ import {
   Section,
   Tailwind,
 } from "@react-email/components";
+import * as React from "react";
 
 type AccessDeniedProps = {
   reason?: string;
@@ -43,7 +43,7 @@ export default function AccessDenied({ reason }: AccessDeniedProps) {
 
               {reason && (
                 <Section className="mt-4 rounded-md bg-gray-50 p-4 text-left">
-                  <div className="text-sm font-semibold text-gray-700 mb-2">Begrunnelse:</div>
+                  <div className="mb-2 text-sm font-semibold text-gray-700">Begrunnelse:</div>
                   <div className="text-sm text-gray-600">{reason}</div>
                 </Section>
               )}

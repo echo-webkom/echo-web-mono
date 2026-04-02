@@ -1,5 +1,6 @@
 "use client";
 
+import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -10,10 +11,9 @@ import {
 } from "react-icons/rx";
 import { TbGavel } from "react-icons/tb";
 
-import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
-
 import { useSignOut } from "@/auth/client";
 import { isBedkom, isMemberOf } from "@/lib/memberships";
+
 import { createProfilePictureUrl } from "../api/client";
 import {
   DropdownMenu,

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useEffectEvent, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "motion/react";
+import React, { createContext, useContext, useEffect, useEffectEvent, useState } from "react";
 import {
   RxChevronDown as ChevronDown,
   RxCross2 as Cross,

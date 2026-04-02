@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-
 import { type HappeningType } from "@echo-webkom/lib";
+import { useState } from "react";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";

@@ -1,5 +1,6 @@
 import { unoWithAdmin } from "@/api/server";
 import { JobAdPreview } from "@/components/job-ad-preview";
+
 import { BentoBox } from "./bento-box";
 import { JobAdCarousel } from "./job-ads-client";
 

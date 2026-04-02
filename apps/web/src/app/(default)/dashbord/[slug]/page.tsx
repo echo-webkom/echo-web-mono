@@ -7,6 +7,7 @@ import { auth } from "@/auth/session";
 import { Container } from "@/components/container";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { isHost } from "@/lib/memberships";
+
 import { getRegistrations } from "./_lib/get-registrations";
 import { createBackLink } from "./_lib/utils";
 import { RegistrationsTab } from "./_tabs/registrations";

@@ -7,6 +7,7 @@ import { degreeYearsToList, degreeYearText } from "@/lib/degree-year-text";
 import { jobTypeString } from "@/lib/mappers";
 import { urlFor } from "@/lib/sanity";
 import { shortDate } from "@/utils/date";
+
 import { Sidebar, SidebarItem, SidebarItemContent, SidebarItemTitle } from "./sidebar";
 import { Button } from "./ui/button";
 
