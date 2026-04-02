@@ -24,14 +24,8 @@ export const generateStaticParams = async () => {
 };
 
 const getData = cache(async (path: Array<string>) => {
-  const urlSegment = path[0]!;
   const slug = path[1]!;
-  const pageType = Object.keys(pageTypeToUrl).find(
-    (key) => pageTypeToUrl[key as keyof typeof pageTypeToUrl] === urlSegment,
-  );
-  const page = pageType
-    ? await unoWithAdmin.sanity.staticInfo.bySlug(pageType, slug).catch(() => null)
-    : null;
+  const page = slug ? await unoWithAdmin.sanity.staticInfo.bySlug(slug).catch(() => null) : null;
 
   if (!page) {
     return notFound();

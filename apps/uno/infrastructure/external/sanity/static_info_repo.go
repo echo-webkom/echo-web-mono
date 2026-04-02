@@ -37,7 +37,6 @@ func (r *StaticInfoRepo) GetAllStaticInfo(ctx context.Context) ([]model.CMSStati
 
 const staticInfoBySlugQuery = `
 *[_type == "staticInfo"
-  && pageType == $pageType
   && slug.current == $slug
   && !(_id in path('drafts.**'))] {
   title,
@@ -47,14 +46,13 @@ const staticInfoBySlugQuery = `
 }[0]
 `
 
-func (r *StaticInfoRepo) GetStaticInfoBySlug(ctx context.Context, pageType string, slug string) (*model.CMSStaticInfo, error) {
-	r.logger.Info(ctx, "getting static info by slug from sanity", "pageType", pageType, "slug", slug)
+func (r *StaticInfoRepo) GetStaticInfoBySlug(ctx context.Context, slug string) (*model.CMSStaticInfo, error) {
+	r.logger.Info(ctx, "getting static info by slug from sanity", "slug", slug)
 	result, err := sanity.Query[*model.CMSStaticInfo](ctx, r.client, staticInfoBySlugQuery, map[string]any{
-		"pageType": pageType,
-		"slug":     slug,
+		"slug": slug,
 	})
 	if err != nil {
-		r.logger.Error(ctx, "failed to get static info by slug from sanity", "pageType", pageType, "slug", slug, "error", err)
+		r.logger.Error(ctx, "failed to get static info by slug from sanity", "slug", slug, "error", err)
 		return nil, err
 	}
 	return result, nil

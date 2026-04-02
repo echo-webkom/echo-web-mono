@@ -334,16 +334,15 @@ func (s *CMSService) GetJobAdBySlug(ctx context.Context, slug string) (*model.CM
 	return result, nil
 }
 
-func (s *CMSService) GetStaticInfoBySlug(ctx context.Context, pageType string, slug string) (*model.CMSStaticInfo, error) {
-	key := fmt.Sprintf("%s:%s", pageType, slug)
-	if v, ok := s.staticInfoBySlugCache.Get(key); ok {
+func (s *CMSService) GetStaticInfoBySlug(ctx context.Context, slug string) (*model.CMSStaticInfo, error) {
+	if v, ok := s.staticInfoBySlugCache.Get(slug); ok {
 		return v, nil
 	}
-	result, err := s.staticInfoRepo.GetStaticInfoBySlug(ctx, pageType, slug)
+	result, err := s.staticInfoRepo.GetStaticInfoBySlug(ctx, slug)
 	if err != nil {
 		return nil, err
 	}
-	s.staticInfoBySlugCache.Set(key, result, cmsCacheTTL)
+	s.staticInfoBySlugCache.Set(slug, result, cmsCacheTTL)
 	return result, nil
 }
 

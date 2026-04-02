@@ -489,12 +489,8 @@ class SanityStaticInfoApi {
     return await this.client.requestJson<Array<CMSStaticInfo>>("GET", "sanity/static-info");
   }
 
-  async bySlug(pageType: string, slug: string) {
-    const query = new URLSearchParams({ pageType, slug });
-    return await this.client.requestJson<CMSStaticInfo | null>(
-      "GET",
-      `sanity/static-info/by-slug?${query.toString()}`,
-    );
+  async bySlug(slug: string) {
+    return await this.client.requestJson<CMSStaticInfo | null>("GET", `sanity/static-info/${slug}`);
   }
 }
 

@@ -38,7 +38,7 @@ type CMSBannerRepo interface {
 
 type CMSStaticInfoRepo interface {
 	GetAllStaticInfo(ctx context.Context) ([]model.CMSStaticInfo, error)
-	GetStaticInfoBySlug(ctx context.Context, pageType string, slug string) (*model.CMSStaticInfo, error)
+	GetStaticInfoBySlug(ctx context.Context, slug string) (*model.CMSStaticInfo, error)
 }
 
 type CMSMerchRepo interface {

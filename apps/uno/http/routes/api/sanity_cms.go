@@ -54,7 +54,7 @@ func NewSanityMux(
 	mux.Handle("GET", "/banner", s.getBanner)
 
 	mux.Handle("GET", "/static-info", s.getAllStaticInfo)
-	mux.Handle("GET", "/static-info/by-slug", s.getStaticInfoBySlug)
+	mux.Handle("GET", "/static-info/{slug}", s.getStaticInfoBySlug)
 
 	mux.Handle("GET", "/merch", s.getAllMerch)
 	mux.Handle("GET", "/merch/{slug}", s.getMerchBySlug)
@@ -479,9 +479,8 @@ func (s *sanityCMS) getJobAdBySlug(ctx *handler.Context) error {
 }
 
 func (s *sanityCMS) getStaticInfoBySlug(ctx *handler.Context) error {
-	pageType, _ := ctx.QueryParam("pageType")
-	slug, _ := ctx.QueryParam("slug")
-	info, err := s.cmsService.GetStaticInfoBySlug(ctx.Context(), pageType, slug)
+	slug := ctx.PathValue("slug")
+	info, err := s.cmsService.GetStaticInfoBySlug(ctx.Context(), slug)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
