@@ -188,7 +188,7 @@ export interface CMSRepeatingHappening {
 export interface CMSAuthor {
   _id: string;
   name: string;
-  image: CMSImage;
+  image: CMSImage | null;
 }
 
 export interface CMSPost {
