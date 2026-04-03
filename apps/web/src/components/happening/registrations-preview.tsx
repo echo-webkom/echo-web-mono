@@ -64,11 +64,11 @@ export const RegistrationsPreview = ({ registrations }: RegistrationsPreviewProp
 
   return (
     <Dialog>
-      <DialogTrigger className="group flex w-fit items-start">
-        <TooltipProvider>
-          <Tooltip>
-            <div>
-              <TooltipTrigger>
+      <TooltipProvider>
+        <Tooltip>
+          <DialogTrigger asChild>
+            <TooltipTrigger asChild>
+              <button type="button" className="group flex w-fit items-start">
                 <div className="flex items-center">
                   <div className="flex items-center -space-x-4">
                     {sorted.map((registration) => (
@@ -81,14 +81,14 @@ export const RegistrationsPreview = ({ registrations }: RegistrationsPreviewProp
                     </div>
                   )}
                 </div>
-              </TooltipTrigger>
-            </div>
-            <TooltipContent>
-              <p>{names}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </DialogTrigger>
+              </button>
+            </TooltipTrigger>
+          </DialogTrigger>
+          <TooltipContent>
+            <p>{names}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Påmeldte brukere</DialogTitle>
