@@ -1,7 +1,7 @@
 import { colorInput } from "@sanity/color-input";
 import { RobotIcon, RocketIcon, TerminalIcon } from "@sanity/icons";
 import { visionTool } from "@sanity/vision";
-import { defineConfig } from "sanity";
+import { defineConfig, type Config } from "sanity";
 import { markdownSchema } from "sanity-plugin-markdown";
 import { media } from "sanity-plugin-media";
 import { singletonTools } from "sanity-plugin-singleton-tools";
@@ -62,7 +62,7 @@ const testConfig = defineConfig({
   dataset: "testing",
 });
 
-const getConfig = () => {
+const createConfig = (): Config => {
   if (IS_DEV) {
     return [devConfig, testConfig, prodConfig];
   }
@@ -70,4 +70,6 @@ const getConfig = () => {
   return [prodConfig];
 };
 
-export default defineConfig(getConfig());
+const config = createConfig();
+
+export default defineConfig(config);
