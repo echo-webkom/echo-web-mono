@@ -33,6 +33,7 @@ func NewSanityMux(
 	s := &sanityCMS{logger: logger, cmsService: cmsService, happeningService: happeningService}
 
 	mux.Handle("POST", "/webhook", s.handleWebhook, admin)
+	mux.Handle("POST", "/revalidate", s.handleRevalidate, admin)
 
 	mux.Handle("GET", "/happenings", s.getAllHappenings)
 	mux.Handle("GET", "/happenings/home", s.getHomeHappenings)
@@ -135,6 +136,32 @@ func (s *sanityCMS) handleWebhook(ctx *handler.Context) error {
 	return ctx.JSON(map[string]string{
 		"status":  "success",
 		"message": fmt.Sprintf("Happening with id %s %s", req.Data.ID, actionStr),
+	})
+}
+
+// handleRevalidate invalidates the Redis cache for the given Sanity document type.
+// @Summary      Revalidate CMS cache
+// @Tags         sanity
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  map[string]string  "Success"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Router       /sanity/revalidate [post]
+func (s *sanityCMS) handleRevalidate(ctx *handler.Context) error {
+	var req dto.SanityRevalidateRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.Error(fmt.Errorf("failed to parse request body: %w", err), http.StatusBadRequest)
+	}
+
+	s.logger.Info(ctx.Context(), "sanity revalidate received", "type", req.Type)
+
+	s.cmsService.InvalidateByType(ctx.Context(), req.Type)
+
+	return ctx.JSON(map[string]string{
+		"status":  "success",
+		"message": fmt.Sprintf("Revalidated type: %q", req.Type),
 	})
 }
 

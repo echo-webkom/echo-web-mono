@@ -35,8 +35,6 @@ func RunApi() {
 
 	// Initialize Redis client (falls back to in-memory cache if not configured)
 	redisClient, cacheInvalidator := initRedis(cfg.RedisURL, logger)
-	// TODO: Will be wired up to invalidate endpoint soon.
-	_ = cacheInvalidator
 
 	// Initialize Advent of Code client
 	aocClient := initAdventOfCode(logger)
@@ -117,6 +115,7 @@ func RunApi() {
 		cmsMovieRepo,
 		cmsHSApplicationRepo,
 		redisClient,
+		cacheInvalidator,
 	)
 
 	go http.RunServer(
@@ -197,5 +196,5 @@ func initRedis(redisURL string, logger port.Logger) (*redis.Client, port.CacheIn
 
 	client := redis.NewClient(opt)
 	logger.Info(context.Background(), "redis connected")
-	return client, cache.NewRedisInvalidator(client)
+	return client, cache.NewRedisInvalidator(logger, client)
 }

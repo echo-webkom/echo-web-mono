@@ -3059,6 +3059,34 @@ paths:
       summary: Get all repeating happenings from CMS
       tags:
       - sanity
+  /sanity/revalidate:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Revalidate CMS cache
+      tags:
+      - sanity
   /sanity/static-info:
     get:
       produces:

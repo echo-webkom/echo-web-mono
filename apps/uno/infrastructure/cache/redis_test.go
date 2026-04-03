@@ -76,14 +76,12 @@ func TestRedisCacheNamespaceIsolation(t *testing.T) {
 func TestRedisInvalidator(t *testing.T) {
 	client := SetupTestRedis(t)
 	cache := NewRedisCache[string](client, "inv-test")
-	invalidator := NewRedisInvalidator(client)
+	invalidator := NewRedisInvalidator(nil, client)
 
 	cache.Set("key1", "value1", 0)
 	cache.Set("key2", "value2", 0)
 
-	if err := invalidator.InvalidateNamespace(context.Background(), "inv-test"); err != nil {
-		t.Fatalf("InvalidateNamespace failed: %v", err)
-	}
+	invalidator.InvalidateNamespace(context.Background(), "inv-test")
 
 	_, ok := cache.Get("key1")
 	if ok {

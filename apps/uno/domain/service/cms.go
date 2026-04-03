@@ -49,6 +49,8 @@ type CMSService struct {
 	meetingMinuteByIdCache        port.Cache[*model.CMSMeetingMinute]
 	moviesCache                   port.Cache[[]model.CMSMovie]
 	hsApplicationsCache           port.Cache[[]model.CMSHSApplication]
+
+	invalidator port.CacheInvalidator
 }
 
 func NewCMSService(
@@ -64,6 +66,7 @@ func NewCMSService(
 	movieRepo port.CMSMovieRepo,
 	hsApplicationRepo port.CMSHSApplicationRepo,
 	redisClient *redis.Client,
+	invalidator port.CacheInvalidator,
 ) *CMSService {
 	return &CMSService{
 		happeningRepo:          happeningRepo,
@@ -99,6 +102,8 @@ func NewCMSService(
 		meetingMinuteByIdCache:        cache.NewCache[*model.CMSMeetingMinute](redisClient, "cms:meeting-minute-by-id"),
 		moviesCache:                   cache.NewCache[[]model.CMSMovie](redisClient, "cms:movies"),
 		hsApplicationsCache:           cache.NewCache[[]model.CMSHSApplication](redisClient, "cms:hs-applications"),
+
+		invalidator: invalidator,
 	}
 }
 
@@ -480,4 +485,39 @@ func (s *CMSService) GetFilteredHappenings(ctx context.Context, filter CMSHappen
 	}
 
 	return result, nil
+}
+
+// InvalidateByType invalidates all cache namespaces related to the given Sanity document type.
+func (s *CMSService) InvalidateByType(ctx context.Context, docType string) {
+	namespaces := cmsNamespacesForType(docType)
+	for _, ns := range namespaces {
+		s.invalidator.InvalidateNamespace(ctx, ns)
+	}
+}
+
+func cmsNamespacesForType(docType string) []string {
+	switch docType {
+	case "happening":
+		return []string{"cms:happenings", "cms:happening-by-slug", "cms:home-happenings", "cms:contacts-by-slug"}
+	case "repeatingHappening":
+		return []string{"cms:repeating-happenings", "cms:repeating-happening-by-slug"}
+	case "post":
+		return []string{"cms:posts", "cms:post-by-slug"}
+	case "studentGroup", "profile":
+		return []string{"cms:student-groups-by-type", "cms:student-group-by-slug"}
+	case "job":
+		return []string{"cms:job-ads", "cms:job-ad-by-slug"}
+	case "banner":
+		return []string{"cms:banner"}
+	case "staticInfo":
+		return []string{"cms:static-info", "cms:static-info-by-slug"}
+	case "merch":
+		return []string{"cms:merch", "cms:merch-by-slug"}
+	case "meetingMinute":
+		return []string{"cms:meeting-minutes", "cms:meeting-minute-by-id"}
+	case "movie":
+		return []string{"cms:movies"}
+	default:
+		return nil
+	}
 }
