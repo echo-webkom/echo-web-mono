@@ -5,7 +5,9 @@ import (
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/infrastructure/cache"
+	infracache "uno/infrastructure/cache"
+
+	"github.com/redis/go-redis/v9"
 )
 
 const (
@@ -28,15 +30,12 @@ type DatabrusService struct {
 	tableCache   port.Cache[model.Table]
 }
 
-func NewDatabrusService(logger port.Logger, databrusRepo port.DatabrusRepo) *DatabrusService {
-	matchesCache := cache.NewInMemoryCache[[]model.Match]()
-	tableCache := cache.NewInMemoryCache[model.Table]()
-
+func NewDatabrusService(logger port.Logger, databrusRepo port.DatabrusRepo, redisClient *redis.Client) *DatabrusService {
 	return &DatabrusService{
 		logger:       logger,
 		databrusRepo: databrusRepo,
-		matchesCache: matchesCache,
-		tableCache:   tableCache,
+		matchesCache: infracache.NewCache[[]model.Match](redisClient, "databrus:matches"),
+		tableCache:   infracache.NewCache[model.Table](redisClient, "databrus:table"),
 	}
 }
 

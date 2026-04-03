@@ -9,6 +9,7 @@ import (
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http"
+	"uno/infrastructure/cache"
 	"uno/infrastructure/external"
 	sanityinfra "uno/infrastructure/external/sanity"
 	"uno/infrastructure/filestorage"
@@ -18,6 +19,7 @@ import (
 	"uno/pkg/sanity"
 
 	"github.com/jesperkha/notifier"
+	"github.com/redis/go-redis/v9"
 )
 
 func RunApi() {
@@ -29,26 +31,17 @@ func RunApi() {
 	logger.Info(context.Background(), "starting uno-api")
 
 	// Initialize database connection
-	db, err := postgres.New(cfg.DatabaseURL)
-	if err != nil {
-		logger.Error(context.Background(), "failed to connect to database", "error", err)
-		log.Fatal(err)
-	}
-	logger.Info(context.Background(), "database connected")
+	db := initDatabase(cfg.DatabaseURL, logger)
+
+	// Initialize Redis client (falls back to in-memory cache if not configured)
+	redisClient, cacheInvalidator := initRedis(cfg.RedisURL, logger)
+	// TODO: Will be wired up to invalidate endpoint soon.
+	_ = cacheInvalidator
 
 	// Initialize Advent of Code client
-	aocToken := os.Getenv("AOC_SESSION_COOKIE")
-	aocClient := adventofcode.New(aocToken)
-	if aocToken == "" {
-		logger.Warn(context.Background(), "missing advent of code session token. endpoints will not work")
-	}
+	aocClient := initAdventOfCode(logger)
 
-	fileStorage, err := filestorage.New(cfg.ProfilePictureEndpointURL, cfg.ProfilePictureAccessKeyID, cfg.ProfilePictureSecretAccessKey)
-	if err != nil {
-		logger.Error(context.Background(), "failed to initialize file storage", "error", err)
-	} else {
-		logger.Info(context.Background(), "file storage connected")
-	}
+	profilePictureRepo := initFileStorage(cfg, logger)
 
 	// Initialize repositories
 	happeningRepo := postgres.NewHappeningRepo(db, logger)
@@ -70,15 +63,6 @@ func RunApi() {
 	groupRepo := postgres.NewGroupRepo(db, logger)
 	reactionRepo := postgres.NewReactionRepo(db, logger)
 	quoteRepo := postgres.NewQuoteRepo(db, logger)
-	var profilePictureRepo port.ProfilePictureRepo
-	if fileStorage != nil {
-		profilePictureRepo, err = filestorage.NewProfilePictureStore(context.Background(), fileStorage, cfg.ProfilePictureBucketName, logger)
-		if err != nil {
-			logger.Error(context.Background(), "failed to initialize profile picture store", "error", err)
-		}
-	} else {
-		logger.Warn(context.Background(), "file storage not configured, profile picture features disabled")
-	}
 
 	// Initialize Sanity client and CMS repos
 	sanityClient, err := sanity.New(sanity.Config{
@@ -114,9 +98,9 @@ func RunApi() {
 	accessRequestService := service.NewAccessRequestService(accessRequestRepo)
 	whitelistService := service.NewWhitelistService(whitelistRepo)
 	commentService := service.NewCommentService(commentRepo)
-	weatherService := service.NewWeatherService(weatherRepo)
-	databrusService := service.NewDatabrusService(logger, databrusRepo)
-	adventOfCodeService := service.NewAdventOfCodeService(adventOfCodeRepo)
+	weatherService := service.NewWeatherService(weatherRepo, redisClient)
+	databrusService := service.NewDatabrusService(logger, databrusRepo, redisClient)
+	adventOfCodeService := service.NewAdventOfCodeService(adventOfCodeRepo, redisClient)
 	groupService := service.NewGroupService(groupRepo)
 	reactionService := service.NewReactionService(reactionRepo)
 	quoteService := service.NewQuoteService(quoteRepo)
@@ -132,6 +116,7 @@ func RunApi() {
 		cmsMeetingMinuteRepo,
 		cmsMovieRepo,
 		cmsHSApplicationRepo,
+		redisClient,
 	)
 
 	go http.RunServer(
@@ -160,4 +145,57 @@ func RunApi() {
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)
 	logger.Info(context.Background(), "received shutdown signal, gracefully shutting down uno")
+}
+
+func initAdventOfCode(logger port.Logger) *adventofcode.Client {
+	token := os.Getenv("AOC_SESSION_COOKIE")
+	if token == "" {
+		logger.Warn(context.Background(), "missing advent of code session token. endpoints will not work")
+	}
+	return adventofcode.New(token)
+}
+
+func initDatabase(databaseURL string, logger port.Logger) *postgres.Database {
+	db, err := postgres.New(databaseURL)
+	if err != nil {
+		logger.Error(context.Background(), "failed to connect to database", "error", err)
+		log.Fatal(err)
+	}
+	logger.Info(context.Background(), "database connected")
+	return db
+}
+
+func initFileStorage(cfg *config.Config, logger port.Logger) port.ProfilePictureRepo {
+	fs, err := filestorage.New(cfg.ProfilePictureEndpointURL, cfg.ProfilePictureAccessKeyID, cfg.ProfilePictureSecretAccessKey)
+	if err != nil {
+		logger.Error(context.Background(), "failed to initialize file storage", "error", err)
+		logger.Warn(context.Background(), "file storage not configured, profile picture features disabled")
+		return nil
+	}
+	logger.Info(context.Background(), "file storage connected")
+
+	repo, err := filestorage.NewProfilePictureStore(context.Background(), fs, cfg.ProfilePictureBucketName, logger)
+	if err != nil {
+		logger.Error(context.Background(), "failed to initialize profile picture store", "error", err)
+		return nil
+	}
+	return repo
+}
+
+func initRedis(redisURL string, logger port.Logger) (*redis.Client, port.CacheInvalidator) {
+	if redisURL == "" {
+		logger.Info(context.Background(), "redis not configured, using in-memory cache")
+		return nil, cache.NoopInvalidator{}
+	}
+
+	opt, err := redis.ParseURL(redisURL)
+	if err != nil {
+		logger.Error(context.Background(), "failed to parse redis url", "error", err)
+		logger.Info(context.Background(), "redis not configured, using in-memory cache")
+		return nil, cache.NoopInvalidator{}
+	}
+
+	client := redis.NewClient(opt)
+	logger.Info(context.Background(), "redis connected")
+	return client, cache.NewRedisInvalidator(client)
 }

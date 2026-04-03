@@ -8,7 +8,9 @@ import (
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
-	infracache "uno/infrastructure/cache"
+	"uno/infrastructure/cache"
+
+	"github.com/redis/go-redis/v9"
 )
 
 const cmsCacheTTL = 10 * time.Minute
@@ -61,6 +63,7 @@ func NewCMSService(
 	meetingMinuteRepo port.CMSMeetingMinuteRepo,
 	movieRepo port.CMSMovieRepo,
 	hsApplicationRepo port.CMSHSApplicationRepo,
+	redisClient *redis.Client,
 ) *CMSService {
 	return &CMSService{
 		happeningRepo:          happeningRepo,
@@ -75,27 +78,27 @@ func NewCMSService(
 		movieRepo:              movieRepo,
 		hsApplicationRepo:      hsApplicationRepo,
 
-		happeningsCache:               infracache.NewInMemoryCache[[]model.CMSHappening](),
-		happeningBySlugCache:          infracache.NewInMemoryCache[*model.CMSHappening](),
-		homeHappeningsCache:           infracache.NewInMemoryCache[[]model.CMSHomeHappening](),
-		contactsBySlugCache:           infracache.NewInMemoryCache[[]model.CMSContact](),
-		repeatingHappeningsCache:      infracache.NewInMemoryCache[[]model.CMSRepeatingHappening](),
-		repeatingHappeningBySlugCache: infracache.NewInMemoryCache[*model.CMSRepeatingHappening](),
-		postsCache:                    infracache.NewInMemoryCache[[]model.CMSPost](),
-		postBySlugCache:               infracache.NewInMemoryCache[*model.CMSPost](),
-		studentGroupsByTypeCache:      infracache.NewInMemoryCache[[]model.CMSStudentGroup](),
-		studentGroupBySlugCache:       infracache.NewInMemoryCache[*model.CMSStudentGroup](),
-		jobAdsCache:                   infracache.NewInMemoryCache[[]model.CMSJobAd](),
-		jobAdBySlugCache:              infracache.NewInMemoryCache[*model.CMSJobAd](),
-		bannerCache:                   infracache.NewInMemoryCache[*model.CMSBanner](),
-		staticInfoCache:               infracache.NewInMemoryCache[[]model.CMSStaticInfo](),
-		staticInfoBySlugCache:         infracache.NewInMemoryCache[*model.CMSStaticInfo](),
-		merchCache:                    infracache.NewInMemoryCache[[]model.CMSMerch](),
-		merchBySlugCache:              infracache.NewInMemoryCache[*model.CMSMerch](),
-		meetingMinutesCache:           infracache.NewInMemoryCache[[]model.CMSMeetingMinute](),
-		meetingMinuteByIdCache:        infracache.NewInMemoryCache[*model.CMSMeetingMinute](),
-		moviesCache:                   infracache.NewInMemoryCache[[]model.CMSMovie](),
-		hsApplicationsCache:           infracache.NewInMemoryCache[[]model.CMSHSApplication](),
+		happeningsCache:               cache.NewCache[[]model.CMSHappening](redisClient, "cms:happenings"),
+		happeningBySlugCache:          cache.NewCache[*model.CMSHappening](redisClient, "cms:happening-by-slug"),
+		homeHappeningsCache:           cache.NewCache[[]model.CMSHomeHappening](redisClient, "cms:home-happenings"),
+		contactsBySlugCache:           cache.NewCache[[]model.CMSContact](redisClient, "cms:contacts-by-slug"),
+		repeatingHappeningsCache:      cache.NewCache[[]model.CMSRepeatingHappening](redisClient, "cms:repeating-happenings"),
+		repeatingHappeningBySlugCache: cache.NewCache[*model.CMSRepeatingHappening](redisClient, "cms:repeating-happening-by-slug"),
+		postsCache:                    cache.NewCache[[]model.CMSPost](redisClient, "cms:posts"),
+		postBySlugCache:               cache.NewCache[*model.CMSPost](redisClient, "cms:post-by-slug"),
+		studentGroupsByTypeCache:      cache.NewCache[[]model.CMSStudentGroup](redisClient, "cms:student-groups-by-type"),
+		studentGroupBySlugCache:       cache.NewCache[*model.CMSStudentGroup](redisClient, "cms:student-group-by-slug"),
+		jobAdsCache:                   cache.NewCache[[]model.CMSJobAd](redisClient, "cms:job-ads"),
+		jobAdBySlugCache:              cache.NewCache[*model.CMSJobAd](redisClient, "cms:job-ad-by-slug"),
+		bannerCache:                   cache.NewCache[*model.CMSBanner](redisClient, "cms:banner"),
+		staticInfoCache:               cache.NewCache[[]model.CMSStaticInfo](redisClient, "cms:static-info"),
+		staticInfoBySlugCache:         cache.NewCache[*model.CMSStaticInfo](redisClient, "cms:static-info-by-slug"),
+		merchCache:                    cache.NewCache[[]model.CMSMerch](redisClient, "cms:merch"),
+		merchBySlugCache:              cache.NewCache[*model.CMSMerch](redisClient, "cms:merch-by-slug"),
+		meetingMinutesCache:           cache.NewCache[[]model.CMSMeetingMinute](redisClient, "cms:meeting-minutes"),
+		meetingMinuteByIdCache:        cache.NewCache[*model.CMSMeetingMinute](redisClient, "cms:meeting-minute-by-id"),
+		moviesCache:                   cache.NewCache[[]model.CMSMovie](redisClient, "cms:movies"),
+		hsApplicationsCache:           cache.NewCache[[]model.CMSHSApplication](redisClient, "cms:hs-applications"),
 	}
 }
 

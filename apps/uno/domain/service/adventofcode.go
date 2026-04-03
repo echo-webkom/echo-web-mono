@@ -7,6 +7,8 @@ import (
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/infrastructure/cache"
+
+	"github.com/redis/go-redis/v9"
 )
 
 const (
@@ -19,10 +21,10 @@ type AdventOfCodeService struct {
 	leaderboardCache port.Cache[model.AdventOfCodeLeaderboard]
 }
 
-func NewAdventOfCodeService(aoc port.AdventOfCodeRepo) *AdventOfCodeService {
+func NewAdventOfCodeService(aoc port.AdventOfCodeRepo, redisClient *redis.Client) *AdventOfCodeService {
 	return &AdventOfCodeService{
 		aoc:              aoc,
-		leaderboardCache: cache.NewInMemoryCache[model.AdventOfCodeLeaderboard](),
+		leaderboardCache: cache.NewCache[model.AdventOfCodeLeaderboard](redisClient, "aoc:leaderboard"),
 	}
 }
 
