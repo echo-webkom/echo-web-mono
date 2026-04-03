@@ -13,7 +13,8 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-const cmsCacheTTL = 10 * time.Minute
+// We can cache for so long, because the CMS send a webhook on every change, revalidating the cache when needed.
+const cmsCacheTTL = 30 * 24 * time.Hour // 30 days.
 
 type CMSService struct {
 	happeningRepo          port.CMSHappeningRepo
