@@ -16,6 +16,44 @@ import (
 // We can cache for so long, because the CMS send a webhook on every change, revalidating the cache when needed.
 const cmsCacheTTL = 30 * 24 * time.Hour // 30 days.
 
+const (
+	cmsNamespaceHappenings               = "cms:happenings"
+	cmsNamespaceHappeningBySlug          = "cms:happening-by-slug"
+	cmsNamespaceHomeHappenings           = "cms:home-happenings"
+	cmsNamespaceContactsBySlug           = "cms:contacts-by-slug"
+	cmsNamespaceRepeatingHappenings      = "cms:repeating-happenings"
+	cmsNamespaceRepeatingHappeningBySlug = "cms:repeating-happening-by-slug"
+	cmsNamespacePosts                    = "cms:posts"
+	cmsNamespacePostBySlug               = "cms:post-by-slug"
+	cmsNamespaceStudentGroupsByType      = "cms:student-groups-by-type"
+	cmsNamespaceStudentGroupBySlug       = "cms:student-group-by-slug"
+	cmsNamespaceJobAds                   = "cms:job-ads"
+	cmsNamespaceJobAdBySlug              = "cms:job-ad-by-slug"
+	cmsNamespaceBanner                   = "cms:banner"
+	cmsNamespaceStaticInfo               = "cms:static-info"
+	cmsNamespaceStaticInfoBySlug         = "cms:static-info-by-slug"
+	cmsNamespaceMerch                    = "cms:merch"
+	cmsNamespaceMerchBySlug              = "cms:merch-by-slug"
+	cmsNamespaceMeetingMinutes           = "cms:meeting-minutes"
+	cmsNamespaceMeetingMinuteByID        = "cms:meeting-minute-by-id"
+	cmsNamespaceMovies                   = "cms:movies"
+	cmsNamespaceHSApplications           = "cms:hs-applications"
+)
+
+var cmsTypeNamespaces = map[string][]string{
+	"happening":          {cmsNamespaceHappenings, cmsNamespaceHappeningBySlug, cmsNamespaceHomeHappenings, cmsNamespaceContactsBySlug},
+	"repeatingHappening": {cmsNamespaceRepeatingHappenings, cmsNamespaceRepeatingHappeningBySlug},
+	"post":               {cmsNamespacePosts, cmsNamespacePostBySlug},
+	"studentGroup":       {cmsNamespaceStudentGroupsByType, cmsNamespaceStudentGroupBySlug},
+	"profile":            {cmsNamespaceStudentGroupsByType, cmsNamespaceStudentGroupBySlug},
+	"job":                {cmsNamespaceJobAds, cmsNamespaceJobAdBySlug},
+	"banner":             {cmsNamespaceBanner},
+	"staticInfo":         {cmsNamespaceStaticInfo, cmsNamespaceStaticInfoBySlug},
+	"merch":              {cmsNamespaceMerch, cmsNamespaceMerchBySlug},
+	"meetingMinute":      {cmsNamespaceMeetingMinutes, cmsNamespaceMeetingMinuteByID},
+	"movie":              {cmsNamespaceMovies},
+}
+
 type CMSService struct {
 	happeningRepo          port.CMSHappeningRepo
 	repeatingHappeningRepo port.CMSRepeatingHappeningRepo
@@ -82,27 +120,27 @@ func NewCMSService(
 		movieRepo:              movieRepo,
 		hsApplicationRepo:      hsApplicationRepo,
 
-		happeningsCache:               cache.NewCache[[]model.CMSHappening](redisClient, "cms:happenings"),
-		happeningBySlugCache:          cache.NewCache[*model.CMSHappening](redisClient, "cms:happening-by-slug"),
-		homeHappeningsCache:           cache.NewCache[[]model.CMSHomeHappening](redisClient, "cms:home-happenings"),
-		contactsBySlugCache:           cache.NewCache[[]model.CMSContact](redisClient, "cms:contacts-by-slug"),
-		repeatingHappeningsCache:      cache.NewCache[[]model.CMSRepeatingHappening](redisClient, "cms:repeating-happenings"),
-		repeatingHappeningBySlugCache: cache.NewCache[*model.CMSRepeatingHappening](redisClient, "cms:repeating-happening-by-slug"),
-		postsCache:                    cache.NewCache[[]model.CMSPost](redisClient, "cms:posts"),
-		postBySlugCache:               cache.NewCache[*model.CMSPost](redisClient, "cms:post-by-slug"),
-		studentGroupsByTypeCache:      cache.NewCache[[]model.CMSStudentGroup](redisClient, "cms:student-groups-by-type"),
-		studentGroupBySlugCache:       cache.NewCache[*model.CMSStudentGroup](redisClient, "cms:student-group-by-slug"),
-		jobAdsCache:                   cache.NewCache[[]model.CMSJobAd](redisClient, "cms:job-ads"),
-		jobAdBySlugCache:              cache.NewCache[*model.CMSJobAd](redisClient, "cms:job-ad-by-slug"),
-		bannerCache:                   cache.NewCache[*model.CMSBanner](redisClient, "cms:banner"),
-		staticInfoCache:               cache.NewCache[[]model.CMSStaticInfo](redisClient, "cms:static-info"),
-		staticInfoBySlugCache:         cache.NewCache[*model.CMSStaticInfo](redisClient, "cms:static-info-by-slug"),
-		merchCache:                    cache.NewCache[[]model.CMSMerch](redisClient, "cms:merch"),
-		merchBySlugCache:              cache.NewCache[*model.CMSMerch](redisClient, "cms:merch-by-slug"),
-		meetingMinutesCache:           cache.NewCache[[]model.CMSMeetingMinute](redisClient, "cms:meeting-minutes"),
-		meetingMinuteByIdCache:        cache.NewCache[*model.CMSMeetingMinute](redisClient, "cms:meeting-minute-by-id"),
-		moviesCache:                   cache.NewCache[[]model.CMSMovie](redisClient, "cms:movies"),
-		hsApplicationsCache:           cache.NewCache[[]model.CMSHSApplication](redisClient, "cms:hs-applications"),
+		happeningsCache:               cache.NewCache[[]model.CMSHappening](redisClient, cmsNamespaceHappenings),
+		happeningBySlugCache:          cache.NewCache[*model.CMSHappening](redisClient, cmsNamespaceHappeningBySlug),
+		homeHappeningsCache:           cache.NewCache[[]model.CMSHomeHappening](redisClient, cmsNamespaceHomeHappenings),
+		contactsBySlugCache:           cache.NewCache[[]model.CMSContact](redisClient, cmsNamespaceContactsBySlug),
+		repeatingHappeningsCache:      cache.NewCache[[]model.CMSRepeatingHappening](redisClient, cmsNamespaceRepeatingHappenings),
+		repeatingHappeningBySlugCache: cache.NewCache[*model.CMSRepeatingHappening](redisClient, cmsNamespaceRepeatingHappeningBySlug),
+		postsCache:                    cache.NewCache[[]model.CMSPost](redisClient, cmsNamespacePosts),
+		postBySlugCache:               cache.NewCache[*model.CMSPost](redisClient, cmsNamespacePostBySlug),
+		studentGroupsByTypeCache:      cache.NewCache[[]model.CMSStudentGroup](redisClient, cmsNamespaceStudentGroupsByType),
+		studentGroupBySlugCache:       cache.NewCache[*model.CMSStudentGroup](redisClient, cmsNamespaceStudentGroupBySlug),
+		jobAdsCache:                   cache.NewCache[[]model.CMSJobAd](redisClient, cmsNamespaceJobAds),
+		jobAdBySlugCache:              cache.NewCache[*model.CMSJobAd](redisClient, cmsNamespaceJobAdBySlug),
+		bannerCache:                   cache.NewCache[*model.CMSBanner](redisClient, cmsNamespaceBanner),
+		staticInfoCache:               cache.NewCache[[]model.CMSStaticInfo](redisClient, cmsNamespaceStaticInfo),
+		staticInfoBySlugCache:         cache.NewCache[*model.CMSStaticInfo](redisClient, cmsNamespaceStaticInfoBySlug),
+		merchCache:                    cache.NewCache[[]model.CMSMerch](redisClient, cmsNamespaceMerch),
+		merchBySlugCache:              cache.NewCache[*model.CMSMerch](redisClient, cmsNamespaceMerchBySlug),
+		meetingMinutesCache:           cache.NewCache[[]model.CMSMeetingMinute](redisClient, cmsNamespaceMeetingMinutes),
+		meetingMinuteByIdCache:        cache.NewCache[*model.CMSMeetingMinute](redisClient, cmsNamespaceMeetingMinuteByID),
+		moviesCache:                   cache.NewCache[[]model.CMSMovie](redisClient, cmsNamespaceMovies),
+		hsApplicationsCache:           cache.NewCache[[]model.CMSHSApplication](redisClient, cmsNamespaceHSApplications),
 
 		invalidator: invalidator,
 	}
@@ -497,28 +535,10 @@ func (s *CMSService) InvalidateByType(ctx context.Context, docType string) {
 }
 
 func cmsNamespacesForType(docType string) []string {
-	switch docType {
-	case "happening":
-		return []string{"cms:happenings", "cms:happening-by-slug", "cms:home-happenings", "cms:contacts-by-slug"}
-	case "repeatingHappening":
-		return []string{"cms:repeating-happenings", "cms:repeating-happening-by-slug"}
-	case "post":
-		return []string{"cms:posts", "cms:post-by-slug"}
-	case "studentGroup", "profile":
-		return []string{"cms:student-groups-by-type", "cms:student-group-by-slug"}
-	case "job":
-		return []string{"cms:job-ads", "cms:job-ad-by-slug"}
-	case "banner":
-		return []string{"cms:banner"}
-	case "staticInfo":
-		return []string{"cms:static-info", "cms:static-info-by-slug"}
-	case "merch":
-		return []string{"cms:merch", "cms:merch-by-slug"}
-	case "meetingMinute":
-		return []string{"cms:meeting-minutes", "cms:meeting-minute-by-id"}
-	case "movie":
-		return []string{"cms:movies"}
-	default:
+	namespaces, ok := cmsTypeNamespaces[docType]
+	if !ok {
 		return nil
 	}
+
+	return append([]string(nil), namespaces...)
 }
