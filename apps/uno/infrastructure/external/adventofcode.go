@@ -2,24 +2,40 @@ package external
 
 import (
 	"context"
+	"fmt"
+	"time"
 	"uno/domain/model"
 	"uno/domain/port"
+	"uno/infrastructure/cache"
 	"uno/pkg/adventofcode"
+
+	"github.com/redis/go-redis/v9"
+)
+
+const (
+	aocCacheTTL = 15 * time.Minute
 )
 
 type AdventOfCodeClient struct {
-	aoc    *adventofcode.Client
-	logger port.Logger
+	aoc              *adventofcode.Client
+	logger           port.Logger
+	leaderboardCache port.Cache[model.AdventOfCodeLeaderboard]
 }
 
-func NewAdventOfCodeClient(aoc *adventofcode.Client, logger port.Logger) port.AdventOfCodeRepo {
+func NewAdventOfCodeClient(aoc *adventofcode.Client, logger port.Logger, redisClient *redis.Client) port.AdventOfCodeRepo {
 	return &AdventOfCodeClient{
-		aoc:    aoc,
-		logger: logger,
+		aoc:              aoc,
+		logger:           logger,
+		leaderboardCache: cache.NewCache[model.AdventOfCodeLeaderboard](redisClient, "aoc:leaderboard"),
 	}
 }
 
 func (c *AdventOfCodeClient) GetAdventOfCodeLeaderboard(ctx context.Context, year int, leaderboardID string) (model.AdventOfCodeLeaderboard, error) {
+	key := fmt.Sprintf("leaderboard-%d", year)
+	if leaderboard, ok := c.leaderboardCache.Get(key); ok {
+		return leaderboard, nil
+	}
+
 	aocLeaderboard, err := c.aoc.GetLeaderboard(year, leaderboardID)
 	if err != nil {
 		c.logger.Error(ctx, "failed to fetch Advent of Code leaderboard", "err", err.Error())
@@ -65,5 +81,6 @@ func (c *AdventOfCodeClient) GetAdventOfCodeLeaderboard(ctx context.Context, yea
 		leaderboard = append(leaderboard, m)
 	}
 
+	c.leaderboardCache.Set(key, leaderboard, aocCacheTTL)
 	return leaderboard, nil
 }
