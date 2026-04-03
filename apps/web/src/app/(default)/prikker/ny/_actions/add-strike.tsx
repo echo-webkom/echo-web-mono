@@ -38,18 +38,7 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
       };
     }
 
-    const bannedUsers = await unoWithAdmin.strikes.listBanned();
-    if (bannedUsers.some((u) => u.id === data.userId)) {
-      return {
-        success: false,
-        message: "User is banned",
-      };
-    }
-
-    const usersWithStrikes = await unoWithAdmin.strikes.listStriked();
-    const previousStrikes = usersWithStrikes.find((u) => u.id === data.userId)?.strikes ?? 0;
-    const shouldBeBanned = previousStrikes + data.count >= 5;
-    await unoWithAdmin.strikes.add({
+    const result = await unoWithAdmin.strikes.add({
       userId: data.userId,
       count: data.count,
       reason: data.reason,
@@ -57,6 +46,8 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
       banExpiresInMonths: data.banExpiresInMonths,
       strikedBy: user.id,
     });
+
+    const shouldBeBanned = result.isBanned;
 
     const sendToEmail = strikedUser.alternativeEmail ?? strikedUser.email;
 
@@ -73,7 +64,7 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
 
     const message = shouldBeBanned
       ? `Brukeren er bannet i ${data.banExpiresInMonths} måneder`
-      : `Brukeren har nå ${previousStrikes + data.count} prikker`;
+      : `Brukeren har fått ${data.count} prikk(er)`;
 
     return {
       success: true,

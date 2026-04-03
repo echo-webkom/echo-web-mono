@@ -1388,6 +1388,59 @@ const docTemplate = `{
                 }
             }
         },
+        "/happenings/{id}/registrations/{userId}": {
+            "get": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
+                "description": "Retrieves the registration of a specific user for a specific happening.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "happenings"
+                ],
+                "summary": "Get registration by user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Happening ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.RegistrationResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/happenings/{id}/spot-ranges": {
             "get": {
                 "description": "Retrieves all spot ranges for a specific happening.",
@@ -2594,7 +2647,111 @@ const docTemplate = `{
                 }
             }
         },
-        "/strikes/banned": {
+        "/strikes": {
+            "post": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
+                "tags": [
+                    "strikes"
+                ],
+                "summary": "Add a strike",
+                "parameters": [
+                    {
+                        "description": "Strike payload",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.AddStrikeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The result of adding a strike",
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.AddStrikeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/strikes/ban/{userId}": {
+            "delete": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
+                "tags": [
+                    "strikes"
+                ],
+                "summary": "Remove a ban for a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The ID of the user to unban",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/strikes/details": {
             "get": {
                 "security": [
                     {
@@ -2604,14 +2761,14 @@ const docTemplate = `{
                 "tags": [
                     "strikes"
                 ],
-                "summary": "Gets all users that are banned",
+                "summary": "Gets users with strike and ban details",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/uno_domain_model.UserWithBanInfo"
+                                "$ref": "#/definitions/uno_http_dto.UserWithStrikeDetailsResponse"
                             }
                         }
                     },
@@ -2660,8 +2817,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/strikes/users": {
-            "get": {
+        "/strikes/{id}": {
+            "delete": {
                 "security": [
                     {
                         "AdminAPIKey": []
@@ -2670,15 +2827,34 @@ const docTemplate = `{
                 "tags": [
                     "strikes"
                 ],
-                "summary": "Gets users with strikes and bans",
+                "summary": "Remove a strike by its ID and user ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The ID of the strike to remove",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "The ID of the user whose strike to remove",
+                        "name": "userId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_domain_model.UserWithStrikes"
-                            }
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     "401": {
@@ -3328,32 +3504,6 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_model.BanInfo": {
-            "type": "object",
-            "properties": {
-                "bannedByID": {
-                    "type": "string"
-                },
-                "bannedByName": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "expiresAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "reason": {
-                    "type": "string"
-                },
-                "userID": {
-                    "type": "string"
-                }
-            }
-        },
         "uno_domain_model.CMSAdditionalQuestion": {
             "type": "object",
             "properties": {
@@ -3616,35 +3766,6 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_model.DotInfo": {
-            "type": "object",
-            "properties": {
-                "count": {
-                    "type": "integer"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "expiresAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "reason": {
-                    "type": "string"
-                },
-                "strikedByID": {
-                    "type": "string"
-                },
-                "strikedByName": {
-                    "type": "string"
-                },
-                "userID": {
-                    "type": "string"
-                }
-            }
-        },
         "uno_domain_model.HSL": {
             "type": "object",
             "properties": {
@@ -3716,49 +3837,6 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_model.UserWithBanInfo": {
-            "type": "object",
-            "properties": {
-                "banInfo": {
-                    "$ref": "#/definitions/uno_domain_model.BanInfo"
-                },
-                "dots": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/uno_domain_model.DotInfo"
-                    }
-                },
-                "hasImage": {
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "uno_domain_model.UserWithStrikes": {
-            "type": "object",
-            "properties": {
-                "hasImage": {
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "isBanned": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "strikes": {
-                    "type": "integer"
-                }
-            }
-        },
         "uno_domain_service.ShoppingList": {
             "type": "object",
             "properties": {
@@ -3802,6 +3880,40 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.AddStrikeRequest": {
+            "type": "object",
+            "properties": {
+                "banExpiresInMonths": {
+                    "type": "integer"
+                },
+                "count": {
+                    "type": "integer"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "strikeExpiresInMonths": {
+                    "type": "integer"
+                },
+                "strikedBy": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.AddStrikeResponse": {
+            "type": "object",
+            "properties": {
+                "isBanned": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.AdventOfCodeDayResponse": {
             "type": "object",
             "properties": {
@@ -3831,6 +3943,40 @@ const docTemplate = `{
                 "local_score": {
                     "type": "integer"
                 },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.BanInfo": {
+            "type": "object",
+            "properties": {
+                "bannedBy": {
+                    "type": "string"
+                },
+                "bannedByUser": {
+                    "$ref": "#/definitions/uno_http_dto.BannedStrikedByUser"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "expiresAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.BannedStrikedByUser": {
+            "type": "object",
+            "properties": {
                 "name": {
                     "type": "string"
                 }
@@ -4516,6 +4662,35 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.DotInfo": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "expiresAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "strikedBy": {
+                    "type": "string"
+                },
+                "strikedByUser": {
+                    "$ref": "#/definitions/uno_http_dto.BannedStrikedByUser"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.FullHappeningRegistrationResponse": {
             "type": "object",
             "properties": {
@@ -4910,6 +5085,35 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.RegistrationResponse": {
+            "type": "object",
+            "properties": {
+                "changedAt": {
+                    "type": "string"
+                },
+                "changedBy": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "happeningId": {
+                    "type": "string"
+                },
+                "prevStatus": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "unregisterReason": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
         "uno_http_dto.SiteFeedbackResponse": {
             "type": "object",
             "properties": {
@@ -5139,6 +5343,29 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.UserWithStrikeDetailsResponse": {
+            "type": "object",
+            "properties": {
+                "banInfo": {
+                    "$ref": "#/definitions/uno_http_dto.BanInfo"
+                },
+                "dots": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_http_dto.DotInfo"
+                    }
+                },
+                "hasImage": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 }
             }

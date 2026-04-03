@@ -40,12 +40,8 @@ func (s *StrikeService) CleanupOldStrikes(ctx context.Context) (int64, error) {
 	return s.dotRepo.CleanupOldStrikes(ctx)
 }
 
-func (s *StrikeService) GetUsersWithStrikes(ctx context.Context) ([]model.UserWithStrikes, error) {
-	return s.userRepo.GetUsersWithStrikes(ctx)
-}
-
-func (s *StrikeService) GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo, error) {
-	return s.userRepo.GetBannedUsers(ctx)
+func (s *StrikeService) GetUsersWithStrikeDetails(ctx context.Context) ([]model.UserWithStrikeDetails, error) {
+	return s.userRepo.GetUsersWithStrikeDetails(ctx)
 }
 
 func (s *StrikeService) UserRepo() port.UserRepo {

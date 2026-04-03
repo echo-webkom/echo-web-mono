@@ -226,6 +226,14 @@ type UserWithBanInfo struct {
 	Dots     []DotInfo
 }
 
+type UserWithStrikeDetails struct {
+	ID       string
+	Name     *string
+	HasImage bool
+	BanInfo  *BanInfo
+	Dots     []DotInfo
+}
+
 var (
 	ErrProfilePictureTooLarge           = errors.New("profile picture exceeds the maximum allowed size of 5 MB")
 	ErrUnsupportedProfilePictureType    = errors.New("unsupported profile picture type")

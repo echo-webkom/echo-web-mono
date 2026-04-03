@@ -841,6 +841,17 @@ class HappeningApi {
     );
   }
 
+  async registrationByUser(happeningId: string, userId: string) {
+    try {
+      return await this.client.requestJson<Registration>(
+        "GET",
+        `happenings/${happeningId}/registrations/${userId}`,
+      );
+    } catch {
+      return null;
+    }
+  }
+
   async registrationCount(happeningIds: Array<string>) {
     if (happeningIds.length === 0) {
       return [];
@@ -1076,7 +1087,7 @@ class StrikesApi {
     this.client = client;
   }
 
-  async listBanned() {
+  async listDetailed() {
     return await this.client.requestJson<
       Array<{
         id: string;
@@ -1092,7 +1103,7 @@ class StrikesApi {
           bannedByUser: {
             name: string | null;
           };
-        };
+        } | null;
         dots: Array<{
           id: number;
           reason: string;
@@ -1102,23 +1113,11 @@ class StrikesApi {
           count: number;
           strikedBy: string;
           strikedByUser: {
-            name: string;
+            name: string | null;
           };
         }>;
       }>
-    >("GET", "strikes/users/banned");
-  }
-
-  async listStriked() {
-    return await this.client.requestJson<
-      Array<{
-        id: string;
-        name: string;
-        hasImage: boolean;
-        isBanned: boolean;
-        strikes: number;
-      }>
-    >("GET", "strikes/users");
+    >("GET", "strikes/details");
   }
 
   async add(payload: {
@@ -1129,10 +1128,11 @@ class StrikesApi {
     banExpiresInMonths: number;
     strikedBy: string;
   }) {
-    const response = await this.client.request("POST", "strikes", {
-      body: JSON.stringify(payload),
-    });
-    return response.status === 200;
+    return await this.client.requestJson<{ isBanned: boolean; message: string }>(
+      "POST",
+      "strikes",
+      payload,
+    );
   }
 
   async removeBan(userId: string) {

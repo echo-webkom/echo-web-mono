@@ -4,7 +4,6 @@ import (
 	"errors"
 	"time"
 	"uno/domain/model"
-	_ "uno/domain/model" // swagger
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
@@ -23,8 +22,7 @@ func NewStrikesMux(logger port.Logger, strikesService *service.StrikeService, ad
 
 	// Admin
 	mux.Handle("POST", "/unban", s.unbanUsersWithExpiredStrikes, admin)
-	mux.Handle("GET", "/banned", s.getBannedUsers, admin)
-	mux.Handle("GET", "/users", s.getUsersWithStrikes, admin)
+	mux.Handle("GET", "/details", s.getUsersWithStrikeDetails, admin)
 	mux.Handle("POST", "/", s.addStrike, admin)
 	mux.Handle("DELETE", "/ban/{userId}", s.removeBan, admin)
 	mux.Handle("DELETE", "/{id}", s.removeStrike, admin)
@@ -47,55 +45,36 @@ func (s *strikes) unbanUsersWithExpiredStrikes(ctx *handler.Context) error {
 	return ctx.Ok()
 }
 
-// getUsersWithStrikes returns all users with strikes and bans
-// @Summary	     Gets users with strikes and bans
+// getUsersWithStrikeDetails returns all users with strikes or bans including full details
+// @Summary      Gets users with strike and ban details
 // @Tags         strikes
-// @Success      200  {array}  model.UserWithStrikes  "OK"
+// @Success      200  {array}   dto.UserWithStrikeDetailsResponse  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
-// @Router       /strikes/users [get]
-func (s *strikes) getUsersWithStrikes(ctx *handler.Context) error {
-	users, err := s.strikeService.GetUsersWithStrikes(ctx.Context())
+// @Router       /strikes/details [get]
+func (s *strikes) getUsersWithStrikeDetails(ctx *handler.Context) error {
+	users, err := s.strikeService.GetUsersWithStrikeDetails(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
 
-	// Convert to DTO
-	response := dto.UsersWithStrikesFromDomainList(users)
+	response := dto.UsersWithStrikeDetailsFromDomainList(users)
 	return ctx.JSON(response)
 }
 
-// getBannedUsers returns all banned users
-// @Summary	     Gets all users that are banned
+// @Summary      Add a strike
 // @Tags         strikes
-// @Success      200  {array}  model.UserWithBanInfo  "OK"
+// @Param        body  body      dto.AddStrikeRequest   true  "Strike payload"
+// @Success      200  {object}  dto.AddStrikeResponse  "The result of adding a strike"
 // @Failure      401  {string}  string  "Unauthorized"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      404  {string}  string  "Not Found"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Security     AdminAPIKey
-// @Router       /strikes/banned [get]
-func (s *strikes) getBannedUsers(ctx *handler.Context) error {
-	users, err := s.strikeService.GetBannedUsers(ctx.Context())
-	if err != nil {
-		return ctx.InternalServerError()
-	}
-
-	// Convert to DTO
-	response := dto.BannedUsersFromDomainList(users)
-	return ctx.JSON(response)
-}
-
-type addStrikeRequest struct {
-	UserID              string `json:"userId"`
-	Count               int    `json:"count"`
-	Reason              string `json:"reason"`
-	StrikeExpiresMonths int    `json:"strikeExpiresInMonths"`
-	BanExpiresMonths    int    `json:"banExpiresInMonths"`
-	StrikedBy           string `json:"strikedBy"`
-}
-
+// @Router       /strikes [post]
 func (s *strikes) addStrike(ctx *handler.Context) error {
-	var req addStrikeRequest
+	var req dto.AddStrikeRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
@@ -116,15 +95,17 @@ func (s *strikes) addStrike(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("user is banned"))
 	}
 
-	usersWithStrikes, err := s.strikeService.GetUsersWithStrikes(ctx.Context())
+	usersWithStrikeDetails, err := s.strikeService.GetUsersWithStrikeDetails(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
 
 	previousStrikes := 0
-	for _, user := range usersWithStrikes {
+	for _, user := range usersWithStrikeDetails {
 		if user.ID == req.UserID {
-			previousStrikes = user.Strikes
+			for _, dot := range user.Dots {
+				previousStrikes += dot.Count
+			}
 			break
 		}
 	}
@@ -160,7 +141,7 @@ func (s *strikes) addStrike(ctx *handler.Context) error {
 			}
 		}
 
-		return ctx.JSON(map[string]string{"message": "user banned"})
+		return ctx.JSON(dto.AddStrikeResponse{IsBanned: true, Message: "user banned"})
 	}
 
 	_, err = s.strikeService.DotRepo().CreateDot(ctx.Context(), model.NewDot{
@@ -174,9 +155,19 @@ func (s *strikes) addStrike(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 
-	return ctx.JSON(map[string]string{"message": "strike added"})
+	return ctx.JSON(dto.AddStrikeResponse{IsBanned: false, Message: "strike added"})
 }
 
+// removeBan removes a ban for a user
+// @Summary      Remove a ban for a user
+// @Tags         strikes
+// @Param        userId  path      string  true  "The ID of the user to unban"
+// @Success      200     {string}  string  "OK"
+// @Failure      400     {string}  string  "Bad Request"
+// @Failure      401     {string}  string  "Unauthorized"
+// @Failure      500     {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /strikes/ban/{userId} [delete]
 func (s *strikes) removeBan(ctx *handler.Context) error {
 	userID := ctx.PathValue("userId")
 	if userID == "" {
@@ -190,6 +181,17 @@ func (s *strikes) removeBan(ctx *handler.Context) error {
 	return ctx.Ok()
 }
 
+// removeStrike removes a strike by its ID and user ID
+// @Summary      Remove a strike by its ID and user ID
+// @Tags         strikes
+// @Param        id      path      int     true  "The ID of the strike to remove"
+// @Param        userId  query     string  true  "The ID of the user whose strike to remove"
+// @Success      200     {string}  string  "OK"
+// @Failure      400     {string}  string  "Bad Request"
+// @Failure      401     {string}  string  "Unauthorized"
+// @Failure      500     {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /strikes/{id} [delete]
 func (s *strikes) removeStrike(ctx *handler.Context) error {
 	id, err := ctx.PathValueInt("id")
 	if err != nil {

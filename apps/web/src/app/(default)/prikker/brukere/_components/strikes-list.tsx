@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { type UnoReturnType } from "../../../../../api/uno/client";
 import { StrikeRow } from "./strike-row";
 
-type Users = UnoReturnType["strikes"]["listBanned"];
+type Users = UnoReturnType["strikes"]["listDetailed"];
 
 type StrikesListProps = {
   users: Users;
@@ -16,14 +16,45 @@ type StrikesListProps = {
 
 export const StrikesList = ({ users }: StrikesListProps) => {
   const [search, setSearch] = useState("");
-  const filteredUsers = useMemo(() => {
-    return users.filter((user) => {
-      return user.name?.toLowerCase().includes(search.toLowerCase());
-    });
-  }, [search, users]);
 
-  if (!users.length) {
-    return <Text>Ingen brukere har prikker.</Text>;
+  const usersWithDetails = useMemo(() => {
+    return users
+      .filter((user) => user.banInfo !== null || user.dots.length > 0)
+      .map((user) => {
+        const strikesCount = user.dots.reduce((total, dot) => total + dot.count, 0);
+
+        return {
+          id: user.id,
+          name: user.name,
+          isBanned: user.banInfo !== null,
+          strikesCount,
+          banInfo: user.banInfo,
+          dots: user.dots,
+        };
+      })
+      .sort((a, b) => {
+        if (a.isBanned !== b.isBanned) {
+          return a.isBanned ? -1 : 1;
+        }
+
+        if (a.strikesCount !== b.strikesCount) {
+          return b.strikesCount - a.strikesCount;
+        }
+
+        return (a.name ?? "").localeCompare(b.name ?? "", "nb");
+      });
+  }, [users]);
+
+  const filteredUsers = useMemo(() => {
+    const normalizedSearch = search.toLowerCase().trim();
+
+    return usersWithDetails.filter((user) => {
+      return (user.name ?? "").toLowerCase().includes(normalizedSearch);
+    });
+  }, [search, usersWithDetails]);
+
+  if (!usersWithDetails.length) {
+    return <Text>Ingen brukere har prikker eller ban.</Text>;
   }
 
   return (
@@ -50,6 +81,7 @@ export const StrikesList = ({ users }: StrikesListProps) => {
                 name={user.name ?? "Ingen navn"}
                 banInfo={user.banInfo}
                 strikes={user.dots}
+                strikeCount={user.strikesCount}
               />
             );
           })}

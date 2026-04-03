@@ -98,6 +98,63 @@ type DotInfo struct {
 	StrikedByName *string   `db:"striked_by_name"`
 }
 
+type UserWithStrikeDetails struct {
+	ID      string    `db:"id"`
+	Name    *string   `db:"name"`
+	Image   *string   `db:"image"`
+	BanInfo *BanInfo  `db:"ban_info"`
+	Dots    []DotInfo `db:"dots"`
+}
+
+func (u *UserWithStrikeDetails) HasImage() bool {
+	return u.Image != nil
+}
+
+func (u *UserWithStrikeDetails) ToDomain() *model.UserWithStrikeDetails {
+	var dots []model.DotInfo
+	for _, d := range u.Dots {
+		dots = append(dots, model.DotInfo{
+			ID:            d.ID,
+			UserID:        d.UserID,
+			Count:         d.Count,
+			Reason:        d.Reason,
+			CreatedAt:     d.CreatedAt,
+			ExpiresAt:     d.ExpiresAt,
+			StrikedByID:   d.StrikedByID,
+			StrikedByName: d.StrikedByName,
+		})
+	}
+
+	var banInfo *model.BanInfo
+	if u.BanInfo != nil {
+		banInfo = &model.BanInfo{
+			ID:           u.BanInfo.ID,
+			UserID:       u.BanInfo.UserID,
+			Reason:       u.BanInfo.Reason,
+			BannedByID:   u.BanInfo.BannedByID,
+			BannedByName: u.BanInfo.BannedByName,
+			CreatedAt:    u.BanInfo.CreatedAt,
+			ExpiresAt:    u.BanInfo.ExpiresAt,
+		}
+	}
+
+	return &model.UserWithStrikeDetails{
+		ID:       u.ID,
+		Name:     u.Name,
+		HasImage: u.HasImage(),
+		BanInfo:  banInfo,
+		Dots:     dots,
+	}
+}
+
+func UserWithStrikeDetailsList(dbList []UserWithStrikeDetails) []model.UserWithStrikeDetails {
+	var domainList []model.UserWithStrikeDetails
+	for _, dbItem := range dbList {
+		domainList = append(domainList, *dbItem.ToDomain())
+	}
+	return domainList
+}
+
 func UserWithBanInfoList(dbList []UserWithBanInfo) []model.UserWithBanInfo {
 	var domainList []model.UserWithBanInfo
 	for _, dbItem := range dbList {

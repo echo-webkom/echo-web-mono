@@ -7,23 +7,6 @@ definitions:
       _type:
         type: string
     type: object
-  uno_domain_model.BanInfo:
-    properties:
-      bannedByID:
-        type: string
-      bannedByName:
-        type: string
-      createdAt:
-        type: string
-      expiresAt:
-        type: string
-      id:
-        type: integer
-      reason:
-        type: string
-      userID:
-        type: string
-    type: object
   uno_domain_model.CMSAdditionalQuestion:
     properties:
       id:
@@ -193,25 +176,6 @@ definitions:
       rgb:
         $ref: '#/definitions/uno_domain_model.RGB'
     type: object
-  uno_domain_model.DotInfo:
-    properties:
-      count:
-        type: integer
-      createdAt:
-        type: string
-      expiresAt:
-        type: string
-      id:
-        type: integer
-      reason:
-        type: string
-      strikedByID:
-        type: string
-      strikedByName:
-        type: string
-      userID:
-        type: string
-    type: object
   uno_domain_model.HSL:
     properties:
       _type:
@@ -258,34 +222,6 @@ definitions:
       r:
         type: number
     type: object
-  uno_domain_model.UserWithBanInfo:
-    properties:
-      banInfo:
-        $ref: '#/definitions/uno_domain_model.BanInfo'
-      dots:
-        items:
-          $ref: '#/definitions/uno_domain_model.DotInfo'
-        type: array
-      hasImage:
-        type: boolean
-      id:
-        type: string
-      name:
-        type: string
-    type: object
-  uno_domain_model.UserWithStrikes:
-    properties:
-      hasImage:
-        type: boolean
-      id:
-        type: string
-      isBanned:
-        type: boolean
-      name:
-        type: string
-      strikes:
-        type: integer
-    type: object
   uno_domain_service.ShoppingList:
     properties:
       createdAt:
@@ -314,6 +250,28 @@ definitions:
       reason:
         type: string
     type: object
+  uno_http_dto.AddStrikeRequest:
+    properties:
+      banExpiresInMonths:
+        type: integer
+      count:
+        type: integer
+      reason:
+        type: string
+      strikeExpiresInMonths:
+        type: integer
+      strikedBy:
+        type: string
+      userId:
+        type: string
+    type: object
+  uno_http_dto.AddStrikeResponse:
+    properties:
+      isBanned:
+        type: boolean
+      message:
+        type: string
+    type: object
   uno_http_dto.AdventOfCodeDayResponse:
     properties:
       star1_time:
@@ -333,6 +291,28 @@ definitions:
         type: integer
       local_score:
         type: integer
+      name:
+        type: string
+    type: object
+  uno_http_dto.BanInfo:
+    properties:
+      bannedBy:
+        type: string
+      bannedByUser:
+        $ref: '#/definitions/uno_http_dto.BannedStrikedByUser'
+      createdAt:
+        type: string
+      expiresAt:
+        type: string
+      id:
+        type: integer
+      reason:
+        type: string
+      userId:
+        type: string
+    type: object
+  uno_http_dto.BannedStrikedByUser:
+    properties:
       name:
         type: string
     type: object
@@ -783,6 +763,25 @@ definitions:
       name:
         type: string
     type: object
+  uno_http_dto.DotInfo:
+    properties:
+      count:
+        type: integer
+      createdAt:
+        type: string
+      expiresAt:
+        type: string
+      id:
+        type: integer
+      reason:
+        type: string
+      strikedBy:
+        type: string
+      strikedByUser:
+        $ref: '#/definitions/uno_http_dto.BannedStrikedByUser'
+      userId:
+        type: string
+    type: object
   uno_http_dto.FullHappeningRegistrationResponse:
     properties:
       answers:
@@ -1040,6 +1039,25 @@ definitions:
       waiting:
         type: integer
     type: object
+  uno_http_dto.RegistrationResponse:
+    properties:
+      changedAt:
+        type: string
+      changedBy:
+        type: string
+      createdAt:
+        type: string
+      happeningId:
+        type: string
+      prevStatus:
+        type: string
+      status:
+        type: string
+      unregisterReason:
+        type: string
+      userId:
+        type: string
+    type: object
   uno_http_dto.SiteFeedbackResponse:
     properties:
       category:
@@ -1191,6 +1209,21 @@ definitions:
     required:
     - itemId
     - userId
+    type: object
+  uno_http_dto.UserWithStrikeDetailsResponse:
+    properties:
+      banInfo:
+        $ref: '#/definitions/uno_http_dto.BanInfo'
+      dots:
+        items:
+          $ref: '#/definitions/uno_http_dto.DotInfo'
+        type: array
+      hasImage:
+        type: boolean
+      id:
+        type: string
+      name:
+        type: string
     type: object
   uno_http_dto.WeatherResponse:
     properties:
@@ -2060,6 +2093,40 @@ paths:
       summary: Get happening registrations
       tags:
       - happenings
+  /happenings/{id}/registrations/{userId}:
+    get:
+      description: Retrieves the registration of a specific user for a specific happening.
+      parameters:
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.RegistrationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get registration by user
+      tags:
+      - happenings
   /happenings/{id}/spot-ranges:
     get:
       description: Retrieves all spot ranges for a specific happening.
@@ -2861,14 +2928,114 @@ paths:
       summary: Toggle like on shopping list item
       tags:
       - shopping_list
-  /strikes/banned:
+  /strikes:
+    post:
+      parameters:
+      - description: Strike payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.AddStrikeRequest'
+      responses:
+        "200":
+          description: The result of adding a strike
+          schema:
+            $ref: '#/definitions/uno_http_dto.AddStrikeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Add a strike
+      tags:
+      - strikes
+  /strikes/{id}:
+    delete:
+      parameters:
+      - description: The ID of the strike to remove
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: The ID of the user whose strike to remove
+        in: query
+        name: userId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Remove a strike by its ID and user ID
+      tags:
+      - strikes
+  /strikes/ban/{userId}:
+    delete:
+      parameters:
+      - description: The ID of the user to unban
+        in: path
+        name: userId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Remove a ban for a user
+      tags:
+      - strikes
+  /strikes/details:
     get:
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: '#/definitions/uno_domain_model.UserWithBanInfo'
+              $ref: '#/definitions/uno_http_dto.UserWithStrikeDetailsResponse'
             type: array
         "401":
           description: Unauthorized
@@ -2880,7 +3047,7 @@ paths:
             type: string
       security:
       - AdminAPIKey: []
-      summary: Gets all users that are banned
+      summary: Gets users with strike and ban details
       tags:
       - strikes
   /strikes/unban:
@@ -2899,28 +3066,6 @@ paths:
       security:
       - AdminAPIKey: []
       summary: Unban users with expired strikes and bans
-      tags:
-      - strikes
-  /strikes/users:
-    get:
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/uno_domain_model.UserWithStrikes'
-            type: array
-        "401":
-          description: Unauthorized
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      security:
-      - AdminAPIKey: []
-      summary: Gets users with strikes and bans
       tags:
       - strikes
   /users:

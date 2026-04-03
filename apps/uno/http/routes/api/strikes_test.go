@@ -85,7 +85,7 @@ func TestUnbanUsersWithExpiredStrikesHandler(t *testing.T) {
 	}
 }
 
-func TestGetUsersWithStrikesHandler(t *testing.T) {
+func TestGetUsersWithStrikeDetails(t *testing.T) {
 	tests := []struct {
 		name           string
 		setupMocks     func(*mocks.UserRepo)
@@ -94,11 +94,9 @@ func TestGetUsersWithStrikesHandler(t *testing.T) {
 		{
 			name: "success",
 			setupMocks: func(mockRepo *mocks.UserRepo) {
-				users := []model.UserWithStrikes{
-					{},
-				}
+				users := []model.UserWithStrikeDetails{{}}
 				mockRepo.EXPECT().
-					GetUsersWithStrikes(mock.Anything).
+					GetUsersWithStrikeDetails(mock.Anything).
 					Return(users, nil).
 					Once()
 			},
@@ -108,7 +106,7 @@ func TestGetUsersWithStrikesHandler(t *testing.T) {
 			name: "error from repo",
 			setupMocks: func(mockRepo *mocks.UserRepo) {
 				mockRepo.EXPECT().
-					GetUsersWithStrikes(mock.Anything).
+					GetUsersWithStrikeDetails(mock.Anything).
 					Return(nil, errors.New("database error")).
 					Once()
 			},
@@ -127,59 +125,7 @@ func TestGetUsersWithStrikesHandler(t *testing.T) {
 			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
 			mux := api.NewStrikesMux(testutil.NewTestLogger(), strikeService, handler.NoMiddleware)
 
-			r := httptest.NewRequest(http.MethodGet, "/users", nil)
-			w := httptest.NewRecorder()
-
-			mux.ServeHTTP(w, r)
-
-			assert.Equal(t, tt.expectedStatus, w.Code)
-		})
-	}
-}
-
-func TestGetBannedUsers(t *testing.T) {
-	tests := []struct {
-		name           string
-		setupMocks     func(*mocks.UserRepo)
-		expectedStatus int
-	}{
-		{
-			name: "success",
-			setupMocks: func(mockRepo *mocks.UserRepo) {
-				users := []model.UserWithBanInfo{
-					{},
-				}
-				mockRepo.EXPECT().
-					GetBannedUsers(mock.Anything).
-					Return(users, nil).
-					Once()
-			},
-			expectedStatus: http.StatusOK,
-		},
-		{
-			name: "error from repo",
-			setupMocks: func(mockRepo *mocks.UserRepo) {
-				mockRepo.EXPECT().
-					GetBannedUsers(mock.Anything).
-					Return(nil, errors.New("database error")).
-					Once()
-			},
-			expectedStatus: http.StatusInternalServerError,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			mockDotRepo := mocks.NewDotRepo(t)
-			mockBanInfoRepo := mocks.NewBanInfoRepo(t)
-			mockUserRepo := mocks.NewUserRepo(t)
-
-			tt.setupMocks(mockUserRepo)
-
-			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
-			mux := api.NewStrikesMux(testutil.NewTestLogger(), strikeService, handler.NoMiddleware)
-
-			r := httptest.NewRequest(http.MethodGet, "/banned", nil)
+			r := httptest.NewRequest(http.MethodGet, "/details", nil)
 			w := httptest.NewRecorder()
 
 			mux.ServeHTTP(w, r)
@@ -216,8 +162,8 @@ func TestAddStrikeHandler(t *testing.T) {
 					Return(nil, nil).
 					Once()
 				mockUserRepo.EXPECT().
-					GetUsersWithStrikes(mock.Anything).
-					Return([]model.UserWithStrikes{}, nil).
+					GetUsersWithStrikeDetails(mock.Anything).
+					Return([]model.UserWithStrikeDetails{}, nil).
 					Once()
 				mockDotRepo.EXPECT().
 					CreateDot(mock.Anything, mock.Anything).

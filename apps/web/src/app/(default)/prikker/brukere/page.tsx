@@ -8,13 +8,13 @@ import { StrikesList } from "./_components/strikes-list";
 export default async function StrikesDashboard() {
   await ensureBedkom();
 
-  const bannedUsers = await unoWithAdmin.strikes.listBanned();
+  const users = await unoWithAdmin.strikes.listDetailed();
 
   return (
     <Container>
       <Heading className="mb-8">Dashboard</Heading>
 
-      <StrikesList users={bannedUsers} />
+      <StrikesList users={users} />
     </Container>
   );
 }

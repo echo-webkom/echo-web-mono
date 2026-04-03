@@ -30,6 +30,7 @@ func NewHappeningMux(logger port.Logger, happeningService *service.HappeningServ
 
 	// Admin
 	mux.Handle("GET", "/{id}/registrations", h.getHappeningRegistrations, admin)
+	mux.Handle("GET", "/{id}/registrations/{userId}", h.getHappeningRegistrationByUser, admin)
 	mux.Handle("GET", "/{id}/registrations/full", h.getHappeningRegistrationsFull, admin)
 	mux.Handle("GET", "/{slug}/full", h.getFullHappeningBySlug, admin)
 	mux.Handle("POST", "/{id}/register", h.registerForHappening, admin)
@@ -144,6 +145,41 @@ func (h *happenings) getHappeningRegistrations(ctx *handler.Context) error {
 
 	// Convert ports models to DTOs
 	response := dto.HappeningRegistrationListFromPorts(regs)
+	return ctx.JSON(response)
+}
+
+// getHappeningRegistrationByUser returns the registration of a specific user for a happening
+// @Summary      Get registration by user
+// @Description  Retrieves the registration of a specific user for a specific happening.
+// @Tags         happenings
+// @Produce      json
+// @Param        id      path      string  true  "Happening ID"
+// @Param        userId  path      string  true  "User ID"
+// @Success      200     {object}  dto.RegistrationResponse  "OK"
+// @Failure      400     {string}  string  "Bad Request"
+// @Failure      404     {string}  string  "Not Found"
+// @Security     AdminAPIKey
+// @Router       /happenings/{id}/registrations/{userId} [get]
+func (h *happenings) getHappeningRegistrationByUser(ctx *handler.Context) error {
+	happeningID := ctx.PathValue("id")
+	if happeningID == "" {
+		return ctx.BadRequest(errors.New("missing happening ID"))
+	}
+
+	userID := ctx.PathValue("userId")
+	if userID == "" {
+		return ctx.BadRequest(errors.New("missing user ID"))
+	}
+
+	reg, err := h.happeningService.RegistrationRepo().GetByUserAndHappening(ctx.Context(), userID, happeningID)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+	if reg == nil {
+		return ctx.NotFound(errors.New("registration not found"))
+	}
+
+	response := new(dto.RegistrationResponse).FromDomain(reg)
 	return ctx.JSON(response)
 }
 

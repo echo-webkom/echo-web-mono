@@ -167,68 +167,6 @@ func (_c *UserRepo_GetAllUsers_Call) RunAndReturn(run func(ctx context.Context) 
 	return _c
 }
 
-// GetBannedUsers provides a mock function for the type UserRepo
-func (_mock *UserRepo) GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo, error) {
-	ret := _mock.Called(ctx)
-
-	if len(ret) == 0 {
-		panic("no return value specified for GetBannedUsers")
-	}
-
-	var r0 []model.UserWithBanInfo
-	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]model.UserWithBanInfo, error)); ok {
-		return returnFunc(ctx)
-	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context) []model.UserWithBanInfo); ok {
-		r0 = returnFunc(ctx)
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]model.UserWithBanInfo)
-		}
-	}
-	if returnFunc, ok := ret.Get(1).(func(context.Context) error); ok {
-		r1 = returnFunc(ctx)
-	} else {
-		r1 = ret.Error(1)
-	}
-	return r0, r1
-}
-
-// UserRepo_GetBannedUsers_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetBannedUsers'
-type UserRepo_GetBannedUsers_Call struct {
-	*mock.Call
-}
-
-// GetBannedUsers is a helper method to define mock.On call
-//   - ctx context.Context
-func (_e *UserRepo_Expecter) GetBannedUsers(ctx interface{}) *UserRepo_GetBannedUsers_Call {
-	return &UserRepo_GetBannedUsers_Call{Call: _e.mock.On("GetBannedUsers", ctx)}
-}
-
-func (_c *UserRepo_GetBannedUsers_Call) Run(run func(ctx context.Context)) *UserRepo_GetBannedUsers_Call {
-	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 context.Context
-		if args[0] != nil {
-			arg0 = args[0].(context.Context)
-		}
-		run(
-			arg0,
-		)
-	})
-	return _c
-}
-
-func (_c *UserRepo_GetBannedUsers_Call) Return(userWithBanInfos []model.UserWithBanInfo, err error) *UserRepo_GetBannedUsers_Call {
-	_c.Call.Return(userWithBanInfos, err)
-	return _c
-}
-
-func (_c *UserRepo_GetBannedUsers_Call) RunAndReturn(run func(ctx context.Context) ([]model.UserWithBanInfo, error)) *UserRepo_GetBannedUsers_Call {
-	_c.Call.Return(run)
-	return _c
-}
-
 // GetUserByID provides a mock function for the type UserRepo
 func (_mock *UserRepo) GetUserByID(ctx context.Context, id string) (model.User, error) {
 	ret := _mock.Called(ctx, id)
@@ -567,24 +505,24 @@ func (_c *UserRepo_GetUsersWithBirthday_Call) RunAndReturn(run func(ctx context.
 	return _c
 }
 
-// GetUsersWithStrikes provides a mock function for the type UserRepo
-func (_mock *UserRepo) GetUsersWithStrikes(ctx context.Context) ([]model.UserWithStrikes, error) {
+// GetUsersWithStrikeDetails provides a mock function for the type UserRepo
+func (_mock *UserRepo) GetUsersWithStrikeDetails(ctx context.Context) ([]model.UserWithStrikeDetails, error) {
 	ret := _mock.Called(ctx)
 
 	if len(ret) == 0 {
-		panic("no return value specified for GetUsersWithStrikes")
+		panic("no return value specified for GetUsersWithStrikeDetails")
 	}
 
-	var r0 []model.UserWithStrikes
+	var r0 []model.UserWithStrikeDetails
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]model.UserWithStrikes, error)); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]model.UserWithStrikeDetails, error)); ok {
 		return returnFunc(ctx)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context) []model.UserWithStrikes); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context) []model.UserWithStrikeDetails); ok {
 		r0 = returnFunc(ctx)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]model.UserWithStrikes)
+			r0 = ret.Get(0).([]model.UserWithStrikeDetails)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(context.Context) error); ok {
@@ -595,18 +533,18 @@ func (_mock *UserRepo) GetUsersWithStrikes(ctx context.Context) ([]model.UserWit
 	return r0, r1
 }
 
-// UserRepo_GetUsersWithStrikes_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetUsersWithStrikes'
-type UserRepo_GetUsersWithStrikes_Call struct {
+// UserRepo_GetUsersWithStrikeDetails_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetUsersWithStrikeDetails'
+type UserRepo_GetUsersWithStrikeDetails_Call struct {
 	*mock.Call
 }
 
-// GetUsersWithStrikes is a helper method to define mock.On call
+// GetUsersWithStrikeDetails is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *UserRepo_Expecter) GetUsersWithStrikes(ctx interface{}) *UserRepo_GetUsersWithStrikes_Call {
-	return &UserRepo_GetUsersWithStrikes_Call{Call: _e.mock.On("GetUsersWithStrikes", ctx)}
+func (_e *UserRepo_Expecter) GetUsersWithStrikeDetails(ctx interface{}) *UserRepo_GetUsersWithStrikeDetails_Call {
+	return &UserRepo_GetUsersWithStrikeDetails_Call{Call: _e.mock.On("GetUsersWithStrikeDetails", ctx)}
 }
 
-func (_c *UserRepo_GetUsersWithStrikes_Call) Run(run func(ctx context.Context)) *UserRepo_GetUsersWithStrikes_Call {
+func (_c *UserRepo_GetUsersWithStrikeDetails_Call) Run(run func(ctx context.Context)) *UserRepo_GetUsersWithStrikeDetails_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -619,12 +557,12 @@ func (_c *UserRepo_GetUsersWithStrikes_Call) Run(run func(ctx context.Context)) 
 	return _c
 }
 
-func (_c *UserRepo_GetUsersWithStrikes_Call) Return(userWithStrikess []model.UserWithStrikes, err error) *UserRepo_GetUsersWithStrikes_Call {
-	_c.Call.Return(userWithStrikess, err)
+func (_c *UserRepo_GetUsersWithStrikeDetails_Call) Return(userWithStrikeDetailss []model.UserWithStrikeDetails, err error) *UserRepo_GetUsersWithStrikeDetails_Call {
+	_c.Call.Return(userWithStrikeDetailss, err)
 	return _c
 }
 
-func (_c *UserRepo_GetUsersWithStrikes_Call) RunAndReturn(run func(ctx context.Context) ([]model.UserWithStrikes, error)) *UserRepo_GetUsersWithStrikes_Call {
+func (_c *UserRepo_GetUsersWithStrikeDetails_Call) RunAndReturn(run func(ctx context.Context) ([]model.UserWithStrikeDetails, error)) *UserRepo_GetUsersWithStrikeDetails_Call {
 	_c.Call.Return(run)
 	return _c
 }

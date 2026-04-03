@@ -23,9 +23,7 @@ export const deregister = async (id: string, payload: z.infer<typeof deregisterP
     }
 
     const happening = await unoWithAdmin.happenings.byId(id);
-    const exisitingRegistration = await unoWithAdmin.happenings
-      .registrations(id)
-      .then((rows) => rows.find((registration) => registration.userId === user.id));
+    const exisitingRegistration = await unoWithAdmin.happenings.registrationByUser(id, user.id);
 
     if (!exisitingRegistration) {
       return {

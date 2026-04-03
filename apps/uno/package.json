@@ -15,6 +15,8 @@
     "format:check": "pnpm with-env gofmt -l .",
     "lint": "pnpm with-env golangci-lint run ./...",
     "lint:fix": "pnpm with-env golangci-lint run ./... --fix",
+    "check": "pnpm format:check && pnpm lint",
+    "check:fix": "pnpm format:check && pnpm lint:fix",
     "tidy": "pnpm with-env go mod tidy",
     "tools:install": "./scripts/install-tools.sh",
     "tools:update": "./scripts/update-tools.sh",

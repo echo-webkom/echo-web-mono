@@ -130,7 +130,7 @@ export default async function ProfilePage({ params }: Props) {
             <UploadProfilePicture
               userId={profileOwner.id}
               name={profileOwner.name ?? "Bo Bakseter"}
-              _hasImage={profileOwner.hasImage}
+              hasImage={profileOwner.hasImage}
             />
             <div>
               <div>
