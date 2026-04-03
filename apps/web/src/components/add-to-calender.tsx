@@ -1,9 +1,15 @@
 "use client";
 
-import { google, ics, outlook, yahoo, type CalendarEvent } from "calendar-link";
 import { BiLogoGoogle } from "react-icons/bi";
-import { FaFileDownload, FaYahoo } from "react-icons/fa";
+import { FaFileDownload } from "react-icons/fa";
 import { PiMicrosoftOutlookLogo } from "react-icons/pi";
+
+import {
+  type CalendarEvent,
+  googleCalendarLink,
+  icsCalendarLink,
+  outlookCalendarLink,
+} from "@/lib/calendar-links";
 
 import {
   Dialog,
@@ -33,8 +39,6 @@ export const AddToCalender = ({ date, endDate, title, children }: Props) => {
         <DialogBody className="flex flex-col justify-around gap-4 sm:flex-row sm:gap-0">
           <CalendarButton title={title} date={date} endDate={endDate} calendarType="Google" />
           <CalendarButton title={title} date={date} endDate={endDate} calendarType="Outlook" />
-          <CalendarButton title={title} date={date} endDate={endDate} calendarType="Office" />
-          <CalendarButton title={title} date={date} endDate={endDate} calendarType="Yahoo" />
           <CalendarButton title={title} date={date} endDate={endDate} calendarType="Ics" />
         </DialogBody>
       </DialogContent>
@@ -42,7 +46,7 @@ export const AddToCalender = ({ date, endDate, title, children }: Props) => {
   );
 };
 
-type CalendarType = "Google" | "Outlook" | "Office" | "Yahoo" | "Ics";
+type CalendarType = "Google" | "Outlook" | "Ics";
 
 type CalendarButtonProps = {
   title: string;
@@ -52,13 +56,12 @@ type CalendarButtonProps = {
 };
 
 const CalendarButton = ({ title, date, endDate, calendarType }: CalendarButtonProps) => {
-  const event: CalendarEvent = {
+  const event = {
     title,
     description: "",
     start: date,
     end: endDate,
-    duration: endDate ? undefined : [2, "hour"],
-  };
+  } satisfies CalendarEvent;
   const link = getCalendarLink(calendarType, event);
   const iconClassNames = "h-8 w-8";
   return (
@@ -67,7 +70,6 @@ const CalendarButton = ({ title, date, endDate, calendarType }: CalendarButtonPr
         <div className="mx-auto">
           {"Google" === calendarType && <BiLogoGoogle className={iconClassNames} />}
           {"Outlook" === calendarType && <PiMicrosoftOutlookLogo className={iconClassNames} />}
-          {"Yahoo" === calendarType && <FaYahoo className={iconClassNames} />}
           {"Ics" === calendarType && <FaFileDownload className={iconClassNames} />}
         </div>
         <p className="text-center">{calendarType}</p>
@@ -79,14 +81,12 @@ const CalendarButton = ({ title, date, endDate, calendarType }: CalendarButtonPr
 const getCalendarLink = (calendarType: CalendarType, event: CalendarEvent): string => {
   switch (calendarType) {
     case "Google":
-      return google(event);
+      return googleCalendarLink(event);
     case "Outlook":
-      return outlook(event);
-    case "Yahoo":
-      return yahoo(event);
+      return outlookCalendarLink(event);
     case "Ics":
-      return ics(event);
+      return icsCalendarLink(event);
     default:
-      return ics(event);
+      return icsCalendarLink(event);
   }
 };
