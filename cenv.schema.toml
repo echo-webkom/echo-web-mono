@@ -116,7 +116,7 @@ default = "minioadmin"
 [[entries]]
 key = "REDIS_URL"
 required = false
-default = "redis://localhost:6379"
+# If you want to run Redis locally, use this URL value: redis://localhost:6379
 
 # Advent of Code
 # --------------
