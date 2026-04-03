@@ -2,7 +2,6 @@ import { happeningTypeToPath, happeningTypeToString } from "@echo-webkom/lib";
 import { isFuture, isPast, subMinutes } from "date-fns";
 import { createEvents, type EventAttributes } from "ics";
 import { type NextRequest } from "next/server";
-import removeMarkdown from "remove-markdown";
 
 import { unoWithAdmin } from "@/api/server";
 import {
@@ -11,6 +10,7 @@ import {
   INCLUDE_MOVIES_PARAM,
   INCLUDE_PAST_PARAM,
 } from "@/lib/calendar-url-builder";
+import { stripMarkdown } from "@/utils/strip-markdown";
 
 export const GET = async (req: NextRequest) => {
   const includePast = req.nextUrl.searchParams.has(INCLUDE_PAST_PARAM);
@@ -49,7 +49,7 @@ export const GET = async (req: NextRequest) => {
         " ",
         "%20",
       ),
-      description: event.body ? removeMarkdown(event.body) : undefined,
+      description: stripMarkdown(event.body) || undefined,
       categories: [happeningTypeToString[event.happeningType]],
 
       method: "PUBLISH",
@@ -95,7 +95,7 @@ export const GET = async (req: NextRequest) => {
         startInputType: "utc",
         busyStatus: "BUSY",
         url: `https://echo.uib.no/bedpres/${bedpres.slug}`.replaceAll(" ", "%20"),
-        description: bedpres.body ? removeMarkdown(bedpres.body) : undefined,
+        description: stripMarkdown(bedpres.body) || undefined,
         categories: ["Bedriftspresentasjon"],
 
         method: "PUBLISH",

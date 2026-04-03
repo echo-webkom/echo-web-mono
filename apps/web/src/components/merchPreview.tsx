@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { RxArrowRight as ArrowRight } from "react-icons/rx";
-import removeMd from "remove-markdown";
 
 import type { UnoReturnType } from "@/api/uno/client";
 import { urlFor } from "@/lib/sanity";
+import { stripMarkdown } from "@/utils/strip-markdown";
 
 type MerchPreviewProps = {
   item: UnoReturnType["sanity"]["merch"]["all"][number];
@@ -30,7 +30,7 @@ export const MerchPreview = ({ item }: MerchPreviewProps) => {
 
           {item.body && (
             <p className="text-muted-foreground line-clamp-2 flex-1 text-sm">
-              {removeMd(item.body ?? "")}
+              {stripMarkdown(item.body)}
             </p>
           )}
 

@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { RxArrowRight as ArrowRight } from "react-icons/rx";
-import removeMd from "remove-markdown";
 
 import type { UnoReturnType } from "@/api/uno/client";
 import { urlFor } from "@/lib/sanity";
+import { stripMarkdown } from "@/utils/strip-markdown";
 
 import { Chip } from "./typography/chip";
 
@@ -39,7 +39,7 @@ export const StudentGroupPreview = ({ group }: StudentGroupPreviewProps) => {
 
           {group.description && (
             <p className="text-muted-foreground line-clamp-3 flex-1 text-sm">
-              {removeMd(group.description ?? "")}
+              {stripMarkdown(group.description)}
             </p>
           )}
 

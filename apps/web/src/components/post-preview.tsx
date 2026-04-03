@@ -1,11 +1,11 @@
 import { isBoard } from "@echo-webkom/lib";
 import { addDays } from "date-fns";
 import Link from "next/link";
-import removeMd from "remove-markdown";
 
 import type { UnoReturnType } from "@/api/uno/client";
 import { cn } from "@/utils/cn";
 import { shortDateNoTimeNoYear } from "@/utils/date";
+import { stripMarkdown } from "@/utils/strip-markdown";
 
 import { Chip } from "./typography/chip";
 
@@ -38,7 +38,9 @@ export const PostPreview = ({ post, withBorder = false, className }: PostPreview
           {shortDateNoTimeNoYear(post._createdAt)}
         </p>
 
-        {post.body && <p className="my-2 line-clamp-3 text-sm italic">{removeMd(post.body)}</p>}
+        {post.body && (
+          <p className="my-2 line-clamp-3 text-sm italic">{stripMarkdown(post.body)}</p>
+        )}
 
         <div className="flex flex-row flex-wrap items-center gap-1 sm:absolute sm:right-4 sm:-bottom-4">
           {isNew && <Chip>NY</Chip>}

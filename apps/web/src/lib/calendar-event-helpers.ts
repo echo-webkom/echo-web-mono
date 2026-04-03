@@ -1,9 +1,9 @@
 import { eachDayOfInterval } from "date-fns";
 import { fromZonedTime } from "date-fns-tz";
-import removeMd from "remove-markdown";
 
 import { type CMSHappening, type CMSMovie, type CMSRepeatingHappening } from "@/api/uno/client";
 import { getDate } from "@/utils/date";
+import { stripMarkdown } from "@/utils/strip-markdown";
 
 import { createHappeningLink } from "./create-link";
 
@@ -51,7 +51,7 @@ export const happeningsToCalendarEvent = (
       title: happening.title,
       date: new Date(happening.date!),
       endDate: happening.endDate ? new Date(happening.endDate) : undefined,
-      body: removeMd(happening.body ?? ""),
+      body: stripMarkdown(happening.body ?? ""),
       link: createHappeningLink(happening),
       type: getCalendarEventType(happening),
     }));
@@ -116,7 +116,7 @@ export const repeatingEventsToCalendarEvent = (
           title: happening.title,
           date: startDate,
           endDate,
-          body: removeMd(happening.body ?? ""),
+          body: stripMarkdown(happening.body),
           link: createHappeningLink(happening),
           type: getCalendarEventType(happening),
         };
