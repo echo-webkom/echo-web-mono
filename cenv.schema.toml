@@ -108,6 +108,16 @@ key = "PROFILE_PICTURE_SECRET_ACCESS_KEY"
 required = true
 default = "minioadmin"
 
+# Redis configuration
+# -------------------
+# We use Redis for caching and will also use it for storing session data.
+
+# Used by: uno
+[[entries]]
+key = "REDIS_URL"
+required = false
+# If you want to run Redis locally, use this URL value: redis://localhost:6379
+
 # Advent of Code
 # --------------
 # Every year we participate in Advent of Code and have the

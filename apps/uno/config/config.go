@@ -33,6 +33,8 @@ type Config struct {
 	SanityDataset    string
 	SanityAPIToken   string
 	SanityAPIVersion string
+
+	RedisURL string
 }
 
 type CronConfig struct {
@@ -72,6 +74,9 @@ func Load() *Config {
 		ProfilePictureBucketName:      getEnvOrDefault("PROFILE_PICTURE_BUCKET_NAME", "profile-pictures"),
 		ProfilePictureAccessKeyID:     os.Getenv("PROFILE_PICTURE_ACCESS_KEY_ID"),
 		ProfilePictureSecretAccessKey: os.Getenv("PROFILE_PICTURE_SECRET_ACCESS_KEY"),
+
+		// Redis cache configuration
+		RedisURL: os.Getenv("REDIS_URL"),
 
 		// Sanity CMS configuration
 		SanityProjectID:  getEnvOrDefault("SANITY_PROJECT_ID", "pgq2pd26"),

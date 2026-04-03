@@ -2,16 +2,27 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"sort"
 	"strings"
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
-	infracache "uno/infrastructure/cache"
+	sanityinfra "uno/infrastructure/external/sanity"
 )
 
-const cmsCacheTTL = 10 * time.Minute
+var cmsTypeNamespaces = map[string][]string{
+	"happening":          {sanityinfra.CMSHappeningNamespaceHappenings, sanityinfra.CMSHappeningNamespaceHomeHappenings, sanityinfra.CMSHappeningNamespaceContactsBySlug},
+	"repeatingHappening": {sanityinfra.CMSRepeatingHappeningNamespaceRepeatingHappenings},
+	"post":               {sanityinfra.CMSPostNamespacePosts},
+	"studentGroup":       {sanityinfra.CMSStudentGroupNamespaceStudentGroups},
+	"profile":            {sanityinfra.CMSStudentGroupNamespaceStudentGroups},
+	"job":                {sanityinfra.CMSJobAdNamespaceJobAds},
+	"banner":             {sanityinfra.CMSBannerNamespaceBanner},
+	"staticInfo":         {sanityinfra.CMSStaticInfoNamespaceStaticInfo},
+	"merch":              {sanityinfra.CMSMerchNamespaceMerch},
+	"meetingMinute":      {sanityinfra.CMSMeetingMinuteNamespaceMeetingMinutes},
+	"movie":              {sanityinfra.CMSMovieNamespaceMovies},
+}
 
 type CMSService struct {
 	happeningRepo          port.CMSHappeningRepo
@@ -26,27 +37,7 @@ type CMSService struct {
 	movieRepo              port.CMSMovieRepo
 	hsApplicationRepo      port.CMSHSApplicationRepo
 
-	happeningsCache               port.Cache[[]model.CMSHappening]
-	happeningBySlugCache          port.Cache[*model.CMSHappening]
-	homeHappeningsCache           port.Cache[[]model.CMSHomeHappening]
-	contactsBySlugCache           port.Cache[[]model.CMSContact]
-	repeatingHappeningsCache      port.Cache[[]model.CMSRepeatingHappening]
-	repeatingHappeningBySlugCache port.Cache[*model.CMSRepeatingHappening]
-	postsCache                    port.Cache[[]model.CMSPost]
-	postBySlugCache               port.Cache[*model.CMSPost]
-	studentGroupsByTypeCache      port.Cache[[]model.CMSStudentGroup]
-	studentGroupBySlugCache       port.Cache[*model.CMSStudentGroup]
-	jobAdsCache                   port.Cache[[]model.CMSJobAd]
-	jobAdBySlugCache              port.Cache[*model.CMSJobAd]
-	bannerCache                   port.Cache[*model.CMSBanner]
-	staticInfoCache               port.Cache[[]model.CMSStaticInfo]
-	staticInfoBySlugCache         port.Cache[*model.CMSStaticInfo]
-	merchCache                    port.Cache[[]model.CMSMerch]
-	merchBySlugCache              port.Cache[*model.CMSMerch]
-	meetingMinutesCache           port.Cache[[]model.CMSMeetingMinute]
-	meetingMinuteByIdCache        port.Cache[*model.CMSMeetingMinute]
-	moviesCache                   port.Cache[[]model.CMSMovie]
-	hsApplicationsCache           port.Cache[[]model.CMSHSApplication]
+	invalidator port.CacheInvalidator
 }
 
 func NewCMSService(
@@ -61,6 +52,7 @@ func NewCMSService(
 	meetingMinuteRepo port.CMSMeetingMinuteRepo,
 	movieRepo port.CMSMovieRepo,
 	hsApplicationRepo port.CMSHSApplicationRepo,
+	invalidator port.CacheInvalidator,
 ) *CMSService {
 	return &CMSService{
 		happeningRepo:          happeningRepo,
@@ -75,109 +67,36 @@ func NewCMSService(
 		movieRepo:              movieRepo,
 		hsApplicationRepo:      hsApplicationRepo,
 
-		happeningsCache:               infracache.NewInMemoryCache[[]model.CMSHappening](),
-		happeningBySlugCache:          infracache.NewInMemoryCache[*model.CMSHappening](),
-		homeHappeningsCache:           infracache.NewInMemoryCache[[]model.CMSHomeHappening](),
-		contactsBySlugCache:           infracache.NewInMemoryCache[[]model.CMSContact](),
-		repeatingHappeningsCache:      infracache.NewInMemoryCache[[]model.CMSRepeatingHappening](),
-		repeatingHappeningBySlugCache: infracache.NewInMemoryCache[*model.CMSRepeatingHappening](),
-		postsCache:                    infracache.NewInMemoryCache[[]model.CMSPost](),
-		postBySlugCache:               infracache.NewInMemoryCache[*model.CMSPost](),
-		studentGroupsByTypeCache:      infracache.NewInMemoryCache[[]model.CMSStudentGroup](),
-		studentGroupBySlugCache:       infracache.NewInMemoryCache[*model.CMSStudentGroup](),
-		jobAdsCache:                   infracache.NewInMemoryCache[[]model.CMSJobAd](),
-		jobAdBySlugCache:              infracache.NewInMemoryCache[*model.CMSJobAd](),
-		bannerCache:                   infracache.NewInMemoryCache[*model.CMSBanner](),
-		staticInfoCache:               infracache.NewInMemoryCache[[]model.CMSStaticInfo](),
-		staticInfoBySlugCache:         infracache.NewInMemoryCache[*model.CMSStaticInfo](),
-		merchCache:                    infracache.NewInMemoryCache[[]model.CMSMerch](),
-		merchBySlugCache:              infracache.NewInMemoryCache[*model.CMSMerch](),
-		meetingMinutesCache:           infracache.NewInMemoryCache[[]model.CMSMeetingMinute](),
-		meetingMinuteByIdCache:        infracache.NewInMemoryCache[*model.CMSMeetingMinute](),
-		moviesCache:                   infracache.NewInMemoryCache[[]model.CMSMovie](),
-		hsApplicationsCache:           infracache.NewInMemoryCache[[]model.CMSHSApplication](),
+		invalidator: invalidator,
 	}
 }
 
 func (s *CMSService) GetAllHappenings(ctx context.Context) ([]model.CMSHappening, error) {
-	if v, ok := s.happeningsCache.Get("all"); ok {
-		return v, nil
-	}
-	result, err := s.happeningRepo.GetAllHappenings(ctx)
-	if err != nil {
-		return nil, err
-	}
-	s.happeningsCache.Set("all", result, cmsCacheTTL)
-	return result, nil
+	return s.happeningRepo.GetAllHappenings(ctx)
 }
 
 func (s *CMSService) GetHappeningBySlug(ctx context.Context, slug string) (*model.CMSHappening, error) {
-	if v, ok := s.happeningBySlugCache.Get(slug); ok {
-		return v, nil
-	}
-	result, err := s.happeningRepo.GetHappeningBySlug(ctx, slug)
-	if err != nil {
-		return nil, err
-	}
-	s.happeningBySlugCache.Set(slug, result, cmsCacheTTL)
-	return result, nil
+	return s.happeningRepo.GetHappeningBySlug(ctx, slug)
 }
 
 func (s *CMSService) GetHomeHappenings(ctx context.Context, types []string, n int) ([]model.CMSHomeHappening, error) {
-	key := fmt.Sprintf("%s:%d", strings.Join(types, ","), n)
-	if v, ok := s.homeHappeningsCache.Get(key); ok {
-		return v, nil
-	}
-	result, err := s.happeningRepo.GetHomeHappenings(ctx, types, n)
-	if err != nil {
-		return nil, err
-	}
-	s.homeHappeningsCache.Set(key, result, cmsCacheTTL)
-	return result, nil
+	return s.happeningRepo.GetHomeHappenings(ctx, types, n)
 }
 
 func (s *CMSService) GetHappeningContactsBySlug(ctx context.Context, slug string) ([]model.CMSContact, error) {
-	if v, ok := s.contactsBySlugCache.Get(slug); ok {
-		return v, nil
-	}
-	result, err := s.happeningRepo.GetHappeningContactsBySlug(ctx, slug)
-	if err != nil {
-		return nil, err
-	}
-	s.contactsBySlugCache.Set(slug, result, cmsCacheTTL)
-	return result, nil
+	return s.happeningRepo.GetHappeningContactsBySlug(ctx, slug)
 }
 
 func (s *CMSService) GetAllRepeatingHappenings(ctx context.Context) ([]model.CMSRepeatingHappening, error) {
-	if v, ok := s.repeatingHappeningsCache.Get("all"); ok {
-		return v, nil
-	}
-	result, err := s.repeatingHappeningRepo.GetAllRepeatingHappenings(ctx)
-	if err != nil {
-		return nil, err
-	}
-	s.repeatingHappeningsCache.Set("all", result, cmsCacheTTL)
-	return result, nil
+	return s.repeatingHappeningRepo.GetAllRepeatingHappenings(ctx)
 }
 
 func (s *CMSService) GetAllPosts(ctx context.Context) ([]model.CMSPost, error) {
-	if v, ok := s.postsCache.Get("all"); ok {
-		return v, nil
-	}
-	result, err := s.postRepo.GetAllPosts(ctx)
-	if err != nil {
-		return nil, err
-	}
-	s.postsCache.Set("all", result, cmsCacheTTL)
-	return result, nil
+	return s.postRepo.GetAllPosts(ctx)
 }
 
-func (s *CMSService) GetStudentGroupsByType(ctx context.Context, groupType string, n int) ([]model.CMSStudentGroup, error) {
-	key := fmt.Sprintf("%s:%d", groupType, n)
-	if v, ok := s.studentGroupsByTypeCache.Get(key); ok {
-		return v, nil
-	}
-	result, err := s.studentGroupRepo.GetStudentGroupsByType(ctx, groupType, n)
+func (s *CMSService) GetStudentGroupsByType(ctx context.Context, groupType string) ([]model.CMSStudentGroup, error) {
+	result, err := s.studentGroupRepo.GetStudentGroupsByType(ctx, groupType)
 	if err != nil {
 		return nil, err
 	}
@@ -186,189 +105,67 @@ func (s *CMSService) GetStudentGroupsByType(ctx context.Context, groupType strin
 	} else {
 		sort.Slice(result, func(i, j int) bool { return result[i].Name < result[j].Name })
 	}
-	s.studentGroupsByTypeCache.Set(key, result, cmsCacheTTL)
 	return result, nil
 }
 
 func (s *CMSService) GetStudentGroupBySlug(ctx context.Context, slug string) (*model.CMSStudentGroup, error) {
-	if v, ok := s.studentGroupBySlugCache.Get(slug); ok {
-		return v, nil
-	}
-	result, err := s.studentGroupRepo.GetStudentGroupBySlug(ctx, slug)
-	if err != nil {
-		return nil, err
-	}
-	s.studentGroupBySlugCache.Set(slug, result, cmsCacheTTL)
-	return result, nil
+	return s.studentGroupRepo.GetStudentGroupBySlug(ctx, slug)
 }
 
 func (s *CMSService) GetAllJobAds(ctx context.Context) ([]model.CMSJobAd, error) {
-	if v, ok := s.jobAdsCache.Get("all"); ok {
-		return v, nil
-	}
-	result, err := s.jobAdRepo.GetAllJobAds(ctx)
-	if err != nil {
-		return nil, err
-	}
-	s.jobAdsCache.Set("all", result, cmsCacheTTL)
-	return result, nil
+	return s.jobAdRepo.GetAllJobAds(ctx)
 }
 
 func (s *CMSService) GetBanner(ctx context.Context) (*model.CMSBanner, error) {
-	if v, ok := s.bannerCache.Get("banner"); ok {
-		return v, nil
-	}
-	result, err := s.bannerRepo.GetBanner(ctx)
-	if err != nil {
-		return nil, err
-	}
-	s.bannerCache.Set("banner", result, cmsCacheTTL)
-	return result, nil
+	return s.bannerRepo.GetBanner(ctx)
 }
 
 func (s *CMSService) GetAllStaticInfo(ctx context.Context) ([]model.CMSStaticInfo, error) {
-	if v, ok := s.staticInfoCache.Get("all"); ok {
-		return v, nil
-	}
-	result, err := s.staticInfoRepo.GetAllStaticInfo(ctx)
-	if err != nil {
-		return nil, err
-	}
-	s.staticInfoCache.Set("all", result, cmsCacheTTL)
-	return result, nil
+	return s.staticInfoRepo.GetAllStaticInfo(ctx)
 }
 
 func (s *CMSService) GetAllMerch(ctx context.Context) ([]model.CMSMerch, error) {
-	if v, ok := s.merchCache.Get("all"); ok {
-		return v, nil
-	}
-	result, err := s.merchRepo.GetAllMerch(ctx)
-	if err != nil {
-		return nil, err
-	}
-	s.merchCache.Set("all", result, cmsCacheTTL)
-	return result, nil
+	return s.merchRepo.GetAllMerch(ctx)
 }
 
 func (s *CMSService) GetAllMeetingMinutes(ctx context.Context) ([]model.CMSMeetingMinute, error) {
-	if v, ok := s.meetingMinutesCache.Get("all"); ok {
-		return v, nil
-	}
-	result, err := s.meetingMinuteRepo.GetAllMeetingMinutes(ctx)
-	if err != nil {
-		return nil, err
-	}
-	s.meetingMinutesCache.Set("all", result, cmsCacheTTL)
-	return result, nil
+	return s.meetingMinuteRepo.GetAllMeetingMinutes(ctx)
 }
 
 func (s *CMSService) GetAllMovies(ctx context.Context) ([]model.CMSMovie, error) {
-	if v, ok := s.moviesCache.Get("all"); ok {
-		return v, nil
-	}
-	result, err := s.movieRepo.GetAllMovies(ctx)
-	if err != nil {
-		return nil, err
-	}
-	s.moviesCache.Set("all", result, cmsCacheTTL)
-	return result, nil
+	return s.movieRepo.GetAllMovies(ctx)
 }
 
 func (s *CMSService) GetAllHSApplications(ctx context.Context) ([]model.CMSHSApplication, error) {
-	if v, ok := s.hsApplicationsCache.Get("all"); ok {
-		return v, nil
-	}
-	result, err := s.hsApplicationRepo.GetAllHSApplications(ctx)
-	if err != nil {
-		return nil, err
-	}
-	s.hsApplicationsCache.Set("all", result, cmsCacheTTL)
-	return result, nil
+	return s.hsApplicationRepo.GetAllHSApplications(ctx)
 }
 
 func (s *CMSService) GetRepeatingHappeningBySlug(ctx context.Context, slug string) (*model.CMSRepeatingHappening, error) {
-	if v, ok := s.repeatingHappeningBySlugCache.Get(slug); ok {
-		return v, nil
-	}
-	result, err := s.repeatingHappeningRepo.GetRepeatingHappeningBySlug(ctx, slug)
-	if err != nil {
-		return nil, err
-	}
-	s.repeatingHappeningBySlugCache.Set(slug, result, cmsCacheTTL)
-	return result, nil
+	return s.repeatingHappeningRepo.GetRepeatingHappeningBySlug(ctx, slug)
 }
 
 func (s *CMSService) GetPostBySlug(ctx context.Context, slug string) (*model.CMSPost, error) {
-	if v, ok := s.postBySlugCache.Get(slug); ok {
-		return v, nil
-	}
-	result, err := s.postRepo.GetPostBySlug(ctx, slug)
-	if err != nil {
-		return nil, err
-	}
-	s.postBySlugCache.Set(slug, result, cmsCacheTTL)
-	return result, nil
+	return s.postRepo.GetPostBySlug(ctx, slug)
 }
 
 func (s *CMSService) GetMerchBySlug(ctx context.Context, slug string) (*model.CMSMerch, error) {
-	if v, ok := s.merchBySlugCache.Get(slug); ok {
-		return v, nil
-	}
-	result, err := s.merchRepo.GetMerchBySlug(ctx, slug)
-	if err != nil {
-		return nil, err
-	}
-	s.merchBySlugCache.Set(slug, result, cmsCacheTTL)
-	return result, nil
+	return s.merchRepo.GetMerchBySlug(ctx, slug)
 }
 
 func (s *CMSService) GetJobAdBySlug(ctx context.Context, slug string) (*model.CMSJobAd, error) {
-	if v, ok := s.jobAdBySlugCache.Get(slug); ok {
-		return v, nil
-	}
-	result, err := s.jobAdRepo.GetJobAdBySlug(ctx, slug)
-	if err != nil {
-		return nil, err
-	}
-	s.jobAdBySlugCache.Set(slug, result, cmsCacheTTL)
-	return result, nil
+	return s.jobAdRepo.GetJobAdBySlug(ctx, slug)
 }
 
 func (s *CMSService) GetStaticInfoBySlug(ctx context.Context, slug string) (*model.CMSStaticInfo, error) {
-	if v, ok := s.staticInfoBySlugCache.Get(slug); ok {
-		return v, nil
-	}
-	result, err := s.staticInfoRepo.GetStaticInfoBySlug(ctx, slug)
-	if err != nil {
-		return nil, err
-	}
-	s.staticInfoBySlugCache.Set(slug, result, cmsCacheTTL)
-	return result, nil
+	return s.staticInfoRepo.GetStaticInfoBySlug(ctx, slug)
 }
 
 func (s *CMSService) GetMeetingMinuteById(ctx context.Context, id string) (*model.CMSMeetingMinute, error) {
-	if v, ok := s.meetingMinuteByIdCache.Get(id); ok {
-		return v, nil
-	}
-	result, err := s.meetingMinuteRepo.GetMeetingMinuteById(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-	s.meetingMinuteByIdCache.Set(id, result, cmsCacheTTL)
-	return result, nil
+	return s.meetingMinuteRepo.GetMeetingMinuteById(ctx, id)
 }
 
 func (s *CMSService) GetUpcomingMovies(ctx context.Context, n int) ([]model.CMSMovie, error) {
-	key := fmt.Sprintf("upcoming:%d", n)
-	if v, ok := s.moviesCache.Get(key); ok {
-		return v, nil
-	}
-	result, err := s.movieRepo.GetUpcomingMovies(ctx, n)
-	if err != nil {
-		return nil, err
-	}
-	s.moviesCache.Set(key, result, cmsCacheTTL)
-	return result, nil
+	return s.movieRepo.GetUpcomingMovies(ctx, n)
 }
 
 // CMSHappeningFilter holds filter parameters for GetFilteredHappenings.
@@ -477,4 +274,15 @@ func (s *CMSService) GetFilteredHappenings(ctx context.Context, filter CMSHappen
 	}
 
 	return result, nil
+}
+
+// InvalidateByType invalidates all cache namespaces related to the given Sanity document type.
+func (s *CMSService) InvalidateByType(ctx context.Context, docType string) {
+	namespaces, ok := cmsTypeNamespaces[docType]
+	if !ok {
+		return
+	}
+	for _, ns := range namespaces {
+		s.invalidator.InvalidateNamespace(ctx, ns)
+	}
 }

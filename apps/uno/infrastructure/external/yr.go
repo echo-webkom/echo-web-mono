@@ -2,22 +2,40 @@ package external
 
 import (
 	"context"
+	"time"
 	"uno/domain/model"
 	"uno/domain/port"
+	"uno/infrastructure/cache"
 	"uno/pkg/yr"
+
+	"github.com/redis/go-redis/v9"
+)
+
+const (
+	yrCacheTTL = 15 * time.Minute
+	yrCacheKey = "weather"
 )
 
 type YrRepo struct {
-	logger   port.Logger
-	yrClient *yr.Client
+	logger       port.Logger
+	yrClient     *yr.Client
+	weatherCache port.Cache[model.Weather]
 }
 
-func NewYrRepo(logger port.Logger) port.WeatherRepo {
+func NewYrRepo(logger port.Logger, redisClient *redis.Client) port.WeatherRepo {
 	yrClient := yr.New()
-	return &YrRepo{logger: logger, yrClient: yrClient}
+	return &YrRepo{
+		logger:       logger,
+		yrClient:     yrClient,
+		weatherCache: cache.NewCache[model.Weather](redisClient, "weather"),
+	}
 }
 
 func (s *YrRepo) GetCurrentWeather(ctx context.Context) (model.Weather, error) {
+	if weather, ok := s.weatherCache.Get(yrCacheKey); ok {
+		return weather, nil
+	}
+
 	jsonBody, err := s.yrClient.GetCurrentWeather(ctx, 60.3913, 5.3221)
 	if err != nil {
 		s.logger.Error(ctx, "failed to fetch weather", "err", err.Error())
@@ -47,6 +65,7 @@ func (s *YrRepo) GetCurrentWeather(ctx context.Context) (model.Weather, error) {
 		}
 	}
 
+	s.weatherCache.Set(yrCacheKey, weather, yrCacheTTL)
 	return weather, nil
 }
 

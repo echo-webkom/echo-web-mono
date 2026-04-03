@@ -2749,6 +2749,49 @@ const docTemplate = `{
                 }
             }
         },
+        "/sanity/revalidate": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sanity"
+                ],
+                "summary": "Revalidate CMS cache",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/sanity/static-info": {
             "get": {
                 "produces": [
@@ -2791,12 +2834,6 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Group type",
                         "name": "type",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Max number of results (default 50)",
-                        "name": "n",
                         "in": "query"
                     }
                 ],

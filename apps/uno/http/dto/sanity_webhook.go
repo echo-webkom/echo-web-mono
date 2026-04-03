@@ -2,6 +2,14 @@ package dto
 
 import "uno/domain/service"
 
+type SanityRevalidateRequest struct {
+	Operation  string  `json:"operation"`
+	DocumentID string  `json:"documentId"`
+	Type       string  `json:"type"`
+	Slug       *string `json:"slug"`
+	PastSlug   *string `json:"pastSlug"`
+}
+
 type SanityWebhookRequest struct {
 	Operation  string               `json:"operation"`
 	DocumentID string               `json:"documentId"`

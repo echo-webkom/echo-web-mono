@@ -107,8 +107,8 @@ func (_c *CMSStudentGroupRepo_GetStudentGroupBySlug_Call) RunAndReturn(run func(
 }
 
 // GetStudentGroupsByType provides a mock function for the type CMSStudentGroupRepo
-func (_mock *CMSStudentGroupRepo) GetStudentGroupsByType(ctx context.Context, groupType string, n int) ([]model.CMSStudentGroup, error) {
-	ret := _mock.Called(ctx, groupType, n)
+func (_mock *CMSStudentGroupRepo) GetStudentGroupsByType(ctx context.Context, groupType string) ([]model.CMSStudentGroup, error) {
+	ret := _mock.Called(ctx, groupType)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetStudentGroupsByType")
@@ -116,18 +116,18 @@ func (_mock *CMSStudentGroupRepo) GetStudentGroupsByType(ctx context.Context, gr
 
 	var r0 []model.CMSStudentGroup
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string, int) ([]model.CMSStudentGroup, error)); ok {
-		return returnFunc(ctx, groupType, n)
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) ([]model.CMSStudentGroup, error)); ok {
+		return returnFunc(ctx, groupType)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string, int) []model.CMSStudentGroup); ok {
-		r0 = returnFunc(ctx, groupType, n)
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) []model.CMSStudentGroup); ok {
+		r0 = returnFunc(ctx, groupType)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]model.CMSStudentGroup)
 		}
 	}
-	if returnFunc, ok := ret.Get(1).(func(context.Context, string, int) error); ok {
-		r1 = returnFunc(ctx, groupType, n)
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, groupType)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -142,12 +142,11 @@ type CMSStudentGroupRepo_GetStudentGroupsByType_Call struct {
 // GetStudentGroupsByType is a helper method to define mock.On call
 //   - ctx context.Context
 //   - groupType string
-//   - n int
-func (_e *CMSStudentGroupRepo_Expecter) GetStudentGroupsByType(ctx interface{}, groupType interface{}, n interface{}) *CMSStudentGroupRepo_GetStudentGroupsByType_Call {
-	return &CMSStudentGroupRepo_GetStudentGroupsByType_Call{Call: _e.mock.On("GetStudentGroupsByType", ctx, groupType, n)}
+func (_e *CMSStudentGroupRepo_Expecter) GetStudentGroupsByType(ctx interface{}, groupType interface{}) *CMSStudentGroupRepo_GetStudentGroupsByType_Call {
+	return &CMSStudentGroupRepo_GetStudentGroupsByType_Call{Call: _e.mock.On("GetStudentGroupsByType", ctx, groupType)}
 }
 
-func (_c *CMSStudentGroupRepo_GetStudentGroupsByType_Call) Run(run func(ctx context.Context, groupType string, n int)) *CMSStudentGroupRepo_GetStudentGroupsByType_Call {
+func (_c *CMSStudentGroupRepo_GetStudentGroupsByType_Call) Run(run func(ctx context.Context, groupType string)) *CMSStudentGroupRepo_GetStudentGroupsByType_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -157,14 +156,9 @@ func (_c *CMSStudentGroupRepo_GetStudentGroupsByType_Call) Run(run func(ctx cont
 		if args[1] != nil {
 			arg1 = args[1].(string)
 		}
-		var arg2 int
-		if args[2] != nil {
-			arg2 = args[2].(int)
-		}
 		run(
 			arg0,
 			arg1,
-			arg2,
 		)
 	})
 	return _c
@@ -175,7 +169,7 @@ func (_c *CMSStudentGroupRepo_GetStudentGroupsByType_Call) Return(cMSStudentGrou
 	return _c
 }
 
-func (_c *CMSStudentGroupRepo_GetStudentGroupsByType_Call) RunAndReturn(run func(ctx context.Context, groupType string, n int) ([]model.CMSStudentGroup, error)) *CMSStudentGroupRepo_GetStudentGroupsByType_Call {
+func (_c *CMSStudentGroupRepo_GetStudentGroupsByType_Call) RunAndReturn(run func(ctx context.Context, groupType string) ([]model.CMSStudentGroup, error)) *CMSStudentGroupRepo_GetStudentGroupsByType_Call {
 	_c.Call.Return(run)
 	return _c
 }

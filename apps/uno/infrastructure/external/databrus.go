@@ -9,9 +9,11 @@ import (
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
+	"uno/infrastructure/cache"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/gocolly/colly/v2"
+	"github.com/redis/go-redis/v9"
 )
 
 var (
@@ -20,17 +22,32 @@ var (
 	awayGoalsRe = regexp.MustCompile(`awaygoals:\s*'(\d+)'`)
 )
 
+const (
+	databrusCacheTTL   = 6 * time.Hour
+	databrusMatchesKey = "matches"
+	databrusTableKey   = "table"
+)
+
 type DatabrusRepo struct {
-	logger port.Logger
+	logger       port.Logger
+	matchesCache port.Cache[[]model.Match]
+	tableCache   port.Cache[model.Table]
 }
 
-func NewDatabrusRepo(logger port.Logger) port.DatabrusRepo {
+func NewDatabrusRepo(logger port.Logger, redisClient *redis.Client) port.DatabrusRepo {
 	return &DatabrusRepo{
-		logger: logger,
+		logger:       logger,
+		matchesCache: cache.NewCache[[]model.Match](redisClient, "databrus:matches"),
+		tableCache:   cache.NewCache[model.Table](redisClient, "databrus:table"),
 	}
 }
 
 func (dr *DatabrusRepo) GetDatabrusMatches(ctx context.Context, url string, matchType model.MatchType) ([]model.Match, error) {
+	cacheKey := fmt.Sprintf("%s:%s", databrusMatchesKey, matchType)
+	if matches, ok := dr.matchesCache.Get(cacheKey); ok {
+		return matches, nil
+	}
+
 	var matches []model.Match
 	var scrapeErr error
 
@@ -112,10 +129,15 @@ func (dr *DatabrusRepo) GetDatabrusMatches(ctx context.Context, url string, matc
 		return nil, scrapeErr
 	}
 
+	dr.matchesCache.Set(cacheKey, matches, databrusCacheTTL)
 	return matches, nil
 }
 
 func (dr *DatabrusRepo) GetDatabrusTable(ctx context.Context, url string) (model.Table, error) {
+	if table, ok := dr.tableCache.Get(databrusTableKey); ok {
+		return table, nil
+	}
+
 	var table model.Table
 	var scrapeErr error
 
@@ -181,5 +203,6 @@ func (dr *DatabrusRepo) GetDatabrusTable(ctx context.Context, url string) (model
 		return nil, scrapeErr
 	}
 
+	dr.tableCache.Set(databrusTableKey, table, databrusCacheTTL)
 	return table, nil
 }

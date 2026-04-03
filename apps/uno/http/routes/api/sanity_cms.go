@@ -33,6 +33,7 @@ func NewSanityMux(
 	s := &sanityCMS{logger: logger, cmsService: cmsService, happeningService: happeningService}
 
 	mux.Handle("POST", "/webhook", s.handleWebhook, admin)
+	mux.Handle("POST", "/revalidate", s.handleRevalidate, admin)
 
 	mux.Handle("GET", "/happenings", s.getAllHappenings)
 	mux.Handle("GET", "/happenings/home", s.getHomeHappenings)
@@ -135,6 +136,32 @@ func (s *sanityCMS) handleWebhook(ctx *handler.Context) error {
 	return ctx.JSON(map[string]string{
 		"status":  "success",
 		"message": fmt.Sprintf("Happening with id %s %s", req.Data.ID, actionStr),
+	})
+}
+
+// handleRevalidate invalidates the Redis cache for the given Sanity document type.
+// @Summary      Revalidate CMS cache
+// @Tags         sanity
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  map[string]string  "Success"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Router       /sanity/revalidate [post]
+func (s *sanityCMS) handleRevalidate(ctx *handler.Context) error {
+	var req dto.SanityRevalidateRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.Error(fmt.Errorf("failed to parse request body: %w", err), http.StatusBadRequest)
+	}
+
+	s.logger.Info(ctx.Context(), "sanity revalidate received", "type", req.Type)
+
+	s.cmsService.InvalidateByType(ctx.Context(), req.Type)
+
+	return ctx.JSON(map[string]string{
+		"status":  "success",
+		"message": fmt.Sprintf("Revalidated type: %q", req.Type),
 	})
 }
 
@@ -264,21 +291,12 @@ func (s *sanityCMS) getAllPosts(ctx *handler.Context) error {
 // @Tags         sanity
 // @Produce      json
 // @Param        type  query     string                  false  "Group type"
-// @Param        n     query     int                     false  "Max number of results (default 50)"
 // @Success      200   {array}   dto.CMSStudentGroupDTO  "OK"
 // @Failure      500   {string}  string                  "Internal Server Error"
 // @Router       /sanity/student-groups [get]
 func (s *sanityCMS) getStudentGroups(ctx *handler.Context) error {
 	groupType, _ := ctx.QueryParam("type")
-
-	n := 50
-	if nStr, ok := ctx.QueryParam("n"); ok {
-		if parsed, err := strconv.Atoi(nStr); err == nil && parsed > 0 {
-			n = parsed
-		}
-	}
-
-	groups, err := s.cmsService.GetStudentGroupsByType(ctx.Context(), groupType, n)
+	groups, err := s.cmsService.GetStudentGroupsByType(ctx.Context(), groupType)
 	if err != nil {
 		return ctx.InternalServerError()
 	}

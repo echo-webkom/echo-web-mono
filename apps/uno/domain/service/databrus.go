@@ -2,16 +2,8 @@ package service
 
 import (
 	"context"
-	"time"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/infrastructure/cache"
-)
-
-const (
-	cacheTTL   = 6 * time.Hour
-	matchesKey = "matches"
-	tableKey   = "table"
 )
 
 var (
@@ -23,29 +15,16 @@ var (
 type DatabrusService struct {
 	logger       port.Logger
 	databrusRepo port.DatabrusRepo
-
-	matchesCache port.Cache[[]model.Match]
-	tableCache   port.Cache[model.Table]
 }
 
 func NewDatabrusService(logger port.Logger, databrusRepo port.DatabrusRepo) *DatabrusService {
-	matchesCache := cache.NewInMemoryCache[[]model.Match]()
-	tableCache := cache.NewInMemoryCache[model.Table]()
-
 	return &DatabrusService{
 		logger:       logger,
 		databrusRepo: databrusRepo,
-		matchesCache: matchesCache,
-		tableCache:   tableCache,
 	}
 }
 
 func (s *DatabrusService) GetMatches(ctx context.Context) ([]model.Match, error) {
-	matches, ok := s.matchesCache.Get(matchesKey)
-	if ok {
-		return matches, nil
-	}
-
 	// Get the matches from the repository
 	previousMatches, err := s.databrusRepo.GetDatabrusMatches(ctx, previousUrl, model.Previous)
 	if err != nil {
@@ -57,23 +36,15 @@ func (s *DatabrusService) GetMatches(ctx context.Context) ([]model.Match, error)
 	}
 
 	// Combine previous and upcoming matches
-	matches = append(previousMatches, upcomingMatches...)
-
-	s.matchesCache.Set(matchesKey, matches, cacheTTL)
+	matches := append(previousMatches, upcomingMatches...)
 	return matches, nil
 }
 
 func (s *DatabrusService) GetTable(ctx context.Context) (model.Table, error) {
-	table, ok := s.tableCache.Get(tableKey)
-	if ok {
-		return table, nil
-	}
-
 	table, err := s.databrusRepo.GetDatabrusTable(ctx, tableUrl)
 	if err != nil {
 		return nil, err
 	}
 
-	s.tableCache.Set(tableKey, table, cacheTTL)
 	return table, nil
 }

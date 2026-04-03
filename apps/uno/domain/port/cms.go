@@ -23,7 +23,7 @@ type CMSPostRepo interface {
 }
 
 type CMSStudentGroupRepo interface {
-	GetStudentGroupsByType(ctx context.Context, groupType string, n int) ([]model.CMSStudentGroup, error)
+	GetStudentGroupsByType(ctx context.Context, groupType string) ([]model.CMSStudentGroup, error)
 	GetStudentGroupBySlug(ctx context.Context, slug string) (*model.CMSStudentGroup, error)
 }
 
