@@ -7,8 +7,8 @@ type TableProps = React.HTMLAttributes<HTMLTableElement> & {
 };
 
 const Table = React.forwardRef<HTMLTableElement, TableProps>(
-  ({ children, className, ...props }, ref) => (
-    <div className="relative overflow-x-auto rounded border">
+  ({ children, className, wrapperClassName, ...props }, ref) => (
+    <div className={cn("relative overflow-x-auto rounded border", wrapperClassName)}>
       <table
         ref={ref}
         className={cn("w-full caption-bottom text-sm lg:table-fixed", className)}

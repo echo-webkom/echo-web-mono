@@ -1,7 +1,7 @@
 "use client";
 
 import { type Group } from "@echo-webkom/db/schemas";
-import { DialogClose } from "@radix-ui/react-dialog";
+import { Dialog as DialogPrimitive } from "radix-ui";
 import { use } from "react";
 
 import { type UnoClientType } from "@/api/uno/client";
@@ -50,11 +50,11 @@ export const MembersModal = ({ group, membersPromise }: MembersModalProps) => {
           </div>
         </DialogBody>
         <DialogFooter>
-          <DialogClose asChild>
+          <DialogPrimitive.Close asChild>
             <Button size="sm" variant="ghost">
               Lukk
             </Button>
-          </DialogClose>
+          </DialogPrimitive.Close>
         </DialogFooter>
       </DialogContent>
     </Dialog>
