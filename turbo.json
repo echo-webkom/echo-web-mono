@@ -47,7 +47,12 @@
     }
   },
   "globalDependencies": [".env"],
-  "globalPassThroughEnv": ["PLAYWRIGHT_*"],
+  "globalPassThroughEnv": [
+    "PLAYWRIGHT_*",
+    "CC",
+    "SDKROOT",
+    "CGO_CFLAGS"
+  ],
   "globalEnv": [
     "CI",
     "NODE_ENV",
