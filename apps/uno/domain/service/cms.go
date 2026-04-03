@@ -11,16 +11,16 @@ import (
 )
 
 var cmsTypeNamespaces = map[string][]string{
-	"happening":          {sanityinfra.CMSHappeningNamespaceHappenings, sanityinfra.CMSHappeningNamespaceHappeningBySlug, sanityinfra.CMSHappeningNamespaceHomeHappenings, sanityinfra.CMSHappeningNamespaceContactsBySlug},
-	"repeatingHappening": {sanityinfra.CMSRepeatingHappeningNamespaceRepeatingHappenings, sanityinfra.CMSRepeatingHappeningNamespaceRepeatingHappeningBySlug},
-	"post":               {sanityinfra.CMSPostNamespacePosts, sanityinfra.CMSPostNamespacePostBySlug},
-	"studentGroup":       {sanityinfra.CMSStudentGroupNamespaceStudentGroupsByType, sanityinfra.CMSStudentGroupNamespaceStudentGroupBySlug},
-	"profile":            {sanityinfra.CMSStudentGroupNamespaceStudentGroupsByType, sanityinfra.CMSStudentGroupNamespaceStudentGroupBySlug},
-	"job":                {sanityinfra.CMSJobAdNamespaceJobAds, sanityinfra.CMSJobAdNamespaceJobAdBySlug},
+	"happening":          {sanityinfra.CMSHappeningNamespaceHappenings, sanityinfra.CMSHappeningNamespaceHomeHappenings, sanityinfra.CMSHappeningNamespaceContactsBySlug},
+	"repeatingHappening": {sanityinfra.CMSRepeatingHappeningNamespaceRepeatingHappenings},
+	"post":               {sanityinfra.CMSPostNamespacePosts},
+	"studentGroup":       {sanityinfra.CMSStudentGroupNamespaceStudentGroups},
+	"profile":            {sanityinfra.CMSStudentGroupNamespaceStudentGroups},
+	"job":                {sanityinfra.CMSJobAdNamespaceJobAds},
 	"banner":             {sanityinfra.CMSBannerNamespaceBanner},
-	"staticInfo":         {sanityinfra.CMSStaticInfoNamespaceStaticInfo, sanityinfra.CMSStaticInfoNamespaceStaticInfoBySlug},
-	"merch":              {sanityinfra.CMSMerchNamespaceMerch, sanityinfra.CMSMerchNamespaceMerchBySlug},
-	"meetingMinute":      {sanityinfra.CMSMeetingMinuteNamespaceMeetingMinutes, sanityinfra.CMSMeetingMinuteNamespaceMeetingMinuteByID},
+	"staticInfo":         {sanityinfra.CMSStaticInfoNamespaceStaticInfo},
+	"merch":              {sanityinfra.CMSMerchNamespaceMerch},
+	"meetingMinute":      {sanityinfra.CMSMeetingMinuteNamespaceMeetingMinutes},
 	"movie":              {sanityinfra.CMSMovieNamespaceMovies},
 }
 
@@ -95,8 +95,8 @@ func (s *CMSService) GetAllPosts(ctx context.Context) ([]model.CMSPost, error) {
 	return s.postRepo.GetAllPosts(ctx)
 }
 
-func (s *CMSService) GetStudentGroupsByType(ctx context.Context, groupType string, n int) ([]model.CMSStudentGroup, error) {
-	result, err := s.studentGroupRepo.GetStudentGroupsByType(ctx, groupType, n)
+func (s *CMSService) GetStudentGroupsByType(ctx context.Context, groupType string) ([]model.CMSStudentGroup, error) {
+	result, err := s.studentGroupRepo.GetStudentGroupsByType(ctx, groupType)
 	if err != nil {
 		return nil, err
 	}

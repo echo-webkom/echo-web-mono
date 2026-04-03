@@ -435,13 +435,10 @@ class SanityStudentGroupsApi {
     this.client = client;
   }
 
-  async all(params?: { type?: string; n?: number }) {
+  async all(params?: { type?: string }) {
     const query = new URLSearchParams();
     if (params?.type !== undefined) {
       query.set("type", params.type);
-    }
-    if (params?.n !== undefined) {
-      query.set("n", String(params.n));
     }
     const qs = query.toString();
     return await this.client.requestJson<Array<CMSStudentGroup>>(

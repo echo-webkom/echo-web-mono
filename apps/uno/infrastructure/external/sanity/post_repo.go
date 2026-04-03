@@ -11,8 +11,7 @@ import (
 )
 
 const (
-	CMSPostNamespacePosts      = "cms:posts"
-	CMSPostNamespacePostBySlug = "cms:post-by-slug"
+	CMSPostNamespacePosts = "cms:posts"
 )
 
 const allPostsQuery = `
@@ -33,18 +32,16 @@ const allPostsQuery = `
 `
 
 type PostRepo struct {
-	client          *sanity.Client
-	logger          port.Logger
-	postsCache      port.Cache[[]model.CMSPost]
-	postBySlugCache port.Cache[*model.CMSPost]
+	client     *sanity.Client
+	logger     port.Logger
+	postsCache port.Cache[[]model.CMSPost]
 }
 
 func NewPostRepo(client *sanity.Client, logger port.Logger, redisClient *redis.Client) port.CMSPostRepo {
 	return &PostRepo{
-		client:          client,
-		logger:          logger,
-		postsCache:      cache.NewCache[[]model.CMSPost](redisClient, CMSPostNamespacePosts),
-		postBySlugCache: cache.NewCache[*model.CMSPost](redisClient, CMSPostNamespacePostBySlug),
+		client:     client,
+		logger:     logger,
+		postsCache: cache.NewCache[[]model.CMSPost](redisClient, CMSPostNamespacePosts),
 	}
 }
 
@@ -65,38 +62,20 @@ func (r *PostRepo) GetAllPosts(ctx context.Context) ([]model.CMSPost, error) {
 	return result, nil
 }
 
-const postBySlugQuery = `
-*[_type == "post" && slug.current == $slug && !(_id in path('drafts.**'))] {
-  _id,
-  _createdAt,
-  _updatedAt,
-  title,
-  "slug": slug.current,
-  "authors": authors[]->{
-    _id,
-    name,
-    image,
-  },
-  image,
-  body
-}[0]
-`
-
 func (r *PostRepo) GetPostBySlug(ctx context.Context, slug string) (*model.CMSPost, error) {
 	r.logger.Info(ctx, "getting post by slug from sanity", "slug", slug)
-	if v, ok := r.postBySlugCache.Get(slug); ok {
-		r.logger.Info(ctx, "cache hit for post by slug", "slug", slug)
-		return v, nil
-	}
-	r.logger.Info(ctx, "cache miss for post by slug", "slug", slug)
-	result, err := sanity.Query[*model.CMSPost](ctx, r.client, postBySlugQuery, map[string]any{
-		"slug": slug,
-	})
+	posts, err := r.GetAllPosts(ctx)
 	if err != nil {
-		r.logger.Error(ctx, "failed to get post by slug from sanity", "slug", slug, "error", err)
 		return nil, err
 	}
 
-	r.postBySlugCache.Set(slug, result, cmsCacheTTL)
-	return result, nil
+	for i := range posts {
+		if posts[i].Slug == slug {
+			r.logger.Info(ctx, "found post by slug in all posts cache", "slug", slug)
+			return &posts[i], nil
+		}
+	}
+
+	r.logger.Info(ctx, "post by slug not found in all posts cache", "slug", slug)
+	return nil, nil
 }

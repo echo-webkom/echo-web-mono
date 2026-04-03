@@ -2,7 +2,6 @@ package sanityinfra
 
 import (
 	"context"
-	"fmt"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/infrastructure/cache"
@@ -12,13 +11,11 @@ import (
 )
 
 const (
-	CMSStudentGroupNamespaceStudentGroupsByType = "cms:student-groups-by-type"
-	CMSStudentGroupNamespaceStudentGroupBySlug  = "cms:student-group-by-slug"
+	CMSStudentGroupNamespaceStudentGroups = "cms:student-groups"
 )
 
-const studentGroupsByTypeQuery = `
+const allStudentGroupsQuery = `
 *[_type == "studentGroup"
-  && groupType == $type
   && !(_id in path('drafts.**'))] | order(_createdAt asc) {
   _id,
   _createdAt,
@@ -44,92 +41,71 @@ const studentGroupsByTypeQuery = `
     linkedin,
     email,
   }
-}[0..$n]
-`
-
-const studentGroupBySlugQuery = `
-*[_type == "studentGroup"
-  && slug.current == $slug
-  && !(_id in path('drafts.**'))] {
-  _id,
-  _createdAt,
-  _updatedAt,
-  name,
-  isActive,
-  groupType,
-  "slug": slug.current,
-  description,
-  image,
-  "members": members[] {
-    role,
-    "profile": profile->{
-      _id,
-      name,
-      "image": picture,
-      socials,
-    },
-  },
-  "socials": socials {
-    facebook,
-    instagram,
-    linkedin,
-    email,
-  }
-}[0]
+}
 `
 
 type StudentGroupRepo struct {
-	client                   *sanity.Client
-	logger                   port.Logger
-	studentGroupsByTypeCache port.Cache[[]model.CMSStudentGroup]
-	studentGroupBySlugCache  port.Cache[*model.CMSStudentGroup]
+	client             *sanity.Client
+	logger             port.Logger
+	studentGroupsCache port.Cache[[]model.CMSStudentGroup]
 }
 
 func NewStudentGroupRepo(client *sanity.Client, logger port.Logger, redisClient *redis.Client) port.CMSStudentGroupRepo {
 	return &StudentGroupRepo{
-		client:                   client,
-		logger:                   logger,
-		studentGroupsByTypeCache: cache.NewCache[[]model.CMSStudentGroup](redisClient, CMSStudentGroupNamespaceStudentGroupsByType),
-		studentGroupBySlugCache:  cache.NewCache[*model.CMSStudentGroup](redisClient, CMSStudentGroupNamespaceStudentGroupBySlug),
+		client:             client,
+		logger:             logger,
+		studentGroupsCache: cache.NewCache[[]model.CMSStudentGroup](redisClient, CMSStudentGroupNamespaceStudentGroups),
 	}
 }
 
-func (r *StudentGroupRepo) GetStudentGroupsByType(ctx context.Context, groupType string, n int) ([]model.CMSStudentGroup, error) {
-	key := fmt.Sprintf("%s:%d", groupType, n)
-	r.logger.Info(ctx, "getting student groups by type from sanity", "type", groupType, "n", n)
-	if v, ok := r.studentGroupsByTypeCache.Get(key); ok {
-		r.logger.Info(ctx, "cache hit for student groups by type", "key", key)
-		return v, nil
-	}
-	r.logger.Info(ctx, "cache miss for student groups by type", "key", key)
-	result, err := sanity.Query[[]model.CMSStudentGroup](ctx, r.client, studentGroupsByTypeQuery, map[string]any{
-		"type": groupType,
-		"n":    n,
-	})
+func (r *StudentGroupRepo) GetStudentGroupsByType(ctx context.Context, groupType string) ([]model.CMSStudentGroup, error) {
+	r.logger.Info(ctx, "getting student groups by type from sanity", "type", groupType)
+	studentGroups, err := r.getAllStudentGroups(ctx)
 	if err != nil {
-		r.logger.Error(ctx, "failed to get student groups from sanity", "type", groupType, "error", err)
 		return nil, err
 	}
 
-	r.studentGroupsByTypeCache.Set(key, result, cmsCacheTTL)
+	result := make([]model.CMSStudentGroup, 0, len(studentGroups))
+	for _, group := range studentGroups {
+		if group.GroupType == groupType {
+			result = append(result, group)
+		}
+	}
+	r.logger.Info(ctx, "filtered student groups by type from all student groups cache", "type", groupType, "count", len(result))
 	return result, nil
 }
 
 func (r *StudentGroupRepo) GetStudentGroupBySlug(ctx context.Context, slug string) (*model.CMSStudentGroup, error) {
 	r.logger.Info(ctx, "getting student group by slug from sanity", "slug", slug)
-	if v, ok := r.studentGroupBySlugCache.Get(slug); ok {
-		r.logger.Info(ctx, "cache hit for student group by slug", "slug", slug)
-		return v, nil
-	}
-	r.logger.Info(ctx, "cache miss for student group by slug", "slug", slug)
-	result, err := sanity.Query[*model.CMSStudentGroup](ctx, r.client, studentGroupBySlugQuery, map[string]any{
-		"slug": slug,
-	})
+	studentGroups, err := r.getAllStudentGroups(ctx)
 	if err != nil {
-		r.logger.Error(ctx, "failed to get student group by slug from sanity", "slug", slug, "error", err)
 		return nil, err
 	}
 
-	r.studentGroupBySlugCache.Set(slug, result, cmsCacheTTL)
+	for i := range studentGroups {
+		if studentGroups[i].Slug == slug {
+			r.logger.Info(ctx, "found student group by slug in all student groups cache", "slug", slug)
+			return &studentGroups[i], nil
+		}
+	}
+	r.logger.Info(ctx, "student group by slug not found in all student groups cache", "slug", slug)
+	return nil, nil
+}
+
+func (r *StudentGroupRepo) getAllStudentGroups(ctx context.Context) ([]model.CMSStudentGroup, error) {
+	r.logger.Info(ctx, "getting all student groups from sanity")
+	if v, ok := r.studentGroupsCache.Get("all"); ok {
+		r.logger.Info(ctx, "cache hit for all student groups")
+		return v, nil
+	}
+	r.logger.Info(ctx, "cache miss for all student groups")
+
+	result, err := sanity.Query[[]model.CMSStudentGroup](ctx, r.client, allStudentGroupsQuery, nil)
+	if err != nil {
+		r.logger.Error(ctx, "failed to get all student groups from sanity", "error", err)
+		return nil, err
+	}
+
+	r.studentGroupsCache.Set("all", result, cmsCacheTTL)
 	return result, nil
 }

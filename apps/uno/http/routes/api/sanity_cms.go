@@ -291,21 +291,12 @@ func (s *sanityCMS) getAllPosts(ctx *handler.Context) error {
 // @Tags         sanity
 // @Produce      json
 // @Param        type  query     string                  false  "Group type"
-// @Param        n     query     int                     false  "Max number of results (default 50)"
 // @Success      200   {array}   dto.CMSStudentGroupDTO  "OK"
 // @Failure      500   {string}  string                  "Internal Server Error"
 // @Router       /sanity/student-groups [get]
 func (s *sanityCMS) getStudentGroups(ctx *handler.Context) error {
 	groupType, _ := ctx.QueryParam("type")
-
-	n := 50
-	if nStr, ok := ctx.QueryParam("n"); ok {
-		if parsed, err := strconv.Atoi(nStr); err == nil && parsed > 0 {
-			n = parsed
-		}
-	}
-
-	groups, err := s.cmsService.GetStudentGroupsByType(ctx.Context(), groupType, n)
+	groups, err := s.cmsService.GetStudentGroupsByType(ctx.Context(), groupType)
 	if err != nil {
 		return ctx.InternalServerError()
 	}

@@ -11,8 +11,7 @@ import (
 )
 
 const (
-	CMSMerchNamespaceMerch       = "cms:merch"
-	CMSMerchNamespaceMerchBySlug = "cms:merch-by-slug"
+	CMSMerchNamespaceMerch = "cms:merch"
 )
 
 const allMerchQuery = `
@@ -29,18 +28,16 @@ const allMerchQuery = `
 `
 
 type MerchRepo struct {
-	client           *sanity.Client
-	logger           port.Logger
-	merchCache       port.Cache[[]model.CMSMerch]
-	merchBySlugCache port.Cache[*model.CMSMerch]
+	client     *sanity.Client
+	logger     port.Logger
+	merchCache port.Cache[[]model.CMSMerch]
 }
 
 func NewMerchRepo(client *sanity.Client, logger port.Logger, redisClient *redis.Client) port.CMSMerchRepo {
 	return &MerchRepo{
-		client:           client,
-		logger:           logger,
-		merchCache:       cache.NewCache[[]model.CMSMerch](redisClient, CMSMerchNamespaceMerch),
-		merchBySlugCache: cache.NewCache[*model.CMSMerch](redisClient, CMSMerchNamespaceMerchBySlug),
+		client:     client,
+		logger:     logger,
+		merchCache: cache.NewCache[[]model.CMSMerch](redisClient, CMSMerchNamespaceMerch),
 	}
 }
 
@@ -61,34 +58,20 @@ func (r *MerchRepo) GetAllMerch(ctx context.Context) ([]model.CMSMerch, error) {
 	return result, nil
 }
 
-const merchBySlugQuery = `
-*[_type == "merch" && slug.current == $slug && !(_id in path('drafts.**'))] {
-  _id,
-  _createdAt,
-  _updatedAt,
-  title,
-  "slug": slug.current,
-  price,
-  image,
-  body
-}[0]
-`
-
 func (r *MerchRepo) GetMerchBySlug(ctx context.Context, slug string) (*model.CMSMerch, error) {
 	r.logger.Info(ctx, "getting merch by slug from sanity", "slug", slug)
-	if v, ok := r.merchBySlugCache.Get(slug); ok {
-		r.logger.Info(ctx, "cache hit for merch by slug", "slug", slug)
-		return v, nil
-	}
-	r.logger.Info(ctx, "cache miss for merch by slug", "slug", slug)
-	result, err := sanity.Query[*model.CMSMerch](ctx, r.client, merchBySlugQuery, map[string]any{
-		"slug": slug,
-	})
+	merchItems, err := r.GetAllMerch(ctx)
 	if err != nil {
-		r.logger.Error(ctx, "failed to get merch by slug from sanity", "slug", slug, "error", err)
 		return nil, err
 	}
 
-	r.merchBySlugCache.Set(slug, result, cmsCacheTTL)
-	return result, nil
+	for i := range merchItems {
+		if merchItems[i].Slug == slug {
+			r.logger.Info(ctx, "found merch by slug in all merch cache", "slug", slug)
+			return &merchItems[i], nil
+		}
+	}
+
+	r.logger.Info(ctx, "merch by slug not found in all merch cache", "slug", slug)
+	return nil, nil
 }

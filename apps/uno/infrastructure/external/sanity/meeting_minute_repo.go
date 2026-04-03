@@ -11,8 +11,7 @@ import (
 )
 
 const (
-	CMSMeetingMinuteNamespaceMeetingMinutes    = "cms:meeting-minutes"
-	CMSMeetingMinuteNamespaceMeetingMinuteByID = "cms:meeting-minute-by-id"
+	CMSMeetingMinuteNamespaceMeetingMinutes = "cms:meeting-minutes"
 )
 
 const allMeetingMinutesQuery = `
@@ -26,18 +25,16 @@ const allMeetingMinutesQuery = `
 `
 
 type MeetingMinuteRepo struct {
-	client                 *sanity.Client
-	logger                 port.Logger
-	meetingMinutesCache    port.Cache[[]model.CMSMeetingMinute]
-	meetingMinuteByIDCache port.Cache[*model.CMSMeetingMinute]
+	client              *sanity.Client
+	logger              port.Logger
+	meetingMinutesCache port.Cache[[]model.CMSMeetingMinute]
 }
 
 func NewMeetingMinuteRepo(client *sanity.Client, logger port.Logger, redisClient *redis.Client) port.CMSMeetingMinuteRepo {
 	return &MeetingMinuteRepo{
-		client:                 client,
-		logger:                 logger,
-		meetingMinutesCache:    cache.NewCache[[]model.CMSMeetingMinute](redisClient, CMSMeetingMinuteNamespaceMeetingMinutes),
-		meetingMinuteByIDCache: cache.NewCache[*model.CMSMeetingMinute](redisClient, CMSMeetingMinuteNamespaceMeetingMinuteByID),
+		client:              client,
+		logger:              logger,
+		meetingMinutesCache: cache.NewCache[[]model.CMSMeetingMinute](redisClient, CMSMeetingMinuteNamespaceMeetingMinutes),
 	}
 }
 
@@ -58,31 +55,20 @@ func (r *MeetingMinuteRepo) GetAllMeetingMinutes(ctx context.Context) ([]model.C
 	return result, nil
 }
 
-const meetingMinuteByIdQuery = `
-*[_type == "meetingMinute" && _id == $id && !(_id in path('drafts.**'))] {
-  _id,
-  isAllMeeting,
-  date,
-  title,
-  "document": document.asset->url
-}[0]
-`
-
 func (r *MeetingMinuteRepo) GetMeetingMinuteById(ctx context.Context, id string) (*model.CMSMeetingMinute, error) {
 	r.logger.Info(ctx, "getting meeting minute by id from sanity", "id", id)
-	if v, ok := r.meetingMinuteByIDCache.Get(id); ok {
-		r.logger.Info(ctx, "cache hit for meeting minute by id", "id", id)
-		return v, nil
-	}
-	r.logger.Info(ctx, "cache miss for meeting minute by id", "id", id)
-	result, err := sanity.Query[*model.CMSMeetingMinute](ctx, r.client, meetingMinuteByIdQuery, map[string]any{
-		"id": id,
-	})
+	minutes, err := r.GetAllMeetingMinutes(ctx)
 	if err != nil {
-		r.logger.Error(ctx, "failed to get meeting minute by id from sanity", "id", id, "error", err)
 		return nil, err
 	}
 
-	r.meetingMinuteByIDCache.Set(id, result, cmsCacheTTL)
-	return result, nil
+	for i := range minutes {
+		if minutes[i].ID == id {
+			r.logger.Info(ctx, "found meeting minute by id in all meeting minutes cache", "id", id)
+			return &minutes[i], nil
+		}
+	}
+
+	r.logger.Info(ctx, "meeting minute by id not found in all meeting minutes cache", "id", id)
+	return nil, nil
 }

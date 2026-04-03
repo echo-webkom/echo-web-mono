@@ -3112,10 +3112,6 @@ paths:
         in: query
         name: type
         type: string
-      - description: Max number of results (default 50)
-        in: query
-        name: "n"
-        type: integer
       produces:
       - application/json
       responses:

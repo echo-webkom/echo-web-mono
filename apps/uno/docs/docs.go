@@ -2835,12 +2835,6 @@ const docTemplate = `{
                         "description": "Group type",
                         "name": "type",
                         "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Max number of results (default 50)",
-                        "name": "n",
-                        "in": "query"
                     }
                 ],
                 "responses": {
