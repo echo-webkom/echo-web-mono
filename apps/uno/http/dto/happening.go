@@ -167,6 +167,19 @@ type RegistrationAnswerWithQuestionResponse struct {
 	Question   QuestionResponse           `json:"question"`
 }
 
+// DeregisterRequest represents the request body for deregistering from a happening.
+type DeregisterRequest struct {
+	UserID string `json:"userId"`
+	Reason string `json:"reason"`
+}
+
+// UpdateRegistrationStatusRequest represents the request body for updating registration status.
+type UpdateRegistrationStatusRequest struct {
+	Status    string `json:"status"`
+	Reason    string `json:"reason"`
+	ChangedBy string `json:"changedBy"`
+}
+
 // FullRegistrationRowsFromDomain converts full happening domain data to expanded registration rows.
 func FullRegistrationRowsFromDomain(h model.FullHappening, usersByID map[string]model.User) []FullRegistrationRowResponse {
 	questionByID := make(map[string]model.Question, len(h.Questions))

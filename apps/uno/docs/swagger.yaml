@@ -250,6 +250,11 @@ definitions:
       reason:
         type: string
     type: object
+  uno_http_dto.AddGroupMemberRequest:
+    properties:
+      userId:
+        type: string
+    type: object
   uno_http_dto.AddStrikeRequest:
     properties:
       banExpiresInMonths:
@@ -763,6 +768,13 @@ definitions:
       name:
         type: string
     type: object
+  uno_http_dto.DeregisterRequest:
+    properties:
+      reason:
+        type: string
+      userId:
+        type: string
+    type: object
   uno_http_dto.DotInfo:
     properties:
       count:
@@ -848,6 +860,33 @@ definitions:
       title:
         type: string
       type:
+        type: string
+    type: object
+  uno_http_dto.FullRegistrationRowResponse:
+    properties:
+      answers:
+        items:
+          $ref: '#/definitions/uno_http_dto.RegistrationAnswerWithQuestionResponse'
+        type: array
+      changedAt:
+        type: string
+      changedBy:
+        type: string
+      changedByUser:
+        $ref: '#/definitions/uno_http_dto.UserResponse'
+      createdAt:
+        type: string
+      happeningId:
+        type: string
+      prevStatus:
+        type: string
+      status:
+        type: string
+      unregisterReason:
+        type: string
+      user:
+        $ref: '#/definitions/uno_http_dto.UserResponse'
+      userId:
         type: string
     type: object
   uno_http_dto.GroupMemberResponse:
@@ -1028,6 +1067,15 @@ definitions:
       questionId:
         type: string
     type: object
+  uno_http_dto.RegistrationAnswerWithQuestionResponse:
+    properties:
+      answer:
+        $ref: '#/definitions/uno_http_dto.RegistrationAnswerResponse'
+      question:
+        $ref: '#/definitions/uno_http_dto.QuestionResponse'
+      questionId:
+        type: string
+    type: object
   uno_http_dto.RegistrationCount:
     properties:
       happeningId:
@@ -1105,12 +1153,26 @@ definitions:
       name:
         type: string
     type: object
+  uno_http_dto.UpdateGroupMemberLeaderRequest:
+    properties:
+      leader:
+        type: boolean
+    type: object
   uno_http_dto.UpdateGroupRequest:
     properties:
       name:
         type: string
     required:
     - name
+    type: object
+  uno_http_dto.UpdateRegistrationStatusRequest:
+    properties:
+      changedBy:
+        type: string
+      reason:
+        type: string
+      status:
+        type: string
     type: object
   uno_http_dto.UserGroupResponse:
     properties:
@@ -1772,7 +1834,7 @@ paths:
       summary: Update site feedback
       tags:
       - feedbacks
-  /group:
+  /groups:
     get:
       responses:
         "200":
@@ -1822,7 +1884,7 @@ paths:
       summary: Create a new group
       tags:
       - groups
-  /group/{id}:
+  /groups/{id}:
     delete:
       parameters:
       - description: Group ID
@@ -1926,7 +1988,7 @@ paths:
       summary: Update a group by ID
       tags:
       - groups
-  /group/{id}/members:
+  /groups/{id}/members:
     get:
       parameters:
       - description: Group ID
@@ -1952,6 +2014,133 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get members of a group
+      tags:
+      - groups
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Group member payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.AddGroupMemberRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Add user to group
+      tags:
+      - groups
+  /groups/{id}/members/{userId}:
+    delete:
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Remove user from group
+      tags:
+      - groups
+  /groups/{id}/members/{userId}/leader:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: string
+      - description: Leader status payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.UpdateGroupMemberLeaderRequest'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Set group member leader status
       tags:
       - groups
   /happenings:
@@ -1994,6 +2183,51 @@ paths:
           schema:
             type: string
       summary: Get happening by ID
+      tags:
+      - happenings
+  /happenings/{id}/deregister:
+    post:
+      consumes:
+      - application/json
+      description: Marks a user's registration as unregistered and deletes their answers.
+      parameters:
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Deregistration payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.DeregisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Deregister from happening
       tags:
       - happenings
   /happenings/{id}/questions:
@@ -2063,6 +2297,35 @@ paths:
       tags:
       - happenings
   /happenings/{id}/registrations:
+    delete:
+      parameters:
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Delete all happening registrations
+      tags:
+      - happenings
     get:
       description: Retrieves all registrations for a specific happening.
       parameters:
@@ -2125,6 +2388,92 @@ paths:
       security:
       - AdminAPIKey: []
       summary: Get registration by user
+      tags:
+      - happenings
+    patch:
+      consumes:
+      - application/json
+      description: Updates status and metadata for a user's registration in a specific
+        happening.
+      parameters:
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: string
+      - description: Registration status payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.UpdateRegistrationStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Update registration status
+      tags:
+      - happenings
+  /happenings/{id}/registrations/full:
+    get:
+      description: Retrieves full registration rows for a specific happening, enriched
+        with user information.
+      parameters:
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.FullRegistrationRowResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get full happening registrations
       tags:
       - happenings
   /happenings/{id}/spot-ranges:

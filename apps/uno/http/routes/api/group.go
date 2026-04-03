@@ -44,7 +44,7 @@ func NewGroupMux(logger port.Logger, groupService *service.GroupService, admin h
 // @Tags groups
 // @Success 200 {array} dto.GroupResponse "OK"
 // @Failure 500 {object} string "Internal Server Error"
-// @Router /group [get]
+// @Router /groups [get]
 func (gh *group) getGroups(ctx *handler.Context) error {
 	groups, err := gh.groupService.GroupRepo().GetAllGroups(ctx.Context())
 	if err != nil {
@@ -62,7 +62,7 @@ func (gh *group) getGroups(ctx *handler.Context) error {
 // @Failure 400 {object} string "Bad Request"
 // @Failure 404 {object} string "Not Found"
 // @Failure 500 {object} string "Internal Server Error"
-// @Router /group/{id} [get]
+// @Router /groups/{id} [get]
 func (gh *group) getGroupByID(ctx *handler.Context) error {
 	groupID := ctx.PathValue("id")
 	if groupID == "" {
@@ -91,7 +91,7 @@ func (gh *group) getGroupByID(ctx *handler.Context) error {
 // @Failure 404 {object} string "Not Found"
 // @Failure 500 {object} string "Internal Server Error"
 // @Security ApiKeyAuth
-// @Router /group/{id} [delete]
+// @Router /groups/{id} [delete]
 func (gh *group) deleteGroupByID(ctx *handler.Context) error {
 	groupID := ctx.PathValue("id")
 	if groupID == "" {
@@ -121,7 +121,7 @@ func (gh *group) deleteGroupByID(ctx *handler.Context) error {
 // @Failure 401 {object} string "Unauthorized"
 // @Failure 500 {object} string "Internal Server Error"
 // @Security ApiKeyAuth
-// @Router /group [post]
+// @Router /groups [post]
 func (gh *group) createGroup(ctx *handler.Context) error {
 	var req dto.CreateGroupRequest
 	if err := ctx.ReadJSON(&req); err != nil {
@@ -149,7 +149,7 @@ func (gh *group) createGroup(ctx *handler.Context) error {
 // @Failure 400 {object} string "Bad Request"
 // @Failure 500 {object} string "Internal Server Error"
 // @Security ApiKeyAuth
-// @Router /group/{id}/members [get]
+// @Router /groups/{id}/members [get]
 func (gh *group) getGroupMembers(ctx *handler.Context) error {
 	groupID := ctx.PathValue("id")
 	if groupID == "" {
@@ -177,7 +177,7 @@ func (gh *group) getGroupMembers(ctx *handler.Context) error {
 // @Failure 404 {object} string "Not Found"
 // @Failure 500 {object} string "Internal Server Error"
 // @Security ApiKeyAuth
-// @Router /group/{id} [post]
+// @Router /groups/{id} [post]
 func (gh *group) updateGroupByID(ctx *handler.Context) error {
 	groupID := ctx.PathValue("id")
 	if groupID == "" {
@@ -210,14 +210,20 @@ func (gh *group) updateGroupByID(ctx *handler.Context) error {
 	})
 }
 
-type updateGroupMemberLeaderRequest struct {
-	Leader bool `json:"leader"`
-}
-
-type addGroupMemberRequest struct {
-	UserID string `json:"userId"`
-}
-
+// setGroupMemberLeader sets leader status for a group member.
+// @Summary Set group member leader status
+// @Tags groups
+// @Accept json
+// @Param id path string true "Group ID"
+// @Param userId path string true "User ID"
+// @Param request body dto.UpdateGroupMemberLeaderRequest true "Leader status payload"
+// @Success 200 {string} string "OK"
+// @Failure 400 {object} string "Bad Request"
+// @Failure 401 {object} string "Unauthorized"
+// @Failure 404 {object} string "Not Found"
+// @Failure 500 {object} string "Internal Server Error"
+// @Security ApiKeyAuth
+// @Router /groups/{id}/members/{userId}/leader [post]
 func (gh *group) setGroupMemberLeader(ctx *handler.Context) error {
 	groupID := ctx.PathValue("id")
 	if groupID == "" {
@@ -229,7 +235,7 @@ func (gh *group) setGroupMemberLeader(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing user ID"))
 	}
 
-	var req updateGroupMemberLeaderRequest
+	var req dto.UpdateGroupMemberLeaderRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
@@ -249,6 +255,18 @@ func (gh *group) setGroupMemberLeader(ctx *handler.Context) error {
 	return ctx.Ok()
 }
 
+// removeUserFromGroup removes a user from a group.
+// @Summary Remove user from group
+// @Tags groups
+// @Param id path string true "Group ID"
+// @Param userId path string true "User ID"
+// @Success 200 {string} string "OK"
+// @Failure 400 {object} string "Bad Request"
+// @Failure 401 {object} string "Unauthorized"
+// @Failure 404 {object} string "Not Found"
+// @Failure 500 {object} string "Internal Server Error"
+// @Security ApiKeyAuth
+// @Router /groups/{id}/members/{userId} [delete]
 func (gh *group) removeUserFromGroup(ctx *handler.Context) error {
 	groupID := ctx.PathValue("id")
 	if groupID == "" {
@@ -278,13 +296,26 @@ func (gh *group) removeUserFromGroup(ctx *handler.Context) error {
 	return ctx.Ok()
 }
 
+// addUserToGroup adds a user to a group.
+// @Summary Add user to group
+// @Tags groups
+// @Accept json
+// @Param id path string true "Group ID"
+// @Param request body dto.AddGroupMemberRequest true "Group member payload"
+// @Success 200 {string} string "OK"
+// @Failure 400 {object} string "Bad Request"
+// @Failure 401 {object} string "Unauthorized"
+// @Failure 404 {object} string "Not Found"
+// @Failure 500 {object} string "Internal Server Error"
+// @Security ApiKeyAuth
+// @Router /groups/{id}/members [post]
 func (gh *group) addUserToGroup(ctx *handler.Context) error {
 	groupID := ctx.PathValue("id")
 	if groupID == "" {
 		return ctx.BadRequest(errors.New("missing group ID"))
 	}
 
-	var req addGroupMemberRequest
+	var req dto.AddGroupMemberRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.BadRequest(ErrFailedToReadJSON)
 	}

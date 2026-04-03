@@ -9,8 +9,6 @@ import (
 	"uno/http/dto"
 	"uno/http/handler"
 	"uno/http/router"
-
-	_ "uno/domain/model"
 )
 
 type happenings struct {
@@ -183,6 +181,18 @@ func (h *happenings) getHappeningRegistrationByUser(ctx *handler.Context) error 
 	return ctx.JSON(response)
 }
 
+// getHappeningRegistrationsFull returns full registration rows for a happening by ID.
+// @Summary      Get full happening registrations
+// @Description  Retrieves full registration rows for a specific happening, enriched with user information.
+// @Tags         happenings
+// @Produce      json
+// @Param        id   path      string  true  "Happening ID"
+// @Success      200  {array}   dto.FullRegistrationRowResponse  "OK"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      404  {string}  string  "Not Found"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /happenings/{id}/registrations/full [get]
 func (h *happenings) getHappeningRegistrationsFull(ctx *handler.Context) error {
 	id := ctx.PathValue("id")
 	if id == "" {
@@ -358,24 +368,28 @@ func (h *happenings) registerForHappening(ctx *handler.Context) error {
 	return ctx.JSON(response)
 }
 
-type DeregisterRequest struct {
-	UserID string `json:"userId"`
-	Reason string `json:"reason"`
-}
-
-type UpdateRegistrationStatusRequest struct {
-	Status    string `json:"status"`
-	Reason    string `json:"reason"`
-	ChangedBy string `json:"changedBy"`
-}
-
+// deregisterFromHappening deregisters a user from a happening.
+// @Summary      Deregister from happening
+// @Description  Marks a user's registration as unregistered and deletes their answers.
+// @Tags         happenings
+// @Accept       json
+// @Produce      json
+// @Param        id    path      string             true  "Happening ID"
+// @Param        body  body      dto.DeregisterRequest  true  "Deregistration payload"
+// @Success      200   {string}  string             "OK"
+// @Failure      400   {string}  string             "Bad Request"
+// @Failure      401   {string}  string             "Unauthorized"
+// @Failure      404   {string}  string             "Not Found"
+// @Failure      500   {string}  string             "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /happenings/{id}/deregister [post]
 func (h *happenings) deregisterFromHappening(ctx *handler.Context) error {
 	happeningID := ctx.PathValue("id")
 	if happeningID == "" {
 		return ctx.BadRequest(errors.New("missing happening ID"))
 	}
 
-	var req DeregisterRequest
+	var req dto.DeregisterRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
@@ -412,6 +426,22 @@ func (h *happenings) deregisterFromHappening(ctx *handler.Context) error {
 	return ctx.Ok()
 }
 
+// updateRegistrationStatus updates a user's registration status for a happening.
+// @Summary      Update registration status
+// @Description  Updates status and metadata for a user's registration in a specific happening.
+// @Tags         happenings
+// @Accept       json
+// @Produce      json
+// @Param        id      path      string                           true  "Happening ID"
+// @Param        userId  path      string                           true  "User ID"
+// @Param        body    body      dto.UpdateRegistrationStatusRequest  true  "Registration status payload"
+// @Success      200     {string}  string                           "OK"
+// @Failure      400     {string}  string                           "Bad Request"
+// @Failure      401     {string}  string                           "Unauthorized"
+// @Failure      404     {string}  string                           "Not Found"
+// @Failure      500     {string}  string                           "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /happenings/{id}/registrations/{userId} [patch]
 func (h *happenings) updateRegistrationStatus(ctx *handler.Context) error {
 	happeningID := ctx.PathValue("id")
 	if happeningID == "" {
@@ -423,7 +453,7 @@ func (h *happenings) updateRegistrationStatus(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing user ID"))
 	}
 
-	var req UpdateRegistrationStatusRequest
+	var req dto.UpdateRegistrationStatusRequest
 	if err := ctx.ReadJSON(&req); err != nil {
 		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
@@ -466,6 +496,16 @@ func (h *happenings) updateRegistrationStatus(ctx *handler.Context) error {
 	return ctx.Ok()
 }
 
+// deleteAllRegistrations deletes all registrations for a happening by ID.
+// @Summary      Delete all happening registrations
+// @Tags         happenings
+// @Param        id   path      string  true  "Happening ID"
+// @Success      200  {string}  string  "OK"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /happenings/{id}/registrations [delete]
 func (h *happenings) deleteAllRegistrations(ctx *handler.Context) error {
 	happeningID := ctx.PathValue("id")
 	if happeningID == "" {

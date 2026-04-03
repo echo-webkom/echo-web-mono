@@ -60,3 +60,13 @@ func (r *CreateGroupRequest) ToNewGroupDomain() model.NewGroup {
 type UpdateGroupRequest struct {
 	Name string `json:"name" validate:"required"`
 }
+
+// UpdateGroupMemberLeaderRequest represents the request body for updating a group member leader status.
+type UpdateGroupMemberLeaderRequest struct {
+	Leader bool `json:"leader"`
+}
+
+// AddGroupMemberRequest represents the request body for adding a user to a group.
+type AddGroupMemberRequest struct {
+	UserID string `json:"userId"`
+}
