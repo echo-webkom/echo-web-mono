@@ -35,7 +35,7 @@ func (a *AccessRequestRepo) CreateAccessRequest(ctx context.Context, ar model.Ne
 		)
 		return model.AccessRequest{}, err
 	}
-	return *dbModel.ToDomain(), nil
+	return dbModel.ToDomain(), nil
 }
 
 func (a *AccessRequestRepo) GetAccessRequests(ctx context.Context) (ars []model.AccessRequest, err error) {
@@ -56,4 +56,48 @@ func (a *AccessRequestRepo) GetAccessRequests(ctx context.Context) (ars []model.
 	}
 
 	return record.ToDomainList(dbModels), nil
+}
+
+func (a *AccessRequestRepo) GetAccessRequestByID(ctx context.Context, id string) (model.AccessRequest, error) {
+	a.logger.Info(ctx, "getting access request by id",
+		"id", id,
+	)
+
+	query := `--sql
+		SELECT id, email, reason, created_at
+		FROM access_request
+		WHERE id = $1
+	`
+
+	var dbModel record.AccessRequestDB
+	if err := a.db.GetContext(ctx, &dbModel, query, id); err != nil {
+		a.logger.Error(ctx, "failed to get access request by id",
+			"error", err,
+			"id", id,
+		)
+		return model.AccessRequest{}, err
+	}
+
+	return dbModel.ToDomain(), nil
+}
+
+func (a *AccessRequestRepo) DeleteAccessRequestByID(ctx context.Context, id string) error {
+	a.logger.Info(ctx, "deleting access request by id",
+		"id", id,
+	)
+
+	query := `--sql
+		DELETE FROM access_request
+		WHERE id = $1
+	`
+
+	if _, err := a.db.ExecContext(ctx, query, id); err != nil {
+		a.logger.Error(ctx, "failed to delete access request by id",
+			"error", err,
+			"id", id,
+		)
+		return err
+	}
+
+	return nil
 }

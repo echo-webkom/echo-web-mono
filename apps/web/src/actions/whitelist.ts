@@ -1,9 +1,8 @@
 "use server";
 
-import { insertWhitelistSchema, whitelist } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
-import { eq } from "drizzle-orm";
+import { insertWhitelistSchema } from "@echo-webkom/db/schemas";
 
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 import { isMemberOf } from "@/lib/memberships";
 
@@ -34,20 +33,8 @@ export const upsertWhitelist = async (email: string, reason: string, days: numbe
       expiresAt,
     });
 
-    const wasInWhitelist = await db.query.whitelist.findFirst({
-      where: eq(whitelist.email, email),
-    });
-
-    await db
-      .insert(whitelist)
-      .values(data)
-      .onConflictDoUpdate({
-        target: whitelist.email,
-        set: {
-          expiresAt: data.expiresAt,
-          reason: data.reason,
-        },
-      });
+    const wasInWhitelist = await unoWithAdmin.whitelist.getByEmail(email);
+    await unoWithAdmin.whitelist.upsert(data);
 
     return {
       success: true,
@@ -79,7 +66,7 @@ export const removeWhitelist = async (email: string) => {
       };
     }
 
-    await db.delete(whitelist).where(eq(whitelist.email, email));
+    await unoWithAdmin.whitelist.remove(email);
 
     return {
       success: true,

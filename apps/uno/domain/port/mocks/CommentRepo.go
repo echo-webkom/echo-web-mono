@@ -176,6 +176,63 @@ func (_c *CommentRepo_CreateComment_Call) RunAndReturn(run func(ctx context.Cont
 	return _c
 }
 
+// DeleteComment provides a mock function for the type CommentRepo
+func (_mock *CommentRepo) DeleteComment(ctx context.Context, id string) error {
+	ret := _mock.Called(ctx, id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteComment")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = returnFunc(ctx, id)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// CommentRepo_DeleteComment_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteComment'
+type CommentRepo_DeleteComment_Call struct {
+	*mock.Call
+}
+
+// DeleteComment is a helper method to define mock.On call
+//   - ctx context.Context
+//   - id string
+func (_e *CommentRepo_Expecter) DeleteComment(ctx interface{}, id interface{}) *CommentRepo_DeleteComment_Call {
+	return &CommentRepo_DeleteComment_Call{Call: _e.mock.On("DeleteComment", ctx, id)}
+}
+
+func (_c *CommentRepo_DeleteComment_Call) Run(run func(ctx context.Context, id string)) *CommentRepo_DeleteComment_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *CommentRepo_DeleteComment_Call) Return(err error) *CommentRepo_DeleteComment_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *CommentRepo_DeleteComment_Call) RunAndReturn(run func(ctx context.Context, id string) error) *CommentRepo_DeleteComment_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // DeleteReactionFromComment provides a mock function for the type CommentRepo
 func (_mock *CommentRepo) DeleteReactionFromComment(ctx context.Context, commentID string, userID string) error {
 	ret := _mock.Called(ctx, commentID, userID)

@@ -1,9 +1,5 @@
 "use server";
 
-import { registrations } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
-import { eq } from "drizzle-orm";
-
 import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 import { isHost } from "@/lib/memberships";
@@ -21,7 +17,7 @@ export const removeAllRegistrations = async (slug: string) => {
       };
     }
 
-    await db.delete(registrations).where(eq(registrations.happeningId, happening._id));
+    await unoWithAdmin.happenings.clearRegistrations(happening._id);
   } catch (error) {
     return {
       success: false,

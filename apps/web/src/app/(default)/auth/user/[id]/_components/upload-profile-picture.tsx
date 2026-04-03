@@ -16,14 +16,14 @@ import {
 type UploadProfilePictureProps = {
   userId: string;
   name: string;
-  image: string | null;
+  _hasImage: boolean;
 };
 
 const ACCEPTED_FILE_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/gif"];
 
-export const UploadProfilePicture = ({ userId, name, image }: UploadProfilePictureProps) => {
+export const UploadProfilePicture = ({ userId, name, _hasImage }: UploadProfilePictureProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [hasImage, setHasImage] = useState(image !== null);
+  const [hasImage, setHasImage] = useState(_hasImage);
   const [imageVersion, setImageVersion] = useState(() => Date.now());
   const router = useRouter();
 

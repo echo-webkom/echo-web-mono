@@ -1,37 +1,13 @@
 "use server";
 
-import { usersToGroups } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
-import { and, eq } from "drizzle-orm";
-
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 
-/**
- * Makes a user leader of a group. This should only be done if the user is member
- * of the group, and the user that made the request is also a leader.
- *
- * @param groupId the id of the group that the user should be made leader of
- * @param userId the id of the user that should be made leader of the group
- * @returns
- */
 export const setGroupLeader = async (groupId: string, userId: string, leader: boolean) => {
   try {
-    const group = await db.query.groups.findFirst({
-      where: (group) => eq(group.id, groupId),
-      with: {
-        members: true,
-      },
-    });
+    const members = await unoWithAdmin.groups.members(groupId);
 
-    if (!group) {
-      return {
-        success: false,
-        message: "Gruppe finnes ikke",
-      };
-    }
-
-    const isUserInGroup = group.members.find((member) => member.userId === userId);
-
+    const isUserInGroup = members.find((member) => member.id === userId);
     if (!isUserInGroup) {
       return {
         success: false,
@@ -40,7 +16,6 @@ export const setGroupLeader = async (groupId: string, userId: string, leader: bo
     }
 
     const requestUser = await auth();
-
     if (!requestUser) {
       return {
         success: false,
@@ -48,10 +23,9 @@ export const setGroupLeader = async (groupId: string, userId: string, leader: bo
       };
     }
 
-    const isRequestUserLeader = group.members.find(
-      (member) => member.isLeader && member.userId === requestUser?.id,
+    const isRequestUserLeader = members.find(
+      (member) => member.isLeader && member.id === requestUser.id,
     );
-
     if (!isRequestUserLeader) {
       return {
         success: false,
@@ -59,16 +33,15 @@ export const setGroupLeader = async (groupId: string, userId: string, leader: bo
       };
     }
 
-    const isUserAlreadyLeader = group.members.find(
-      (member) => member.isLeader && member.userId === userId,
-    );
+    const isUserAlreadyLeader = members.find((member) => member.isLeader && member.id === userId);
 
-    await db
-      .update(usersToGroups)
-      .set({
-        isLeader: leader,
-      })
-      .where(and(eq(usersToGroups.userId, userId), eq(usersToGroups.groupId, groupId)));
+    const ok = await unoWithAdmin.groups.setLeader(groupId, userId, leader);
+    if (!ok) {
+      return {
+        success: false,
+        message: "Kunne ikke gjøre bruker leder",
+      };
+    }
 
     return {
       success: true,
@@ -84,31 +57,11 @@ export const setGroupLeader = async (groupId: string, userId: string, leader: bo
   }
 };
 
-/**
- * Removes a user from a group. This should only be done if the user that made
- * the request is a leader of the group, and the user is not a leader of the group.
- *
- * @param userId the user to be removed
- * @param groupId the group to remove the user from
- */
 export const removeFromGroup = async (userId: string, groupId: string) => {
   try {
-    const group = await db.query.groups.findFirst({
-      where: (group) => eq(group.id, groupId),
-      with: {
-        members: true,
-      },
-    });
+    const members = await unoWithAdmin.groups.members(groupId);
 
-    if (!group) {
-      return {
-        success: false,
-        message: "Gruppe finnes ikke",
-      };
-    }
-
-    const isUserInGroup = group.members.find((member) => member.userId === userId);
-
+    const isUserInGroup = members.find((member) => member.id === userId);
     if (!isUserInGroup) {
       return {
         success: false,
@@ -117,7 +70,6 @@ export const removeFromGroup = async (userId: string, groupId: string) => {
     }
 
     const requestUser = await auth();
-
     if (!requestUser) {
       return {
         success: false,
@@ -125,10 +77,9 @@ export const removeFromGroup = async (userId: string, groupId: string) => {
       };
     }
 
-    const isRequestUserLeader = group.members.find(
-      (member) => member.isLeader && member.userId === requestUser?.id,
+    const isRequestUserLeader = members.find(
+      (member) => member.isLeader && member.id === requestUser.id,
     );
-
     if (!isRequestUserLeader) {
       return {
         success: false,
@@ -136,10 +87,7 @@ export const removeFromGroup = async (userId: string, groupId: string) => {
       };
     }
 
-    const isUserAlreadyLeader = group.members.find(
-      (member) => member.isLeader && member.userId === userId,
-    );
-
+    const isUserAlreadyLeader = members.find((member) => member.isLeader && member.id === userId);
     if (isUserAlreadyLeader) {
       return {
         success: false,
@@ -147,9 +95,13 @@ export const removeFromGroup = async (userId: string, groupId: string) => {
       };
     }
 
-    await db
-      .delete(usersToGroups)
-      .where(and(eq(usersToGroups.userId, userId), eq(usersToGroups.groupId, groupId)));
+    const ok = await unoWithAdmin.groups.removeUser(groupId, userId);
+    if (!ok) {
+      return {
+        success: false,
+        message: "Kunne ikke fjerne bruker fra gruppen",
+      };
+    }
 
     return {
       success: true,
@@ -163,35 +115,11 @@ export const removeFromGroup = async (userId: string, groupId: string) => {
   }
 };
 
-/**
- * Adds a user to a group. This should only be done if the user that made the
- * request is a leader of the group.
- *
- * @param userId the user to be added
- * @param groupId the group to add the user to
- */
 export const addUserToGroup = async (userId: string, groupId: string) => {
   try {
-    const group = await db.query.groups.findFirst({
-      where: (group) => eq(group.id, groupId),
-      with: {
-        members: {
-          with: {
-            user: true,
-          },
-        },
-      },
-    });
+    const members = await unoWithAdmin.groups.members(groupId);
 
-    if (!group) {
-      return {
-        success: false,
-        message: "Gruppe finnes ikke",
-      };
-    }
-
-    const isUserInGroup = group.members.find((member) => member.userId === userId);
-
+    const isUserInGroup = members.find((member) => member.id === userId);
     if (isUserInGroup) {
       return {
         success: false,
@@ -200,7 +128,6 @@ export const addUserToGroup = async (userId: string, groupId: string) => {
     }
 
     const requestUser = await auth();
-
     if (!requestUser) {
       return {
         success: false,
@@ -208,10 +135,9 @@ export const addUserToGroup = async (userId: string, groupId: string) => {
       };
     }
 
-    const isRequestUserLeader = group.members.find(
-      (member) => member.isLeader && member.userId === requestUser?.id,
+    const isRequestUserLeader = members.find(
+      (member) => member.isLeader && member.id === requestUser.id,
     );
-
     if (!isRequestUserLeader) {
       return {
         success: false,
@@ -219,21 +145,13 @@ export const addUserToGroup = async (userId: string, groupId: string) => {
       };
     }
 
-    const user = await db.query.users.findFirst({
-      where: (user) => eq(user.id, userId),
-    });
-
-    if (!user) {
+    const ok = await unoWithAdmin.groups.addUser(groupId, userId);
+    if (!ok) {
       return {
         success: false,
-        message: "Bruker finnes ikke",
+        message: "Kunne ikke legge til bruker i gruppen",
       };
     }
-
-    await db.insert(usersToGroups).values({
-      userId,
-      groupId,
-    });
 
     return {
       success: true,

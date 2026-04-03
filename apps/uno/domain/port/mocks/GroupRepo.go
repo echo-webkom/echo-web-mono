@@ -38,6 +38,69 @@ func (_m *GroupRepo) EXPECT() *GroupRepo_Expecter {
 	return &GroupRepo_Expecter{mock: &_m.Mock}
 }
 
+// AddUserToGroup provides a mock function for the type GroupRepo
+func (_mock *GroupRepo) AddUserToGroup(ctx context.Context, groupID string, userID string) error {
+	ret := _mock.Called(ctx, groupID, userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for AddUserToGroup")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string) error); ok {
+		r0 = returnFunc(ctx, groupID, userID)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// GroupRepo_AddUserToGroup_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'AddUserToGroup'
+type GroupRepo_AddUserToGroup_Call struct {
+	*mock.Call
+}
+
+// AddUserToGroup is a helper method to define mock.On call
+//   - ctx context.Context
+//   - groupID string
+//   - userID string
+func (_e *GroupRepo_Expecter) AddUserToGroup(ctx interface{}, groupID interface{}, userID interface{}) *GroupRepo_AddUserToGroup_Call {
+	return &GroupRepo_AddUserToGroup_Call{Call: _e.mock.On("AddUserToGroup", ctx, groupID, userID)}
+}
+
+func (_c *GroupRepo_AddUserToGroup_Call) Run(run func(ctx context.Context, groupID string, userID string)) *GroupRepo_AddUserToGroup_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *GroupRepo_AddUserToGroup_Call) Return(err error) *GroupRepo_AddUserToGroup_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *GroupRepo_AddUserToGroup_Call) RunAndReturn(run func(ctx context.Context, groupID string, userID string) error) *GroupRepo_AddUserToGroup_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // CreateGroup provides a mock function for the type GroupRepo
 func (_mock *GroupRepo) CreateGroup(ctx context.Context, group model.NewGroup) (model.Group, error) {
 	ret := _mock.Called(ctx, group)
@@ -353,6 +416,212 @@ func (_c *GroupRepo_GetGroupMembers_Call) Return(groupMembers []model.GroupMembe
 }
 
 func (_c *GroupRepo_GetGroupMembers_Call) RunAndReturn(run func(ctx context.Context, groupID string) ([]model.GroupMember, error)) *GroupRepo_GetGroupMembers_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetUserGroupMembership provides a mock function for the type GroupRepo
+func (_mock *GroupRepo) GetUserGroupMembership(ctx context.Context, groupID string, userID string) (*model.UsersToGroups, error) {
+	ret := _mock.Called(ctx, groupID, userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetUserGroupMembership")
+	}
+
+	var r0 *model.UsersToGroups
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string) (*model.UsersToGroups, error)); ok {
+		return returnFunc(ctx, groupID, userID)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string) *model.UsersToGroups); ok {
+		r0 = returnFunc(ctx, groupID, userID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.UsersToGroups)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string, string) error); ok {
+		r1 = returnFunc(ctx, groupID, userID)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// GroupRepo_GetUserGroupMembership_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetUserGroupMembership'
+type GroupRepo_GetUserGroupMembership_Call struct {
+	*mock.Call
+}
+
+// GetUserGroupMembership is a helper method to define mock.On call
+//   - ctx context.Context
+//   - groupID string
+//   - userID string
+func (_e *GroupRepo_Expecter) GetUserGroupMembership(ctx interface{}, groupID interface{}, userID interface{}) *GroupRepo_GetUserGroupMembership_Call {
+	return &GroupRepo_GetUserGroupMembership_Call{Call: _e.mock.On("GetUserGroupMembership", ctx, groupID, userID)}
+}
+
+func (_c *GroupRepo_GetUserGroupMembership_Call) Run(run func(ctx context.Context, groupID string, userID string)) *GroupRepo_GetUserGroupMembership_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *GroupRepo_GetUserGroupMembership_Call) Return(usersToGroups *model.UsersToGroups, err error) *GroupRepo_GetUserGroupMembership_Call {
+	_c.Call.Return(usersToGroups, err)
+	return _c
+}
+
+func (_c *GroupRepo_GetUserGroupMembership_Call) RunAndReturn(run func(ctx context.Context, groupID string, userID string) (*model.UsersToGroups, error)) *GroupRepo_GetUserGroupMembership_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// RemoveUserFromGroup provides a mock function for the type GroupRepo
+func (_mock *GroupRepo) RemoveUserFromGroup(ctx context.Context, groupID string, userID string) error {
+	ret := _mock.Called(ctx, groupID, userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for RemoveUserFromGroup")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string) error); ok {
+		r0 = returnFunc(ctx, groupID, userID)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// GroupRepo_RemoveUserFromGroup_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RemoveUserFromGroup'
+type GroupRepo_RemoveUserFromGroup_Call struct {
+	*mock.Call
+}
+
+// RemoveUserFromGroup is a helper method to define mock.On call
+//   - ctx context.Context
+//   - groupID string
+//   - userID string
+func (_e *GroupRepo_Expecter) RemoveUserFromGroup(ctx interface{}, groupID interface{}, userID interface{}) *GroupRepo_RemoveUserFromGroup_Call {
+	return &GroupRepo_RemoveUserFromGroup_Call{Call: _e.mock.On("RemoveUserFromGroup", ctx, groupID, userID)}
+}
+
+func (_c *GroupRepo_RemoveUserFromGroup_Call) Run(run func(ctx context.Context, groupID string, userID string)) *GroupRepo_RemoveUserFromGroup_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *GroupRepo_RemoveUserFromGroup_Call) Return(err error) *GroupRepo_RemoveUserFromGroup_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *GroupRepo_RemoveUserFromGroup_Call) RunAndReturn(run func(ctx context.Context, groupID string, userID string) error) *GroupRepo_RemoveUserFromGroup_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// SetGroupMemberLeader provides a mock function for the type GroupRepo
+func (_mock *GroupRepo) SetGroupMemberLeader(ctx context.Context, groupID string, userID string, isLeader bool) error {
+	ret := _mock.Called(ctx, groupID, userID, isLeader)
+
+	if len(ret) == 0 {
+		panic("no return value specified for SetGroupMemberLeader")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, bool) error); ok {
+		r0 = returnFunc(ctx, groupID, userID, isLeader)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// GroupRepo_SetGroupMemberLeader_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SetGroupMemberLeader'
+type GroupRepo_SetGroupMemberLeader_Call struct {
+	*mock.Call
+}
+
+// SetGroupMemberLeader is a helper method to define mock.On call
+//   - ctx context.Context
+//   - groupID string
+//   - userID string
+//   - isLeader bool
+func (_e *GroupRepo_Expecter) SetGroupMemberLeader(ctx interface{}, groupID interface{}, userID interface{}, isLeader interface{}) *GroupRepo_SetGroupMemberLeader_Call {
+	return &GroupRepo_SetGroupMemberLeader_Call{Call: _e.mock.On("SetGroupMemberLeader", ctx, groupID, userID, isLeader)}
+}
+
+func (_c *GroupRepo_SetGroupMemberLeader_Call) Run(run func(ctx context.Context, groupID string, userID string, isLeader bool)) *GroupRepo_SetGroupMemberLeader_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 bool
+		if args[3] != nil {
+			arg3 = args[3].(bool)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+		)
+	})
+	return _c
+}
+
+func (_c *GroupRepo_SetGroupMemberLeader_Call) Return(err error) *GroupRepo_SetGroupMemberLeader_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *GroupRepo_SetGroupMemberLeader_Call) RunAndReturn(run func(ctx context.Context, groupID string, userID string, isLeader bool) error) *GroupRepo_SetGroupMemberLeader_Call {
 	_c.Call.Return(run)
 	return _c
 }

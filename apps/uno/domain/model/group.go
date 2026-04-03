@@ -40,5 +40,6 @@ type UsersToGroups struct {
 type GroupMember struct {
 	ID       string
 	Name     *string
+	Email    string
 	IsLeader bool
 }

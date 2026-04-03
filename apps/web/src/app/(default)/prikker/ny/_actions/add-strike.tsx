@@ -1,13 +1,10 @@
 "use server";
 
-import { banInfos, dots } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
 import { StrikeNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
-import { addMonths } from "date-fns";
-import { eq } from "drizzle-orm";
 import { type z } from "zod";
 
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 import { isMemberOf } from "@/lib/memberships";
 
@@ -33,14 +30,7 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
       };
     }
 
-    const strikedUser = await db.query.users.findFirst({
-      where: (row, { eq }) => eq(row.id, data.userId),
-      with: {
-        dots: true,
-        banInfo: true,
-      },
-    });
-
+    const strikedUser = await unoWithAdmin.users.byId(data.userId).catch(() => null);
     if (!strikedUser) {
       return {
         success: false,
@@ -48,48 +38,25 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
       };
     }
 
-    if (strikedUser.banInfo) {
+    const bannedUsers = await unoWithAdmin.strikes.listBanned();
+    if (bannedUsers.some((u) => u.id === data.userId)) {
       return {
         success: false,
         message: "User is banned",
       };
     }
 
-    const previousStrikes = strikedUser.dots.reduce((acc, dot) => acc + dot.count, 0);
+    const usersWithStrikes = await unoWithAdmin.strikes.listStriked();
+    const previousStrikes = usersWithStrikes.find((u) => u.id === data.userId)?.strikes ?? 0;
     const shouldBeBanned = previousStrikes + data.count >= 5;
-    const overflowStrikes = previousStrikes + data.count - 5;
-
-    if (shouldBeBanned) {
-      await db.insert(banInfos).values({
-        userId: data.userId,
-        reason: data.reason,
-        bannedBy: user.id,
-        createdAt: new Date(),
-        expiresAt: addMonths(new Date(), data.banExpiresInMonths),
-      });
-
-      await db.delete(dots).where(eq(dots.userId, data.userId));
-
-      if (overflowStrikes > 0) {
-        await db.insert(dots).values({
-          count: overflowStrikes,
-          reason: data.reason,
-          userId: data.userId,
-          createdAt: new Date(),
-          strikedBy: user.id,
-          expiresAt: addMonths(new Date(), data.strikeExpiresInMonths),
-        });
-      }
-    } else {
-      await db.insert(dots).values({
-        count: data.count,
-        reason: data.reason,
-        userId: data.userId,
-        createdAt: new Date(),
-        strikedBy: user.id,
-        expiresAt: addMonths(new Date(), data.strikeExpiresInMonths),
-      });
-    }
+    await unoWithAdmin.strikes.add({
+      userId: data.userId,
+      count: data.count,
+      reason: data.reason,
+      strikeExpiresInMonths: data.strikeExpiresInMonths,
+      banExpiresInMonths: data.banExpiresInMonths,
+      strikedBy: user.id,
+    });
 
     const sendToEmail = strikedUser.alternativeEmail ?? strikedUser.email;
 

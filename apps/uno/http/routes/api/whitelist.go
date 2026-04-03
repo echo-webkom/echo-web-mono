@@ -3,6 +3,7 @@ package api
 import (
 	"database/sql"
 	"errors"
+	"net/http"
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
@@ -24,6 +25,8 @@ func NewWhitelistMux(logger port.Logger, whitelistService *service.WhitelistServ
 	// Admin
 	mux.Handle("GET", "/", w.getWhitelist, admin)
 	mux.Handle("GET", "/{email}", w.getWhitelistByEmail, admin)
+	mux.Handle("POST", "/", w.upsertWhitelist, admin)
+	mux.Handle("DELETE", "/{email}", w.deleteWhitelistByEmail, admin)
 
 	return mux
 }
@@ -75,4 +78,53 @@ func (w *whitelist) getWhitelistByEmail(ctx *handler.Context) error {
 	// Convert to DTO
 	response := dto.WhitelistResponseFromDomain(whitelistInfo)
 	return ctx.JSON(response)
+}
+
+// upsertWhitelist creates or updates a whitelist entry by email
+// @Summary      Upsert whitelist entry
+// @Tags         whitelist
+// @Accept       json
+// @Produce      json
+// @Param        whitelist  body      dto.CreateWhitelistRequest  true  "Whitelist payload"
+// @Success      200        {object}  dto.WhitelistResponse       "OK"
+// @Failure      400        {string}  string                      "Bad Request"
+// @Failure      401        {string}  string                      "Unauthorized"
+// @Failure      500        {string}  string                      "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /whitelist [post]
+func (w *whitelist) upsertWhitelist(ctx *handler.Context) error {
+	var req dto.CreateWhitelistRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.BadRequest(ErrFailedToReadJSON)
+	}
+
+	wl, err := w.whitelistService.WhitelistRepo().UpsertWhitelist(ctx.Context(), *req.ToDomain())
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.JSON(dto.WhitelistResponseFromDomain(wl))
+}
+
+// deleteWhitelistByEmail deletes a whitelist entry by email
+// @Summary      Delete whitelist by email
+// @Tags         whitelist
+// @Produce      json
+// @Param        email   path      string  true  "Email"
+// @Success      204     "No Content"
+// @Failure      401     {string}  string  "Unauthorized"
+// @Failure      500     {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /whitelist/{email} [delete]
+func (w *whitelist) deleteWhitelistByEmail(ctx *handler.Context) error {
+	email := ctx.PathValue("email")
+	if email == "" {
+		return ctx.BadRequest(errors.New("missing email"))
+	}
+
+	if err := w.whitelistService.WhitelistRepo().DeleteWhitelistByEmail(ctx.Context(), email); err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.JSONWithStatus(nil, http.StatusNoContent)
 }

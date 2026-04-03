@@ -164,6 +164,126 @@ func (_c *DotRepo_CreateDot_Call) RunAndReturn(run func(ctx context.Context, dot
 	return _c
 }
 
+// DeleteDotByIDAndUserID provides a mock function for the type DotRepo
+func (_mock *DotRepo) DeleteDotByIDAndUserID(ctx context.Context, id int, userID string) error {
+	ret := _mock.Called(ctx, id, userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteDotByIDAndUserID")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int, string) error); ok {
+		r0 = returnFunc(ctx, id, userID)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// DotRepo_DeleteDotByIDAndUserID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteDotByIDAndUserID'
+type DotRepo_DeleteDotByIDAndUserID_Call struct {
+	*mock.Call
+}
+
+// DeleteDotByIDAndUserID is a helper method to define mock.On call
+//   - ctx context.Context
+//   - id int
+//   - userID string
+func (_e *DotRepo_Expecter) DeleteDotByIDAndUserID(ctx interface{}, id interface{}, userID interface{}) *DotRepo_DeleteDotByIDAndUserID_Call {
+	return &DotRepo_DeleteDotByIDAndUserID_Call{Call: _e.mock.On("DeleteDotByIDAndUserID", ctx, id, userID)}
+}
+
+func (_c *DotRepo_DeleteDotByIDAndUserID_Call) Run(run func(ctx context.Context, id int, userID string)) *DotRepo_DeleteDotByIDAndUserID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 int
+		if args[1] != nil {
+			arg1 = args[1].(int)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *DotRepo_DeleteDotByIDAndUserID_Call) Return(err error) *DotRepo_DeleteDotByIDAndUserID_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *DotRepo_DeleteDotByIDAndUserID_Call) RunAndReturn(run func(ctx context.Context, id int, userID string) error) *DotRepo_DeleteDotByIDAndUserID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// DeleteDotsByUserID provides a mock function for the type DotRepo
+func (_mock *DotRepo) DeleteDotsByUserID(ctx context.Context, userID string) error {
+	ret := _mock.Called(ctx, userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteDotsByUserID")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = returnFunc(ctx, userID)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// DotRepo_DeleteDotsByUserID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteDotsByUserID'
+type DotRepo_DeleteDotsByUserID_Call struct {
+	*mock.Call
+}
+
+// DeleteDotsByUserID is a helper method to define mock.On call
+//   - ctx context.Context
+//   - userID string
+func (_e *DotRepo_Expecter) DeleteDotsByUserID(ctx interface{}, userID interface{}) *DotRepo_DeleteDotsByUserID_Call {
+	return &DotRepo_DeleteDotsByUserID_Call{Call: _e.mock.On("DeleteDotsByUserID", ctx, userID)}
+}
+
+func (_c *DotRepo_DeleteDotsByUserID_Call) Run(run func(ctx context.Context, userID string)) *DotRepo_DeleteDotsByUserID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *DotRepo_DeleteDotsByUserID_Call) Return(err error) *DotRepo_DeleteDotsByUserID_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *DotRepo_DeleteDotsByUserID_Call) RunAndReturn(run func(ctx context.Context, userID string) error) *DotRepo_DeleteDotsByUserID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // DeleteExpired provides a mock function for the type DotRepo
 func (_mock *DotRepo) DeleteExpired(ctx context.Context) error {
 	ret := _mock.Called(ctx)

@@ -12,21 +12,22 @@ import (
 // User represents a user in the system with their profile information.
 // This is a domain model focused on business logic and rules.
 type User struct {
-	ID               string
-	Name             *string
-	Email            string
-	HasImage         bool
-	AlternativeEmail *string
-	Degree           *Degree
-	Year             *DegreeYear
-	Type             UserType
-	LastSignInAt     *time.Time
-	UpdatedAt        *time.Time
-	CreatedAt        *time.Time
-	HasReadTerms     bool
-	Birthday         *time.Time
-	IsPublic         bool
-	Groups           []Group
+	ID                         string
+	Name                       *string
+	Email                      string
+	HasImage                   bool
+	AlternativeEmail           *string
+	AlternativeEmailVerifiedAt *time.Time
+	Degree                     *Degree
+	Year                       *DegreeYear
+	Type                       UserType
+	LastSignInAt               *time.Time
+	UpdatedAt                  *time.Time
+	CreatedAt                  *time.Time
+	HasReadTerms               bool
+	Birthday                   *time.Time
+	IsPublic                   bool
+	Groups                     []Group
 }
 
 // DegreeYear represents the year of study for a user.

@@ -663,6 +663,17 @@ definitions:
       userId:
         type: string
     type: object
+  uno_http_dto.CreateAccessRequestRequest:
+    properties:
+      email:
+        type: string
+      reason:
+        minLength: 10
+        type: string
+    required:
+    - email
+    - reason
+    type: object
   uno_http_dto.CreateCommentRequest:
     properties:
       content:
@@ -713,6 +724,19 @@ definitions:
     required:
     - category
     - message
+    type: object
+  uno_http_dto.CreateWhitelistRequest:
+    properties:
+      email:
+        type: string
+      expiresAt:
+        type: string
+      reason:
+        type: string
+    required:
+    - email
+    - expiresAt
+    - reason
     type: object
   uno_http_dto.DatabrusMatchDTO:
     properties:
@@ -829,6 +853,8 @@ definitions:
     type: object
   uno_http_dto.GroupMemberResponse:
     properties:
+      email:
+        type: string
       id:
         type: string
       isLeader:
@@ -1107,6 +1133,8 @@ definitions:
     properties:
       alternativeEmail:
         type: string
+      alternativeEmailVerifiedAt:
+        type: string
       birthday:
         type: string
       createdAt:
@@ -1226,6 +1254,68 @@ paths:
       summary: Get access requests
       tags:
       - access-request
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Access request payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.CreateAccessRequestRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.AccessRequestResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Create access request
+      tags:
+      - access-request
+  /access-requests/{id}:
+    delete:
+      parameters:
+      - description: Access request ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Delete access request
+      tags:
+      - access-request
   /advent-of-code/leaderboard:
     get:
       produces:
@@ -1301,6 +1391,39 @@ paths:
       tags:
       - comments
   /comments/{id}:
+    delete:
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Delete comment
+      tags:
+      - comments
     get:
       parameters:
       - description: Comment ID
@@ -1698,6 +1821,33 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Delete a group by ID
+      tags:
+      - groups
+    get:
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.GroupResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get a group by ID
       tags:
       - groups
     post:
@@ -3074,7 +3224,66 @@ paths:
       summary: Get whitelisted emails
       tags:
       - whitelist
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Whitelist payload
+        in: body
+        name: whitelist
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.CreateWhitelistRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.WhitelistResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Upsert whitelist entry
+      tags:
+      - whitelist
   /whitelist/{email}:
+    delete:
+      parameters:
+      - description: Email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Delete whitelist by email
+      tags:
+      - whitelist
     get:
       parameters:
       - description: Email

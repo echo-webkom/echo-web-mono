@@ -84,3 +84,24 @@ func (p *BanInfoRepo) CreateBan(ctx context.Context, ban model.NewBanInfo) (mode
 	}
 	return *dbModel.ToDomain(), nil
 }
+
+func (p *BanInfoRepo) DeleteBanByUserID(ctx context.Context, userID string) error {
+	p.logger.Info(ctx, "deleting ban info by user id",
+		"user_id", userID,
+	)
+
+	query := `--sql
+		DELETE FROM ban_info
+		WHERE user_id = $1
+	`
+
+	if _, err := p.db.ExecContext(ctx, query, userID); err != nil {
+		p.logger.Error(ctx, "failed to delete ban info by user id",
+			"error", err,
+			"user_id", userID,
+		)
+		return err
+	}
+
+	return nil
+}

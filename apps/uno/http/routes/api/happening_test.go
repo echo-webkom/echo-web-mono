@@ -454,3 +454,201 @@ func TestGetHappeningSpotRanges(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, ctx.Status())
 }
+
+func TestDeregisterFromHappeningHandler(t *testing.T) {
+	tests := []struct {
+		name           string
+		happeningID    string
+		requestBody    map[string]string
+		setupMocks     func(*mocks.HappeningRepo, *mocks.UserRepo, *mocks.RegistrationRepo, *mocks.BanInfoRepo)
+		expectedStatus int
+	}{
+		{
+			name:        "success",
+			happeningID: "hap-1",
+			requestBody: map[string]string{"userId": "user-1", "reason": "cannot attend"},
+			setupMocks: func(_ *mocks.HappeningRepo, _ *mocks.UserRepo, mockRegistrationRepo *mocks.RegistrationRepo, _ *mocks.BanInfoRepo) {
+				mockRegistrationRepo.EXPECT().
+					GetByUserAndHappening(mock.Anything, "user-1", "hap-1").
+					Return(&model.Registration{Status: model.RegistrationStatusRegistered}, nil).
+					Once()
+				mockRegistrationRepo.EXPECT().
+					UpdateRegistrationStatus(mock.Anything, "user-1", "hap-1", model.RegistrationStatusUnregistered, mock.Anything, (*string)(nil), mock.Anything, mock.Anything).
+					Return(nil).
+					Once()
+				mockRegistrationRepo.EXPECT().
+					DeleteAnswersByUserAndHappening(mock.Anything, "user-1", "hap-1").
+					Return(nil).
+					Once()
+			},
+			expectedStatus: http.StatusOK,
+		},
+		{
+			name:        "registration missing",
+			happeningID: "hap-1",
+			requestBody: map[string]string{"userId": "user-1", "reason": "cannot attend"},
+			setupMocks: func(_ *mocks.HappeningRepo, _ *mocks.UserRepo, mockRegistrationRepo *mocks.RegistrationRepo, _ *mocks.BanInfoRepo) {
+				mockRegistrationRepo.EXPECT().
+					GetByUserAndHappening(mock.Anything, "user-1", "hap-1").
+					Return(nil, nil).
+					Once()
+			},
+			expectedStatus: http.StatusNotFound,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockHappeningRepo := mocks.NewHappeningRepo(t)
+			mockUserRepo := mocks.NewUserRepo(t)
+			mockRegistrationRepo := mocks.NewRegistrationRepo(t)
+			mockBanInfoRepo := mocks.NewBanInfoRepo(t)
+
+			tt.setupMocks(mockHappeningRepo, mockUserRepo, mockRegistrationRepo, mockBanInfoRepo)
+
+			happeningService := service.NewHappeningService(
+				mockHappeningRepo,
+				mockUserRepo,
+				mockRegistrationRepo,
+				mockBanInfoRepo,
+				nil,
+			)
+
+			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
+
+			body, _ := json.Marshal(tt.requestBody)
+			r := httptest.NewRequest(http.MethodPost, "/"+tt.happeningID+"/deregister", bytes.NewReader(body))
+			r.SetPathValue("id", tt.happeningID)
+			w := httptest.NewRecorder()
+
+			mux.ServeHTTP(w, r)
+
+			assert.Equal(t, tt.expectedStatus, w.Code)
+		})
+	}
+}
+
+func TestUpdateRegistrationStatusHandler(t *testing.T) {
+	tests := []struct {
+		name           string
+		happeningID    string
+		userID         string
+		requestBody    map[string]string
+		setupMocks     func(*mocks.HappeningRepo, *mocks.UserRepo, *mocks.RegistrationRepo, *mocks.BanInfoRepo)
+		expectedStatus int
+	}{
+		{
+			name:        "success",
+			happeningID: "hap-1",
+			userID:      "user-1",
+			requestBody: map[string]string{"status": "removed", "reason": "admin", "changedBy": "admin-1"},
+			setupMocks: func(_ *mocks.HappeningRepo, _ *mocks.UserRepo, mockRegistrationRepo *mocks.RegistrationRepo, _ *mocks.BanInfoRepo) {
+				mockRegistrationRepo.EXPECT().
+					GetByUserAndHappening(mock.Anything, "user-1", "hap-1").
+					Return(&model.Registration{Status: model.RegistrationStatusRegistered}, nil).
+					Once()
+				mockRegistrationRepo.EXPECT().
+					UpdateRegistrationStatus(mock.Anything, "user-1", "hap-1", model.RegistrationStatusRemoved, mock.Anything, mock.Anything, mock.Anything, mock.Anything).
+					Return(nil).
+					Once()
+			},
+			expectedStatus: http.StatusOK,
+		},
+		{
+			name:        "invalid status",
+			happeningID: "hap-1",
+			userID:      "user-1",
+			requestBody: map[string]string{"status": "unknown"},
+			setupMocks: func(_ *mocks.HappeningRepo, _ *mocks.UserRepo, _ *mocks.RegistrationRepo, _ *mocks.BanInfoRepo) {
+			},
+			expectedStatus: http.StatusBadRequest,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockHappeningRepo := mocks.NewHappeningRepo(t)
+			mockUserRepo := mocks.NewUserRepo(t)
+			mockRegistrationRepo := mocks.NewRegistrationRepo(t)
+			mockBanInfoRepo := mocks.NewBanInfoRepo(t)
+
+			tt.setupMocks(mockHappeningRepo, mockUserRepo, mockRegistrationRepo, mockBanInfoRepo)
+
+			happeningService := service.NewHappeningService(
+				mockHappeningRepo,
+				mockUserRepo,
+				mockRegistrationRepo,
+				mockBanInfoRepo,
+				nil,
+			)
+
+			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
+
+			body, _ := json.Marshal(tt.requestBody)
+			r := httptest.NewRequest(http.MethodPatch, "/"+tt.happeningID+"/registrations/"+tt.userID, bytes.NewReader(body))
+			r.SetPathValue("id", tt.happeningID)
+			r.SetPathValue("userId", tt.userID)
+			w := httptest.NewRecorder()
+
+			mux.ServeHTTP(w, r)
+
+			assert.Equal(t, tt.expectedStatus, w.Code)
+		})
+	}
+}
+
+func TestDeleteAllRegistrationsHandler(t *testing.T) {
+	tests := []struct {
+		name           string
+		happeningID    string
+		setupMocks     func(*mocks.RegistrationRepo)
+		expectedStatus int
+	}{
+		{
+			name:        "success",
+			happeningID: "hap-1",
+			setupMocks: func(mockRegistrationRepo *mocks.RegistrationRepo) {
+				mockRegistrationRepo.EXPECT().
+					DeleteRegistrationsByHappeningID(mock.Anything, "hap-1").
+					Return(nil).
+					Once()
+			},
+			expectedStatus: http.StatusOK,
+		},
+		{
+			name:           "missing id",
+			happeningID:    "",
+			setupMocks:     func(mockRegistrationRepo *mocks.RegistrationRepo) {},
+			expectedStatus: http.StatusBadRequest,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockHappeningRepo := mocks.NewHappeningRepo(t)
+			mockUserRepo := mocks.NewUserRepo(t)
+			mockRegistrationRepo := mocks.NewRegistrationRepo(t)
+			mockBanInfoRepo := mocks.NewBanInfoRepo(t)
+
+			tt.setupMocks(mockRegistrationRepo)
+
+			happeningService := service.NewHappeningService(
+				mockHappeningRepo,
+				mockUserRepo,
+				mockRegistrationRepo,
+				mockBanInfoRepo,
+				nil,
+			)
+
+			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
+
+			r := httptest.NewRequest(http.MethodDelete, "/"+tt.happeningID+"/registrations", nil)
+			r.SetPathValue("id", tt.happeningID)
+			w := httptest.NewRecorder()
+
+			mux.ServeHTTP(w, r)
+
+			assert.Equal(t, tt.expectedStatus, w.Code)
+		})
+	}
+}

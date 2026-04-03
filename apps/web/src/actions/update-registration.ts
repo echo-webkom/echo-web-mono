@@ -1,12 +1,11 @@
 "use server";
 
-import { registrations, registrationStatusEnum } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
+import { registrationStatusEnum } from "@echo-webkom/db/schemas";
 import { GotSpotNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
-import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 import { isHost } from "@/lib/memberships";
 
@@ -30,18 +29,11 @@ export const updateRegistration = async (
       };
     }
 
-    const exisitingRegistration = await db.query.registrations.findFirst({
-      where: (registration) =>
-        and(eq(registration.happeningId, happeningId), eq(registration.userId, registrationUserId)),
-      with: {
-        happening: {
-          with: {
-            groups: true,
-          },
-        },
-        user: true,
-      },
-    });
+    const happening = await unoWithAdmin.happenings.byId(happeningId);
+    const fullHappening = await unoWithAdmin.happenings.full(happening.slug);
+    const exisitingRegistration = fullHappening?.registrations.find(
+      (registration) => registration.userId === registrationUserId,
+    );
 
     if (!exisitingRegistration) {
       return {
@@ -50,7 +42,7 @@ export const updateRegistration = async (
       };
     }
 
-    const groups = exisitingRegistration.happening.groups.map((group) => group.groupId);
+    const groups = fullHappening?.groups ?? [];
     if (!isHost(user, groups)) {
       return {
         success: false,
@@ -60,32 +52,28 @@ export const updateRegistration = async (
 
     const data = updateRegistrationPayloadSchema.parse(payload);
 
-    await db
-      .update(registrations)
-      .set({
-        prevStatus: exisitingRegistration.status,
-        changedBy: user.id,
-        changedAt: new Date(),
-        status: data.status,
-        unregisterReason: data.reason,
-      })
-      .where(
-        and(
-          eq(registrations.userId, registrationUserId),
-          eq(registrations.happeningId, happeningId),
-        ),
-      );
+    await unoWithAdmin.happenings.updateRegistration(happeningId, registrationUserId, {
+      status: data.status,
+      reason: data.reason,
+      changedBy: user.id,
+    });
 
     if (data.status === "registered") {
-      const sendTo =
-        exisitingRegistration.user.alternativeEmail ?? exisitingRegistration.user.email;
+      const sendTo = exisitingRegistration.userEmail;
+
+      if (!sendTo) {
+        return {
+          success: false,
+          message: "Kunne ikke finne e-post for brukeren",
+        };
+      }
 
       await emailClient.sendEmail(
         [sendTo],
         "Du har fått plass!",
         GotSpotNotificationEmail({
-          happeningTitle: exisitingRegistration.happening.title,
-          name: exisitingRegistration.user.name ?? exisitingRegistration.user.email,
+          happeningTitle: happening.title,
+          name: exisitingRegistration.userName ?? exisitingRegistration.userEmail ?? undefined,
         }),
       );
     }

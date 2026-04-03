@@ -104,6 +104,129 @@ func (_c *AccessRequestRepo_CreateAccessRequest_Call) RunAndReturn(run func(ctx 
 	return _c
 }
 
+// DeleteAccessRequestByID provides a mock function for the type AccessRequestRepo
+func (_mock *AccessRequestRepo) DeleteAccessRequestByID(ctx context.Context, id string) error {
+	ret := _mock.Called(ctx, id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteAccessRequestByID")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = returnFunc(ctx, id)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// AccessRequestRepo_DeleteAccessRequestByID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteAccessRequestByID'
+type AccessRequestRepo_DeleteAccessRequestByID_Call struct {
+	*mock.Call
+}
+
+// DeleteAccessRequestByID is a helper method to define mock.On call
+//   - ctx context.Context
+//   - id string
+func (_e *AccessRequestRepo_Expecter) DeleteAccessRequestByID(ctx interface{}, id interface{}) *AccessRequestRepo_DeleteAccessRequestByID_Call {
+	return &AccessRequestRepo_DeleteAccessRequestByID_Call{Call: _e.mock.On("DeleteAccessRequestByID", ctx, id)}
+}
+
+func (_c *AccessRequestRepo_DeleteAccessRequestByID_Call) Run(run func(ctx context.Context, id string)) *AccessRequestRepo_DeleteAccessRequestByID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *AccessRequestRepo_DeleteAccessRequestByID_Call) Return(err error) *AccessRequestRepo_DeleteAccessRequestByID_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *AccessRequestRepo_DeleteAccessRequestByID_Call) RunAndReturn(run func(ctx context.Context, id string) error) *AccessRequestRepo_DeleteAccessRequestByID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetAccessRequestByID provides a mock function for the type AccessRequestRepo
+func (_mock *AccessRequestRepo) GetAccessRequestByID(ctx context.Context, id string) (model.AccessRequest, error) {
+	ret := _mock.Called(ctx, id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetAccessRequestByID")
+	}
+
+	var r0 model.AccessRequest
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (model.AccessRequest, error)); ok {
+		return returnFunc(ctx, id)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) model.AccessRequest); ok {
+		r0 = returnFunc(ctx, id)
+	} else {
+		r0 = ret.Get(0).(model.AccessRequest)
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, id)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// AccessRequestRepo_GetAccessRequestByID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetAccessRequestByID'
+type AccessRequestRepo_GetAccessRequestByID_Call struct {
+	*mock.Call
+}
+
+// GetAccessRequestByID is a helper method to define mock.On call
+//   - ctx context.Context
+//   - id string
+func (_e *AccessRequestRepo_Expecter) GetAccessRequestByID(ctx interface{}, id interface{}) *AccessRequestRepo_GetAccessRequestByID_Call {
+	return &AccessRequestRepo_GetAccessRequestByID_Call{Call: _e.mock.On("GetAccessRequestByID", ctx, id)}
+}
+
+func (_c *AccessRequestRepo_GetAccessRequestByID_Call) Run(run func(ctx context.Context, id string)) *AccessRequestRepo_GetAccessRequestByID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *AccessRequestRepo_GetAccessRequestByID_Call) Return(accessRequest model.AccessRequest, err error) *AccessRequestRepo_GetAccessRequestByID_Call {
+	_c.Call.Return(accessRequest, err)
+	return _c
+}
+
+func (_c *AccessRequestRepo_GetAccessRequestByID_Call) RunAndReturn(run func(ctx context.Context, id string) (model.AccessRequest, error)) *AccessRequestRepo_GetAccessRequestByID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetAccessRequests provides a mock function for the type AccessRequestRepo
 func (_mock *AccessRequestRepo) GetAccessRequests(ctx context.Context) ([]model.AccessRequest, error) {
 	ret := _mock.Called(ctx)

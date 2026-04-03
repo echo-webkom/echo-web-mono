@@ -26,7 +26,7 @@ func (u *UserRepo) GetAllUsers(ctx context.Context) ([]model.User, error) {
 	var usersDB []record.UserDB
 	query := `--sql
 		SELECT
-			u.id, u.name, u.email, u.image, u.alternative_email, u.year, u.type,
+			u.id, u.name, u.email, u.image, u.alternative_email, u.alternative_email_verified_at, u.year, u.type,
 			u.last_sign_in_at, u.updated_at, u.created_at, u.has_read_terms,
 			u.birthday, u.is_public,
 			d.id AS degree_id, d.name AS degree_name
@@ -206,7 +206,7 @@ func (u *UserRepo) GetUserByID(ctx context.Context, id string) (model.User, erro
 
 	query := `--sql
 		SELECT
-			u.id, u.name, u.email, u.image, u.alternative_email, u.year, u.type,
+			u.id, u.name, u.email, u.image, u.alternative_email, u.alternative_email_verified_at, u.year, u.type,
 			u.last_sign_in_at, u.updated_at, u.created_at, u.has_read_terms,
 			u.birthday, u.is_public,
 			d.id AS degree_id, d.name AS degree_name
@@ -252,7 +252,7 @@ func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) ([]model.Use
 	var usersDB []record.UserDB
 	query := `--sql
 		SELECT
-			u.id, u.name, u.email, u.image, u.alternative_email, u.year, u.type,
+			u.id, u.name, u.email, u.image, u.alternative_email, u.alternative_email_verified_at, u.year, u.type,
 			u.last_sign_in_at, u.updated_at, u.created_at, u.has_read_terms,
 			u.birthday, u.is_public,
 			d.id AS degree_id, d.name AS degree_name
@@ -313,7 +313,7 @@ func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) ([]
 	var usersDB []record.UserDB
 	query := `--sql
 		SELECT
-			id, name, email, image, alternative_email, degree_id, year, type,
+			id, name, email, image, alternative_email, alternative_email_verified_at, degree_id, year, type,
 			last_sign_in_at, updated_at, created_at, has_read_terms,
 			birthday, is_public
 		FROM "user"
@@ -384,7 +384,7 @@ func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User,
 	query := `--sql
 		INSERT INTO "user" (id, email, name, image, alternative_email, degree_id, year, type, has_read_terms, birthday, is_public)
 		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-		RETURNING id, name, email, image, alternative_email, degree_id, year, type, last_sign_in_at, updated_at, created_at, has_read_terms, birthday, is_public
+		RETURNING id, name, email, image, alternative_email, alternative_email_verified_at, degree_id, year, type, last_sign_in_at, updated_at, created_at, has_read_terms, birthday, is_public
 	`
 	var degreeID *string
 	if user.Degree != nil {
@@ -428,7 +428,7 @@ func (u *UserRepo) SearchUsersByName(ctx context.Context, query string, limit in
 
 	var usersDB []record.UserDB
 	sqlQuery := `--sql
-		SELECT id, name, email, image, alternative_email, year, type,
+		SELECT id, name, email, image, alternative_email, alternative_email_verified_at, year, type,
 			last_sign_in_at, updated_at, created_at, has_read_terms,
 			birthday, is_public
 		FROM "user"

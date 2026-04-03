@@ -1,10 +1,7 @@
 "use server";
 
-import { answers, registrations } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
 import { DeregistrationNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
-import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { unoWithAdmin } from "@/api/server";
@@ -25,13 +22,10 @@ export const deregister = async (id: string, payload: z.infer<typeof deregisterP
       };
     }
 
-    const exisitingRegistration = await db.query.registrations.findFirst({
-      where: (registration) =>
-        and(eq(registration.happeningId, id), eq(registration.userId, user.id)),
-      with: {
-        happening: true,
-      },
-    });
+    const happening = await unoWithAdmin.happenings.byId(id);
+    const exisitingRegistration = await unoWithAdmin.happenings
+      .registrations(id)
+      .then((rows) => rows.find((registration) => registration.userId === user.id));
 
     if (!exisitingRegistration) {
       return {
@@ -42,29 +36,16 @@ export const deregister = async (id: string, payload: z.infer<typeof deregisterP
 
     const data = await deregisterPayloadSchema.parseAsync(payload);
 
-    await Promise.all([
-      db
-        .update(registrations)
-        .set({
-          prevStatus: exisitingRegistration.status,
-          changedBy: null,
-          status: "unregistered",
-          unregisterReason: data.reason,
-        })
-        .where(and(eq(registrations.userId, user.id), eq(registrations.happeningId, id))),
-      db.delete(answers).where(and(eq(answers.userId, user.id), eq(answers.happeningId, id))),
-    ]);
+    await unoWithAdmin.happenings.deregister(id, user.id, data.reason);
 
-    const contacts = await unoWithAdmin.sanity.happenings
-      .contacts(exisitingRegistration.happening.slug)
-      .catch(() => []);
+    const contacts = await unoWithAdmin.sanity.happenings.contacts(happening.slug).catch(() => []);
 
     if (contacts.length > 0) {
       await emailClient.sendEmail(
         contacts.map((contact) => contact.email),
-        `${user.name ?? "Ukjent"} har meldt seg av ${exisitingRegistration.happening.title}`,
+        `${user.name ?? "Ukjent"} har meldt seg av ${happening.title}`,
         DeregistrationNotificationEmail({
-          happeningTitle: exisitingRegistration.happening.title,
+          happeningTitle: happening.title,
           name: user.name ?? "Ukjent",
           reason: data.reason,
         }),

@@ -1,11 +1,9 @@
 "use server";
 
-import { accessRequests } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
 import { AccessDeniedEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
-import { eq } from "drizzle-orm";
 
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 import { isMemberOf } from "@/lib/memberships";
 
@@ -16,15 +14,14 @@ export const deleteAccessRequestAction = async (accessRequestId: string, reason:
     throw new Error("Du har ikke tilgang til å slette forespørsler");
   }
 
-  const accessRequest = await db.query.accessRequests.findFirst({
-    where: eq(accessRequests.id, accessRequestId),
-  });
+  const requests = await unoWithAdmin.accessRequests.all();
+  const accessRequest = requests.find((row) => row.id === accessRequestId);
 
   if (!accessRequest) {
     throw new Error("Forespørsel ikke funnet");
   }
 
-  await db.delete(accessRequests).where(eq(accessRequests.id, accessRequestId));
+  await unoWithAdmin.accessRequests.remove(accessRequestId);
 
   await emailClient.sendEmail(
     [accessRequest.email],

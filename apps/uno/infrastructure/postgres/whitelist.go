@@ -105,3 +105,52 @@ func (p *WhitelistRepo) CreateWhitelist(ctx context.Context, whitelist model.New
 	}
 	return *dbModel.ToDomain(), nil
 }
+
+func (p *WhitelistRepo) UpsertWhitelist(ctx context.Context, whitelist model.NewWhitelist) (model.Whitelist, error) {
+	p.logger.Info(ctx, "upserting whitelist entry",
+		"email", whitelist.Email,
+		"expires_at", whitelist.ExpiresAt,
+	)
+
+	query := `--sql
+		INSERT INTO whitelist (email, expires_at, reason)
+		VALUES ($1, $2, $3)
+		ON CONFLICT (email)
+		DO UPDATE SET
+			expires_at = EXCLUDED.expires_at,
+			reason = EXCLUDED.reason
+		RETURNING email, expires_at, reason
+	`
+
+	var dbModel record.WhitelistDB
+	if err := p.db.GetContext(ctx, &dbModel, query, whitelist.Email, whitelist.ExpiresAt, whitelist.Reason); err != nil {
+		p.logger.Error(ctx, "failed to upsert whitelist entry",
+			"error", err,
+			"email", whitelist.Email,
+		)
+		return model.Whitelist{}, err
+	}
+
+	return *dbModel.ToDomain(), nil
+}
+
+func (p *WhitelistRepo) DeleteWhitelistByEmail(ctx context.Context, email string) error {
+	p.logger.Info(ctx, "deleting whitelist entry by email",
+		"email", email,
+	)
+
+	query := `--sql
+		DELETE FROM whitelist
+		WHERE email = $1
+	`
+
+	if _, err := p.db.ExecContext(ctx, query, email); err != nil {
+		p.logger.Error(ctx, "failed to delete whitelist entry by email",
+			"error", err,
+			"email", email,
+		)
+		return err
+	}
+
+	return nil
+}

@@ -1,6 +1,8 @@
 package api
 
 import (
+	"database/sql"
+	"errors"
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
@@ -18,7 +20,9 @@ func NewAccessRequestMux(logger port.Logger, accessRequestService *service.Acces
 	mux := router.NewMux()
 
 	// Admin
+	mux.Handle("POST", "/", a.createAccessRequest, admin)
 	mux.Handle("GET", "/", a.getAccessRequests, admin)
+	mux.Handle("DELETE", "/{id}", a.deleteAccessRequest, admin)
 
 	return mux
 }
@@ -42,4 +46,62 @@ func (a *accessRequests) getAccessRequests(ctx *handler.Context) error {
 	// Convert to DTOs
 	response := dto.AccessRequestsFromDomainList(accessRequests)
 	return ctx.JSON(response)
+}
+
+// createAccessRequest creates a new access request
+// @Summary      Create access request
+// @Tags         access-request
+// @Accept       json
+// @Produce      json
+// @Param        request  body      dto.CreateAccessRequestRequest  true  "Access request payload"
+// @Success      200      {object}  dto.AccessRequestResponse       "OK"
+// @Failure      400      {string}  string                          "Bad Request"
+// @Failure      500      {string}  string                          "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /access-requests [post]
+func (a *accessRequests) createAccessRequest(ctx *handler.Context) error {
+	var req dto.CreateAccessRequestRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.BadRequest(ErrFailedToReadJSON)
+	}
+
+	created, err := a.accessRequestService.AccessRequestRepo().CreateAccessRequest(ctx.Context(), *req.ToDomain())
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+
+	response := new(dto.AccessRequestResponse).FromDomain(&created)
+	return ctx.JSON(response)
+}
+
+// deleteAccessRequest deletes an access request by id
+// @Summary      Delete access request
+// @Tags         access-request
+// @Produce      json
+// @Param        id   path      string  true  "Access request ID"
+// @Success      200  {string}  string  "OK"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      404  {string}  string  "Not Found"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /access-requests/{id} [delete]
+func (a *accessRequests) deleteAccessRequest(ctx *handler.Context) error {
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.BadRequest(errors.New("missing access request id"))
+	}
+
+	_, err := a.accessRequestService.AccessRequestRepo().GetAccessRequestByID(ctx.Context(), id)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return ctx.NotFound(errors.New("access request not found"))
+		}
+		return ctx.InternalServerError()
+	}
+
+	if err = a.accessRequestService.AccessRequestRepo().DeleteAccessRequestByID(ctx.Context(), id); err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.Ok()
 }

@@ -24,6 +24,7 @@ func GroupResponseFromDomain(groups []model.Group) []GroupResponse {
 type GroupMemberResponse struct {
 	ID       string  `json:"id"`
 	Name     *string `json:"name"`
+	Email    string  `json:"email"`
 	IsLeader bool    `json:"isLeader"`
 }
 
@@ -34,6 +35,7 @@ func GroupMemberResponseFromDomain(members []model.GroupMember) []GroupMemberRes
 		response[i] = GroupMemberResponse{
 			ID:       m.ID,
 			Name:     m.Name,
+			Email:    m.Email,
 			IsLeader: m.IsLeader,
 		}
 	}

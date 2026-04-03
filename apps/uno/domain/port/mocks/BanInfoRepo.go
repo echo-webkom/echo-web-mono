@@ -104,6 +104,63 @@ func (_c *BanInfoRepo_CreateBan_Call) RunAndReturn(run func(ctx context.Context,
 	return _c
 }
 
+// DeleteBanByUserID provides a mock function for the type BanInfoRepo
+func (_mock *BanInfoRepo) DeleteBanByUserID(ctx context.Context, userID string) error {
+	ret := _mock.Called(ctx, userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteBanByUserID")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = returnFunc(ctx, userID)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// BanInfoRepo_DeleteBanByUserID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteBanByUserID'
+type BanInfoRepo_DeleteBanByUserID_Call struct {
+	*mock.Call
+}
+
+// DeleteBanByUserID is a helper method to define mock.On call
+//   - ctx context.Context
+//   - userID string
+func (_e *BanInfoRepo_Expecter) DeleteBanByUserID(ctx interface{}, userID interface{}) *BanInfoRepo_DeleteBanByUserID_Call {
+	return &BanInfoRepo_DeleteBanByUserID_Call{Call: _e.mock.On("DeleteBanByUserID", ctx, userID)}
+}
+
+func (_c *BanInfoRepo_DeleteBanByUserID_Call) Run(run func(ctx context.Context, userID string)) *BanInfoRepo_DeleteBanByUserID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *BanInfoRepo_DeleteBanByUserID_Call) Return(err error) *BanInfoRepo_DeleteBanByUserID_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *BanInfoRepo_DeleteBanByUserID_Call) RunAndReturn(run func(ctx context.Context, userID string) error) *BanInfoRepo_DeleteBanByUserID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // DeleteExpired provides a mock function for the type BanInfoRepo
 func (_mock *BanInfoRepo) DeleteExpired(ctx context.Context) error {
 	ret := _mock.Called(ctx)
