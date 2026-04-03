@@ -194,9 +194,6 @@ importers:
       babel-plugin-react-compiler:
         specifier: ^1.0.0
         version: 1.0.0
-      calendar-link:
-        specifier: 2.11.0
-        version: 2.11.0
       class-variance-authority:
         specifier: 0.7.1
         version: 0.7.1
@@ -281,9 +278,6 @@ importers:
       remark-gfm:
         specifier: 4.0.1
         version: 4.0.1
-      remove-markdown:
-        specifier: 0.6.3
-        version: 0.6.3
       sharp:
         specifier: 0.34.5
         version: 0.34.5
@@ -321,9 +315,6 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.10)
-      '@types/remove-markdown':
-        specifier: 0.3.4
-        version: 0.3.4
       '@vitejs/plugin-react':
         specifier: 5.1.3
         version: 5.1.3(vite@7.3.1(@types/node@22.19.7)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
@@ -6316,9 +6307,6 @@ packages:
   '@types/react@19.2.9':
     resolution: {integrity: sha512-Lpo8kgb/igvMIPeNV2rsYKTgaORYdO1XGVZ4Qz3akwOj0ySGYMPlQWa8BaLn0G63D1aSaAQ5ldR06wCpChQCjA==}
 
-  '@types/remove-markdown@0.3.4':
-    resolution: {integrity: sha512-i753EH/p02bw7bLlpfS/4CV1rdikbGiLabWyVsAvsFid3cA5RNU1frG7JycgY+NSnFwtoGlElvZVceCytecTDA==}
-
   '@types/sax@1.2.7':
     resolution: {integrity: sha512-rO73L89PJxeYM3s3pPPjiPgVVcymqU490g0YO5n5By0k2Erzj6tay/4lr1CHAAU4JyOWd1rpQ8bCf6cZfHU96A==}
 
@@ -6804,9 +6792,6 @@ packages:
 
   buffer@6.0.3:
     resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
-
-  calendar-link@2.11.0:
-    resolution: {integrity: sha512-TcL+yXB8q6rZgrYF5dU7UwFjcR9n/kcwMEOohI+E4vXXxJ5ndLCcjw3aujUtRfo/GIpLFRoOQs8Zk/qZSwNkgg==}
 
   call-bind-apply-helpers@1.0.2:
     resolution: {integrity: sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==}
@@ -10273,9 +10258,6 @@ packages:
 
   remeda@2.33.6:
     resolution: {integrity: sha512-tazDGH7s75kUPGBKLvhgBEHMgW+TdDFhjUAMdQj57IoWz6HsGa5D2RX5yDUz6IIqiRRvZiaEHzCzWdTeixc/Kg==}
-
-  remove-markdown@0.6.3:
-    resolution: {integrity: sha512-Qvp2p0Q1irE7AaJO7QemJe04HdObHylJrG+q4hszvPlYp7q4EvfINpEIaIEFdB+3XTDp1h6fiyT60ae00gmRow==}
 
   request-light@0.5.8:
     resolution: {integrity: sha512-3Zjgh+8b5fhRJBQZoy+zbVKpAQGLyka0MPgW3zruTF4dFFJ8Fqcfu9YsAvi/rvdcaTeWG3MkbZv4WKxAn/84Lg==}
@@ -18083,8 +18065,6 @@ snapshots:
     dependencies:
       csstype: 3.2.3
 
-  '@types/remove-markdown@0.3.4': {}
-
   '@types/sax@1.2.7':
     dependencies:
       '@types/node': 22.19.7
@@ -18689,10 +18669,6 @@ snapshots:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
-
-  calendar-link@2.11.0:
-    dependencies:
-      dayjs: 1.11.18
 
   call-bind-apply-helpers@1.0.2:
     dependencies:
@@ -22979,8 +22955,6 @@ snapshots:
       unified: 11.0.5
 
   remeda@2.33.6: {}
-
-  remove-markdown@0.6.3: {}
 
   request-light@0.5.8: {}
 
