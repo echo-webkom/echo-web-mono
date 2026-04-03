@@ -3,12 +3,12 @@ title: Database
 description: Oversikt over database-oppsett med PostgreSQL og Drizzle ORM.
 ---
 
-echo-web-mono bruker **PostgreSQL** som database og **Drizzle ORM** for type-safe database-operasjoner. All database-relatert kode ligger i `packages/db`.
+echo-web-mono bruker **PostgreSQL** som database.
 
 ## Teknologier
 
 - **PostgreSQL** - Relasjonell database
-- **Drizzle ORM** - Type-safe ORM for TypeScript
+- **Drizzle ORM** - Type-safe ORM i TypeScript
 - **Drizzle Kit** - CLI for migrasjoner og Drizzle Studio
 - **Docker** - Lokal database i container
 
@@ -47,49 +47,6 @@ Alle schemas ligger i `packages/db/src/schemas/`:
 - **registrations** - Påmeldinger til arrangementer
 - **groups** - Grupper og undergrupper
 - Og flere...
-
-## Bruke database-pakken
-
-Database-pakken eksporteres med flere paths for ulike bruksområder:
-
-### I Next.js (serverless)
-
-```typescript
-// Server Components og API Routes
-import { db } from "@echo-webkom/db/serverless";
-
-// Hent brukere med relational query API
-const users = await db.query.users.findMany({
-  with: {
-    memberships: true,
-  },
-});
-```
-
-### I API/backend (Node.js)
-
-```typescript
-// Standard import for Node.js miljøer
-import { db } from "@echo-webkom/db";
-
-const user = await db.query.users.findFirst({
-  where: eq(users.id, userId),
-});
-```
-
-### Schemas direkte
-
-```typescript
-// Importer schemas for queries
-import { happenings, users } from "@echo-webkom/db/schemas";
-import { and, eq, gte } from "drizzle-orm";
-
-// Bruk med db
-const upcomingHappenings = await db
-  .select()
-  .from(happenings)
-  .where(gte(happenings.date, new Date()));
-```
 
 ## Migrasjoner
 
@@ -141,36 +98,10 @@ pnpm seed database --mode test   # Testdata for E2E
 pnpm seed database --mode prod   # Produksjonslignende data
 ```
 
-## Relational Queries
-
-Drizzle har kraftig støtte for relasjonelle queries:
-
-```typescript
-// Hent happening med påmeldinger og kommentarer
-const happening = await db.query.happenings.findFirst({
-  where: eq(happenings.slug, "bedpres-bekk"),
-  with: {
-    registrations: {
-      with: {
-        user: true, // Include brukerinfo
-      },
-    },
-    comments: {
-      with: {
-        author: true,
-        reactions: true,
-      },
-    },
-  },
-});
-```
-
 ## Tips
 
-- **Type-sikkerhet** - Drizzle gir fullstendig TypeScript type inference
 - **Studio** - Bruk Drizzle Studio for rask debugging og data-inspeksjon
 - **Migrations** - Alltid commit migrasjonsfiler til git
-- **Serverless** - Bruk `@echo-webkom/db/serverless` i Next.js for connection pooling
 
 ## Videre lesning
 

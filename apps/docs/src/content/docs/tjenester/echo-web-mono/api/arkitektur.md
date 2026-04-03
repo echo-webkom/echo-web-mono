@@ -45,7 +45,7 @@ Dette laget er stedet for konkrete adaptere mot omverdenen.
 
 - Setter sammen dependencies
 - Kobler service-implementasjoner til handler/router
-- Starter prosesser for `web`, `cron` og `worker`
+- Starter prosesser for `web` og `cron`
 
 ## Request flow
 
@@ -59,21 +59,41 @@ Dette laget er stedet for konkrete adaptere mot omverdenen.
 
 ```mermaid
 flowchart LR
-    Client[Klient / Web] --> Router[http/router + routes]
-    Router --> Handler[http/handler]
-    Handler --> Service[domain/service]
-    Service --> Port[domain/port interface]
-    Port --> Adapter[infrastructure adapter]
-    Adapter --> DB[(PostgreSQL)]
-    Service --> Model[domain/model]
-    Handler --> DTO[http/dto]
+    subgraph Inbound[Inbound adapters]
+        HTTP[http/router + handler]
+        CRON[cron jobs]
+    end
+
+    subgraph Core[Domain core]
+        SVC[domain/service]
+        MODEL[domain/model]
+        PORT[domain/port]
+    end
+
+    subgraph Outbound[Outbound adapters]
+        REPO[infrastructure/postgres]
+        CACHE[infrastructure/redis]
+        OBJ[infrastructure/object-storage]
+        EXT[infrastructure/external clients]
+    end
+
+    HTTP --> SVC
+    CRON --> SVC
+
+    SVC --> MODEL
+    SVC --> PORT
+
+    PORT --> REPO --> DB[(PostgreSQL)]
+    PORT --> CACHE --> REDIS[(Redis)]
+    PORT --> OBJ --> MINIO[(MinIO)]
+    PORT --> EXT
 ```
 
 Kort lest:
 
 - Inbound: `router/routes` -> `handler`
 - Kjerne: `domain/service` + `domain/model` + `domain/port`
-- Outbound: `infrastructure/*` -> databaser/eksterne tjenester
+- Outbound: `infrastructure/*` -> databaser (postgres, redis) / eksterne tjenester (sanity, yr)
 
 ## End-to-end eksempel: ny feature
 

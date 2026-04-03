@@ -21,7 +21,6 @@ Monorepoet er organisert med Turbo og pnpm workspaces for optimal utvikleropplev
 ### Delte pakker (`/packages`)
 
 - **db** - Database schemas og migrasjoner (Drizzle ORM + PostgreSQL)
-- **sanity** - Delte Sanity queries og utilities
 - **lib** - Felles utilities og business logic
 - **email** - E-post templates og sending
 - **seeder** - Database seeding utilities

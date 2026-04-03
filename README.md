@@ -33,17 +33,17 @@ eller send oss en mail på [webkom-styret@echo.uib.no](mailto:webkom-styret@echo
 Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 
 ```
-+------------+     +--------------------------------------------------+
-| uno-cron   |---->|  Storage                                         |
-+------------+     |  +--------------------+  +-------------------+   |
-                   |  | Postgres           |  | ProfilePictures   |   |
-                   |  | (db)               |  | (bucket)          |   |
-                   |  +--------------------+  +-------------------+   |
-                   +--------------------------------------------------+
-                              ^       ^                    ^
-                              |       |                    |
-                              |       +-----------+        |
-                              |                   |        |
+                   +----------------------------------------------------------------+
+                   |  Storage                                                       |
+                   |  +--------------------+  +-------------------+  +-----------+  |
++------------+     |  | Postgres           |  | ProfilePictures   |  | Redis     |  |
+| uno-cron   |---->|  | (db)               |  | (bucket)          |  | (cache)   |  |
++------------+     |  +--------------------+  +-------------------+  +-----------+  |
+                   +----------------------------------------------------------------+
+                              ^       ^                  ^               ^
+                              |       |                  |               |
+                              |       +-----------+      |  +------------|
+                              |                   |      |  |
                       +--------------------+  +-------------------+
                       | web                |->| uno               |
                       +--------------------+  +-------------------+
@@ -60,7 +60,6 @@ Denne full-stack monorepo-en består av flere applikasjoner og delte pakker:
 ### Delte pakker (`/packages`)
 
 - **db** - Databaseskjemaer, migrasjoner og verktøy med Drizzle ORM og PostgreSQL
-- **sanity** - Delte Sanity-spørringer og verktøy
 - **lib** - Felles funksjoner og variabler for **web** og **cms**.
 - **email** - E-postmaler med `react-email`
 - **seeder** - Database seeding-verktøy
