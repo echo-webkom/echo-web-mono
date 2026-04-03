@@ -33,7 +33,7 @@ const jobAdsQuery = `
   link,
   deadline,
   degreeYears,
-  "body": pt::text(body)
+  body
 }
 `
 
@@ -82,7 +82,7 @@ const jobAdBySlugQuery = `
   link,
   deadline,
   degreeYears,
-  "body": pt::text(body)
+  body
 }[0]
 `
 
