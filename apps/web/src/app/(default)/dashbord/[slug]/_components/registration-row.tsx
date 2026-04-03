@@ -130,9 +130,8 @@ export const RegistrationRow = ({
           <TableCell colSpan={showIndex ? 6 : 5}>
             {outsideAllRanges && (
               <Callout type="warning" className="mb-4 text-sm">
-                Brukeren sitt årstrinn ({userYear ?? "ukjent"}) passer ikke til noen av
-                plassintervallene for dette arrangementet. Dette kan påvirke beregningen av ledige
-                plasser.
+                Brukeren sitt årstrinn ({userYear ?? "ukjent"}) passer ikke til noen av plassene for
+                dette arrangementet. Dette kan påvirke beregningen av ledige plasser.
               </Callout>
             )}
             <p className="text-muted-foreground text-sm">

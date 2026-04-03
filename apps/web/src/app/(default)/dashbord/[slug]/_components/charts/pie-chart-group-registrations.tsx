@@ -1,17 +1,16 @@
 "use client";
 
-import { type Group } from "@echo-webkom/db/schemas";
 import { memo } from "react";
 import { Legend, Pie, PieChart } from "recharts";
 
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { randomHexColor } from "@/lib/color";
 
-import { type RegistrationWithUser } from "../../_lib/types";
+import { type DashboardGroup, type RegistrationWithUser } from "../../_lib/types";
 
 type PieChartGroupsProps = {
   registrations: Array<RegistrationWithUser>;
-  groups: Array<Group>;
+  groups: Array<DashboardGroup>;
 };
 
 export const PieChartGroups = memo(({ groups, registrations }: PieChartGroupsProps) => {

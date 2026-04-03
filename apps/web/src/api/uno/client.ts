@@ -841,6 +841,13 @@ class HappeningApi {
     );
   }
 
+  async registrationsFull(happeningId: string) {
+    return await this.client.requestJson<Array<FullRegistrationRow>>(
+      "GET",
+      `happenings/${happeningId}/registrations/full`,
+    );
+  }
+
   async registrationByUser(happeningId: string, userId: string) {
     try {
       return await this.client.requestJson<Registration>(
@@ -939,6 +946,12 @@ class AccessRequestApi {
 export interface Degree {
   id: string;
   name: string;
+}
+
+export interface UserGroup {
+  id: string;
+  name: string;
+  isLeader: boolean;
 }
 
 export interface DegreeInsert {
@@ -1301,11 +1314,7 @@ export interface User {
   hasReadTerms: boolean;
   birthday: Date | null;
   isPublic: boolean;
-  groups: Array<{
-    id: string;
-    isLeader: boolean;
-    name: string;
-  }>;
+  groups: Array<UserGroup>;
 }
 
 export interface Happening {
@@ -1336,6 +1345,29 @@ export interface FullHappening extends Happening {
   registrations: Array<FullHappeningRegistration>;
   questions: Array<Question>;
   groups: Array<string>;
+}
+
+export interface FullRegistrationAnswerWithQuestion {
+  questionId: string;
+  answer: {
+    questionId: string;
+    answer: unknown;
+  };
+  question: Question;
+}
+
+export interface FullRegistrationRow {
+  userId: string;
+  happeningId: string;
+  status: RegistrationStatus;
+  unregisterReason: string | null;
+  createdAt: Date;
+  prevStatus: RegistrationStatus | null;
+  changedAt: Date | null;
+  changedBy: string | null;
+  changedByUser: User | null;
+  user: User;
+  answers: Array<FullRegistrationAnswerWithQuestion>;
 }
 
 export interface UserRegistration {

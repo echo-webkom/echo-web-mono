@@ -1,6 +1,5 @@
 "use client";
 
-import { type Question } from "@echo-webkom/db/schemas";
 import React, { useMemo, useState } from "react";
 import { RxChevronDown } from "react-icons/rx";
 
@@ -14,10 +13,11 @@ import {
 import { toRelative } from "@/utils/url";
 
 import { getColumns } from "../_lib/get-columns";
+import { type DashboardQuestion } from "../_lib/types";
 
 type DownloadCsvButtonProps = {
   slug: string;
-  questions: Array<Question>;
+  questions: Array<DashboardQuestion>;
 };
 
 export const DownloadCsvButton = ({ slug, questions }: DownloadCsvButtonProps) => {

@@ -6,3 +6,8 @@ export type DashboardGroup = {
   id: string;
   name: string;
 };
+
+export type DashboardQuestion = {
+  id: string;
+  title: string;
+};

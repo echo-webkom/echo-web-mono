@@ -1,9 +1,8 @@
-import { type Group } from "@echo-webkom/db/schemas";
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 
+import { type DashboardGroup } from "../_lib/types";
 import { NO_GROUP_FILTER_VALUE } from "../_lib/use-registration-filter";
 
 type SearchFilterProps = {
@@ -69,7 +68,7 @@ export const StatusFilter = ({ statusFilter, setStatusFilter }: StatusFilterProp
 };
 
 type GroupFilterProps = {
-  studentGroups: Array<Group>;
+  studentGroups: Array<DashboardGroup>;
   groupFilter: string;
   setGroupFilter: (groupFilter: string) => void;
 };

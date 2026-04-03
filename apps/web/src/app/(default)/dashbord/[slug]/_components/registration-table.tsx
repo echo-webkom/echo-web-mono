@@ -1,6 +1,5 @@
 "use client";
 
-import { type Question } from "@echo-webkom/db/schemas";
 import { useState } from "react";
 
 import { type SpotRange } from "@/api/uno/client";
@@ -11,6 +10,7 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components
 
 import { filterRegistrations } from "../_lib/filter-registrations";
 import { type DashboardGroup } from "../_lib/types";
+import { type DashboardQuestion } from "../_lib/types";
 import { type RegistrationWithUser } from "../_lib/types";
 import { useRegistrationFilter } from "../_lib/use-registration-filter";
 import { RegistrationRow } from "./registration-row";
@@ -20,7 +20,7 @@ type RegistrationTableProps = {
   registrations: Array<RegistrationWithUser>;
   studentGroups: Array<DashboardGroup>;
   slug: string;
-  questions: Array<Question>;
+  questions: Array<DashboardQuestion>;
   isBedpres: boolean;
   happeningDate: Date | null;
   spotRanges: Array<SpotRange>;
