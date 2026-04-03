@@ -2,9 +2,21 @@ package sanityinfra
 
 import (
 	"context"
+	"fmt"
+	"strings"
 	"uno/domain/model"
 	"uno/domain/port"
+	"uno/infrastructure/cache"
 	"uno/pkg/sanity"
+
+	"github.com/redis/go-redis/v9"
+)
+
+const (
+	CMSHappeningNamespaceHappenings      = "cms:happenings"
+	CMSHappeningNamespaceHappeningBySlug = "cms:happening-by-slug"
+	CMSHappeningNamespaceHomeHappenings  = "cms:home-happenings"
+	CMSHappeningNamespaceContactsBySlug  = "cms:contacts-by-slug"
 )
 
 const allHappeningsQuery = `
@@ -157,26 +169,49 @@ email,
 `
 
 type HappeningRepo struct {
-	client *sanity.Client
-	logger port.Logger
+	client               *sanity.Client
+	logger               port.Logger
+	happeningsCache      port.Cache[[]model.CMSHappening]
+	happeningBySlugCache port.Cache[*model.CMSHappening]
+	homeHappeningsCache  port.Cache[[]model.CMSHomeHappening]
+	contactsBySlugCache  port.Cache[[]model.CMSContact]
 }
 
-func NewHappeningRepo(client *sanity.Client, logger port.Logger) port.CMSHappeningRepo {
-	return &HappeningRepo{client: client, logger: logger}
+func NewHappeningRepo(client *sanity.Client, logger port.Logger, redisClient *redis.Client) port.CMSHappeningRepo {
+	return &HappeningRepo{
+		client:               client,
+		logger:               logger,
+		happeningsCache:      cache.NewCache[[]model.CMSHappening](redisClient, CMSHappeningNamespaceHappenings),
+		happeningBySlugCache: cache.NewCache[*model.CMSHappening](redisClient, CMSHappeningNamespaceHappeningBySlug),
+		homeHappeningsCache:  cache.NewCache[[]model.CMSHomeHappening](redisClient, CMSHappeningNamespaceHomeHappenings),
+		contactsBySlugCache:  cache.NewCache[[]model.CMSContact](redisClient, CMSHappeningNamespaceContactsBySlug),
+	}
 }
 
 func (r *HappeningRepo) GetAllHappenings(ctx context.Context) ([]model.CMSHappening, error) {
 	r.logger.Info(ctx, "getting all happenings from sanity")
+	if v, ok := r.happeningsCache.Get("all"); ok {
+		r.logger.Info(ctx, "cache hit for all happenings")
+		return v, nil
+	}
+	r.logger.Info(ctx, "cache miss for all happenings")
 	result, err := sanity.Query[[]model.CMSHappening](ctx, r.client, allHappeningsQuery, nil)
 	if err != nil {
 		r.logger.Error(ctx, "failed to get all happenings from sanity", "error", err)
 		return nil, err
 	}
+
+	r.happeningsCache.Set("all", result, cmsCacheTTL)
 	return result, nil
 }
 
 func (r *HappeningRepo) GetHappeningBySlug(ctx context.Context, slug string) (*model.CMSHappening, error) {
 	r.logger.Info(ctx, "getting happening by slug from sanity", "slug", slug)
+	if v, ok := r.happeningBySlugCache.Get(slug); ok {
+		r.logger.Info(ctx, "cache hit for happening by slug", "slug", slug)
+		return v, nil
+	}
+	r.logger.Info(ctx, "cache miss for happening by slug", "slug", slug)
 	result, err := sanity.Query[*model.CMSHappening](ctx, r.client, happeningBySlugQuery, map[string]any{
 		"slug": slug,
 	})
@@ -184,11 +219,19 @@ func (r *HappeningRepo) GetHappeningBySlug(ctx context.Context, slug string) (*m
 		r.logger.Error(ctx, "failed to get happening by slug from sanity", "slug", slug, "error", err)
 		return nil, err
 	}
+
+	r.happeningBySlugCache.Set(slug, result, cmsCacheTTL)
 	return result, nil
 }
 
 func (r *HappeningRepo) GetHomeHappenings(ctx context.Context, types []string, n int) ([]model.CMSHomeHappening, error) {
+	key := fmt.Sprintf("%s:%d", strings.Join(types, ","), n)
 	r.logger.Info(ctx, "getting home happenings from sanity", "types", types, "n", n)
+	if v, ok := r.homeHappeningsCache.Get(key); ok {
+		r.logger.Info(ctx, "cache hit for home happenings", "key", key)
+		return v, nil
+	}
+	r.logger.Info(ctx, "cache miss for home happenings", "key", key)
 	result, err := sanity.Query[[]model.CMSHomeHappening](ctx, r.client, homeHappeningsQuery, map[string]any{
 		"happeningTypes": types,
 		"n":              n,
@@ -197,11 +240,18 @@ func (r *HappeningRepo) GetHomeHappenings(ctx context.Context, types []string, n
 		r.logger.Error(ctx, "failed to get home happenings from sanity", "error", err)
 		return nil, err
 	}
+
+	r.homeHappeningsCache.Set(key, result, cmsCacheTTL)
 	return result, nil
 }
 
 func (r *HappeningRepo) GetHappeningContactsBySlug(ctx context.Context, slug string) ([]model.CMSContact, error) {
 	r.logger.Info(ctx, "getting happening contacts by slug from sanity", "slug", slug)
+	if v, ok := r.contactsBySlugCache.Get(slug); ok {
+		r.logger.Info(ctx, "cache hit for happening contacts by slug", "slug", slug)
+		return v, nil
+	}
+	r.logger.Info(ctx, "cache miss for happening contacts by slug", "slug", slug)
 	result, err := sanity.Query[[]model.CMSContact](ctx, r.client, happeningContactsBySlugQuery, map[string]any{
 		"slug": slug,
 	})
@@ -209,5 +259,7 @@ func (r *HappeningRepo) GetHappeningContactsBySlug(ctx context.Context, slug str
 		r.logger.Error(ctx, "failed to get happening contacts from sanity", "slug", slug, "error", err)
 		return nil, err
 	}
+
+	r.contactsBySlugCache.Set(slug, result, cmsCacheTTL)
 	return result, nil
 }

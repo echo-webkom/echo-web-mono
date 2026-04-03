@@ -73,17 +73,17 @@ func RunApi() {
 		logger.Error(context.Background(), "failed to create sanity client", "error", err)
 		log.Fatal(err)
 	}
-	cmsHappeningRepo := sanityinfra.NewHappeningRepo(sanityClient, logger)
-	cmsRepeatingHappeningRepo := sanityinfra.NewRepeatingHappeningRepo(sanityClient, logger)
-	cmsPostRepo := sanityinfra.NewPostRepo(sanityClient, logger)
-	cmsStudentGroupRepo := sanityinfra.NewStudentGroupRepo(sanityClient, logger)
-	cmsJobAdRepo := sanityinfra.NewJobAdRepo(sanityClient, logger)
-	cmsBannerRepo := sanityinfra.NewBannerRepo(sanityClient, logger)
-	cmsStaticInfoRepo := sanityinfra.NewStaticInfoRepo(sanityClient, logger)
-	cmsMerchRepo := sanityinfra.NewMerchRepo(sanityClient, logger)
-	cmsMeetingMinuteRepo := sanityinfra.NewMeetingMinuteRepo(sanityClient, logger)
-	cmsMovieRepo := sanityinfra.NewMovieRepo(sanityClient, logger)
-	cmsHSApplicationRepo := sanityinfra.NewHSApplicationRepo(sanityClient, logger)
+	cmsHappeningRepo := sanityinfra.NewHappeningRepo(sanityClient, logger, redisClient)
+	cmsRepeatingHappeningRepo := sanityinfra.NewRepeatingHappeningRepo(sanityClient, logger, redisClient)
+	cmsPostRepo := sanityinfra.NewPostRepo(sanityClient, logger, redisClient)
+	cmsStudentGroupRepo := sanityinfra.NewStudentGroupRepo(sanityClient, logger, redisClient)
+	cmsJobAdRepo := sanityinfra.NewJobAdRepo(sanityClient, logger, redisClient)
+	cmsBannerRepo := sanityinfra.NewBannerRepo(sanityClient, logger, redisClient)
+	cmsStaticInfoRepo := sanityinfra.NewStaticInfoRepo(sanityClient, logger, redisClient)
+	cmsMerchRepo := sanityinfra.NewMerchRepo(sanityClient, logger, redisClient)
+	cmsMeetingMinuteRepo := sanityinfra.NewMeetingMinuteRepo(sanityClient, logger, redisClient)
+	cmsMovieRepo := sanityinfra.NewMovieRepo(sanityClient, logger, redisClient)
+	cmsHSApplicationRepo := sanityinfra.NewHSApplicationRepo(sanityClient, logger, redisClient)
 
 	// Initialize services
 	authService := service.NewAuthService(sessionRepo, userRepo, cfg.AuthSecret)
@@ -114,7 +114,6 @@ func RunApi() {
 		cmsMeetingMinuteRepo,
 		cmsMovieRepo,
 		cmsHSApplicationRepo,
-		redisClient,
 		cacheInvalidator,
 	)
 
