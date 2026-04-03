@@ -1,4 +1,5 @@
 import { eachDayOfInterval } from "date-fns";
+import { fromZonedTime } from "date-fns-tz";
 import removeMd from "remove-markdown";
 
 import { type CMSHappening, type CMSMovie, type CMSRepeatingHappening } from "@/api/uno/client";
@@ -9,6 +10,8 @@ import { createHappeningLink } from "./create-link";
 type CalendarEventType = "event" | "bedpres" | "movie" | "boardgame" | "other";
 
 type Happening = CMSHappening | CMSRepeatingHappening;
+
+const OSLO_TIME_ZONE = "Europe/Oslo";
 
 export type CalendarEvent = {
   id: string;
@@ -89,10 +92,9 @@ export const repeatingEventsToCalendarEvent = (
       })
       .map((date) => {
         const d = new Date(date);
-
         const year = d.getFullYear();
-        const month = (d.getMonth() + 1).toString().padStart(2, "0");
-        const day = d.getDate().toString().padStart(2, "0");
+        const month = `${d.getMonth() + 1}`.padStart(2, "0");
+        const day = `${d.getDate()}`.padStart(2, "0");
 
         const startHour = happening.startTime.hour.toString().padStart(2, "0");
         const startMinute = happening.startTime.minute.toString().padStart(2, "0");
@@ -100,17 +102,20 @@ export const repeatingEventsToCalendarEvent = (
         const endHour = happening.endTime.hour.toString().padStart(2, "0");
         const endMinute = happening.endTime.minute.toString().padStart(2, "0");
 
-        // TODO: Use the current time zone instead of hardcoding +01:00
-        // FIX timezone
-        const offset = "01:00";
-        const startDate = `${year}-${month}-${day}T${startHour}:${startMinute}:00+${offset}`;
-        const endDate = `${year}-${month}-${day}T${endHour}:${endMinute}:00+${offset}`;
+        const startDate = fromZonedTime(
+          `${year}-${month}-${day}T${startHour}:${startMinute}:00`,
+          OSLO_TIME_ZONE,
+        );
+        const endDate = fromZonedTime(
+          `${year}-${month}-${day}T${endHour}:${endMinute}:00`,
+          OSLO_TIME_ZONE,
+        );
 
         return {
           id: happening._id,
           title: happening.title,
-          date: new Date(startDate),
-          endDate: new Date(endDate),
+          date: startDate,
+          endDate,
           body: removeMd(happening.body ?? ""),
           link: createHappeningLink(happening),
           type: getCalendarEventType(happening),
