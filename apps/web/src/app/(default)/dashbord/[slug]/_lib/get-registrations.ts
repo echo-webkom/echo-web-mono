@@ -1,29 +1,8 @@
 import "server-only";
-import { type RegistrationStatus } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
+import { unoWithAdmin } from "@/api/server";
+import { type FullRegistrationRow, type RegistrationStatus } from "@/api/uno/client";
 
-export const getRegistrations = async (happeningId: string) => {
-  const registrations = await db.query.registrations.findMany({
-    where: (registration, { eq }) => eq(registration.happeningId, happeningId),
-    with: {
-      changedByUser: true,
-      answers: {
-        with: {
-          question: true,
-        },
-      },
-      user: {
-        with: {
-          memberships: {
-            with: {
-              group: true,
-            },
-          },
-        },
-      },
-    },
-  });
-
+const sortRegistrations = (registrations: Array<FullRegistrationRow>) => {
   registrations.sort((a, b) => {
     const statusOrder: Record<RegistrationStatus, number> = {
       registered: 0,
@@ -40,4 +19,26 @@ export const getRegistrations = async (happeningId: string) => {
   });
 
   return registrations;
+};
+
+const toDashboardRegistrations = (registrations: Array<FullRegistrationRow>) => {
+  return registrations.map((registration) => ({
+    ...registration,
+    user: {
+      ...registration.user,
+      memberships: registration.user.groups.map((group) => ({
+        group: {
+          id: group.id,
+          name: group.name,
+        },
+      })),
+      degreeId: registration.user.degree?.id ?? null,
+      alternativeEmail: registration.user.alternativeEmail,
+    },
+  }));
+};
+
+export const getRegistrations = async (happeningId: string) => {
+  const registrations = await unoWithAdmin.happenings.registrationsFull(happeningId);
+  return toDashboardRegistrations(sortRegistrations(registrations));
 };

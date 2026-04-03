@@ -1,6 +1,4 @@
-import { selectUserSchema, type Question } from "@echo-webkom/db/schemas";
-
-import { zodKeys } from "@/lib/zod-keys";
+import { type DashboardQuestion } from "./types";
 
 type HeaderType = "name" | "email" | "alternativeEmail" | "degreeId" | "year" | "status";
 
@@ -13,10 +11,16 @@ export const formatHeaders: Record<HeaderType, string> = {
   status: "Status",
 };
 
-export const getColumns = (questions: Array<Question>) => {
-  const columns = [...zodKeys(selectUserSchema)]
-    .filter((key) => key in formatHeaders)
-    .map((key) => formatHeaders[key as HeaderType]);
+const baseColumns: Array<string> = [
+  formatHeaders.name,
+  formatHeaders.email,
+  formatHeaders.alternativeEmail,
+  formatHeaders.year,
+  formatHeaders.degreeId,
+];
+
+export const getColumns = (questions: Array<DashboardQuestion>) => {
+  const columns = [...baseColumns];
 
   columns.push(...questions.map((question) => question.title));
   columns.push("Status");

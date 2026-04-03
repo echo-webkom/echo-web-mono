@@ -1,4 +1,3 @@
-import { type User } from "@echo-webkom/db/schemas";
 import Link from "next/link";
 import { LuGraduationCap, LuMail, LuUsers } from "react-icons/lu";
 import { RxInfoCircled } from "react-icons/rx";
@@ -6,7 +5,15 @@ import { RxInfoCircled } from "react-icons/rx";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { mailTo } from "@/utils/prefixes";
 
-export const HoverProfileView = ({ user, group }: { user: User; group: string }) => {
+type HoverUser = {
+  name: string | null;
+  year: number | null;
+  degreeId: string | null;
+  email: string;
+  alternativeEmail: string | null;
+};
+
+export const HoverProfileView = ({ user, group }: { user: HoverUser; group: string }) => {
   return (
     <Popover>
       <PopoverTrigger className="my-auto p-1">

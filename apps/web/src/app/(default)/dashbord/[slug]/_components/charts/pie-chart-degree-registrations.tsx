@@ -1,9 +1,9 @@
 "use client";
 
-import { type Degree } from "@echo-webkom/db/schemas";
 import { memo } from "react";
 import { Legend, Pie, PieChart } from "recharts";
 
+import { type Degree } from "@/api/uno/client";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { randomHexColor } from "@/lib/color";
 

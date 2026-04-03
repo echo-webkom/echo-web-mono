@@ -1,4 +1,4 @@
-import { type RegistrationStatus } from "@echo-webkom/db/schemas";
+import { type RegistrationStatus } from "@/api/uno/client";
 
 export const statusColor = {
   registered: "text-green-600",
