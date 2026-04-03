@@ -1,7 +1,6 @@
-import { db } from "@echo-webkom/db/serverless";
-import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
@@ -36,38 +35,34 @@ export default async function ManageGroup(props: Props) {
     );
   }
 
-  const group = await db.query.groups.findFirst({
-    where: (group) => eq(group.id, params.id),
-    with: {
-      members: {
-        with: {
-          user: true,
-        },
-      },
-    },
-  });
+  const [groupResult, members] = await Promise.all([
+    unoWithAdmin.groups.byId(params.id),
+    unoWithAdmin.groups.members(params.id),
+  ]);
+
+  const group = groupResult;
 
   if (!group) {
     return notFound();
   }
 
-  group.members.sort((a, b) => {
-    if (!a.user.name || !b.user.name) {
+  members.sort((a, b) => {
+    if (!a.name || !b.name) {
       return -1;
     }
 
-    if (a.user.name < b.user.name) {
+    if (a.name < b.name) {
       return -1;
     }
 
-    if (a.user.name > b.user.name) {
+    if (a.name > b.name) {
       return 1;
     }
 
     return 0;
   });
 
-  const groupUserProfile = group.members.find((member) => member.user.id === user.id);
+  const groupUserProfile = members.find((member) => member.id === user.id);
 
   if (!groupUserProfile) {
     return (
@@ -105,18 +100,18 @@ export default async function ManageGroup(props: Props) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {group.members.map((member) => (
-              <TableRow key={member.userId}>
-                <TableCell>{member.user.name}</TableCell>
-                <TableCell className="p-4">{member.user.email}</TableCell>
+            {members.map((member) => (
+              <TableRow key={member.id}>
+                <TableCell>{member.name}</TableCell>
+                <TableCell className="p-4">{member.email}</TableCell>
                 <TableCell className="p-4">{member.isLeader ? "Ja" : "Nei"}</TableCell>
                 {isGroupAdmin && (
                   <TableCell className="p-4">
                     <GroupUserForm
                       user={{
-                        email: member.user.email,
-                        id: member.userId,
-                        name: member.user.name ?? member.user.email,
+                        email: member.email,
+                        id: member.id,
+                        name: member.name ?? member.email,
                       }}
                       group={group}
                       isLeader={member.isLeader}

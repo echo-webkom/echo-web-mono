@@ -222,3 +222,60 @@ func TestReactToCommentHandler(t *testing.T) {
 		})
 	}
 }
+
+func TestDeleteCommentHandler(t *testing.T) {
+	tests := []struct {
+		name           string
+		commentID      string
+		setupMocks     func(*mocks.CommentRepo)
+		expectedStatus int
+	}{
+		{
+			name:      "success",
+			commentID: "comment123",
+			setupMocks: func(mockRepo *mocks.CommentRepo) {
+				mockRepo.EXPECT().
+					DeleteComment(mock.Anything, "comment123").
+					Return(nil).
+					Once()
+			},
+			expectedStatus: http.StatusOK,
+		},
+		{
+			name:      "missing id",
+			commentID: "",
+			setupMocks: func(mockRepo *mocks.CommentRepo) {
+			},
+			expectedStatus: http.StatusMethodNotAllowed,
+		},
+		{
+			name:      "error from repo",
+			commentID: "comment123",
+			setupMocks: func(mockRepo *mocks.CommentRepo) {
+				mockRepo.EXPECT().
+					DeleteComment(mock.Anything, "comment123").
+					Return(errors.New("database error")).
+					Once()
+			},
+			expectedStatus: http.StatusInternalServerError,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockCommentRepo := mocks.NewCommentRepo(t)
+			tt.setupMocks(mockCommentRepo)
+
+			commentService := service.NewCommentService(mockCommentRepo)
+			mux := api.NewCommentMux(testutil.NewTestLogger(), commentService, handler.NoMiddleware)
+
+			r := httptest.NewRequest(http.MethodDelete, "/"+tt.commentID, nil)
+			r.SetPathValue("id", tt.commentID)
+			w := httptest.NewRecorder()
+
+			mux.ServeHTTP(w, r)
+
+			assert.Equal(t, tt.expectedStatus, w.Code)
+		})
+	}
+}

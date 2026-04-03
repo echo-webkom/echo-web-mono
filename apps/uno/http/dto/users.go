@@ -17,21 +17,22 @@ type UserGroupResponse struct {
 }
 
 type UserResponse struct {
-	ID               string              `json:"id"`
-	Name             *string             `json:"name"`
-	Email            string              `json:"email"`
-	HasImage         bool                `json:"hasImage"`
-	AlternativeEmail *string             `json:"alternativeEmail"`
-	Degree           *DegreeResponse     `json:"degree"`
-	Year             *int                `json:"year"`
-	Type             string              `json:"type"`
-	LastSignInAt     *time.Time          `json:"lastSignInAt"`
-	UpdatedAt        *time.Time          `json:"updatedAt"`
-	CreatedAt        *time.Time          `json:"createdAt"`
-	HasReadTerms     bool                `json:"hasReadTerms"`
-	Birthday         *time.Time          `json:"birthday"`
-	IsPublic         bool                `json:"isPublic"`
-	Groups           []UserGroupResponse `json:"groups"`
+	ID                         string              `json:"id"`
+	Name                       *string             `json:"name"`
+	Email                      string              `json:"email"`
+	HasImage                   bool                `json:"hasImage"`
+	AlternativeEmail           *string             `json:"alternativeEmail"`
+	AlternativeEmailVerifiedAt *time.Time          `json:"alternativeEmailVerifiedAt"`
+	Degree                     *DegreeResponse     `json:"degree"`
+	Year                       *int                `json:"year"`
+	Type                       string              `json:"type"`
+	LastSignInAt               *time.Time          `json:"lastSignInAt"`
+	UpdatedAt                  *time.Time          `json:"updatedAt"`
+	CreatedAt                  *time.Time          `json:"createdAt"`
+	HasReadTerms               bool                `json:"hasReadTerms"`
+	Birthday                   *time.Time          `json:"birthday"`
+	IsPublic                   bool                `json:"isPublic"`
+	Groups                     []UserGroupResponse `json:"groups"`
 }
 
 func UsersToUserResponses(users []model.User) []UserResponse {
@@ -55,21 +56,22 @@ func UsersToUserResponses(users []model.User) []UserResponse {
 		}
 
 		userResponses = append(userResponses, UserResponse{
-			ID:               user.ID,
-			Name:             user.Name,
-			Email:            user.Email,
-			HasImage:         user.HasImage,
-			AlternativeEmail: user.AlternativeEmail,
-			Degree:           degreeResponse,
-			Year:             user.Year.IntPtr(),
-			Type:             user.Type.String(),
-			LastSignInAt:     user.LastSignInAt,
-			UpdatedAt:        user.UpdatedAt,
-			CreatedAt:        user.CreatedAt,
-			HasReadTerms:     user.HasReadTerms,
-			Birthday:         user.Birthday,
-			IsPublic:         user.IsPublic,
-			Groups:           groups,
+			ID:                         user.ID,
+			Name:                       user.Name,
+			Email:                      user.Email,
+			HasImage:                   user.HasImage,
+			AlternativeEmail:           user.AlternativeEmail,
+			AlternativeEmailVerifiedAt: user.AlternativeEmailVerifiedAt,
+			Degree:                     degreeResponse,
+			Year:                       user.Year.IntPtr(),
+			Type:                       user.Type.String(),
+			LastSignInAt:               user.LastSignInAt,
+			UpdatedAt:                  user.UpdatedAt,
+			CreatedAt:                  user.CreatedAt,
+			HasReadTerms:               user.HasReadTerms,
+			Birthday:                   user.Birthday,
+			IsPublic:                   user.IsPublic,
+			Groups:                     groups,
 		})
 	}
 	return userResponses

@@ -1,12 +1,10 @@
 "use server";
 
 import { isPostgresIshError } from "@echo-webkom/db/error";
-import { accessRequests, whitelist } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
 import { AccessGrantedEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
-import { eq } from "drizzle-orm";
 
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 import { isMemberOf } from "@/lib/memberships";
 
@@ -30,9 +28,8 @@ export const grantAccessAction = async (accessRequestId: string) => {
     };
   }
 
-  const accessRequest = await db.query.accessRequests.findFirst({
-    where: eq(accessRequests.id, accessRequestId),
-  });
+  const requests = await unoWithAdmin.accessRequests.all();
+  const accessRequest = requests.find((row) => row.id === accessRequestId);
 
   if (!accessRequest) {
     return {
@@ -44,13 +41,13 @@ export const grantAccessAction = async (accessRequestId: string) => {
   const expiresAt = getNextSemesterStart();
 
   try {
-    await db.insert(whitelist).values({
+    await unoWithAdmin.whitelist.upsert({
       email: accessRequest.email,
       expiresAt,
       reason: `Tilgang etter forespørsel: ${accessRequest.reason}`,
     });
 
-    await db.delete(accessRequests).where(eq(accessRequests.id, accessRequestId));
+    await unoWithAdmin.accessRequests.remove(accessRequestId);
   } catch (e) {
     if (isPostgresIshError(e)) {
       if (e.code === "23505") {

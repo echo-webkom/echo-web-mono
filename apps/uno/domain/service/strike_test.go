@@ -81,33 +81,18 @@ func TestStrikeService_UnbanUsersWithExpiredStrikes_DotRepoErr(t *testing.T) {
 	assert.Error(t, err, "Expected error from UnbanUsersWithExpiredStrikes due to DotRepo failure")
 }
 
-func TestStikeService_GetUsersWithStrikes(t *testing.T) {
+func TestStrikeService_GetUsersWithStrikeDetails(t *testing.T) {
 	mockUserRepo := mocks.NewUserRepo(t)
-	expectedUsers := []model.UserWithStrikes{
-		testutil.NewFakeStruct[model.UserWithStrikes](),
-		testutil.NewFakeStruct[model.UserWithStrikes](),
-		testutil.NewFakeStruct[model.UserWithStrikes](),
+	expectedUsers := []model.UserWithStrikeDetails{
+		testutil.NewFakeStruct[model.UserWithStrikeDetails](),
+		testutil.NewFakeStruct[model.UserWithStrikeDetails](),
+		testutil.NewFakeStruct[model.UserWithStrikeDetails](),
 	}
-	mockUserRepo.EXPECT().GetUsersWithStrikes(mock.Anything).Return(expectedUsers, nil).Once()
+	mockUserRepo.EXPECT().GetUsersWithStrikeDetails(mock.Anything).Return(expectedUsers, nil).Once()
 
 	strikeService := service.NewStrikeService(nil, nil, mockUserRepo)
 
-	users, err := strikeService.GetUsersWithStrikes(t.Context())
-	assert.NoError(t, err, "Expected no error from GetUsersWithStrikes")
+	users, err := strikeService.GetUsersWithStrikeDetails(t.Context())
+	assert.NoError(t, err, "Expected no error from GetUsersWithStrikeDetails")
 	assert.Equal(t, expectedUsers, users, "Expected users to match the mock data")
-}
-
-func TestStikeService_GetBannedUsers(t *testing.T) {
-	mockUserRepo := mocks.NewUserRepo(t)
-	expectedBannedUsers := []model.UserWithBanInfo{
-		testutil.NewFakeStruct[model.UserWithBanInfo](),
-		testutil.NewFakeStruct[model.UserWithBanInfo](),
-	}
-	mockUserRepo.EXPECT().GetBannedUsers(mock.Anything).Return(expectedBannedUsers, nil).Once()
-
-	strikeService := service.NewStrikeService(nil, nil, mockUserRepo)
-
-	bannedUsers, err := strikeService.GetBannedUsers(t.Context())
-	assert.NoError(t, err, "Expected no error from GetBannedUsers")
-	assert.Equal(t, expectedBannedUsers, bannedUsers, "Expected banned users to match the mock data")
 }

@@ -1,11 +1,9 @@
-import { type Group } from "@echo-webkom/db/schemas";
-
-import { type RegistrationWithUser } from "./types";
+import { type DashboardGroup, type RegistrationWithUser } from "./types";
 import { NO_GROUP_FILTER_VALUE, type RegistrationFilter } from "./use-registration-filter";
 
 export const filterRegistrations = (
   registrations: Array<RegistrationWithUser>,
-  studentGroups: Array<Group>,
+  studentGroups: Array<DashboardGroup>,
   filters: RegistrationFilter,
 ) => {
   const { searchTerm, yearFilter, statusFilter, groupFilter } = filters;

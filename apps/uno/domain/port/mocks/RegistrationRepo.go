@@ -6,6 +6,7 @@ package mocks
 
 import (
 	"context"
+	"time"
 	"uno/domain/model"
 
 	mock "github.com/stretchr/testify/mock"
@@ -132,6 +133,126 @@ func (_c *RegistrationRepo_CreateRegistration_Call) Return(registration *model.R
 }
 
 func (_c *RegistrationRepo_CreateRegistration_Call) RunAndReturn(run func(ctx context.Context, userID string, happeningID string, spotRanges []model.SpotRange, hostGroups []string, canSkipSpotRange bool) (*model.Registration, bool, error)) *RegistrationRepo_CreateRegistration_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// DeleteAnswersByUserAndHappening provides a mock function for the type RegistrationRepo
+func (_mock *RegistrationRepo) DeleteAnswersByUserAndHappening(ctx context.Context, userID string, happeningID string) error {
+	ret := _mock.Called(ctx, userID, happeningID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteAnswersByUserAndHappening")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string) error); ok {
+		r0 = returnFunc(ctx, userID, happeningID)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// RegistrationRepo_DeleteAnswersByUserAndHappening_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteAnswersByUserAndHappening'
+type RegistrationRepo_DeleteAnswersByUserAndHappening_Call struct {
+	*mock.Call
+}
+
+// DeleteAnswersByUserAndHappening is a helper method to define mock.On call
+//   - ctx context.Context
+//   - userID string
+//   - happeningID string
+func (_e *RegistrationRepo_Expecter) DeleteAnswersByUserAndHappening(ctx interface{}, userID interface{}, happeningID interface{}) *RegistrationRepo_DeleteAnswersByUserAndHappening_Call {
+	return &RegistrationRepo_DeleteAnswersByUserAndHappening_Call{Call: _e.mock.On("DeleteAnswersByUserAndHappening", ctx, userID, happeningID)}
+}
+
+func (_c *RegistrationRepo_DeleteAnswersByUserAndHappening_Call) Run(run func(ctx context.Context, userID string, happeningID string)) *RegistrationRepo_DeleteAnswersByUserAndHappening_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *RegistrationRepo_DeleteAnswersByUserAndHappening_Call) Return(err error) *RegistrationRepo_DeleteAnswersByUserAndHappening_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *RegistrationRepo_DeleteAnswersByUserAndHappening_Call) RunAndReturn(run func(ctx context.Context, userID string, happeningID string) error) *RegistrationRepo_DeleteAnswersByUserAndHappening_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// DeleteRegistrationsByHappeningID provides a mock function for the type RegistrationRepo
+func (_mock *RegistrationRepo) DeleteRegistrationsByHappeningID(ctx context.Context, happeningID string) error {
+	ret := _mock.Called(ctx, happeningID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteRegistrationsByHappeningID")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = returnFunc(ctx, happeningID)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// RegistrationRepo_DeleteRegistrationsByHappeningID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteRegistrationsByHappeningID'
+type RegistrationRepo_DeleteRegistrationsByHappeningID_Call struct {
+	*mock.Call
+}
+
+// DeleteRegistrationsByHappeningID is a helper method to define mock.On call
+//   - ctx context.Context
+//   - happeningID string
+func (_e *RegistrationRepo_Expecter) DeleteRegistrationsByHappeningID(ctx interface{}, happeningID interface{}) *RegistrationRepo_DeleteRegistrationsByHappeningID_Call {
+	return &RegistrationRepo_DeleteRegistrationsByHappeningID_Call{Call: _e.mock.On("DeleteRegistrationsByHappeningID", ctx, happeningID)}
+}
+
+func (_c *RegistrationRepo_DeleteRegistrationsByHappeningID_Call) Run(run func(ctx context.Context, happeningID string)) *RegistrationRepo_DeleteRegistrationsByHappeningID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *RegistrationRepo_DeleteRegistrationsByHappeningID_Call) Return(err error) *RegistrationRepo_DeleteRegistrationsByHappeningID_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *RegistrationRepo_DeleteRegistrationsByHappeningID_Call) RunAndReturn(run func(ctx context.Context, happeningID string) error) *RegistrationRepo_DeleteRegistrationsByHappeningID_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -343,6 +464,99 @@ func (_c *RegistrationRepo_InsertAnswers_Call) Return(err error) *RegistrationRe
 }
 
 func (_c *RegistrationRepo_InsertAnswers_Call) RunAndReturn(run func(ctx context.Context, userID string, happeningID string, questions []model.QuestionAnswer) error) *RegistrationRepo_InsertAnswers_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateRegistrationStatus provides a mock function for the type RegistrationRepo
+func (_mock *RegistrationRepo) UpdateRegistrationStatus(ctx context.Context, userID string, happeningID string, status model.RegistrationStatus, prevStatus *string, changedBy *string, changedAt *time.Time, unregisterReason *string) error {
+	ret := _mock.Called(ctx, userID, happeningID, status, prevStatus, changedBy, changedAt, unregisterReason)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateRegistrationStatus")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, model.RegistrationStatus, *string, *string, *time.Time, *string) error); ok {
+		r0 = returnFunc(ctx, userID, happeningID, status, prevStatus, changedBy, changedAt, unregisterReason)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// RegistrationRepo_UpdateRegistrationStatus_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateRegistrationStatus'
+type RegistrationRepo_UpdateRegistrationStatus_Call struct {
+	*mock.Call
+}
+
+// UpdateRegistrationStatus is a helper method to define mock.On call
+//   - ctx context.Context
+//   - userID string
+//   - happeningID string
+//   - status model.RegistrationStatus
+//   - prevStatus *string
+//   - changedBy *string
+//   - changedAt *time.Time
+//   - unregisterReason *string
+func (_e *RegistrationRepo_Expecter) UpdateRegistrationStatus(ctx interface{}, userID interface{}, happeningID interface{}, status interface{}, prevStatus interface{}, changedBy interface{}, changedAt interface{}, unregisterReason interface{}) *RegistrationRepo_UpdateRegistrationStatus_Call {
+	return &RegistrationRepo_UpdateRegistrationStatus_Call{Call: _e.mock.On("UpdateRegistrationStatus", ctx, userID, happeningID, status, prevStatus, changedBy, changedAt, unregisterReason)}
+}
+
+func (_c *RegistrationRepo_UpdateRegistrationStatus_Call) Run(run func(ctx context.Context, userID string, happeningID string, status model.RegistrationStatus, prevStatus *string, changedBy *string, changedAt *time.Time, unregisterReason *string)) *RegistrationRepo_UpdateRegistrationStatus_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 model.RegistrationStatus
+		if args[3] != nil {
+			arg3 = args[3].(model.RegistrationStatus)
+		}
+		var arg4 *string
+		if args[4] != nil {
+			arg4 = args[4].(*string)
+		}
+		var arg5 *string
+		if args[5] != nil {
+			arg5 = args[5].(*string)
+		}
+		var arg6 *time.Time
+		if args[6] != nil {
+			arg6 = args[6].(*time.Time)
+		}
+		var arg7 *string
+		if args[7] != nil {
+			arg7 = args[7].(*string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+			arg4,
+			arg5,
+			arg6,
+			arg7,
+		)
+	})
+	return _c
+}
+
+func (_c *RegistrationRepo_UpdateRegistrationStatus_Call) Return(err error) *RegistrationRepo_UpdateRegistrationStatus_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *RegistrationRepo_UpdateRegistrationStatus_Call) RunAndReturn(run func(ctx context.Context, userID string, happeningID string, status model.RegistrationStatus, prevStatus *string, changedBy *string, changedAt *time.Time, unregisterReason *string) error) *RegistrationRepo_UpdateRegistrationStatus_Call {
 	_c.Call.Return(run)
 	return _c
 }

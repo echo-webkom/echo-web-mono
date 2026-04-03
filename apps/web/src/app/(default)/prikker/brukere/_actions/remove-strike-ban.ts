@@ -1,9 +1,6 @@
 "use server";
 
-import { banInfos, dots } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
-import { and, eq } from "drizzle-orm";
-
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 import { isMemberOf } from "@/lib/memberships";
 
@@ -24,7 +21,7 @@ export const removeBanAction = async (userId: string) => {
     };
   }
 
-  await db.delete(banInfos).where(eq(banInfos.userId, userId));
+  await unoWithAdmin.strikes.removeBan(userId);
 
   console.info(`User, ${user.id}, removed ban for user, ${userId}`);
 
@@ -51,7 +48,7 @@ export const removeStrikeAction = async (userId: string, strikeId: number) => {
     };
   }
 
-  await db.delete(dots).where(and(eq(dots.userId, userId), eq(dots.id, strikeId)));
+  await unoWithAdmin.strikes.removeStrike(userId, strikeId);
 
   console.info(`User, ${user.id}, removed strike, ${strikeId}, for user, ${userId}`);
 

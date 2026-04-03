@@ -39,6 +39,14 @@ func (hs *HappeningService) HappeningRepo() port.HappeningRepo {
 	return hs.happeningRepo
 }
 
+func (hs *HappeningService) RegistrationRepo() port.RegistrationRepo {
+	return hs.registrationRepo
+}
+
+func (hs *HappeningService) UserRepo() port.UserRepo {
+	return hs.userRepo
+}
+
 // RegisterResult represents the outcome of a registration attempt.
 // This is a domain model for internal use in the service layer.
 type RegisterResult struct {

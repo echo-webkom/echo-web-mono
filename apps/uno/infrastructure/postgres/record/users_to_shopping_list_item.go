@@ -2,7 +2,6 @@ package record
 
 import (
 	"time"
-
 	"uno/domain/model"
 )
 
@@ -14,9 +13,8 @@ type UsersToShoppingListItemsDB struct {
 }
 
 // ToDomain converts database model to domain model
-// TODO: This should maybe not return a pointer?
-func (db *UsersToShoppingListItemsDB) ToDomain() *model.UsersToShoppingListItems {
-	return &model.UsersToShoppingListItems{
+func (db *UsersToShoppingListItemsDB) ToDomain() model.UsersToShoppingListItems {
+	return model.UsersToShoppingListItems{
 		UserID:    db.UserID,
 		ItemID:    db.ItemID,
 		CreatedAt: db.CreatedAt,

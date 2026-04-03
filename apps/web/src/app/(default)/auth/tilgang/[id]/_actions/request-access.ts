@@ -1,12 +1,11 @@
 "use server";
 
 import { isPostgresIshError } from "@echo-webkom/db/error";
-import { accessRequests } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
 import { AccessRequestNotificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
-import { nanoid } from "nanoid";
 import { z } from "zod";
+
+import { unoWithAdmin } from "@/api/server";
 
 import { requestAccessSchema, type IRequestAccessForm } from "../_lib/request-access";
 
@@ -26,10 +25,7 @@ export const requestAccess = async (data: IRequestAccessForm): Promise<RequestAc
   try {
     const { email, reason } = requestAccessSchema.parse(data);
 
-    const id = nanoid();
-
-    await db.insert(accessRequests).values({
-      id,
+    const created = await unoWithAdmin.accessRequests.create({
       email,
       reason,
     });
@@ -48,7 +44,7 @@ export const requestAccess = async (data: IRequestAccessForm): Promise<RequestAc
     return {
       success: true,
       data: {
-        id,
+        id: created.id,
       },
     };
   } catch (e) {

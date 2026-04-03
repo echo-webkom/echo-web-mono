@@ -2,13 +2,13 @@ package api
 
 import (
 	"errors"
+	"time"
+	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
 	"uno/http/dto"
 	"uno/http/handler"
 	"uno/http/router"
-
-	_ "uno/domain/model"
 )
 
 type happenings struct {
@@ -28,8 +28,13 @@ func NewHappeningMux(logger port.Logger, happeningService *service.HappeningServ
 
 	// Admin
 	mux.Handle("GET", "/{id}/registrations", h.getHappeningRegistrations, admin)
+	mux.Handle("GET", "/{id}/registrations/{userId}", h.getHappeningRegistrationByUser, admin)
+	mux.Handle("GET", "/{id}/registrations/full", h.getHappeningRegistrationsFull, admin)
 	mux.Handle("GET", "/{slug}/full", h.getFullHappeningBySlug, admin)
 	mux.Handle("POST", "/{id}/register", h.registerForHappening, admin)
+	mux.Handle("POST", "/{id}/deregister", h.deregisterFromHappening, admin)
+	mux.Handle("PATCH", "/{id}/registrations/{userId}", h.updateRegistrationStatus, admin)
+	mux.Handle("DELETE", "/{id}/registrations", h.deleteAllRegistrations, admin)
 
 	return mux
 }
@@ -139,6 +144,97 @@ func (h *happenings) getHappeningRegistrations(ctx *handler.Context) error {
 	// Convert ports models to DTOs
 	response := dto.HappeningRegistrationListFromPorts(regs)
 	return ctx.JSON(response)
+}
+
+// getHappeningRegistrationByUser returns the registration of a specific user for a happening
+// @Summary      Get registration by user
+// @Description  Retrieves the registration of a specific user for a specific happening.
+// @Tags         happenings
+// @Produce      json
+// @Param        id      path      string  true  "Happening ID"
+// @Param        userId  path      string  true  "User ID"
+// @Success      200     {object}  dto.RegistrationResponse  "OK"
+// @Failure      400     {string}  string  "Bad Request"
+// @Failure      404     {string}  string  "Not Found"
+// @Security     AdminAPIKey
+// @Router       /happenings/{id}/registrations/{userId} [get]
+func (h *happenings) getHappeningRegistrationByUser(ctx *handler.Context) error {
+	happeningID := ctx.PathValue("id")
+	if happeningID == "" {
+		return ctx.BadRequest(errors.New("missing happening ID"))
+	}
+
+	userID := ctx.PathValue("userId")
+	if userID == "" {
+		return ctx.BadRequest(errors.New("missing user ID"))
+	}
+
+	reg, err := h.happeningService.RegistrationRepo().GetByUserAndHappening(ctx.Context(), userID, happeningID)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+	if reg == nil {
+		return ctx.NotFound(errors.New("registration not found"))
+	}
+
+	response := new(dto.RegistrationResponse).FromDomain(reg)
+	return ctx.JSON(response)
+}
+
+// getHappeningRegistrationsFull returns full registration rows for a happening by ID.
+// @Summary      Get full happening registrations
+// @Description  Retrieves full registration rows for a specific happening, enriched with user information.
+// @Tags         happenings
+// @Produce      json
+// @Param        id   path      string  true  "Happening ID"
+// @Success      200  {array}   dto.FullRegistrationRowResponse  "OK"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      404  {string}  string  "Not Found"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /happenings/{id}/registrations/full [get]
+func (h *happenings) getHappeningRegistrationsFull(ctx *handler.Context) error {
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.BadRequest(errors.New("missing happening ID"))
+	}
+
+	happening, err := h.happeningService.HappeningRepo().GetHappeningById(ctx.Context(), id)
+	if err != nil {
+		return ctx.NotFound(errors.New("happening not found"))
+	}
+
+	fullHappening, err := h.happeningService.HappeningRepo().GetFullHappeningBySlug(ctx.Context(), happening.Slug)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+
+	userIDs := make(map[string]struct{})
+	for _, reg := range fullHappening.Registrations {
+		userIDs[reg.UserID] = struct{}{}
+		if reg.ChangedBy != nil {
+			userIDs[*reg.ChangedBy] = struct{}{}
+		}
+	}
+
+	ids := make([]string, 0, len(userIDs))
+	for id := range userIDs {
+		ids = append(ids, id)
+	}
+
+	usersByID := make(map[string]model.User)
+	if len(ids) > 0 {
+		users, userErr := h.happeningService.UserRepo().GetUsersByIDs(ctx.Context(), ids)
+		if userErr != nil {
+			return ctx.InternalServerError()
+		}
+		for _, user := range users {
+			usersByID[user.ID] = user
+		}
+	}
+
+	rows := dto.FullRegistrationRowsFromDomain(fullHappening, usersByID)
+	return ctx.JSON(rows)
 }
 
 // getHappeningSpotRanges returns all spot ranges for a happening
@@ -270,4 +366,159 @@ func (h *happenings) registerForHappening(ctx *handler.Context) error {
 	}
 
 	return ctx.JSON(response)
+}
+
+// deregisterFromHappening deregisters a user from a happening.
+// @Summary      Deregister from happening
+// @Description  Marks a user's registration as unregistered and deletes their answers.
+// @Tags         happenings
+// @Accept       json
+// @Produce      json
+// @Param        id    path      string             true  "Happening ID"
+// @Param        body  body      dto.DeregisterRequest  true  "Deregistration payload"
+// @Success      200   {string}  string             "OK"
+// @Failure      400   {string}  string             "Bad Request"
+// @Failure      401   {string}  string             "Unauthorized"
+// @Failure      404   {string}  string             "Not Found"
+// @Failure      500   {string}  string             "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /happenings/{id}/deregister [post]
+func (h *happenings) deregisterFromHappening(ctx *handler.Context) error {
+	happeningID := ctx.PathValue("id")
+	if happeningID == "" {
+		return ctx.BadRequest(errors.New("missing happening ID"))
+	}
+
+	var req dto.DeregisterRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.BadRequest(ErrFailedToReadJSON)
+	}
+	if req.UserID == "" {
+		return ctx.BadRequest(errors.New("missing user ID"))
+	}
+
+	reg, err := h.happeningService.RegistrationRepo().GetByUserAndHappening(ctx.Context(), req.UserID, happeningID)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+	if reg == nil {
+		return ctx.NotFound(errors.New("registration not found"))
+	}
+
+	now := time.Now()
+	if err = h.happeningService.RegistrationRepo().UpdateRegistrationStatus(
+		ctx.Context(),
+		req.UserID,
+		happeningID,
+		model.RegistrationStatusUnregistered,
+		stringPtr(string(reg.Status)),
+		nil,
+		&now,
+		&req.Reason,
+	); err != nil {
+		return ctx.InternalServerError()
+	}
+
+	if err = h.happeningService.RegistrationRepo().DeleteAnswersByUserAndHappening(ctx.Context(), req.UserID, happeningID); err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.Ok()
+}
+
+// updateRegistrationStatus updates a user's registration status for a happening.
+// @Summary      Update registration status
+// @Description  Updates status and metadata for a user's registration in a specific happening.
+// @Tags         happenings
+// @Accept       json
+// @Produce      json
+// @Param        id      path      string                           true  "Happening ID"
+// @Param        userId  path      string                           true  "User ID"
+// @Param        body    body      dto.UpdateRegistrationStatusRequest  true  "Registration status payload"
+// @Success      200     {string}  string                           "OK"
+// @Failure      400     {string}  string                           "Bad Request"
+// @Failure      401     {string}  string                           "Unauthorized"
+// @Failure      404     {string}  string                           "Not Found"
+// @Failure      500     {string}  string                           "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /happenings/{id}/registrations/{userId} [patch]
+func (h *happenings) updateRegistrationStatus(ctx *handler.Context) error {
+	happeningID := ctx.PathValue("id")
+	if happeningID == "" {
+		return ctx.BadRequest(errors.New("missing happening ID"))
+	}
+
+	userID := ctx.PathValue("userId")
+	if userID == "" {
+		return ctx.BadRequest(errors.New("missing user ID"))
+	}
+
+	var req dto.UpdateRegistrationStatusRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.BadRequest(ErrFailedToReadJSON)
+	}
+
+	validStatuses := map[string]model.RegistrationStatus{
+		"registered":   model.RegistrationStatusRegistered,
+		"waiting":      model.RegistrationStatusWaitlisted,
+		"unregistered": model.RegistrationStatusUnregistered,
+		"removed":      model.RegistrationStatusRemoved,
+		"pending":      model.RegistrationStatusPending,
+	}
+	status, ok := validStatuses[req.Status]
+	if !ok {
+		return ctx.BadRequest(errors.New("invalid status"))
+	}
+
+	reg, err := h.happeningService.RegistrationRepo().GetByUserAndHappening(ctx.Context(), userID, happeningID)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+	if reg == nil {
+		return ctx.NotFound(errors.New("registration not found"))
+	}
+
+	now := time.Now()
+	changedBy := req.ChangedBy
+	if err = h.happeningService.RegistrationRepo().UpdateRegistrationStatus(
+		ctx.Context(),
+		userID,
+		happeningID,
+		status,
+		stringPtr(string(reg.Status)),
+		&changedBy,
+		&now,
+		&req.Reason,
+	); err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.Ok()
+}
+
+// deleteAllRegistrations deletes all registrations for a happening by ID.
+// @Summary      Delete all happening registrations
+// @Tags         happenings
+// @Param        id   path      string  true  "Happening ID"
+// @Success      200  {string}  string  "OK"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /happenings/{id}/registrations [delete]
+func (h *happenings) deleteAllRegistrations(ctx *handler.Context) error {
+	happeningID := ctx.PathValue("id")
+	if happeningID == "" {
+		return ctx.BadRequest(errors.New("missing happening ID"))
+	}
+
+	if err := h.happeningService.RegistrationRepo().DeleteRegistrationsByHappeningID(ctx.Context(), happeningID); err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.Ok()
+}
+
+func stringPtr(s string) *string {
+	return &s
 }

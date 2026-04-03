@@ -1,13 +1,25 @@
+import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { ensureBedkom } from "@/lib/ensure";
 
-import { unoWithAdmin } from "../../../../api/server";
 import { NewStrikesForm } from "./_components/new-strikes-form";
 
 export default async function CreateStrikes() {
   await ensureBedkom();
-  const users = await unoWithAdmin.strikes.listStriked();
+  const detailedUsers = await unoWithAdmin.strikes.listDetailed();
+
+  // Map the detailed user data to a simpler format for the form
+  const users = detailedUsers.map((user) => {
+    const strikes = user.dots.reduce((sum, dot) => sum + dot.count, 0);
+    return {
+      id: user.id,
+      name: user.name ?? "",
+      hasImage: user.hasImage,
+      isBanned: user.banInfo !== null,
+      strikes,
+    };
+  });
 
   return (
     <Container>

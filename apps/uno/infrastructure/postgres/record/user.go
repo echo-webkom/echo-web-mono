@@ -9,22 +9,23 @@ import (
 // UserDB represents the database schema for the user table.
 // It contains database-specific tags and structure.
 type UserDB struct {
-	ID               string         `db:"id"`
-	Name             *string        `db:"name"`
-	Email            string         `db:"email"`
-	Image            *string        `db:"image"`
-	AlternativeEmail *string        `db:"alternative_email"`
-	Year             *int           `db:"year"`
-	Type             model.UserType `db:"type"`
-	LastSignInAt     *time.Time     `db:"last_sign_in_at"`
-	UpdatedAt        *time.Time     `db:"updated_at"`
-	CreatedAt        *time.Time     `db:"created_at"`
-	HasReadTerms     bool           `db:"has_read_terms"`
-	Birthday         *time.Time     `db:"birthday"`
-	IsPublic         bool           `db:"is_public"`
-	DegreeID         *string        `db:"degree_id"`
-	DegreeName       *string        `db:"degree_name"`
-	Groups           []GroupDB      `db:"groups"`
+	ID                         string         `db:"id"`
+	Name                       *string        `db:"name"`
+	Email                      string         `db:"email"`
+	Image                      *string        `db:"image"`
+	AlternativeEmail           *string        `db:"alternative_email"`
+	AlternativeEmailVerifiedAt *time.Time     `db:"alternative_email_verified_at"`
+	Year                       *int           `db:"year"`
+	Type                       model.UserType `db:"type"`
+	LastSignInAt               *time.Time     `db:"last_sign_in_at"`
+	UpdatedAt                  *time.Time     `db:"updated_at"`
+	CreatedAt                  *time.Time     `db:"created_at"`
+	HasReadTerms               bool           `db:"has_read_terms"`
+	Birthday                   *time.Time     `db:"birthday"`
+	IsPublic                   bool           `db:"is_public"`
+	DegreeID                   *string        `db:"degree_id"`
+	DegreeName                 *string        `db:"degree_name"`
+	Groups                     []GroupDB      `db:"groups"`
 }
 
 func (db *UserDB) HasImage() bool {
@@ -36,19 +37,20 @@ func (db *UserDB) FromDomain(u model.User) UserDB {
 	degreeID := &u.Degree.ID
 
 	return UserDB{
-		ID:               u.ID,
-		Name:             u.Name,
-		Email:            u.Email,
-		AlternativeEmail: u.AlternativeEmail,
-		DegreeID:         degreeID,
-		Year:             u.Year.IntPtr(),
-		Type:             u.Type,
-		LastSignInAt:     u.LastSignInAt,
-		UpdatedAt:        u.UpdatedAt,
-		CreatedAt:        u.CreatedAt,
-		HasReadTerms:     u.HasReadTerms,
-		Birthday:         u.Birthday,
-		IsPublic:         u.IsPublic,
+		ID:                         u.ID,
+		Name:                       u.Name,
+		Email:                      u.Email,
+		AlternativeEmail:           u.AlternativeEmail,
+		AlternativeEmailVerifiedAt: u.AlternativeEmailVerifiedAt,
+		DegreeID:                   degreeID,
+		Year:                       u.Year.IntPtr(),
+		Type:                       u.Type,
+		LastSignInAt:               u.LastSignInAt,
+		UpdatedAt:                  u.UpdatedAt,
+		CreatedAt:                  u.CreatedAt,
+		HasReadTerms:               u.HasReadTerms,
+		Birthday:                   u.Birthday,
+		IsPublic:                   u.IsPublic,
 	}
 }
 
@@ -74,21 +76,22 @@ func (db *UserDB) ToDomain() (model.User, error) {
 	}
 
 	return model.User{
-		ID:               db.ID,
-		Name:             db.Name,
-		Email:            db.Email,
-		HasImage:         db.HasImage(),
-		AlternativeEmail: db.AlternativeEmail,
-		Degree:           degree,
-		Year:             year,
-		Type:             db.Type,
-		LastSignInAt:     db.LastSignInAt,
-		UpdatedAt:        db.UpdatedAt,
-		CreatedAt:        db.CreatedAt,
-		HasReadTerms:     db.HasReadTerms,
-		Birthday:         db.Birthday,
-		IsPublic:         db.IsPublic,
-		Groups:           groups,
+		ID:                         db.ID,
+		Name:                       db.Name,
+		Email:                      db.Email,
+		HasImage:                   db.HasImage(),
+		AlternativeEmail:           db.AlternativeEmail,
+		AlternativeEmailVerifiedAt: db.AlternativeEmailVerifiedAt,
+		Degree:                     degree,
+		Year:                       year,
+		Type:                       db.Type,
+		LastSignInAt:               db.LastSignInAt,
+		UpdatedAt:                  db.UpdatedAt,
+		CreatedAt:                  db.CreatedAt,
+		HasReadTerms:               db.HasReadTerms,
+		Birthday:                   db.Birthday,
+		IsPublic:                   db.IsPublic,
+		Groups:                     groups,
 	}, nil
 }
 

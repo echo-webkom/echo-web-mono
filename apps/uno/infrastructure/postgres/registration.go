@@ -3,6 +3,7 @@ package postgres
 import (
 	"context"
 	"database/sql"
+	"time"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
@@ -305,4 +306,86 @@ func (r *RegistrationRepo) InsertAnswers(
 	}
 
 	return tx.Commit()
+}
+
+func (r *RegistrationRepo) DeleteAnswersByUserAndHappening(ctx context.Context, userID, happeningID string) error {
+	r.logger.Info(ctx, "deleting answers by user and happening",
+		"user_id", userID,
+		"happening_id", happeningID,
+	)
+
+	query := `--sql
+		DELETE FROM answer
+		WHERE user_id = $1 AND happening_id = $2
+	`
+
+	if _, err := r.db.ExecContext(ctx, query, userID, happeningID); err != nil {
+		r.logger.Error(ctx, "failed to delete answers by user and happening",
+			"error", err,
+			"user_id", userID,
+			"happening_id", happeningID,
+		)
+		return err
+	}
+
+	return nil
+}
+
+func (r *RegistrationRepo) UpdateRegistrationStatus(
+	ctx context.Context,
+	userID, happeningID string,
+	status model.RegistrationStatus,
+	prevStatus *string,
+	changedBy *string,
+	changedAt *time.Time,
+	unregisterReason *string,
+) error {
+	r.logger.Info(ctx, "updating registration status",
+		"user_id", userID,
+		"happening_id", happeningID,
+		"status", status,
+	)
+
+	query := `--sql
+		UPDATE registration
+		SET status = $3,
+			prev_status = $4,
+			changed_by = $5,
+			changed_at = $6,
+			unregister_reason = $7
+		WHERE user_id = $1 AND happening_id = $2
+	`
+
+	if _, err := r.db.ExecContext(ctx, query, userID, happeningID, status, prevStatus, changedBy, changedAt, unregisterReason); err != nil {
+		r.logger.Error(ctx, "failed to update registration status",
+			"error", err,
+			"user_id", userID,
+			"happening_id", happeningID,
+			"status", status,
+		)
+		return err
+	}
+
+	return nil
+}
+
+func (r *RegistrationRepo) DeleteRegistrationsByHappeningID(ctx context.Context, happeningID string) error {
+	r.logger.Info(ctx, "deleting registrations by happening id",
+		"happening_id", happeningID,
+	)
+
+	query := `--sql
+		DELETE FROM registration
+		WHERE happening_id = $1
+	`
+
+	if _, err := r.db.ExecContext(ctx, query, happeningID); err != nil {
+		r.logger.Error(ctx, "failed to delete registrations by happening id",
+			"error", err,
+			"happening_id", happeningID,
+		)
+		return err
+	}
+
+	return nil
 }

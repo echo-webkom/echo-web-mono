@@ -1,10 +1,9 @@
-import { db } from "@echo-webkom/db/serverless";
-import { eq } from "drizzle-orm";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { createProfilePictureUrl, uno } from "@/api/client";
-import { auth, getProfileOwner } from "@/auth/session";
+import { unoWithAdmin } from "@/api/server";
+import { auth } from "@/auth/session";
 import { Chip } from "@/components/typography/chip";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
@@ -30,7 +29,7 @@ export default async function ProfilePage({ params }: Props) {
   }
 
   const { id: ownerId } = await params;
-  const profileOwner = await getProfileOwner(ownerId);
+  const profileOwner = await unoWithAdmin.users.byId(ownerId);
 
   if (!profileOwner) {
     return redirect("/hjem");
@@ -39,15 +38,8 @@ export default async function ProfilePage({ params }: Props) {
   const isProfileOwner = ownerId === user.id;
   const hasAccess = profileOwner?.isPublic ?? isProfileOwner;
 
-  const [degrees, memberships] = await Promise.all([
-    uno.degrees.all(),
-    db.query.usersToGroups.findMany({
-      where: (usersToGroup) => eq(usersToGroup.userId, ownerId),
-      with: {
-        group: true,
-      },
-    }),
-  ]);
+  const degrees = await uno.degrees.all();
+  const memberships = profileOwner.groups.map((group) => ({ group }));
 
   if (!isProfileOwner && hasAccess) {
     return (
@@ -65,7 +57,7 @@ export default async function ProfilePage({ params }: Props) {
               <div className="flex flex-col gap-6 md:flex-row">
                 <div className="flex flex-col items-center space-y-2">
                   <Avatar size="xl">
-                    {profileOwner.image ? (
+                    {profileOwner.hasImage ? (
                       <AvatarImage
                         src={createProfilePictureUrl(profileOwner.id, 2)}
                         alt={profileOwner.name ?? ""}
@@ -138,7 +130,7 @@ export default async function ProfilePage({ params }: Props) {
             <UploadProfilePicture
               userId={profileOwner.id}
               name={profileOwner.name ?? "Bo Bakseter"}
-              image={profileOwner.image}
+              hasImage={profileOwner.hasImage}
             />
             <div>
               <div>

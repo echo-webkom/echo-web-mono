@@ -39,7 +39,7 @@ func (p *UsersToShoppingListItemRepo) GetAllUserToShoppingListItems(ctx context.
 	// Convert to domain models
 	result := make([]model.UsersToShoppingListItems, len(dbModels))
 	for i, dbModel := range dbModels {
-		result[i] = *dbModel.ToDomain()
+		result[i] = dbModel.ToDomain()
 	}
 
 	return result, nil
@@ -67,7 +67,7 @@ func (p *UsersToShoppingListItemRepo) GetUserToShoppingListItem(ctx context.Cont
 	}
 
 	domainModel := dbModel.ToDomain()
-	return domainModel, nil
+	return &domainModel, nil
 }
 
 // AddUserToShoppingListItem adds a user to a shopping list item, indicating that the user likes the item.

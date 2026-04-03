@@ -26,7 +26,7 @@ func (u *UserRepo) GetAllUsers(ctx context.Context) ([]model.User, error) {
 	var usersDB []record.UserDB
 	query := `--sql
 		SELECT
-			u.id, u.name, u.email, u.image, u.alternative_email, u.year, u.type,
+			u.id, u.name, u.email, u.image, u.alternative_email, u.alternative_email_verified_at, u.year, u.type,
 			u.last_sign_in_at, u.updated_at, u.created_at, u.has_read_terms,
 			u.birthday, u.is_public,
 			d.id AS degree_id, d.name AS degree_name
@@ -105,7 +105,7 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo,
 	defer func() { _ = rows.Close() }()
 
 	var users []record.UserWithBanInfo
-	userMap := make(map[string]*record.UserWithBanInfo)
+	userIndexes := make(map[string]int)
 
 	for rows.Next() { // Fix n+1 queyr
 		var user record.UserWithBanInfo
@@ -126,7 +126,7 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo,
 		}
 		user.Dots = []record.DotInfo{}
 		users = append(users, user)
-		userMap[user.ID] = &users[len(users)-1]
+		userIndexes[user.ID] = len(users) - 1
 	}
 
 	if len(users) == 0 {
@@ -160,8 +160,8 @@ func (u *UserRepo) GetBannedUsers(ctx context.Context) ([]model.UserWithBanInfo,
 
 	// Group dots by user ID
 	for _, dot := range dots {
-		if user, exists := userMap[dot.UserID]; exists {
-			user.Dots = append(user.Dots, dot)
+		if index, exists := userIndexes[dot.UserID]; exists {
+			users[index].Dots = append(users[index].Dots, dot)
 		}
 	}
 
@@ -199,6 +199,147 @@ func (u *UserRepo) GetUsersWithStrikes(ctx context.Context) ([]model.UserWithStr
 	return record.UserWithStrikesList(users), nil
 }
 
+func (u *UserRepo) GetUsersWithStrikeDetails(ctx context.Context) ([]model.UserWithStrikeDetails, error) {
+	u.logger.Info(ctx, "getting users with strike details")
+
+	query := `--sql
+		SELECT
+			u.id,
+			u.name,
+			u.image,
+			b.id AS ban_id,
+			b.reason AS ban_reason,
+			b.user_id AS ban_user_id,
+			b.banned_by AS ban_banned_by_id,
+			banned_by_user.name AS ban_banned_by_name,
+			b.created_at AS ban_created_at,
+			b.expires_at AS ban_expires_at
+		FROM "user" u
+		LEFT JOIN ban_info b ON u.id = b.user_id
+		LEFT JOIN "user" banned_by_user ON b.banned_by = banned_by_user.id
+		WHERE EXISTS (SELECT 1 FROM dot d WHERE d.user_id = u.id)
+		   OR b.id IS NOT NULL;
+	`
+
+	rows, err := u.db.QueryContext(ctx, query)
+	if err != nil {
+		u.logger.Error(ctx, "failed to get users with strike details", "error", err)
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	users := make([]record.UserWithStrikeDetails, 0)
+	userIndexes := make(map[string]int)
+
+	for rows.Next() {
+		var user record.UserWithStrikeDetails
+		var banID *int
+		var banReason *string
+		var banUserID *string
+		var banBannedByID *string
+		var banBannedByName *string
+		var banCreatedAt *time.Time
+		var banExpiresAt *time.Time
+
+		err = rows.Scan(
+			&user.ID,
+			&user.Name,
+			&user.Image,
+			&banID,
+			&banReason,
+			&banUserID,
+			&banBannedByID,
+			&banBannedByName,
+			&banCreatedAt,
+			&banExpiresAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		if banID != nil {
+			reason := ""
+			if banReason != nil {
+				reason = *banReason
+			}
+
+			userID := ""
+			if banUserID != nil {
+				userID = *banUserID
+			}
+
+			bannedByID := ""
+			if banBannedByID != nil {
+				bannedByID = *banBannedByID
+			}
+
+			createdAt := time.Time{}
+			if banCreatedAt != nil {
+				createdAt = *banCreatedAt
+			}
+
+			expiresAt := time.Time{}
+			if banExpiresAt != nil {
+				expiresAt = *banExpiresAt
+			}
+
+			user.BanInfo = &record.BanInfo{
+				ID:           *banID,
+				Reason:       reason,
+				UserID:       userID,
+				BannedByID:   bannedByID,
+				BannedByName: banBannedByName,
+				CreatedAt:    createdAt,
+				ExpiresAt:    expiresAt,
+			}
+		}
+
+		user.Dots = []record.DotInfo{}
+		users = append(users, user)
+		userIndexes[user.ID] = len(users) - 1
+	}
+
+	if len(users) == 0 {
+		return []model.UserWithStrikeDetails{}, nil
+	}
+
+	userIDs := make([]string, 0, len(users))
+	for _, user := range users {
+		userIDs = append(userIDs, user.ID)
+	}
+
+	dotQuery := `--sql
+		SELECT
+			d.id,
+			d.user_id,
+			d.count,
+			d.reason,
+			d.created_at,
+			d.expires_at,
+			d.striked_by AS striked_by_id,
+			striked_by_user.name AS striked_by_name
+		FROM dot d
+		LEFT JOIN "user" striked_by_user ON d.striked_by = striked_by_user.id
+		WHERE d.user_id = ANY($1)
+		ORDER BY d.user_id, d.created_at DESC;
+	`
+
+	var dots []record.DotInfo
+	err = u.db.SelectContext(ctx, &dots, dotQuery, pq.Array(userIDs))
+	if err != nil {
+		u.logger.Error(ctx, "failed to get dots for users with strike details", "error", err)
+		return nil, err
+	}
+
+	for _, dot := range dots {
+		if index, exists := userIndexes[dot.UserID]; exists {
+			users[index].Dots = append(users[index].Dots, dot)
+		}
+	}
+
+	return record.UserWithStrikeDetailsList(users), nil
+}
+
 func (u *UserRepo) GetUserByID(ctx context.Context, id string) (model.User, error) {
 	u.logger.Info(ctx, "getting user by ID",
 		"user_id", id,
@@ -206,7 +347,7 @@ func (u *UserRepo) GetUserByID(ctx context.Context, id string) (model.User, erro
 
 	query := `--sql
 		SELECT
-			u.id, u.name, u.email, u.image, u.alternative_email, u.year, u.type,
+			u.id, u.name, u.email, u.image, u.alternative_email, u.alternative_email_verified_at, u.year, u.type,
 			u.last_sign_in_at, u.updated_at, u.created_at, u.has_read_terms,
 			u.birthday, u.is_public,
 			d.id AS degree_id, d.name AS degree_name
@@ -252,7 +393,7 @@ func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) ([]model.Use
 	var usersDB []record.UserDB
 	query := `--sql
 		SELECT
-			u.id, u.name, u.email, u.image, u.alternative_email, u.year, u.type,
+			u.id, u.name, u.email, u.image, u.alternative_email, u.alternative_email_verified_at, u.year, u.type,
 			u.last_sign_in_at, u.updated_at, u.created_at, u.has_read_terms,
 			u.birthday, u.is_public,
 			d.id AS degree_id, d.name AS degree_name
@@ -313,7 +454,7 @@ func (u *UserRepo) GetUsersWithBirthday(ctx context.Context, date time.Time) ([]
 	var usersDB []record.UserDB
 	query := `--sql
 		SELECT
-			id, name, email, image, alternative_email, degree_id, year, type,
+			id, name, email, image, alternative_email, alternative_email_verified_at, degree_id, year, type,
 			last_sign_in_at, updated_at, created_at, has_read_terms,
 			birthday, is_public
 		FROM "user"
@@ -384,7 +525,7 @@ func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User,
 	query := `--sql
 		INSERT INTO "user" (id, email, name, image, alternative_email, degree_id, year, type, has_read_terms, birthday, is_public)
 		VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-		RETURNING id, name, email, image, alternative_email, degree_id, year, type, last_sign_in_at, updated_at, created_at, has_read_terms, birthday, is_public
+		RETURNING id, name, email, image, alternative_email, alternative_email_verified_at, degree_id, year, type, last_sign_in_at, updated_at, created_at, has_read_terms, birthday, is_public
 	`
 	var degreeID *string
 	if user.Degree != nil {
@@ -428,7 +569,7 @@ func (u *UserRepo) SearchUsersByName(ctx context.Context, query string, limit in
 
 	var usersDB []record.UserDB
 	sqlQuery := `--sql
-		SELECT id, name, email, image, alternative_email, year, type,
+		SELECT id, name, email, image, alternative_email, alternative_email_verified_at, year, type,
 			last_sign_in_at, updated_at, created_at, has_read_terms,
 			birthday, is_public
 		FROM "user"

@@ -2,7 +2,6 @@ package record
 
 import (
 	"time"
-
 	"uno/domain/model"
 )
 
@@ -15,8 +14,8 @@ type AccessRequestDB struct {
 }
 
 // FromDomain converts domain model to database model
-func (db *AccessRequestDB) FromDomain(ar *model.AccessRequest) *AccessRequestDB {
-	return &AccessRequestDB{
+func (db *AccessRequestDB) FromDomain(ar *model.AccessRequest) AccessRequestDB {
+	return AccessRequestDB{
 		ID:        ar.ID,
 		Email:     ar.Email,
 		Reason:    ar.Reason,
@@ -25,8 +24,8 @@ func (db *AccessRequestDB) FromDomain(ar *model.AccessRequest) *AccessRequestDB 
 }
 
 // ToDomain converts database model to domain model
-func (db *AccessRequestDB) ToDomain() *model.AccessRequest {
-	return &model.AccessRequest{
+func (db *AccessRequestDB) ToDomain() model.AccessRequest {
+	return model.AccessRequest{
 		ID:        db.ID,
 		Email:     db.Email,
 		Reason:    db.Reason,
@@ -38,7 +37,7 @@ func (db *AccessRequestDB) ToDomain() *model.AccessRequest {
 func ToDomainList(dbModels []AccessRequestDB) []model.AccessRequest {
 	result := make([]model.AccessRequest, len(dbModels))
 	for i, dbModel := range dbModels {
-		result[i] = *dbModel.ToDomain()
+		result[i] = dbModel.ToDomain()
 	}
 	return result
 }

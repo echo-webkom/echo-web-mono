@@ -23,6 +23,7 @@ func NewCommentMux(logger port.Logger, commentService *service.CommentService, a
 	mux.Handle("POST", "/", c.createComment, admin)
 	mux.Handle("GET", "/{id}", c.getCommentsByID, admin)
 	mux.Handle("GET", "/{id}/reaction", c.reactToComment, admin)
+	mux.Handle("DELETE", "/{id}", c.deleteComment, admin)
 
 	return mux
 }
@@ -106,6 +107,30 @@ func (c *comments) reactToComment(ctx *handler.Context) error {
 
 	err := c.commentService.ReactToComment(ctx.Context(), commentID, req.UserID)
 	if err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.JSON(map[string]bool{"success": true})
+}
+
+// deleteComment deletes a comment by id
+// @Summary      Delete comment
+// @Tags         comments
+// @Produce      json
+// @Param        id   path      string  true  "Comment ID"
+// @Success      200  {object}  map[string]bool  "OK"
+// @Failure      400  {string}  string           "Bad Request"
+// @Failure      401  {string}  string           "Unauthorized"
+// @Failure      500  {string}  string           "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /comments/{id} [delete]
+func (c *comments) deleteComment(ctx *handler.Context) error {
+	commentID := ctx.PathValue("id")
+	if commentID == "" {
+		return ctx.Error(errors.New("missing comment ID"), http.StatusBadRequest)
+	}
+
+	if err := c.commentService.CommentRepo().DeleteComment(ctx.Context(), commentID); err != nil {
 		return ctx.InternalServerError()
 	}
 

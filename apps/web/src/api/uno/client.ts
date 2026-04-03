@@ -746,6 +746,11 @@ class CommentsApi {
       userId,
     });
   }
+
+  async delete(commentId: string) {
+    const response = await this.client.request("DELETE", `comments/${commentId}`);
+    return response.status === 200;
+  }
 }
 
 export interface Answer {
@@ -825,11 +830,26 @@ class HappeningApi {
     );
   }
 
+  async byId(happeningId: string) {
+    return await this.client.requestJson<Happening>("GET", `happenings/${happeningId}`);
+  }
+
   async registrations(happeningId: string) {
     return await this.client.requestJson<Array<Registration>>(
       "GET",
       `happenings/${happeningId}/registrations`,
     );
+  }
+
+  async registrationByUser(happeningId: string, userId: string) {
+    try {
+      return await this.client.requestJson<Registration>(
+        "GET",
+        `happenings/${happeningId}/registrations/${userId}`,
+      );
+    } catch {
+      return null;
+    }
   }
 
   async registrationCount(happeningIds: Array<string>) {
@@ -859,6 +879,33 @@ class HappeningApi {
       return null;
     }
   }
+
+  async deregister(happeningId: string, userId: string, reason: string) {
+    const response = await this.client.request("POST", `happenings/${happeningId}/deregister`, {
+      body: JSON.stringify({ userId, reason }),
+    });
+    return response.status === 200;
+  }
+
+  async updateRegistration(
+    happeningId: string,
+    userId: string,
+    payload: { status: RegistrationStatus; reason: string; changedBy: string },
+  ) {
+    const response = await this.client.request(
+      "PATCH",
+      `happenings/${happeningId}/registrations/${userId}`,
+      {
+        body: JSON.stringify(payload),
+      },
+    );
+    return response.status === 200;
+  }
+
+  async clearRegistrations(happeningId: string) {
+    const response = await this.client.request("DELETE", `happenings/${happeningId}/registrations`);
+    return response.status === 200;
+  }
 }
 
 export interface AccessRequest {
@@ -877,6 +924,15 @@ class AccessRequestApi {
 
   async all() {
     return await this.client.requestJson<Array<AccessRequest>>("GET", "/access-requests");
+  }
+
+  async create(payload: { email: string; reason: string }) {
+    return await this.client.requestJson<AccessRequest>("POST", "/access-requests", payload);
+  }
+
+  async remove(id: string) {
+    const response = await this.client.request("DELETE", `/access-requests/${id}`);
+    return response.status === 200;
   }
 }
 
@@ -1014,6 +1070,15 @@ class WhitelistApi {
       return null;
     }
   }
+
+  async upsert(entry: { email: string; expiresAt: Date; reason: string }) {
+    return await this.client.requestJson<WhitelistEntry>("POST", "whitelist", entry);
+  }
+
+  async remove(email: string) {
+    const response = await this.client.request("DELETE", `whitelist/${encodeURIComponent(email)}`);
+    return response.status === 204;
+  }
 }
 class StrikesApi {
   private client: UnoClient;
@@ -1022,7 +1087,7 @@ class StrikesApi {
     this.client = client;
   }
 
-  async listBanned() {
+  async listDetailed() {
     return await this.client.requestJson<
       Array<{
         id: string;
@@ -1038,7 +1103,7 @@ class StrikesApi {
           bannedByUser: {
             name: string | null;
           };
-        };
+        } | null;
         dots: Array<{
           id: number;
           reason: string;
@@ -1048,23 +1113,39 @@ class StrikesApi {
           count: number;
           strikedBy: string;
           strikedByUser: {
-            name: string;
+            name: string | null;
           };
         }>;
       }>
-    >("GET", "strikes/users/banned");
+    >("GET", "strikes/details");
   }
 
-  async listStriked() {
-    return await this.client.requestJson<
-      Array<{
-        id: string;
-        name: string;
-        hasImage: boolean;
-        isBanned: boolean;
-        strikes: number;
-      }>
-    >("GET", "strikes/users");
+  async add(payload: {
+    userId: string;
+    count: number;
+    reason: string;
+    strikeExpiresInMonths: number;
+    banExpiresInMonths: number;
+    strikedBy: string;
+  }) {
+    return await this.client.requestJson<{ isBanned: boolean; message: string }>(
+      "POST",
+      "strikes",
+      payload,
+    );
+  }
+
+  async removeBan(userId: string) {
+    const response = await this.client.request("DELETE", `strikes/ban/${userId}`);
+    return response.status === 200;
+  }
+
+  async removeStrike(userId: string, strikeId: number) {
+    const response = await this.client.request(
+      "DELETE",
+      `strikes/${strikeId}?userId=${encodeURIComponent(userId)}`,
+    );
+    return response.status === 200;
   }
 }
 
@@ -1108,7 +1189,8 @@ interface GroupInsert {
 
 interface GroupMember {
   id: string;
-  name: string;
+  name: string | null;
+  email: string;
   isLeader: boolean;
 }
 
@@ -1140,8 +1222,35 @@ class GroupsApi {
     return await this.client.requestJson<Array<Group>>("GET", "groups");
   }
 
+  async byId(id: string) {
+    return await this.client.requestJson<Group>("GET", `groups/${id}`);
+  }
+
   async members(groupId: string) {
     return await this.client.requestJson<Array<GroupMember>>("GET", `groups/${groupId}/members`);
+  }
+
+  async addUser(groupId: string, userId: string) {
+    const response = await this.client.request("POST", `groups/${groupId}/members`, {
+      body: JSON.stringify({ userId }),
+    });
+    return response.status === 200;
+  }
+
+  async removeUser(groupId: string, userId: string) {
+    const response = await this.client.request("DELETE", `groups/${groupId}/members/${userId}`);
+    return response.status === 200;
+  }
+
+  async setLeader(groupId: string, userId: string, leader: boolean) {
+    const response = await this.client.request(
+      "POST",
+      `groups/${groupId}/members/${userId}/leader`,
+      {
+        body: JSON.stringify({ leader }),
+      },
+    );
+    return response.status === 200;
   }
 }
 
@@ -1179,6 +1288,7 @@ export interface User {
   email: string;
   hasImage: boolean;
   alternativeEmail: string | null;
+  alternativeEmailVerifiedAt: Date | null;
   degree: {
     id: string;
     name: string;
@@ -1243,7 +1353,7 @@ class UsersApi {
     this.client = client;
   }
 
-  async getById(id: string) {
+  async byId(id: string) {
     return await this.client.requestJson<User>("GET", `users/${id}`);
   }
 

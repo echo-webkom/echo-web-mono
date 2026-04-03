@@ -12,6 +12,15 @@ type UserWithStrikesResponse struct {
 	Strikes  int     `json:"strikes"`
 }
 
+type AddStrikeRequest struct {
+	UserID              string `json:"userId"`
+	Count               int    `json:"count"`
+	Reason              string `json:"reason"`
+	StrikeExpiresMonths int    `json:"strikeExpiresInMonths"`
+	BanExpiresMonths    int    `json:"banExpiresInMonths"`
+	StrikedBy           string `json:"strikedBy"`
+}
+
 func UsersWithStrikesFromDomainList(users []model.UserWithStrikes) []UserWithStrikesResponse {
 	resp := make([]UserWithStrikesResponse, len(users))
 	for i, user := range users {
@@ -26,35 +35,6 @@ func UsersWithStrikesFromDomainList(users []model.UserWithStrikes) []UserWithStr
 
 	return resp
 }
-
-//	Array<{
-//	  id: string;
-//	  name: string | null;
-//	  image: string | null;
-//	  banInfo: {
-//	    id: number;
-//	    reason: string;
-//	    createdAt: Date;
-//	    userId: string;
-//	    bannedBy: string;
-//	    expiresAt: Date;
-//	    bannedByUser: {
-//	      name: string | null;
-//	    };
-//	  };
-//	  dots: Array<{
-//	    id: number;
-//	    reason: string;
-//	    createdAt: Date;
-//	    userId: string;
-//	    expiresAt: Date;
-//	    count: number;
-//	    strikedBy: string;
-//	    strikedByUser: {
-//	      name: string;
-//	    };
-//	  }>;
-//	}>
 
 type BannedStrikedByUser struct {
 	Name *string `json:"name"`
@@ -82,6 +62,14 @@ type DotInfo struct {
 }
 
 type UserWithBanInfoResponse struct {
+	ID       string    `json:"id"`
+	Name     *string   `json:"name"`
+	HasImage bool      `json:"hasImage"`
+	BanInfo  *BanInfo  `json:"banInfo"`
+	Dots     []DotInfo `json:"dots"`
+}
+
+type UserWithStrikeDetailsResponse struct {
 	ID       string    `json:"id"`
 	Name     *string   `json:"name"`
 	HasImage bool      `json:"hasImage"`
@@ -130,4 +118,56 @@ func BannedUsersFromDomainList(users []model.UserWithBanInfo) []UserWithBanInfoR
 	}
 
 	return resp
+}
+
+func UsersWithStrikeDetailsFromDomainList(users []model.UserWithStrikeDetails) []UserWithStrikeDetailsResponse {
+	resp := make([]UserWithStrikeDetailsResponse, len(users))
+	for i, user := range users {
+		var banInfo *BanInfo
+		if user.BanInfo != nil {
+			banInfo = &BanInfo{
+				ID:        user.BanInfo.ID,
+				Reason:    user.BanInfo.Reason,
+				CreatedAt: FormatISO8601(user.BanInfo.CreatedAt),
+				UserID:    user.BanInfo.UserID,
+				BannedBy:  user.BanInfo.BannedByID,
+				ExpiresAt: FormatISO8601(user.BanInfo.ExpiresAt),
+				BannedByUser: BannedStrikedByUser{
+					Name: user.BanInfo.BannedByName,
+				},
+			}
+		}
+
+		dots := make([]DotInfo, len(user.Dots))
+		for j, dot := range user.Dots {
+			dots[j] = DotInfo{
+				ID:        dot.ID,
+				Reason:    dot.Reason,
+				CreatedAt: FormatISO8601(dot.CreatedAt),
+				UserID:    dot.UserID,
+				ExpiresAt: FormatISO8601(dot.ExpiresAt),
+				Count:     dot.Count,
+				StrikedBy: dot.StrikedByID,
+				StrikedByUser: BannedStrikedByUser{
+					Name: dot.StrikedByName,
+				},
+			}
+		}
+
+		resp[i] = UserWithStrikeDetailsResponse{
+			ID:       user.ID,
+			Name:     user.Name,
+			HasImage: user.HasImage,
+			BanInfo:  banInfo,
+			Dots:     dots,
+		}
+	}
+
+	return resp
+}
+
+// AddStrikeResponse represents the response for adding a strike
+type AddStrikeResponse struct {
+	IsBanned bool   `json:"isBanned"`
+	Message  string `json:"message"`
 }

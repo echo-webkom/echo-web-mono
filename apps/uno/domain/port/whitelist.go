@@ -10,4 +10,6 @@ type WhitelistRepo interface {
 	GetWhitelistByEmail(ctx context.Context, email string) (model.Whitelist, error)
 	GetWhitelist(ctx context.Context) ([]model.Whitelist, error)
 	CreateWhitelist(ctx context.Context, whitelist model.NewWhitelist) (model.Whitelist, error)
+	UpsertWhitelist(ctx context.Context, whitelist model.NewWhitelist) (model.Whitelist, error)
+	DeleteWhitelistByEmail(ctx context.Context, email string) error
 }

@@ -206,3 +206,63 @@ func (c *CommentRepo) DeleteReactionFromComment(ctx context.Context, commentID s
 
 	return nil
 }
+
+func (c *CommentRepo) DeleteComment(ctx context.Context, id string) error {
+	c.logger.Info(ctx, "deleting comment",
+		"comment_id", id,
+	)
+
+	tx, err := c.db.BeginTxx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = tx.Rollback() }()
+
+	var hasChildren bool
+	childrenQuery := `--sql
+		SELECT EXISTS (
+			SELECT 1
+			FROM comment
+			WHERE parent_comment_id = $1
+		)
+	`
+
+	if err = tx.GetContext(ctx, &hasChildren, childrenQuery, id); err != nil {
+		c.logger.Error(ctx, "failed to check comment children",
+			"error", err,
+			"comment_id", id,
+		)
+		return err
+	}
+
+	if hasChildren {
+		query := `--sql
+			UPDATE comment
+			SET content = '[slettet]', user_id = NULL, updated_at = NOW()
+			WHERE id = $1
+		`
+
+		if _, err = tx.ExecContext(ctx, query, id); err != nil {
+			c.logger.Error(ctx, "failed to soft delete comment",
+				"error", err,
+				"comment_id", id,
+			)
+			return err
+		}
+	} else {
+		query := `--sql
+			DELETE FROM comment
+			WHERE id = $1
+		`
+
+		if _, err = tx.ExecContext(ctx, query, id); err != nil {
+			c.logger.Error(ctx, "failed to hard delete comment",
+				"error", err,
+				"comment_id", id,
+			)
+			return err
+		}
+	}
+
+	return tx.Commit()
+}

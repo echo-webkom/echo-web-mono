@@ -80,3 +80,47 @@ func (p *DotRepo) CreateDot(ctx context.Context, dot model.NewDot) (model.Dot, e
 	}
 	return *dbModel.ToDomain(), nil
 }
+
+func (p *DotRepo) DeleteDotsByUserID(ctx context.Context, userID string) error {
+	p.logger.Info(ctx, "deleting dots by user id",
+		"user_id", userID,
+	)
+
+	query := `--sql
+		DELETE FROM dot
+		WHERE user_id = $1
+	`
+
+	if _, err := p.db.ExecContext(ctx, query, userID); err != nil {
+		p.logger.Error(ctx, "failed to delete dots by user id",
+			"error", err,
+			"user_id", userID,
+		)
+		return err
+	}
+
+	return nil
+}
+
+func (p *DotRepo) DeleteDotByIDAndUserID(ctx context.Context, id int, userID string) error {
+	p.logger.Info(ctx, "deleting dot by id and user id",
+		"id", id,
+		"user_id", userID,
+	)
+
+	query := `--sql
+		DELETE FROM dot
+		WHERE id = $1 AND user_id = $2
+	`
+
+	if _, err := p.db.ExecContext(ctx, query, id, userID); err != nil {
+		p.logger.Error(ctx, "failed to delete dot by id and user id",
+			"error", err,
+			"id", id,
+			"user_id", userID,
+		)
+		return err
+	}
+
+	return nil
+}

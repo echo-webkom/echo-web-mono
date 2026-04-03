@@ -24,6 +24,7 @@ func GroupResponseFromDomain(groups []model.Group) []GroupResponse {
 type GroupMemberResponse struct {
 	ID       string  `json:"id"`
 	Name     *string `json:"name"`
+	Email    string  `json:"email"`
 	IsLeader bool    `json:"isLeader"`
 }
 
@@ -34,6 +35,7 @@ func GroupMemberResponseFromDomain(members []model.GroupMember) []GroupMemberRes
 		response[i] = GroupMemberResponse{
 			ID:       m.ID,
 			Name:     m.Name,
+			Email:    m.Email,
 			IsLeader: m.IsLeader,
 		}
 	}
@@ -57,4 +59,14 @@ func (r *CreateGroupRequest) ToNewGroupDomain() model.NewGroup {
 // UpdateGroupRequest represents the request body for updating a group.
 type UpdateGroupRequest struct {
 	Name string `json:"name" validate:"required"`
+}
+
+// UpdateGroupMemberLeaderRequest represents the request body for updating a group member leader status.
+type UpdateGroupMemberLeaderRequest struct {
+	Leader bool `json:"leader"`
+}
+
+// AddGroupMemberRequest represents the request body for adding a user to a group.
+type AddGroupMemberRequest struct {
+	UserID string `json:"userId"`
 }

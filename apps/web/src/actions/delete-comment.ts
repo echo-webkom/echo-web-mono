@@ -1,9 +1,6 @@
 "use server";
 
-import { comments } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
-import { and, eq } from "drizzle-orm";
-
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 
 export const deleteCommentAction = async (body: FormData) => {
@@ -25,22 +22,12 @@ export const deleteCommentAction = async (body: FormData) => {
     };
   }
 
-  const hasChildren = await db.query.comments
-    .findFirst({
-      where: and(eq(comments.parentCommentId, id)),
-    })
-    .then((res) => !!res);
-
-  if (hasChildren) {
-    await db
-      .update(comments)
-      .set({
-        content: "[slettet]",
-        userId: null,
-      })
-      .where(eq(comments.id, id));
-  } else {
-    await db.delete(comments).where(eq(comments.id, id));
+  const success = await unoWithAdmin.comments.delete(id);
+  if (!success) {
+    return {
+      success: false,
+      message: "Failed to delete comment",
+    };
   }
 
   return {
