@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 	"uno/domain/model"
+	"uno/domain/rule"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -261,6 +262,7 @@ func TestRegistrationRepo_CreateRegistration(t *testing.T) {
 		[]model.SpotRange{spotRange},
 		[]string{},
 		false,
+		rule.IsAvailableSpot,
 	)
 
 	assert.NoError(t, err)
@@ -344,6 +346,7 @@ func TestRegistrationRepo_CreateRegistrationWaitlisted(t *testing.T) {
 		[]model.SpotRange{spotRange},
 		[]string{},
 		false,
+		rule.IsAvailableSpot,
 	)
 	assert.NoError(t, err)
 	assert.False(t, isWaitlisted1)
@@ -356,6 +359,7 @@ func TestRegistrationRepo_CreateRegistrationWaitlisted(t *testing.T) {
 		[]model.SpotRange{spotRange},
 		[]string{},
 		false,
+		rule.IsAvailableSpot,
 	)
 
 	assert.NoError(t, err)

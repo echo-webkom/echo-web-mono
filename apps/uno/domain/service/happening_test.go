@@ -8,6 +8,7 @@ import (
 	"time"
 	"uno/domain/model"
 	"uno/domain/port/mocks"
+	"uno/domain/rule"
 	"uno/domain/service"
 	"uno/testutil"
 
@@ -1034,7 +1035,7 @@ func TestIsAvailableSpot(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := service.IsAvailableSpot(
+			result := rule.IsAvailableSpot(
 				tt.spotRanges,
 				tt.registrations,
 				tt.usersByID,
@@ -1133,7 +1134,7 @@ func TestHappeningService_Register_HostCanSkipSpotRangeCheck(t *testing.T) {
 		Once()
 
 	mockRegistrationRepo.EXPECT().
-		CreateRegistration(mock.Anything, userID, happeningID, spotRanges, []string{hostGroup}, true).
+		CreateRegistration(mock.Anything, userID, happeningID, spotRanges, []string{hostGroup}, true, mock.Anything).
 		Return(&registration, false, nil).
 		Once()
 

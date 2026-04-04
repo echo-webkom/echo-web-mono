@@ -9,6 +9,7 @@ import (
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
+	"uno/domain/rule"
 )
 
 type HappeningService struct {
@@ -385,7 +386,7 @@ func (hs *HappeningService) Register(
 	userIsEligible := canSkipSpotRange
 	if !userIsEligible {
 		for _, sr := range spotRanges {
-			if fitsInSpotrange(&user, &sr) {
+			if rule.FitsInSpotRange(&user, &sr) {
 				userIsEligible = true
 				break
 			}
@@ -399,7 +400,7 @@ func (hs *HappeningService) Register(
 	}
 
 	// 11. Validate questions
-	if !validateQuestions(happeningQuestions, questions) {
+	if !rule.ValidateQuestionsAgainstAnswers(happeningQuestions, questions) {
 		return &RegisterResult{
 			Success: false,
 			Message: "Du må svare på alle spørsmålene",
@@ -414,6 +415,7 @@ func (hs *HappeningService) Register(
 		spotRanges,
 		hostGroups,
 		canSkipSpotRange,
+		rule.IsAvailableSpot,
 	)
 	if err != nil {
 		return &RegisterResult{Success: false, Message: "Kunne ikke registrere deg"}, err
