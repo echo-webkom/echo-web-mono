@@ -2,24 +2,32 @@ package service_test
 
 import (
 	"testing"
+	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
+	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestAccessRequestService_Queries(t *testing.T) {
+func TestAccessRequestService_GetAccessRequests(t *testing.T) {
 	mockRepo := mocks.NewAccessRequestRepo(t)
 	accessRequestService := service.NewAccessRequestService(mockRepo)
+	mockRepo.EXPECT().GetAccessRequests(t.Context()).Return([]model.AccessRequest{}, nil).Once()
 
-	accessRequestRepo := accessRequestService.Queries()
-	assert.NotNil(t, accessRequestRepo, "Expected AccessRequestRepo to be non-nil")
+	requests, err := accessRequestService.GetAccessRequests(t.Context())
+	assert.NoError(t, err)
+	assert.NotNil(t, requests)
 }
 
-func TestAccessRequestService_AccessRequestRepo(t *testing.T) {
+func TestAccessRequestService_GetAccessRequestByID(t *testing.T) {
 	mockRepo := mocks.NewAccessRequestRepo(t)
 	accessRequestService := service.NewAccessRequestService(mockRepo)
+	id := "request-1"
+	request := testutil.NewFakeStruct[model.AccessRequest]()
+	mockRepo.EXPECT().GetAccessRequestByID(t.Context(), id).Return(request, nil).Once()
 
-	accessRequestRepo := accessRequestService.AccessRequestRepo()
-	assert.NotNil(t, accessRequestRepo, "Expected AccessRequestRepo to be non-nil")
+	gotRequest, err := accessRequestService.GetAccessRequestByID(t.Context(), id)
+	assert.NoError(t, err)
+	assert.Equal(t, request, gotRequest)
 }

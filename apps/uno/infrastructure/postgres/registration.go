@@ -6,7 +6,6 @@ import (
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
-	"uno/domain/service"
 	"uno/infrastructure/postgres/record"
 
 	"github.com/jmoiron/sqlx"
@@ -85,6 +84,7 @@ func (r *RegistrationRepo) CreateRegistration(
 	spotRanges []model.SpotRange,
 	hostGroups []string,
 	canSkipSpotRange bool,
+	spotAvailable port.SpotAvailabilityFunc,
 ) (*model.Registration, bool, error) {
 	r.logger.Info(ctx, "creating registration",
 		"user_id", userID,
@@ -207,7 +207,7 @@ func (r *RegistrationRepo) CreateRegistration(
 		return nil, false, sql.ErrNoRows
 	}
 
-	isRegistered := service.IsAvailableSpot(
+	isRegistered := spotAvailable(
 		spotRanges,
 		existingRegs,
 		usersByID,

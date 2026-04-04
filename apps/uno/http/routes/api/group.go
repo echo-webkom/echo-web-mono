@@ -25,16 +25,16 @@ func NewGroupMux(logger port.Logger, groupService *service.GroupService, admin h
 	}
 
 	mux := router.NewMux()
-	mux.Handle("GET", "/", gh.getGroups)
-	mux.Handle("GET", "/{id}", gh.getGroupByID)
+	mux.GET("/", gh.getGroups)
+	mux.GET("/{id}", gh.getGroupByID)
 
-	mux.Handle("DELETE", "/{id}", gh.deleteGroupByID, admin)
-	mux.Handle("POST", "/", gh.createGroup, admin)
-	mux.Handle("POST", "/{id}", gh.updateGroupByID, admin)
-	mux.Handle("GET", "/{id}/members", gh.getGroupMembers, admin)
-	mux.Handle("POST", "/{id}/members", gh.addUserToGroup, admin)
-	mux.Handle("DELETE", "/{id}/members/{userId}", gh.removeUserFromGroup, admin)
-	mux.Handle("POST", "/{id}/members/{userId}/leader", gh.setGroupMemberLeader, admin)
+	mux.DELETE("/{id}", gh.deleteGroupByID, admin)
+	mux.POST("/", gh.createGroup, admin)
+	mux.POST("/{id}", gh.updateGroupByID, admin)
+	mux.GET("/{id}/members", gh.getGroupMembers, admin)
+	mux.POST("/{id}/members", gh.addUserToGroup, admin)
+	mux.DELETE("/{id}/members/{userId}", gh.removeUserFromGroup, admin)
+	mux.POST("/{id}/members/{userId}/leader", gh.setGroupMemberLeader, admin)
 
 	return mux
 }
@@ -46,7 +46,7 @@ func NewGroupMux(logger port.Logger, groupService *service.GroupService, admin h
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /groups [get]
 func (gh *group) getGroups(ctx *handler.Context) error {
-	groups, err := gh.groupService.GroupRepo().GetAllGroups(ctx.Context())
+	groups, err := gh.groupService.GetAllGroups(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -69,7 +69,7 @@ func (gh *group) getGroupByID(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing group ID"))
 	}
 
-	group, err := gh.groupService.GroupRepo().GetGroupByID(ctx.Context(), groupID)
+	group, err := gh.groupService.GetGroupByID(ctx.Context(), groupID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.NotFound(errors.New("group not found"))
@@ -98,7 +98,7 @@ func (gh *group) deleteGroupByID(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing group ID"))
 	}
 
-	err := gh.groupService.GroupRepo().DeleteGroup(ctx.Context(), groupID)
+	err := gh.groupService.DeleteGroup(ctx.Context(), groupID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.NotFound(errors.New("group not found"))
@@ -130,7 +130,7 @@ func (gh *group) createGroup(ctx *handler.Context) error {
 
 	newGroup := req.ToNewGroupDomain()
 
-	group, err := gh.groupService.GroupRepo().CreateGroup(ctx.Context(), newGroup)
+	group, err := gh.groupService.CreateGroup(ctx.Context(), newGroup)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -156,7 +156,7 @@ func (gh *group) getGroupMembers(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing group ID"))
 	}
 
-	members, err := gh.groupService.GroupRepo().GetGroupMembers(ctx.Context(), groupID)
+	members, err := gh.groupService.GetGroupMembers(ctx.Context(), groupID)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -189,7 +189,7 @@ func (gh *group) updateGroupByID(ctx *handler.Context) error {
 		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
-	group, err := gh.groupService.GroupRepo().GetGroupByID(ctx.Context(), groupID)
+	group, err := gh.groupService.GetGroupByID(ctx.Context(), groupID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.NotFound(errors.New("group not found"))
@@ -199,7 +199,7 @@ func (gh *group) updateGroupByID(ctx *handler.Context) error {
 	}
 
 	group.Name = req.Name
-	updatedGroup, err := gh.groupService.GroupRepo().UpdateGroup(ctx.Context(), group)
+	updatedGroup, err := gh.groupService.UpdateGroup(ctx.Context(), group)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -240,7 +240,7 @@ func (gh *group) setGroupMemberLeader(ctx *handler.Context) error {
 		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
-	member, err := gh.groupService.GroupRepo().GetUserGroupMembership(ctx.Context(), groupID, userID)
+	member, err := gh.groupService.GetUserGroupMembership(ctx.Context(), groupID, userID)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -248,7 +248,7 @@ func (gh *group) setGroupMemberLeader(ctx *handler.Context) error {
 		return ctx.NotFound(errors.New("user is not a member of the group"))
 	}
 
-	if err = gh.groupService.GroupRepo().SetGroupMemberLeader(ctx.Context(), groupID, userID, req.Leader); err != nil {
+	if err = gh.groupService.SetGroupMemberLeader(ctx.Context(), groupID, userID, req.Leader); err != nil {
 		return ctx.InternalServerError()
 	}
 
@@ -278,7 +278,7 @@ func (gh *group) removeUserFromGroup(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing user ID"))
 	}
 
-	member, err := gh.groupService.GroupRepo().GetUserGroupMembership(ctx.Context(), groupID, userID)
+	member, err := gh.groupService.GetUserGroupMembership(ctx.Context(), groupID, userID)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -289,7 +289,7 @@ func (gh *group) removeUserFromGroup(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("cannot remove a group leader"))
 	}
 
-	if err = gh.groupService.GroupRepo().RemoveUserFromGroup(ctx.Context(), groupID, userID); err != nil {
+	if err = gh.groupService.RemoveUserFromGroup(ctx.Context(), groupID, userID); err != nil {
 		return ctx.InternalServerError()
 	}
 
@@ -323,7 +323,7 @@ func (gh *group) addUserToGroup(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing user ID"))
 	}
 
-	member, err := gh.groupService.GroupRepo().GetUserGroupMembership(ctx.Context(), groupID, req.UserID)
+	member, err := gh.groupService.GetUserGroupMembership(ctx.Context(), groupID, req.UserID)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -331,14 +331,14 @@ func (gh *group) addUserToGroup(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("user is already a member of the group"))
 	}
 
-	if _, err = gh.groupService.GroupRepo().GetGroupByID(ctx.Context(), groupID); err != nil {
+	if _, err = gh.groupService.GetGroupByID(ctx.Context(), groupID); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.NotFound(errors.New("group not found"))
 		}
 		return ctx.InternalServerError()
 	}
 
-	if err = gh.groupService.GroupRepo().AddUserToGroup(ctx.Context(), groupID, req.UserID); err != nil {
+	if err = gh.groupService.AddUserToGroup(ctx.Context(), groupID, req.UserID); err != nil {
 		var pqErr *pq.Error
 		if errors.As(err, &pqErr) && pqErr.Code == "23503" {
 			return ctx.NotFound(errors.New("user not found"))

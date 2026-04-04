@@ -19,12 +19,12 @@ func NewDegreeMux(logger port.Logger, degreeService *service.DegreeService, admi
 	mux := router.NewMux()
 	d := degrees{logger, degreeService}
 
-	mux.Handle("GET", "/", d.getDegrees)
+	mux.GET("/", d.getDegrees)
 
 	// Admin
-	mux.Handle("POST", "/", d.createDegree, admin)
-	mux.Handle("POST", "/{id}", d.updateDegree, admin)
-	mux.Handle("DELETE", "/{id}", d.deleteDegree, admin)
+	mux.POST("/", d.createDegree, admin)
+	mux.POST("/{id}", d.updateDegree, admin)
+	mux.DELETE("/{id}", d.deleteDegree, admin)
 
 	return mux
 }
@@ -37,7 +37,7 @@ func NewDegreeMux(logger port.Logger, degreeService *service.DegreeService, admi
 // @Router       /degrees [get]
 func (d *degrees) getDegrees(ctx *handler.Context) error {
 	// Fetch degrees from the service
-	degrees, err := d.degreeService.DegreeRepo().GetAllDegrees(ctx.Context())
+	degrees, err := d.degreeService.GetAllDegrees(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -66,7 +66,7 @@ func (d *degrees) createDegree(ctx *handler.Context) error {
 	}
 
 	// Create the degree in the database
-	createdDegree, err := d.degreeService.DegreeRepo().CreateDegree(ctx.Context(), *degree.ToDomain())
+	createdDegree, err := d.degreeService.CreateDegree(ctx.Context(), *degree.ToDomain())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -99,7 +99,7 @@ func (d *degrees) updateDegree(ctx *handler.Context) error {
 	}
 
 	// Update the degree in the database
-	updatedDegree, err := d.degreeService.DegreeRepo().UpdateDegree(ctx.Context(), *degree.ToDomain())
+	updatedDegree, err := d.degreeService.UpdateDegree(ctx.Context(), *degree.ToDomain())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -128,7 +128,7 @@ func (d *degrees) deleteDegree(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing degree ID"))
 	}
 
-	if err := d.degreeService.DegreeRepo().DeleteDegree(ctx.Context(), id); err != nil {
+	if err := d.degreeService.DeleteDegree(ctx.Context(), id); err != nil {
 		return ctx.InternalServerError()
 	}
 

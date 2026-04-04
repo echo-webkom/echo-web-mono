@@ -20,12 +20,12 @@ func NewShoppingListMux(logger port.Logger, shoppingListService *service.Shoppin
 	s := shoppingList{logger, shoppingListService}
 
 	// Public
-	mux.Handle("GET", "/", s.getShoppingList)
+	mux.GET("/", s.getShoppingList)
 
 	// Admin
-	mux.Handle("POST", "/", s.createShoppingListItem, admin)
-	mux.Handle("POST", "/like", s.toggleLike, admin)
-	mux.Handle("DELETE", "/{id}", s.removeShoppingListItem, admin)
+	mux.POST("/", s.createShoppingListItem, admin)
+	mux.POST("/like", s.toggleLike, admin)
+	mux.DELETE("/{id}", s.removeShoppingListItem, admin)
 
 	return mux
 }
@@ -72,7 +72,7 @@ func (s *shoppingList) createShoppingListItem(ctx *handler.Context) error {
 	}
 
 	// Insert the new shopping list item
-	item, err := s.shoppingListService.ShoppingListItemRepo().CreateShoppingListItem(ctx.Context(), newItem)
+	item, err := s.shoppingListService.CreateShoppingListItem(ctx.Context(), newItem)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -129,7 +129,7 @@ func (s *shoppingList) removeShoppingListItem(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing shopping item ID"))
 	}
 
-	err := s.shoppingListService.ShoppingListItemRepo().DeleteShoppingListItem(ctx.Context(), itemID)
+	err := s.shoppingListService.DeleteShoppingListItem(ctx.Context(), itemID)
 	if err != nil {
 		return ctx.InternalServerError()
 	}

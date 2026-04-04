@@ -16,27 +16,27 @@ import (
 type users struct {
 	logger           port.Logger
 	userService      *service.UserService
-	registrationRepo port.RegistrationRepo
+	happeningService *service.HappeningService
 }
 
-func NewUsersMux(logger port.Logger, userService *service.UserService, registrationRepo port.RegistrationRepo, admin handler.Middleware, session handler.Middleware) *router.Mux {
-	u := users{logger, userService, registrationRepo}
+func NewUsersMux(logger port.Logger, userService *service.UserService, happeningService *service.HappeningService, admin handler.Middleware, session handler.Middleware) *router.Mux {
+	u := users{logger, userService, happeningService}
 
 	mux := router.NewMux()
 
 	// Public routes
-	mux.Handle("GET", "/{id}/image", u.getUserImage)
+	mux.GET("/{id}/image", u.getUserImage)
 
 	// Session routes
-	mux.Handle("GET", "/search", u.searchUsers, session)
+	mux.GET("/search", u.searchUsers, session)
 
 	// Admin routes
-	mux.Handle("GET", "/", u.getUsers, admin)
-	mux.Handle("GET", "/{id}", u.getUserByID, admin)
-	mux.Handle("GET", "/{id}/registrations", u.getUserRegistrations, admin)
-	mux.Handle("POST", "/{id}/image", u.uploadUserImage, admin)
-	mux.Handle("DELETE", "/{id}/image", u.deleteUserImage, admin)
-	mux.Handle("GET", "/feide/{feideId}/groups", u.getUserGroups, admin)
+	mux.GET("/", u.getUsers, admin)
+	mux.GET("/{id}", u.getUserByID, admin)
+	mux.GET("/{id}/registrations", u.getUserRegistrations, admin)
+	mux.POST("/{id}/image", u.uploadUserImage, admin)
+	mux.DELETE("/{id}/image", u.deleteUserImage, admin)
+	mux.GET("/feide/{feideId}/groups", u.getUserGroups, admin)
 
 	return mux
 }
@@ -60,7 +60,7 @@ func (u *users) getUserGroups(ctx *handler.Context) error {
 	}
 
 	// Get group IDs for the user from the database
-	groupIDs, err := u.userService.UserRepo().GetUserGroupIDs(ctx.Context(), feideID)
+	groupIDs, err := u.userService.GetUserGroupIDs(ctx.Context(), feideID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.NotFound(errors.New("user not found"))
@@ -87,7 +87,7 @@ func (u *users) searchUsers(ctx *handler.Context) error {
 		return ctx.JSON([]dto.UserSearchResult{})
 	}
 
-	users, err := u.userService.UserRepo().SearchUsersByName(ctx.Context(), query, 20)
+	users, err := u.userService.SearchUsersByName(ctx.Context(), query, 20)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -114,7 +114,7 @@ func (u *users) searchUsers(ctx *handler.Context) error {
 // @Router       /users [get]
 func (u *users) getUsers(ctx *handler.Context) error {
 	// Get all users from the database
-	users, err := u.userService.UserRepo().GetAllUsers(ctx.Context())
+	users, err := u.userService.GetAllUsers(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -144,7 +144,7 @@ func (u *users) getUserByID(ctx *handler.Context) error {
 	}
 
 	// Get user from the database
-	user, err := u.userService.UserRepo().GetUserByID(ctx.Context(), userID)
+	user, err := u.userService.GetUserByID(ctx.Context(), userID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.NotFound(errors.New("user not found"))
@@ -265,7 +265,7 @@ func (u *users) getUserRegistrations(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing user ID"))
 	}
 
-	registrations, err := u.registrationRepo.GetByUserID(ctx.Context(), userID)
+	registrations, err := u.happeningService.GetUserRegistrations(ctx.Context(), userID)
 	if err != nil {
 		return ctx.InternalServerError()
 	}

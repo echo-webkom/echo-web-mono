@@ -9,6 +9,7 @@ import (
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
+	"uno/domain/rule"
 )
 
 type HappeningService struct {
@@ -35,16 +36,69 @@ func NewHappeningService(
 	}
 }
 
-func (hs *HappeningService) HappeningRepo() port.HappeningRepo {
-	return hs.happeningRepo
+func (hs *HappeningService) GetUserRegistrations(ctx context.Context, userID string) ([]model.RegistrationWithHappening, error) {
+	return hs.registrationRepo.GetByUserID(ctx, userID)
 }
 
-func (hs *HappeningService) RegistrationRepo() port.RegistrationRepo {
-	return hs.registrationRepo
+func (hs *HappeningService) GetAllHappenings(ctx context.Context) ([]model.Happening, error) {
+	return hs.happeningRepo.GetAllHappenings(ctx)
 }
 
-func (hs *HappeningService) UserRepo() port.UserRepo {
-	return hs.userRepo
+func (hs *HappeningService) GetHappeningByID(ctx context.Context, id string) (model.Happening, error) {
+	return hs.happeningRepo.GetHappeningById(ctx, id)
+}
+
+func (hs *HappeningService) GetHappeningRegistrationCounts(ctx context.Context, ids []string) ([]model.RegistrationCount, error) {
+	return hs.happeningRepo.GetHappeningRegistrationCounts(ctx, ids)
+}
+
+func (hs *HappeningService) GetHappeningRegistrations(ctx context.Context, happeningID string) ([]model.HappeningRegistration, error) {
+	return hs.happeningRepo.GetHappeningRegistrations(ctx, happeningID)
+}
+
+func (hs *HappeningService) GetRegistrationByUserAndHappening(ctx context.Context, userID string, happeningID string) (*model.Registration, error) {
+	return hs.registrationRepo.GetByUserAndHappening(ctx, userID, happeningID)
+}
+
+func (hs *HappeningService) GetFullHappeningBySlug(ctx context.Context, slug string) (model.FullHappening, error) {
+	return hs.happeningRepo.GetFullHappeningBySlug(ctx, slug)
+}
+
+func (hs *HappeningService) GetUsersByIDs(ctx context.Context, ids []string) ([]model.User, error) {
+	return hs.userRepo.GetUsersByIDs(ctx, ids)
+}
+
+func (hs *HappeningService) GetHappeningSpotRanges(ctx context.Context, happeningID string) ([]model.SpotRange, error) {
+	return hs.happeningRepo.GetHappeningSpotRanges(ctx, happeningID)
+}
+
+func (hs *HappeningService) GetHappeningQuestions(ctx context.Context, happeningID string) ([]model.Question, error) {
+	return hs.happeningRepo.GetHappeningQuestions(ctx, happeningID)
+}
+
+func (hs *HappeningService) UpdateRegistrationStatus(
+	ctx context.Context,
+	userID string,
+	happeningID string,
+	status model.RegistrationStatus,
+	prevStatus *string,
+	changedBy *string,
+	changedAt *time.Time,
+	unregisterReason *string,
+) error {
+	return hs.registrationRepo.UpdateRegistrationStatus(ctx, userID, happeningID, status, prevStatus, changedBy, changedAt, unregisterReason)
+}
+
+func (hs *HappeningService) DeleteAnswersByUserAndHappening(ctx context.Context, userID string, happeningID string) error {
+	return hs.registrationRepo.DeleteAnswersByUserAndHappening(ctx, userID, happeningID)
+}
+
+func (hs *HappeningService) DeleteRegistrationsByHappeningID(ctx context.Context, happeningID string) error {
+	return hs.registrationRepo.DeleteRegistrationsByHappeningID(ctx, happeningID)
+}
+
+func (hs *HappeningService) DeleteHappening(ctx context.Context, id string) error {
+	return hs.happeningRepo.DeleteHappening(ctx, id)
 }
 
 // RegisterResult represents the outcome of a registration attempt.
@@ -53,199 +107,6 @@ type RegisterResult struct {
 	Success      bool
 	Message      string
 	IsWaitlisted bool
-}
-
-// Checks if a user fits in a spot range
-// A user fits if it has filled out their year and is larger or equal to MinYear and smaller or equal to MaxYear
-func fitsInSpotrange(user *model.User, spotRange *model.SpotRange) bool {
-	if user.Year == nil {
-		return false
-	}
-	return user.Year.Int() >= spotRange.MinYear && user.Year.Int() <= spotRange.MaxYear
-}
-
-// IsAvailableSpot checks if there is an available spot for a user in the given spot ranges considering existing registrations
-func IsAvailableSpot(
-	spotRanges []model.SpotRange,
-	registrations []model.Registration,
-	usersByID map[string]*model.User,
-	membershipsByUserID map[string][]string,
-	hostGroups []string,
-	user *model.User,
-	canSkip bool,
-) bool {
-	// Filter waitlisted registrations
-	waitlisted := []model.Registration{}
-	for _, reg := range registrations {
-		if reg.Status == model.RegistrationStatusWaitlisted {
-			waitlisted = append(waitlisted, reg)
-		}
-	}
-
-	// Check if a user is host
-	isHost := func(userID string) bool {
-		memberships, ok := membershipsByUserID[userID]
-		if !ok {
-			return false
-		}
-		for _, groupID := range memberships {
-			if slices.Contains(hostGroups, groupID) {
-				return true
-			}
-		}
-		return false
-	}
-
-	// Find relevant spot ranges (those without waitlisted users)
-	relevantSpotRanges := []model.SpotRange{}
-	for _, sr := range spotRanges {
-		hasWaitlisted := false
-		for _, wl := range waitlisted {
-			wlUser := usersByID[wl.UserID]
-			if wlUser != nil && (fitsInSpotrange(wlUser, &sr) || isHost(wl.UserID)) {
-				hasWaitlisted = true
-				break
-			}
-		}
-		if !hasWaitlisted {
-			relevantSpotRanges = append(relevantSpotRanges, sr)
-		}
-	}
-
-	// No relevant spot ranges means no spots available
-	if len(relevantSpotRanges) == 0 {
-		return false
-	}
-
-	// Sort spot ranges by size (smaller ranges first)
-	sortedSpotRanges := make([]model.SpotRange, len(relevantSpotRanges))
-	copy(sortedSpotRanges, relevantSpotRanges)
-
-	// Sort by size (MaxYear - MinYear)
-	for i := range sortedSpotRanges {
-		for j := i + 1; j < len(sortedSpotRanges); j++ {
-			sizeI := sortedSpotRanges[i].MaxYear - sortedSpotRanges[i].MinYear
-			sizeJ := sortedSpotRanges[j].MaxYear - sortedSpotRanges[j].MinYear
-			if sizeI > sizeJ {
-				sortedSpotRanges[i], sortedSpotRanges[j] = sortedSpotRanges[j], sortedSpotRanges[i]
-			}
-		}
-	}
-
-	// Track spots left
-	spotsLeft := make([]int, len(sortedSpotRanges))
-	for i, sr := range sortedSpotRanges {
-		spotsLeft[i] = sr.Spots
-	}
-
-	// Allocate spots for existing registrations.
-	// Track registered users that could not be placed in any relevant spot range
-	// (e.g. their year changed after registration). We cannot know which range
-	// they originally occupied, so we treat them as a budget to subtract from
-	// the new user's available spots. This prevents over registraiton, but may cause some false
-	// negatives where a user is waitlisted even though a spot in a different range is available.
-	unallocatedRegistered := 0
-	for _, reg := range registrations {
-		regUser := usersByID[reg.UserID]
-
-		allocated := false
-		if regUser != nil {
-			for i, sr := range sortedSpotRanges {
-				if (fitsInSpotrange(regUser, &sr) || isHost(reg.UserID)) && spotsLeft[i] > 0 {
-					spotsLeft[i]--
-					allocated = true
-					break
-				}
-			}
-		}
-
-		if !allocated && reg.Status == model.RegistrationStatusRegistered {
-			unallocatedRegistered++
-		}
-	}
-
-	// Check if user can fit, consuming the unallocated budget against each
-	// fitting range in turn. This may can false negatives in multi-range
-	// events (user waitlisted when a spot in a different range is free), but
-	// it never allows over-registration.
-	for i, sr := range sortedSpotRanges {
-		if fitsInSpotrange(user, &sr) || canSkip {
-			if sr.Spots == 0 {
-				return true
-			}
-			if spotsLeft[i]-unallocatedRegistered > 0 {
-				return true
-			}
-			unallocatedRegistered -= spotsLeft[i]
-			if unallocatedRegistered < 0 {
-				unallocatedRegistered = 0
-			}
-		}
-	}
-
-	return false
-}
-
-// Validate that all required questions are answered correctly
-func validateQuestions(questions []model.Question, answers []model.QuestionAnswer) bool {
-	for _, question := range questions {
-		// Find answer for this question
-		var answer *model.QuestionAnswer
-		for i := range answers {
-			if answers[i].QuestionID == question.ID {
-				answer = &answers[i]
-				break
-			}
-		}
-
-		// If no answer provided, check if required
-		if answer == nil || len(answer.Answer) == 0 {
-			if question.Required {
-				return false
-			}
-			continue
-		}
-
-		// Validate based on type
-		switch question.Type {
-		case "text", "radio":
-			var str string
-			if err := json.Unmarshal(answer.Answer, &str); err != nil {
-				return false
-			}
-			if question.Required && len(str) == 0 {
-				return false
-			}
-		case "checkbox":
-			var arr []string
-			if err := json.Unmarshal(answer.Answer, &arr); err != nil {
-				return false
-			}
-			if question.Required && len(arr) == 0 {
-				return false
-			}
-			// Validate options if provided
-			if question.Options != nil && len(arr) > 0 {
-				var options []struct {
-					Value string `json:"value"`
-				}
-				if err := json.Unmarshal(*question.Options, &options); err == nil {
-					validValues := make(map[string]bool)
-					for _, opt := range options {
-						validValues[opt.Value] = true
-					}
-					for _, val := range arr {
-						if !validValues[val] {
-							return false
-						}
-					}
-				}
-			}
-		default:
-			return false
-		}
-	}
-	return true
 }
 
 func (hs *HappeningService) Register(
@@ -385,7 +246,7 @@ func (hs *HappeningService) Register(
 	userIsEligible := canSkipSpotRange
 	if !userIsEligible {
 		for _, sr := range spotRanges {
-			if fitsInSpotrange(&user, &sr) {
+			if rule.FitsInSpotRange(&user, &sr) {
 				userIsEligible = true
 				break
 			}
@@ -399,7 +260,7 @@ func (hs *HappeningService) Register(
 	}
 
 	// 11. Validate questions
-	if !validateQuestions(happeningQuestions, questions) {
+	if !rule.ValidateQuestionsAgainstAnswers(happeningQuestions, questions) {
 		return &RegisterResult{
 			Success: false,
 			Message: "Du må svare på alle spørsmålene",
@@ -414,6 +275,7 @@ func (hs *HappeningService) Register(
 		spotRanges,
 		hostGroups,
 		canSkipSpotRange,
+		rule.IsAvailableSpot,
 	)
 	if err != nil {
 		return &RegisterResult{Success: false, Message: "Kunne ikke registrere deg"}, err
@@ -648,6 +510,8 @@ func mapSanityHappening(data SanityHappeningData) (model.Happening, error) {
 	return happening, nil
 }
 
+// mapValidGroups takes a list of group IDs and returns a filtered list containing
+// only valid group IDs that exist in the system.
 func (hs *HappeningService) mapValidGroups(ctx context.Context, groups []string) ([]string, error) {
 	validGroups, err := hs.groupRepo.GetAllGroups(ctx)
 	if err != nil {

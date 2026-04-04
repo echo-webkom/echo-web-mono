@@ -20,10 +20,10 @@ func NewSiteFeedbackMux(logger port.Logger, feedbackService *service.SiteFeedbac
 	f := feedbacks{logger, feedbackService}
 
 	// Admin
-	mux.Handle("GET", "/", f.getSiteFeedbacks, admin)
-	mux.Handle("GET", "/{id}", f.getSiteFeedbackByID, admin)
-	mux.Handle("POST", "/", f.createSiteFeedback, admin)
-	mux.Handle("PUT", "/{id}/seen", f.markSiteFeedbackAsSeen, admin)
+	mux.GET("/", f.getSiteFeedbacks, admin)
+	mux.GET("/{id}", f.getSiteFeedbackByID, admin)
+	mux.POST("/", f.createSiteFeedback, admin)
+	mux.PUT("/{id}/seen", f.markSiteFeedbackAsSeen, admin)
 
 	return mux
 }
@@ -38,7 +38,7 @@ func NewSiteFeedbackMux(logger port.Logger, feedbackService *service.SiteFeedbac
 // @Router       /feedbacks [get]
 func (f *feedbacks) getSiteFeedbacks(ctx *handler.Context) error {
 	// Fetch feedbacks from the repository
-	feedbacks, err := f.feedbackService.SiteFeedbackRepo().GetAllSiteFeedbacks(ctx.Context())
+	feedbacks, err := f.feedbackService.GetAllSiteFeedbacks(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -66,7 +66,7 @@ func (f *feedbacks) getSiteFeedbackByID(ctx *handler.Context) error {
 	}
 
 	// Fetch feedback with the given ID from the repository
-	feedback, err := f.feedbackService.SiteFeedbackRepo().GetSiteFeedbackByID(ctx.Context(), feedbackID)
+	feedback, err := f.feedbackService.GetSiteFeedbackByID(ctx.Context(), feedbackID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.NotFound(errors.New("feedback not found"))
@@ -102,7 +102,7 @@ func (f *feedbacks) createSiteFeedback(ctx *handler.Context) error {
 	}
 
 	// Create a new site feedback in the repository
-	feedback, err := f.feedbackService.SiteFeedbackRepo().CreateSiteFeedback(ctx.Context(), newFeedback)
+	feedback, err := f.feedbackService.CreateSiteFeedback(ctx.Context(), newFeedback)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -128,7 +128,7 @@ func (f *feedbacks) markSiteFeedbackAsSeen(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing feedback ID"))
 	}
 
-	err := f.feedbackService.SiteFeedbackRepo().MarkSiteFeedbackAsRead(ctx.Context(), feedbackID)
+	err := f.feedbackService.MarkSiteFeedbackAsRead(ctx.Context(), feedbackID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.NotFound(errors.New("feedback not found"))

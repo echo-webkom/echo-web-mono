@@ -32,41 +32,41 @@ func NewSanityMux(
 	// CMS read routes
 	s := &sanityCMS{logger: logger, cmsService: cmsService, happeningService: happeningService}
 
-	mux.Handle("POST", "/webhook", s.handleWebhook, admin)
-	mux.Handle("POST", "/revalidate", s.handleRevalidate, admin)
+	mux.POST("/webhook", s.handleWebhook, admin)
+	mux.POST("/revalidate", s.handleRevalidate, admin)
 
-	mux.Handle("GET", "/happenings", s.getAllHappenings)
-	mux.Handle("GET", "/happenings/home", s.getHomeHappenings)
-	mux.Handle("GET", "/happenings/filtered", s.getFilteredHappenings)
-	mux.Handle("GET", "/happenings/{slug}", s.getHappeningBySlug)
-	mux.Handle("GET", "/happenings/{slug}/contacts", s.getHappeningContactsBySlug)
-	mux.Handle("GET", "/repeating-happenings", s.getAllRepeatingHappenings)
-	mux.Handle("GET", "/repeating-happenings/{slug}", s.getRepeatingHappeningBySlug)
+	mux.GET("/happenings", s.getAllHappenings)
+	mux.GET("/happenings/home", s.getHomeHappenings)
+	mux.GET("/happenings/filtered", s.getFilteredHappenings)
+	mux.GET("/happenings/{slug}", s.getHappeningBySlug)
+	mux.GET("/happenings/{slug}/contacts", s.getHappeningContactsBySlug)
+	mux.GET("/repeating-happenings", s.getAllRepeatingHappenings)
+	mux.GET("/repeating-happenings/{slug}", s.getRepeatingHappeningBySlug)
 
-	mux.Handle("GET", "/posts", s.getAllPosts)
-	mux.Handle("GET", "/posts/{slug}", s.getPostBySlug)
+	mux.GET("/posts", s.getAllPosts)
+	mux.GET("/posts/{slug}", s.getPostBySlug)
 
-	mux.Handle("GET", "/student-groups", s.getStudentGroups)
-	mux.Handle("GET", "/student-groups/{slug}", s.getStudentGroupBySlug)
+	mux.GET("/student-groups", s.getStudentGroups)
+	mux.GET("/student-groups/{slug}", s.getStudentGroupBySlug)
 
-	mux.Handle("GET", "/job-ads", s.getAllJobAds)
-	mux.Handle("GET", "/job-ads/{slug}", s.getJobAdBySlug)
+	mux.GET("/job-ads", s.getAllJobAds)
+	mux.GET("/job-ads/{slug}", s.getJobAdBySlug)
 
-	mux.Handle("GET", "/banner", s.getBanner)
+	mux.GET("/banner", s.getBanner)
 
-	mux.Handle("GET", "/static-info", s.getAllStaticInfo)
-	mux.Handle("GET", "/static-info/{slug}", s.getStaticInfoBySlug)
+	mux.GET("/static-info", s.getAllStaticInfo)
+	mux.GET("/static-info/{slug}", s.getStaticInfoBySlug)
 
-	mux.Handle("GET", "/merch", s.getAllMerch)
-	mux.Handle("GET", "/merch/{slug}", s.getMerchBySlug)
+	mux.GET("/merch", s.getAllMerch)
+	mux.GET("/merch/{slug}", s.getMerchBySlug)
 
-	mux.Handle("GET", "/minutes", s.getAllMeetingMinutes)
-	mux.Handle("GET", "/minutes/{id}", s.getMeetingMinuteById)
+	mux.GET("/minutes", s.getAllMeetingMinutes)
+	mux.GET("/minutes/{id}", s.getMeetingMinuteById)
 
-	mux.Handle("GET", "/movies", s.getAllMovies)
-	mux.Handle("GET", "/movies/upcoming", s.getUpcomingMovies)
+	mux.GET("/movies", s.getAllMovies)
+	mux.GET("/movies/upcoming", s.getUpcomingMovies)
 
-	mux.Handle("GET", "/hs-applications", s.getAllHSApplications)
+	mux.GET("/hs-applications", s.getAllHSApplications)
 
 	return mux
 }
@@ -108,7 +108,7 @@ func (s *sanityCMS) handleWebhook(ctx *handler.Context) error {
 
 	// Delete the happening if the operation is "delete".
 	if req.Operation == "delete" {
-		if err := s.happeningService.HappeningRepo().DeleteHappening(ctx.Context(), req.DocumentID); err != nil {
+		if err := s.happeningService.DeleteHappening(ctx.Context(), req.DocumentID); err != nil {
 			return ctx.Error(err, http.StatusInternalServerError)
 		}
 

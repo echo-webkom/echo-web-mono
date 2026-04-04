@@ -23,10 +23,10 @@ func NewWhitelistMux(logger port.Logger, whitelistService *service.WhitelistServ
 	w := whitelist{logger, whitelistService}
 
 	// Admin
-	mux.Handle("GET", "/", w.getWhitelist, admin)
-	mux.Handle("GET", "/{email}", w.getWhitelistByEmail, admin)
-	mux.Handle("POST", "/", w.upsertWhitelist, admin)
-	mux.Handle("DELETE", "/{email}", w.deleteWhitelistByEmail, admin)
+	mux.GET("/", w.getWhitelist, admin)
+	mux.GET("/{email}", w.getWhitelistByEmail, admin)
+	mux.POST("/", w.upsertWhitelist, admin)
+	mux.DELETE("/{email}", w.deleteWhitelistByEmail, admin)
 
 	return mux
 }
@@ -42,7 +42,7 @@ func NewWhitelistMux(logger port.Logger, whitelistService *service.WhitelistServ
 // @Router       /whitelist [get]
 func (w *whitelist) getWhitelist(ctx *handler.Context) error {
 	// Get domain models from service
-	whitelistedEmails, err := w.whitelistService.WhitelistRepo().GetWhitelist(ctx.Context())
+	whitelistedEmails, err := w.whitelistService.GetWhitelist(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -67,7 +67,7 @@ func (w *whitelist) getWhitelistByEmail(ctx *handler.Context) error {
 	email := ctx.PathValue("email")
 
 	// Get domain model from service
-	whitelistInfo, err := w.whitelistService.WhitelistRepo().GetWhitelistByEmail(ctx.Context(), email)
+	whitelistInfo, err := w.whitelistService.GetWhitelistByEmail(ctx.Context(), email)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.JSONWithStatus(nil, 404)
@@ -98,7 +98,7 @@ func (w *whitelist) upsertWhitelist(ctx *handler.Context) error {
 		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
-	wl, err := w.whitelistService.WhitelistRepo().UpsertWhitelist(ctx.Context(), *req.ToDomain())
+	wl, err := w.whitelistService.UpsertWhitelist(ctx.Context(), *req.ToDomain())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -122,7 +122,7 @@ func (w *whitelist) deleteWhitelistByEmail(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing email"))
 	}
 
-	if err := w.whitelistService.WhitelistRepo().DeleteWhitelistByEmail(ctx.Context(), email); err != nil {
+	if err := w.whitelistService.DeleteWhitelistByEmail(ctx.Context(), email); err != nil {
 		return ctx.InternalServerError()
 	}
 

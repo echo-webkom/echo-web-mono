@@ -16,8 +16,16 @@ func NewQuoteService(quoteRepo port.QuoteRepo) *QuoteService {
 	}
 }
 
-func (s *QuoteService) Repo() port.QuoteRepo {
-	return s.quoteRepo
+func (s *QuoteService) GetQuotes(ctx context.Context) ([]model.Quote, error) {
+	return s.quoteRepo.GetQuotes(ctx)
+}
+
+func (s *QuoteService) CreateQuote(ctx context.Context, quote model.Quote, userID string) error {
+	return s.quoteRepo.CreateQuote(ctx, quote, userID)
+}
+
+func (s *QuoteService) DeleteQuote(ctx context.Context, quoteID string) error {
+	return s.quoteRepo.DeleteQuote(ctx, quoteID)
 }
 
 func (s *QuoteService) ToggleReaction(

@@ -117,29 +117,30 @@ func RunApi() {
 		cacheInvalidator,
 	)
 
-	go http.RunServer(
-		notif,
-		logger,
-		cfg,
-		authService,
-		happeningService,
-		degreeService,
-		siteFeedbackService,
-		shoppingListService,
-		userService,
-		strikeService,
-		accessRequestService,
-		whitelistService,
-		commentService,
-		weatherService,
-		databrusService,
-		adventOfCodeService,
-		groupService,
-		reactionService,
-		registrationRepo,
-		quoteService,
-		cmsService,
-	)
+	go http.RunServer(http.ServerDeps{
+		Notifier: notif,
+
+		Logger: logger,
+		Config: cfg,
+
+		AuthService:          authService,
+		HappeningService:     happeningService,
+		DegreeService:        degreeService,
+		SiteFeedbackService:  siteFeedbackService,
+		ShoppingListService:  shoppingListService,
+		UserService:          userService,
+		StrikeSerivce:        strikeService,
+		AccessRequestService: accessRequestService,
+		WhitelistService:     whitelistService,
+		CommentService:       commentService,
+		WeatherService:       weatherService,
+		DatabrusService:      databrusService,
+		AdventOfCodeService:  adventOfCodeService,
+		GroupService:         groupService,
+		ReactionService:      reactionService,
+		QuoteService:         quoteService,
+		CMSService:           cmsService,
+	})
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)
 	logger.Info(context.Background(), "received shutdown signal, gracefully shutting down uno")

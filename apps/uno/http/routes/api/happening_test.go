@@ -274,7 +274,7 @@ func TestRegisterForHappening(t *testing.T) {
 					Return(spotRanges, nil).
 					Once()
 				mockRegistrationRepo.EXPECT().
-					CreateRegistration(mock.Anything, "user123", "happening123", spotRanges, []string{}, false).
+					CreateRegistration(mock.Anything, "user123", "happening123", spotRanges, []string{}, false, mock.Anything).
 					Return(&model.Registration{}, false, nil).
 					Once()
 				// InsertAnswers is only called if len(req.Questions) > 0

@@ -2,16 +2,20 @@ package service_test
 
 import (
 	"testing"
+	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSiteFeedbackService_SiteFeedbackRepo(t *testing.T) {
+func TestSiteFeedbackService_GetAllSiteFeedbacks(t *testing.T) {
 	mockRepo := mocks.NewSiteFeedbackRepo(t)
 	siteFeedbackService := service.NewSiteFeedbackService(mockRepo)
 
-	siteFeedbackRepo := siteFeedbackService.SiteFeedbackRepo()
-	assert.NotNil(t, siteFeedbackRepo, "Expected SiteFeedbackRepo to be non-nil")
+	mockRepo.EXPECT().GetAllSiteFeedbacks(t.Context()).Return([]model.SiteFeedback{}, nil).Once()
+
+	feedbacks, err := siteFeedbackService.GetAllSiteFeedbacks(t.Context())
+	assert.NoError(t, err)
+	assert.NotNil(t, feedbacks)
 }

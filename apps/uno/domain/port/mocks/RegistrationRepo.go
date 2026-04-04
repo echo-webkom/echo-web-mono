@@ -8,6 +8,7 @@ import (
 	"context"
 	"time"
 	"uno/domain/model"
+	"uno/domain/port"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -40,8 +41,8 @@ func (_m *RegistrationRepo) EXPECT() *RegistrationRepo_Expecter {
 }
 
 // CreateRegistration provides a mock function for the type RegistrationRepo
-func (_mock *RegistrationRepo) CreateRegistration(ctx context.Context, userID string, happeningID string, spotRanges []model.SpotRange, hostGroups []string, canSkipSpotRange bool) (*model.Registration, bool, error) {
-	ret := _mock.Called(ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange)
+func (_mock *RegistrationRepo) CreateRegistration(ctx context.Context, userID string, happeningID string, spotRanges []model.SpotRange, hostGroups []string, canSkipSpotRange bool, spotAvailable port.SpotAvailabilityFunc) (*model.Registration, bool, error) {
+	ret := _mock.Called(ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange, spotAvailable)
 
 	if len(ret) == 0 {
 		panic("no return value specified for CreateRegistration")
@@ -50,23 +51,23 @@ func (_mock *RegistrationRepo) CreateRegistration(ctx context.Context, userID st
 	var r0 *model.Registration
 	var r1 bool
 	var r2 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, []model.SpotRange, []string, bool) (*model.Registration, bool, error)); ok {
-		return returnFunc(ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange)
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, []model.SpotRange, []string, bool, port.SpotAvailabilityFunc) (*model.Registration, bool, error)); ok {
+		return returnFunc(ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange, spotAvailable)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, []model.SpotRange, []string, bool) *model.Registration); ok {
-		r0 = returnFunc(ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange)
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, []model.SpotRange, []string, bool, port.SpotAvailabilityFunc) *model.Registration); ok {
+		r0 = returnFunc(ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange, spotAvailable)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*model.Registration)
 		}
 	}
-	if returnFunc, ok := ret.Get(1).(func(context.Context, string, string, []model.SpotRange, []string, bool) bool); ok {
-		r1 = returnFunc(ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange)
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string, string, []model.SpotRange, []string, bool, port.SpotAvailabilityFunc) bool); ok {
+		r1 = returnFunc(ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange, spotAvailable)
 	} else {
 		r1 = ret.Get(1).(bool)
 	}
-	if returnFunc, ok := ret.Get(2).(func(context.Context, string, string, []model.SpotRange, []string, bool) error); ok {
-		r2 = returnFunc(ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange)
+	if returnFunc, ok := ret.Get(2).(func(context.Context, string, string, []model.SpotRange, []string, bool, port.SpotAvailabilityFunc) error); ok {
+		r2 = returnFunc(ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange, spotAvailable)
 	} else {
 		r2 = ret.Error(2)
 	}
@@ -85,11 +86,12 @@ type RegistrationRepo_CreateRegistration_Call struct {
 //   - spotRanges []model.SpotRange
 //   - hostGroups []string
 //   - canSkipSpotRange bool
-func (_e *RegistrationRepo_Expecter) CreateRegistration(ctx interface{}, userID interface{}, happeningID interface{}, spotRanges interface{}, hostGroups interface{}, canSkipSpotRange interface{}) *RegistrationRepo_CreateRegistration_Call {
-	return &RegistrationRepo_CreateRegistration_Call{Call: _e.mock.On("CreateRegistration", ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange)}
+//   - spotAvailable port.SpotAvailabilityFunc
+func (_e *RegistrationRepo_Expecter) CreateRegistration(ctx interface{}, userID interface{}, happeningID interface{}, spotRanges interface{}, hostGroups interface{}, canSkipSpotRange interface{}, spotAvailable interface{}) *RegistrationRepo_CreateRegistration_Call {
+	return &RegistrationRepo_CreateRegistration_Call{Call: _e.mock.On("CreateRegistration", ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange, spotAvailable)}
 }
 
-func (_c *RegistrationRepo_CreateRegistration_Call) Run(run func(ctx context.Context, userID string, happeningID string, spotRanges []model.SpotRange, hostGroups []string, canSkipSpotRange bool)) *RegistrationRepo_CreateRegistration_Call {
+func (_c *RegistrationRepo_CreateRegistration_Call) Run(run func(ctx context.Context, userID string, happeningID string, spotRanges []model.SpotRange, hostGroups []string, canSkipSpotRange bool, spotAvailable port.SpotAvailabilityFunc)) *RegistrationRepo_CreateRegistration_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -115,6 +117,10 @@ func (_c *RegistrationRepo_CreateRegistration_Call) Run(run func(ctx context.Con
 		if args[5] != nil {
 			arg5 = args[5].(bool)
 		}
+		var arg6 port.SpotAvailabilityFunc
+		if args[6] != nil {
+			arg6 = args[6].(port.SpotAvailabilityFunc)
+		}
 		run(
 			arg0,
 			arg1,
@@ -122,6 +128,7 @@ func (_c *RegistrationRepo_CreateRegistration_Call) Run(run func(ctx context.Con
 			arg3,
 			arg4,
 			arg5,
+			arg6,
 		)
 	})
 	return _c
@@ -132,7 +139,7 @@ func (_c *RegistrationRepo_CreateRegistration_Call) Return(registration *model.R
 	return _c
 }
 
-func (_c *RegistrationRepo_CreateRegistration_Call) RunAndReturn(run func(ctx context.Context, userID string, happeningID string, spotRanges []model.SpotRange, hostGroups []string, canSkipSpotRange bool) (*model.Registration, bool, error)) *RegistrationRepo_CreateRegistration_Call {
+func (_c *RegistrationRepo_CreateRegistration_Call) RunAndReturn(run func(ctx context.Context, userID string, happeningID string, spotRanges []model.SpotRange, hostGroups []string, canSkipSpotRange bool, spotAvailable port.SpotAvailabilityFunc) (*model.Registration, bool, error)) *RegistrationRepo_CreateRegistration_Call {
 	_c.Call.Return(run)
 	return _c
 }

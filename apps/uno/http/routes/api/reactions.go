@@ -20,8 +20,8 @@ func NewReactionMux(logger port.Logger, reactionService *service.ReactionService
 
 	mux := router.NewMux()
 
-	mux.Handle("GET", "/{key}", r.getReactions, admin)
-	mux.Handle("POST", "/{key}", r.toggleReaction, admin)
+	mux.GET("/{key}", r.getReactions, admin)
+	mux.POST("/{key}", r.toggleReaction, admin)
 
 	return mux
 }
@@ -43,7 +43,7 @@ func (r *reactions) getReactions(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing reaction key"))
 	}
 
-	reactions, err := r.reactionService.ReactionRepo().GetReactionsByID(ctx.Context(), key)
+	reactions, err := r.reactionService.GetReactionsByID(ctx.Context(), key)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -86,7 +86,7 @@ func (r *reactions) toggleReaction(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 
-	reactions, err := r.reactionService.ReactionRepo().GetReactionsByID(ctx.Context(), key)
+	reactions, err := r.reactionService.GetReactionsByID(ctx.Context(), key)
 	if err != nil {
 		return ctx.InternalServerError()
 	}

@@ -20,10 +20,10 @@ func NewCommentMux(logger port.Logger, commentService *service.CommentService, a
 	mux := router.NewMux()
 
 	// Admin
-	mux.Handle("POST", "/", c.createComment, admin)
-	mux.Handle("GET", "/{id}", c.getCommentsByID, admin)
-	mux.Handle("GET", "/{id}/reaction", c.reactToComment, admin)
-	mux.Handle("DELETE", "/{id}", c.deleteComment, admin)
+	mux.POST("/", c.createComment, admin)
+	mux.GET("/{id}", c.getCommentsByID, admin)
+	mux.GET("/{id}/reaction", c.reactToComment, admin)
+	mux.DELETE("/{id}", c.deleteComment, admin)
 
 	return mux
 }
@@ -45,7 +45,7 @@ func (c *comments) getCommentsByID(ctx *handler.Context) error {
 		return ctx.Error(errors.New("missing comment ID"), http.StatusBadRequest)
 	}
 
-	comments, err := c.commentService.CommentRepo().GetCommentsByID(ctx.Context(), id)
+	comments, err := c.commentService.GetCommentsByID(ctx.Context(), id)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -72,7 +72,7 @@ func (c *comments) createComment(ctx *handler.Context) error {
 		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
-	err := c.commentService.CommentRepo().CreateComment(ctx.Context(), req.Content, req.PostID, req.UserID, req.ParentCommentID)
+	err := c.commentService.CreateComment(ctx.Context(), req.Content, req.PostID, req.UserID, req.ParentCommentID)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -130,7 +130,7 @@ func (c *comments) deleteComment(ctx *handler.Context) error {
 		return ctx.Error(errors.New("missing comment ID"), http.StatusBadRequest)
 	}
 
-	if err := c.commentService.CommentRepo().DeleteComment(ctx.Context(), commentID); err != nil {
+	if err := c.commentService.DeleteComment(ctx.Context(), commentID); err != nil {
 		return ctx.InternalServerError()
 	}
 

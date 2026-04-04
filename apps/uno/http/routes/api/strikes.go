@@ -21,11 +21,11 @@ func NewStrikesMux(logger port.Logger, strikesService *service.StrikeService, ad
 	s := strikes{logger, strikesService}
 
 	// Admin
-	mux.Handle("POST", "/unban", s.unbanUsersWithExpiredStrikes, admin)
-	mux.Handle("GET", "/details", s.getUsersWithStrikeDetails, admin)
-	mux.Handle("POST", "/", s.addStrike, admin)
-	mux.Handle("DELETE", "/ban/{userId}", s.removeBan, admin)
-	mux.Handle("DELETE", "/{id}", s.removeStrike, admin)
+	mux.POST("/unban", s.unbanUsersWithExpiredStrikes, admin)
+	mux.GET("/details", s.getUsersWithStrikeDetails, admin)
+	mux.POST("/", s.addStrike, admin)
+	mux.DELETE("/ban/{userId}", s.removeBan, admin)
+	mux.DELETE("/{id}", s.removeStrike, admin)
 
 	return mux
 }
@@ -83,11 +83,11 @@ func (s *strikes) addStrike(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing required strike fields"))
 	}
 
-	if _, err := s.strikeService.UserRepo().GetUserByID(ctx.Context(), req.UserID); err != nil {
+	if _, err := s.strikeService.GetUserByID(ctx.Context(), req.UserID); err != nil {
 		return ctx.NotFound(errors.New("user not found"))
 	}
 
-	banInfo, err := s.strikeService.BanInfoRepo().GetBanInfoByUserID(ctx.Context(), req.UserID)
+	banInfo, err := s.strikeService.GetBanInfoByUserID(ctx.Context(), req.UserID)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -114,7 +114,7 @@ func (s *strikes) addStrike(ctx *handler.Context) error {
 	overflowStrikes := previousStrikes + req.Count - 5
 
 	if shouldBeBanned {
-		_, err = s.strikeService.BanInfoRepo().CreateBan(ctx.Context(), model.NewBanInfo{
+		_, err = s.strikeService.CreateBan(ctx.Context(), model.NewBanInfo{
 			UserID:    req.UserID,
 			Reason:    req.Reason,
 			BannedBy:  req.StrikedBy,
@@ -124,12 +124,12 @@ func (s *strikes) addStrike(ctx *handler.Context) error {
 			return ctx.InternalServerError()
 		}
 
-		if err = s.strikeService.DotRepo().DeleteDotsByUserID(ctx.Context(), req.UserID); err != nil {
+		if err = s.strikeService.DeleteDotsByUserID(ctx.Context(), req.UserID); err != nil {
 			return ctx.InternalServerError()
 		}
 
 		if overflowStrikes > 0 {
-			_, err = s.strikeService.DotRepo().CreateDot(ctx.Context(), model.NewDot{
+			_, err = s.strikeService.CreateDot(ctx.Context(), model.NewDot{
 				Count:     overflowStrikes,
 				Reason:    req.Reason,
 				UserID:    req.UserID,
@@ -144,7 +144,7 @@ func (s *strikes) addStrike(ctx *handler.Context) error {
 		return ctx.JSON(dto.AddStrikeResponse{IsBanned: true, Message: "user banned"})
 	}
 
-	_, err = s.strikeService.DotRepo().CreateDot(ctx.Context(), model.NewDot{
+	_, err = s.strikeService.CreateDot(ctx.Context(), model.NewDot{
 		Count:     req.Count,
 		Reason:    req.Reason,
 		UserID:    req.UserID,
@@ -174,7 +174,7 @@ func (s *strikes) removeBan(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing user id"))
 	}
 
-	if err := s.strikeService.BanInfoRepo().DeleteBanByUserID(ctx.Context(), userID); err != nil {
+	if err := s.strikeService.DeleteBanByUserID(ctx.Context(), userID); err != nil {
 		return ctx.InternalServerError()
 	}
 
@@ -203,7 +203,7 @@ func (s *strikes) removeStrike(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing user id"))
 	}
 
-	if err = s.strikeService.DotRepo().DeleteDotByIDAndUserID(ctx.Context(), id, userID); err != nil {
+	if err = s.strikeService.DeleteDotByIDAndUserID(ctx.Context(), id, userID); err != nil {
 		return ctx.InternalServerError()
 	}
 

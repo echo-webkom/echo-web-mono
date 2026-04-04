@@ -20,9 +20,9 @@ func NewAccessRequestMux(logger port.Logger, accessRequestService *service.Acces
 	mux := router.NewMux()
 
 	// Admin
-	mux.Handle("POST", "/", a.createAccessRequest, admin)
-	mux.Handle("GET", "/", a.getAccessRequests, admin)
-	mux.Handle("DELETE", "/{id}", a.deleteAccessRequest, admin)
+	mux.POST("/", a.createAccessRequest, admin)
+	mux.GET("/", a.getAccessRequests, admin)
+	mux.DELETE("/{id}", a.deleteAccessRequest, admin)
 
 	return mux
 }
@@ -38,7 +38,7 @@ func NewAccessRequestMux(logger port.Logger, accessRequestService *service.Acces
 // @Router       /access-requests [get]
 func (a *accessRequests) getAccessRequests(ctx *handler.Context) error {
 	// Get domain models from service
-	accessRequests, err := a.accessRequestService.AccessRequestRepo().GetAccessRequests(ctx.Context())
+	accessRequests, err := a.accessRequestService.GetAccessRequests(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -65,7 +65,7 @@ func (a *accessRequests) createAccessRequest(ctx *handler.Context) error {
 		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
-	created, err := a.accessRequestService.AccessRequestRepo().CreateAccessRequest(ctx.Context(), *req.ToDomain())
+	created, err := a.accessRequestService.CreateAccessRequest(ctx.Context(), *req.ToDomain())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -91,7 +91,7 @@ func (a *accessRequests) deleteAccessRequest(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing access request id"))
 	}
 
-	_, err := a.accessRequestService.AccessRequestRepo().GetAccessRequestByID(ctx.Context(), id)
+	_, err := a.accessRequestService.GetAccessRequestByID(ctx.Context(), id)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.NotFound(errors.New("access request not found"))
@@ -99,7 +99,7 @@ func (a *accessRequests) deleteAccessRequest(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 
-	if err = a.accessRequestService.AccessRequestRepo().DeleteAccessRequestByID(ctx.Context(), id); err != nil {
+	if err = a.accessRequestService.DeleteAccessRequestByID(ctx.Context(), id); err != nil {
 		return ctx.InternalServerError()
 	}
 

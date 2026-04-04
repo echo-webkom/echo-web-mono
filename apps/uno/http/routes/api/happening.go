@@ -20,21 +20,21 @@ func NewHappeningMux(logger port.Logger, happeningService *service.HappeningServ
 	mux := router.NewMux()
 	h := happenings{logger, happeningService}
 
-	mux.Handle("GET", "/", h.getHappenings)
-	mux.Handle("GET", "/{id}", h.getHappeningById)
-	mux.Handle("GET", "/registrations/count", h.getHappeningRegistrationsCountMany)
-	mux.Handle("GET", "/{id}/questions", h.getHappeningQuestions)
-	mux.Handle("GET", "/{id}/spot-ranges", h.getHappeningSpotRanges)
+	mux.GET("/", h.getHappenings)
+	mux.GET("/{id}", h.getHappeningById)
+	mux.GET("/registrations/count", h.getHappeningRegistrationsCountMany)
+	mux.GET("/{id}/questions", h.getHappeningQuestions)
+	mux.GET("/{id}/spot-ranges", h.getHappeningSpotRanges)
 
 	// Admin
-	mux.Handle("GET", "/{id}/registrations", h.getHappeningRegistrations, admin)
-	mux.Handle("GET", "/{id}/registrations/{userId}", h.getHappeningRegistrationByUser, admin)
-	mux.Handle("GET", "/{id}/registrations/full", h.getHappeningRegistrationsFull, admin)
-	mux.Handle("GET", "/{slug}/full", h.getFullHappeningBySlug, admin)
-	mux.Handle("POST", "/{id}/register", h.registerForHappening, admin)
-	mux.Handle("POST", "/{id}/deregister", h.deregisterFromHappening, admin)
-	mux.Handle("PATCH", "/{id}/registrations/{userId}", h.updateRegistrationStatus, admin)
-	mux.Handle("DELETE", "/{id}/registrations", h.deleteAllRegistrations, admin)
+	mux.GET("/{id}/registrations", h.getHappeningRegistrations, admin)
+	mux.GET("/{id}/registrations/{userId}", h.getHappeningRegistrationByUser, admin)
+	mux.GET("/{id}/registrations/full", h.getHappeningRegistrationsFull, admin)
+	mux.GET("/{slug}/full", h.getFullHappeningBySlug, admin)
+	mux.POST("/{id}/register", h.registerForHappening, admin)
+	mux.POST("/{id}/deregister", h.deregisterFromHappening, admin)
+	mux.PATCH("/{id}/registrations/{userId}", h.updateRegistrationStatus, admin)
+	mux.DELETE("/{id}/registrations", h.deleteAllRegistrations, admin)
 
 	return mux
 }
@@ -48,7 +48,7 @@ func NewHappeningMux(logger port.Logger, happeningService *service.HappeningServ
 // @Router       /happenings [get]
 func (h *happenings) getHappenings(ctx *handler.Context) error {
 	// Fetch all happenings from the repository
-	haps, err := h.happeningService.HappeningRepo().GetAllHappenings(ctx.Context())
+	haps, err := h.happeningService.GetAllHappenings(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -76,7 +76,7 @@ func (h *happenings) getHappeningById(ctx *handler.Context) error {
 	}
 
 	// Fetch the happening from the repository
-	hap, err := h.happeningService.HappeningRepo().GetHappeningById(ctx.Context(), id)
+	hap, err := h.happeningService.GetHappeningByID(ctx.Context(), id)
 	if err != nil {
 		return ctx.NotFound(errors.New("happening not found"))
 	}
@@ -107,7 +107,7 @@ func (h *happenings) getHappeningRegistrationsCountMany(ctx *handler.Context) er
 	}
 
 	// Fetch the registration counts from the repository
-	counts, err := h.happeningService.HappeningRepo().GetHappeningRegistrationCounts(ctx.Context(), ids)
+	counts, err := h.happeningService.GetHappeningRegistrationCounts(ctx.Context(), ids)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -136,7 +136,7 @@ func (h *happenings) getHappeningRegistrations(ctx *handler.Context) error {
 	}
 
 	// Fetch the registrations from the repository
-	regs, err := h.happeningService.HappeningRepo().GetHappeningRegistrations(ctx.Context(), id)
+	regs, err := h.happeningService.GetHappeningRegistrations(ctx.Context(), id)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -169,7 +169,7 @@ func (h *happenings) getHappeningRegistrationByUser(ctx *handler.Context) error 
 		return ctx.BadRequest(errors.New("missing user ID"))
 	}
 
-	reg, err := h.happeningService.RegistrationRepo().GetByUserAndHappening(ctx.Context(), userID, happeningID)
+	reg, err := h.happeningService.GetRegistrationByUserAndHappening(ctx.Context(), userID, happeningID)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -199,12 +199,12 @@ func (h *happenings) getHappeningRegistrationsFull(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing happening ID"))
 	}
 
-	happening, err := h.happeningService.HappeningRepo().GetHappeningById(ctx.Context(), id)
+	happening, err := h.happeningService.GetHappeningByID(ctx.Context(), id)
 	if err != nil {
 		return ctx.NotFound(errors.New("happening not found"))
 	}
 
-	fullHappening, err := h.happeningService.HappeningRepo().GetFullHappeningBySlug(ctx.Context(), happening.Slug)
+	fullHappening, err := h.happeningService.GetFullHappeningBySlug(ctx.Context(), happening.Slug)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -224,7 +224,7 @@ func (h *happenings) getHappeningRegistrationsFull(ctx *handler.Context) error {
 
 	usersByID := make(map[string]model.User)
 	if len(ids) > 0 {
-		users, userErr := h.happeningService.UserRepo().GetUsersByIDs(ctx.Context(), ids)
+		users, userErr := h.happeningService.GetUsersByIDs(ctx.Context(), ids)
 		if userErr != nil {
 			return ctx.InternalServerError()
 		}
@@ -255,7 +255,7 @@ func (h *happenings) getHappeningSpotRanges(ctx *handler.Context) error {
 	}
 
 	// Fetch the spot ranges from the repository
-	ranges, err := h.happeningService.HappeningRepo().GetHappeningSpotRanges(ctx.Context(), id)
+	ranges, err := h.happeningService.GetHappeningSpotRanges(ctx.Context(), id)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -283,7 +283,7 @@ func (h *happenings) getHappeningQuestions(ctx *handler.Context) error {
 	}
 
 	// Fetch the questions from the repository
-	qs, err := h.happeningService.HappeningRepo().GetHappeningQuestions(ctx.Context(), id)
+	qs, err := h.happeningService.GetHappeningQuestions(ctx.Context(), id)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -310,7 +310,7 @@ func (h *happenings) getFullHappeningBySlug(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing happening slug"))
 	}
 
-	fullHappening, err := h.happeningService.HappeningRepo().GetFullHappeningBySlug(ctx.Context(), slug)
+	fullHappening, err := h.happeningService.GetFullHappeningBySlug(ctx.Context(), slug)
 	if err != nil {
 		return ctx.NotFound(errors.New("happening not found"))
 	}
@@ -397,7 +397,7 @@ func (h *happenings) deregisterFromHappening(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing user ID"))
 	}
 
-	reg, err := h.happeningService.RegistrationRepo().GetByUserAndHappening(ctx.Context(), req.UserID, happeningID)
+	reg, err := h.happeningService.GetRegistrationByUserAndHappening(ctx.Context(), req.UserID, happeningID)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -406,7 +406,7 @@ func (h *happenings) deregisterFromHappening(ctx *handler.Context) error {
 	}
 
 	now := time.Now()
-	if err = h.happeningService.RegistrationRepo().UpdateRegistrationStatus(
+	if err = h.happeningService.UpdateRegistrationStatus(
 		ctx.Context(),
 		req.UserID,
 		happeningID,
@@ -419,7 +419,7 @@ func (h *happenings) deregisterFromHappening(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 
-	if err = h.happeningService.RegistrationRepo().DeleteAnswersByUserAndHappening(ctx.Context(), req.UserID, happeningID); err != nil {
+	if err = h.happeningService.DeleteAnswersByUserAndHappening(ctx.Context(), req.UserID, happeningID); err != nil {
 		return ctx.InternalServerError()
 	}
 
@@ -470,7 +470,7 @@ func (h *happenings) updateRegistrationStatus(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("invalid status"))
 	}
 
-	reg, err := h.happeningService.RegistrationRepo().GetByUserAndHappening(ctx.Context(), userID, happeningID)
+	reg, err := h.happeningService.GetRegistrationByUserAndHappening(ctx.Context(), userID, happeningID)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -480,7 +480,7 @@ func (h *happenings) updateRegistrationStatus(ctx *handler.Context) error {
 
 	now := time.Now()
 	changedBy := req.ChangedBy
-	if err = h.happeningService.RegistrationRepo().UpdateRegistrationStatus(
+	if err = h.happeningService.UpdateRegistrationStatus(
 		ctx.Context(),
 		userID,
 		happeningID,
@@ -512,7 +512,7 @@ func (h *happenings) deleteAllRegistrations(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing happening ID"))
 	}
 
-	if err := h.happeningService.RegistrationRepo().DeleteRegistrationsByHappeningID(ctx.Context(), happeningID); err != nil {
+	if err := h.happeningService.DeleteRegistrationsByHappeningID(ctx.Context(), happeningID); err != nil {
 		return ctx.InternalServerError()
 	}
 

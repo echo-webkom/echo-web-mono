@@ -8,6 +8,7 @@ import (
 	"time"
 	"uno/domain/model"
 	"uno/domain/port/mocks"
+	"uno/domain/rule"
 	"uno/domain/service"
 	"uno/testutil"
 
@@ -15,12 +16,15 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestHappeningService_HappeningRepo(t *testing.T) {
+func TestHappeningService_GetAllHappenings(t *testing.T) {
 	mockHappeningRepo := mocks.NewHappeningRepo(t)
 	mockUserRepo := mocks.NewUserRepo(t)
 	mockRegistrationRepo := mocks.NewRegistrationRepo(t)
 	mockBanInfoRepo := mocks.NewBanInfoRepo(t)
 	mockGroupRepo := mocks.NewGroupRepo(t)
+
+	expectedHappenings := []model.Happening{testutil.NewFakeStruct[model.Happening]()}
+	mockHappeningRepo.EXPECT().GetAllHappenings(mock.Anything).Return(expectedHappenings, nil).Once()
 
 	happeningService := service.NewHappeningService(
 		mockHappeningRepo,
@@ -30,8 +34,9 @@ func TestHappeningService_HappeningRepo(t *testing.T) {
 		mockGroupRepo,
 	)
 
-	happeningRepo := happeningService.HappeningRepo()
-	assert.NotNil(t, happeningRepo)
+	happenings, err := happeningService.GetAllHappenings(t.Context())
+	assert.NoError(t, err)
+	assert.Equal(t, expectedHappenings, happenings)
 }
 
 func TestHappeningService_Register_ErrorCases(t *testing.T) {
@@ -241,7 +246,7 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 				ur.EXPECT().GetUserMemberships(mock.Anything, userID).Return([]string{}, nil).Once()
 				hr.EXPECT().GetHappeningSpotRanges(mock.Anything, happeningID).Return(spotRanges, nil).Once()
 				hr.EXPECT().GetHappeningHostGroups(mock.Anything, happeningID).Return([]string{}, nil).Once()
-				rr.EXPECT().CreateRegistration(mock.Anything, userID, happeningID, spotRanges, []string{}, false).Return(nil, false, errors.New("failed to create registration")).Once()
+				rr.EXPECT().CreateRegistration(mock.Anything, userID, happeningID, spotRanges, []string{}, false, mock.Anything).Return(nil, false, errors.New("failed to create registration")).Once()
 			},
 			expectedErr:     errors.New("failed to create registration"),
 			expectedMsg:     "Kunne ikke registrere deg",
@@ -636,7 +641,7 @@ func TestHappeningService_Register_Success(t *testing.T) {
 			mockUserRepo.EXPECT().GetUserMemberships(mock.Anything, userID).Return(tt.userMemberships, nil).Once()
 			mockHappeningRepo.EXPECT().GetHappeningSpotRanges(mock.Anything, happeningID).Return(testSpotRanges, nil).Once()
 			mockHappeningRepo.EXPECT().GetHappeningHostGroups(mock.Anything, happeningID).Return(tt.hostGroups, nil).Once()
-			mockRegistrationRepo.EXPECT().CreateRegistration(mock.Anything, userID, happeningID, testSpotRanges, tt.hostGroups, tt.canSkipExpected).Return(&registration, tt.isWaitlisted, nil).Once()
+			mockRegistrationRepo.EXPECT().CreateRegistration(mock.Anything, userID, happeningID, testSpotRanges, tt.hostGroups, tt.canSkipExpected, mock.Anything).Return(&registration, tt.isWaitlisted, nil).Once()
 
 			happeningService := service.NewHappeningService(
 				mockHappeningRepo,
@@ -1034,7 +1039,7 @@ func TestIsAvailableSpot(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := service.IsAvailableSpot(
+			result := rule.IsAvailableSpot(
 				tt.spotRanges,
 				tt.registrations,
 				tt.usersByID,
@@ -1133,7 +1138,7 @@ func TestHappeningService_Register_HostCanSkipSpotRangeCheck(t *testing.T) {
 		Once()
 
 	mockRegistrationRepo.EXPECT().
-		CreateRegistration(mock.Anything, userID, happeningID, spotRanges, []string{hostGroup}, true).
+		CreateRegistration(mock.Anything, userID, happeningID, spotRanges, []string{hostGroup}, true, mock.Anything).
 		Return(&registration, false, nil).
 		Once()
 

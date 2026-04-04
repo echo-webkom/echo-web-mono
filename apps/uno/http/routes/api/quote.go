@@ -2,7 +2,6 @@ package api
 
 import (
 	"errors"
-	"net/http"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
@@ -27,11 +26,11 @@ func NewQuoteMux(
 	mux := router.NewMux()
 
 	// Admin
-	mux.Handle(http.MethodGet, "/", q.getQuotes, sessionOrAdmin)
-	mux.Handle(http.MethodPost, "/", q.createQuote, session)
-	mux.Handle(http.MethodDelete, "/{id}", q.deleteQuote, admin)
-	mux.Handle(http.MethodPost, "/{id}/like", q.likeQuote, session)
-	mux.Handle(http.MethodPost, "/{id}/dislike", q.dislikeQuote, session)
+	mux.GET("/", q.getQuotes, sessionOrAdmin)
+	mux.POST("/", q.createQuote, session)
+	mux.DELETE("/{id}", q.deleteQuote, admin)
+	mux.POST("/{id}/like", q.likeQuote, session)
+	mux.POST("/{id}/dislike", q.dislikeQuote, session)
 
 	return mux
 }
@@ -47,7 +46,7 @@ func NewQuoteMux(
 // @Router       /quotes/ [get]
 // @Security     BearerAuth
 func (q *quotes) getQuotes(ctx *handler.Context) error {
-	quotes, err := q.quoteService.Repo().GetQuotes(ctx.Context())
+	quotes, err := q.quoteService.GetQuotes(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -80,7 +79,7 @@ func (q *quotes) createQuote(ctx *handler.Context) error {
 	}
 
 	quote := req.ToDomain()
-	if err := q.quoteService.Repo().CreateQuote(ctx.Context(), quote, user.ID); err != nil {
+	if err := q.quoteService.CreateQuote(ctx.Context(), quote, user.ID); err != nil {
 		return ctx.InternalServerError()
 	}
 
@@ -106,7 +105,7 @@ func (q *quotes) deleteQuote(ctx *handler.Context) error {
 	if quoteID == "" {
 		return ctx.BadRequest(errors.New("quote ID is required"))
 	}
-	if err := q.quoteService.Repo().DeleteQuote(ctx.Context(), quoteID); err != nil {
+	if err := q.quoteService.DeleteQuote(ctx.Context(), quoteID); err != nil {
 		return ctx.InternalServerError()
 	}
 	return nil
