@@ -19,12 +19,12 @@ func NewDegreeMux(logger port.Logger, degreeService *service.DegreeService, admi
 	mux := router.NewMux()
 	d := degrees{logger, degreeService}
 
-	mux.Handle("GET", "/", d.getDegrees)
+	mux.GET("/", d.getDegrees)
 
 	// Admin
-	mux.Handle("POST", "/", d.createDegree, admin)
-	mux.Handle("POST", "/{id}", d.updateDegree, admin)
-	mux.Handle("DELETE", "/{id}", d.deleteDegree, admin)
+	mux.POST("/", d.createDegree, admin)
+	mux.POST("/{id}", d.updateDegree, admin)
+	mux.DELETE("/{id}", d.deleteDegree, admin)
 
 	return mux
 }

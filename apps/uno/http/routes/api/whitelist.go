@@ -23,10 +23,10 @@ func NewWhitelistMux(logger port.Logger, whitelistService *service.WhitelistServ
 	w := whitelist{logger, whitelistService}
 
 	// Admin
-	mux.Handle("GET", "/", w.getWhitelist, admin)
-	mux.Handle("GET", "/{email}", w.getWhitelistByEmail, admin)
-	mux.Handle("POST", "/", w.upsertWhitelist, admin)
-	mux.Handle("DELETE", "/{email}", w.deleteWhitelistByEmail, admin)
+	mux.GET("/", w.getWhitelist, admin)
+	mux.GET("/{email}", w.getWhitelistByEmail, admin)
+	mux.POST("/", w.upsertWhitelist, admin)
+	mux.DELETE("/{email}", w.deleteWhitelistByEmail, admin)
 
 	return mux
 }

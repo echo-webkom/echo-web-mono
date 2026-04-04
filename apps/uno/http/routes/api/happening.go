@@ -20,21 +20,21 @@ func NewHappeningMux(logger port.Logger, happeningService *service.HappeningServ
 	mux := router.NewMux()
 	h := happenings{logger, happeningService}
 
-	mux.Handle("GET", "/", h.getHappenings)
-	mux.Handle("GET", "/{id}", h.getHappeningById)
-	mux.Handle("GET", "/registrations/count", h.getHappeningRegistrationsCountMany)
-	mux.Handle("GET", "/{id}/questions", h.getHappeningQuestions)
-	mux.Handle("GET", "/{id}/spot-ranges", h.getHappeningSpotRanges)
+	mux.GET("/", h.getHappenings)
+	mux.GET("/{id}", h.getHappeningById)
+	mux.GET("/registrations/count", h.getHappeningRegistrationsCountMany)
+	mux.GET("/{id}/questions", h.getHappeningQuestions)
+	mux.GET("/{id}/spot-ranges", h.getHappeningSpotRanges)
 
 	// Admin
-	mux.Handle("GET", "/{id}/registrations", h.getHappeningRegistrations, admin)
-	mux.Handle("GET", "/{id}/registrations/{userId}", h.getHappeningRegistrationByUser, admin)
-	mux.Handle("GET", "/{id}/registrations/full", h.getHappeningRegistrationsFull, admin)
-	mux.Handle("GET", "/{slug}/full", h.getFullHappeningBySlug, admin)
-	mux.Handle("POST", "/{id}/register", h.registerForHappening, admin)
-	mux.Handle("POST", "/{id}/deregister", h.deregisterFromHappening, admin)
-	mux.Handle("PATCH", "/{id}/registrations/{userId}", h.updateRegistrationStatus, admin)
-	mux.Handle("DELETE", "/{id}/registrations", h.deleteAllRegistrations, admin)
+	mux.GET("/{id}/registrations", h.getHappeningRegistrations, admin)
+	mux.GET("/{id}/registrations/{userId}", h.getHappeningRegistrationByUser, admin)
+	mux.GET("/{id}/registrations/full", h.getHappeningRegistrationsFull, admin)
+	mux.GET("/{slug}/full", h.getFullHappeningBySlug, admin)
+	mux.POST("/{id}/register", h.registerForHappening, admin)
+	mux.POST("/{id}/deregister", h.deregisterFromHappening, admin)
+	mux.PATCH("/{id}/registrations/{userId}", h.updateRegistrationStatus, admin)
+	mux.DELETE("/{id}/registrations", h.deleteAllRegistrations, admin)
 
 	return mux
 }

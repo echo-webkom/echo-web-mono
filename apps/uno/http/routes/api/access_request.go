@@ -20,9 +20,9 @@ func NewAccessRequestMux(logger port.Logger, accessRequestService *service.Acces
 	mux := router.NewMux()
 
 	// Admin
-	mux.Handle("POST", "/", a.createAccessRequest, admin)
-	mux.Handle("GET", "/", a.getAccessRequests, admin)
-	mux.Handle("DELETE", "/{id}", a.deleteAccessRequest, admin)
+	mux.POST("/", a.createAccessRequest, admin)
+	mux.GET("/", a.getAccessRequests, admin)
+	mux.DELETE("/{id}", a.deleteAccessRequest, admin)
 
 	return mux
 }

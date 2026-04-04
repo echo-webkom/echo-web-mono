@@ -20,8 +20,8 @@ func NewReactionMux(logger port.Logger, reactionService *service.ReactionService
 
 	mux := router.NewMux()
 
-	mux.Handle("GET", "/{key}", r.getReactions, admin)
-	mux.Handle("POST", "/{key}", r.toggleReaction, admin)
+	mux.GET("/{key}", r.getReactions, admin)
+	mux.POST("/{key}", r.toggleReaction, admin)
 
 	return mux
 }

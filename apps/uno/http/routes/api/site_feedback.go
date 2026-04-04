@@ -20,10 +20,10 @@ func NewSiteFeedbackMux(logger port.Logger, feedbackService *service.SiteFeedbac
 	f := feedbacks{logger, feedbackService}
 
 	// Admin
-	mux.Handle("GET", "/", f.getSiteFeedbacks, admin)
-	mux.Handle("GET", "/{id}", f.getSiteFeedbackByID, admin)
-	mux.Handle("POST", "/", f.createSiteFeedback, admin)
-	mux.Handle("PUT", "/{id}/seen", f.markSiteFeedbackAsSeen, admin)
+	mux.GET("/", f.getSiteFeedbacks, admin)
+	mux.GET("/{id}", f.getSiteFeedbackByID, admin)
+	mux.POST("/", f.createSiteFeedback, admin)
+	mux.PUT("/{id}/seen", f.markSiteFeedbackAsSeen, admin)
 
 	return mux
 }

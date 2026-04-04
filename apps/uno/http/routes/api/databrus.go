@@ -17,8 +17,8 @@ func NewDatabrusMux(logger port.Logger, databrusService *service.DatabrusService
 	d := databrus{logger, databrusService}
 	mux := router.NewMux()
 
-	mux.Handle("GET", "/matches", d.getMatches)
-	mux.Handle("GET", "/table", d.getTable)
+	mux.GET("/matches", d.getMatches)
+	mux.GET("/table", d.getTable)
 
 	return mux
 }

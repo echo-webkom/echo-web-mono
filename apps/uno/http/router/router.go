@@ -26,40 +26,40 @@ func (rt *Router) Handle(method string, pattern string, h handler.Handler, middl
 	rt.mux.Handle(method, pattern, h, middleware...)
 }
 
-func (r *Router) Mount(pattern string, handler http.Handler, middleware ...handler.Middleware) {
-	r.mux.Mount(pattern, handler, middleware...)
+func (rt *Router) Mount(pattern string, handler http.Handler, middleware ...handler.Middleware) {
+	rt.mux.Mount(pattern, handler, middleware...)
 }
 
-func (r *Router) OnCleanup(f func()) {
-	r.cleanup = f
+func (rt *Router) OnCleanup(f func()) {
+	rt.cleanup = f
 }
 
-func (r *Router) Serve(notif *notifier.Notifier, port string) {
+func (rt *Router) Serve(notif *notifier.Notifier, port string) {
 	ctx := context.Background()
 	done, finish := notif.Register()
 
 	server := &http.Server{
 		Addr:    port,
-		Handler: r.mux,
+		Handler: rt.mux,
 	}
 
 	go func() {
 		<-done
 		if err := server.Shutdown(ctx); err != nil {
-			r.logger.Error(ctx, "shutdown failed",
+			rt.logger.Error(ctx, "shutdown failed",
 				"error", err,
 			)
 		}
 
-		r.logger.Info(ctx, "http server stopped")
-		r.cleanup()
+		rt.logger.Info(ctx, "http server stopped")
+		rt.cleanup()
 		finish()
 	}()
 
 	// But actually it is 0.0.0.0 + port, but this is more user-friendly.
-	r.logger.Info(ctx, "server running at http://localhost"+port)
+	rt.logger.Info(ctx, "server running at http://localhost"+port)
 	if err := server.ListenAndServe(); err != http.ErrServerClosed {
-		r.logger.Error(ctx, "error starting http server",
+		rt.logger.Error(ctx, "error starting http server",
 			"error", err,
 		)
 	}

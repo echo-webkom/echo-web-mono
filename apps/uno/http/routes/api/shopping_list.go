@@ -20,12 +20,12 @@ func NewShoppingListMux(logger port.Logger, shoppingListService *service.Shoppin
 	s := shoppingList{logger, shoppingListService}
 
 	// Public
-	mux.Handle("GET", "/", s.getShoppingList)
+	mux.GET("/", s.getShoppingList)
 
 	// Admin
-	mux.Handle("POST", "/", s.createShoppingListItem, admin)
-	mux.Handle("POST", "/like", s.toggleLike, admin)
-	mux.Handle("DELETE", "/{id}", s.removeShoppingListItem, admin)
+	mux.POST("/", s.createShoppingListItem, admin)
+	mux.POST("/like", s.toggleLike, admin)
+	mux.DELETE("/{id}", s.removeShoppingListItem, admin)
 
 	return mux
 }

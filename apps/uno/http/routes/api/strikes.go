@@ -21,11 +21,11 @@ func NewStrikesMux(logger port.Logger, strikesService *service.StrikeService, ad
 	s := strikes{logger, strikesService}
 
 	// Admin
-	mux.Handle("POST", "/unban", s.unbanUsersWithExpiredStrikes, admin)
-	mux.Handle("GET", "/details", s.getUsersWithStrikeDetails, admin)
-	mux.Handle("POST", "/", s.addStrike, admin)
-	mux.Handle("DELETE", "/ban/{userId}", s.removeBan, admin)
-	mux.Handle("DELETE", "/{id}", s.removeStrike, admin)
+	mux.POST("/unban", s.unbanUsersWithExpiredStrikes, admin)
+	mux.GET("/details", s.getUsersWithStrikeDetails, admin)
+	mux.POST("/", s.addStrike, admin)
+	mux.DELETE("/ban/{userId}", s.removeBan, admin)
+	mux.DELETE("/{id}", s.removeStrike, admin)
 
 	return mux
 }

@@ -49,6 +49,26 @@ func (m *Mux) Handle(method string, pattern string, h handler.Handler, middlewar
 	})
 }
 
+func (m *Mux) GET(pattern string, h handler.Handler, middlewares ...handler.Middleware) {
+	m.Handle(http.MethodGet, pattern, h, middlewares...)
+}
+
+func (m *Mux) POST(pattern string, h handler.Handler, middlewares ...handler.Middleware) {
+	m.Handle(http.MethodPost, pattern, h, middlewares...)
+}
+
+func (m *Mux) PUT(pattern string, h handler.Handler, middlewares ...handler.Middleware) {
+	m.Handle(http.MethodPut, pattern, h, middlewares...)
+}
+
+func (m *Mux) DELETE(pattern string, h handler.Handler, middlewares ...handler.Middleware) {
+	m.Handle(http.MethodDelete, pattern, h, middlewares...)
+}
+
+func (m *Mux) PATCH(pattern string, h handler.Handler, middlewares ...handler.Middleware) {
+	m.Handle(http.MethodPatch, pattern, h, middlewares...)
+}
+
 // Mount allows mounting a standard http.Handler (useful for swagger, pprof, etc.)
 func (m *Mux) Mount(pattern string, h http.Handler, middleware ...handler.Middleware) {
 	h = m.applyMiddlewares(h, middleware...)

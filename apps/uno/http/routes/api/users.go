@@ -25,18 +25,18 @@ func NewUsersMux(logger port.Logger, userService *service.UserService, happening
 	mux := router.NewMux()
 
 	// Public routes
-	mux.Handle("GET", "/{id}/image", u.getUserImage)
+	mux.GET("/{id}/image", u.getUserImage)
 
 	// Session routes
-	mux.Handle("GET", "/search", u.searchUsers, session)
+	mux.GET("/search", u.searchUsers, session)
 
 	// Admin routes
-	mux.Handle("GET", "/", u.getUsers, admin)
-	mux.Handle("GET", "/{id}", u.getUserByID, admin)
-	mux.Handle("GET", "/{id}/registrations", u.getUserRegistrations, admin)
-	mux.Handle("POST", "/{id}/image", u.uploadUserImage, admin)
-	mux.Handle("DELETE", "/{id}/image", u.deleteUserImage, admin)
-	mux.Handle("GET", "/feide/{feideId}/groups", u.getUserGroups, admin)
+	mux.GET("/", u.getUsers, admin)
+	mux.GET("/{id}", u.getUserByID, admin)
+	mux.GET("/{id}/registrations", u.getUserRegistrations, admin)
+	mux.POST("/{id}/image", u.uploadUserImage, admin)
+	mux.DELETE("/{id}/image", u.deleteUserImage, admin)
+	mux.GET("/feide/{feideId}/groups", u.getUserGroups, admin)
 
 	return mux
 }

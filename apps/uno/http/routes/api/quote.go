@@ -2,7 +2,6 @@ package api
 
 import (
 	"errors"
-	"net/http"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
@@ -27,11 +26,11 @@ func NewQuoteMux(
 	mux := router.NewMux()
 
 	// Admin
-	mux.Handle(http.MethodGet, "/", q.getQuotes, sessionOrAdmin)
-	mux.Handle(http.MethodPost, "/", q.createQuote, session)
-	mux.Handle(http.MethodDelete, "/{id}", q.deleteQuote, admin)
-	mux.Handle(http.MethodPost, "/{id}/like", q.likeQuote, session)
-	mux.Handle(http.MethodPost, "/{id}/dislike", q.dislikeQuote, session)
+	mux.GET("/", q.getQuotes, sessionOrAdmin)
+	mux.POST("/", q.createQuote, session)
+	mux.DELETE("/{id}", q.deleteQuote, admin)
+	mux.POST("/{id}/like", q.likeQuote, session)
+	mux.POST("/{id}/dislike", q.dislikeQuote, session)
 
 	return mux
 }

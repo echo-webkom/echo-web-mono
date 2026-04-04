@@ -16,7 +16,7 @@ func NewBirthdayMux(logger port.Logger, userService *service.UserService) *route
 	b := birthdays{logger, userService}
 	mux := router.NewMux()
 
-	mux.Handle("GET", "/", b.birthdaysToday)
+	mux.GET("/", b.birthdaysToday)
 
 	return mux
 }

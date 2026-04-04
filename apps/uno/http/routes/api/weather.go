@@ -17,7 +17,7 @@ func NewWeatherMux(logger port.Logger, weatherService *service.WeatherService) *
 	mux := router.NewMux()
 	s := weather{logger, weatherService}
 
-	mux.Handle("GET", "/yr", s.getCurrentWeather)
+	mux.GET("/yr", s.getCurrentWeather)
 
 	return mux
 }

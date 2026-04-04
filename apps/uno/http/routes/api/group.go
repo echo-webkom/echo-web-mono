@@ -25,16 +25,16 @@ func NewGroupMux(logger port.Logger, groupService *service.GroupService, admin h
 	}
 
 	mux := router.NewMux()
-	mux.Handle("GET", "/", gh.getGroups)
-	mux.Handle("GET", "/{id}", gh.getGroupByID)
+	mux.GET("/", gh.getGroups)
+	mux.GET("/{id}", gh.getGroupByID)
 
-	mux.Handle("DELETE", "/{id}", gh.deleteGroupByID, admin)
-	mux.Handle("POST", "/", gh.createGroup, admin)
-	mux.Handle("POST", "/{id}", gh.updateGroupByID, admin)
-	mux.Handle("GET", "/{id}/members", gh.getGroupMembers, admin)
-	mux.Handle("POST", "/{id}/members", gh.addUserToGroup, admin)
-	mux.Handle("DELETE", "/{id}/members/{userId}", gh.removeUserFromGroup, admin)
-	mux.Handle("POST", "/{id}/members/{userId}/leader", gh.setGroupMemberLeader, admin)
+	mux.DELETE("/{id}", gh.deleteGroupByID, admin)
+	mux.POST("/", gh.createGroup, admin)
+	mux.POST("/{id}", gh.updateGroupByID, admin)
+	mux.GET("/{id}/members", gh.getGroupMembers, admin)
+	mux.POST("/{id}/members", gh.addUserToGroup, admin)
+	mux.DELETE("/{id}/members/{userId}", gh.removeUserFromGroup, admin)
+	mux.POST("/{id}/members/{userId}/leader", gh.setGroupMemberLeader, admin)
 
 	return mux
 }

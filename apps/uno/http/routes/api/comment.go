@@ -20,10 +20,10 @@ func NewCommentMux(logger port.Logger, commentService *service.CommentService, a
 	mux := router.NewMux()
 
 	// Admin
-	mux.Handle("POST", "/", c.createComment, admin)
-	mux.Handle("GET", "/{id}", c.getCommentsByID, admin)
-	mux.Handle("GET", "/{id}/reaction", c.reactToComment, admin)
-	mux.Handle("DELETE", "/{id}", c.deleteComment, admin)
+	mux.POST("/", c.createComment, admin)
+	mux.GET("/{id}", c.getCommentsByID, admin)
+	mux.GET("/{id}/reaction", c.reactToComment, admin)
+	mux.DELETE("/{id}", c.deleteComment, admin)
 
 	return mux
 }

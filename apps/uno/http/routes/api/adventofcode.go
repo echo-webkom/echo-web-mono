@@ -18,7 +18,7 @@ func NewAdventOfCodeMux(logger port.Logger, aocService *service.AdventOfCodeServ
 	mux := router.NewMux()
 
 	// Admin
-	mux.Handle("GET", "/leaderboard", aoc.getLeaderboard)
+	mux.GET("/leaderboard", aoc.getLeaderboard)
 
 	return mux
 }
