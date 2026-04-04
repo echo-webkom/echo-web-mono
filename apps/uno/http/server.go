@@ -30,91 +30,94 @@ import (
 // @name                        X-Admin-Key
 // @description                 Admin API Key for protected endpoints
 
-func RunServer(
-	notif *notifier.Notifier,
-	logger port.Logger,
-	config *config.Config,
-	authService *service.AuthService,
-	happeningService *service.HappeningService,
-	degreeService *service.DegreeService,
-	siteFeedbackService *service.SiteFeedbackService,
-	shoppingListService *service.ShoppingListService,
-	userService *service.UserService,
-	strikeSerivce *service.StrikeService,
-	accessRequestService *service.AccessRequestService,
-	whitelistService *service.WhitelistService,
-	commentService *service.CommentService,
-	weatherService *service.WeatherService,
-	databrusService *service.DatabrusService,
-	adventOfCodeService *service.AdventOfCodeService,
-	groupService *service.GroupService,
-	reactionService *service.ReactionService,
-	registrationRepo port.RegistrationRepo,
-	quoteService *service.QuoteService,
-	cmsService *service.CMSService,
-) {
-	r := router.New(logger, middleware.Logger(logger))
+type ServerDeps struct {
+	Notifier *notifier.Notifier
 
-	admin := middleware.NewAdminMiddleware(authService, config.AdminAPIKey)
-	session := middleware.NewSessionMiddleware(authService)
-	sessionOrAdmin := middleware.NewAdminOrSessionMiddleware(authService, config.AdminAPIKey)
+	Logger port.Logger
+	Config *config.Config
+
+	AuthService          *service.AuthService
+	HappeningService     *service.HappeningService
+	DegreeService        *service.DegreeService
+	SiteFeedbackService  *service.SiteFeedbackService
+	ShoppingListService  *service.ShoppingListService
+	UserService          *service.UserService
+	StrikeSerivce        *service.StrikeService
+	AccessRequestService *service.AccessRequestService
+	WhitelistService     *service.WhitelistService
+	CommentService       *service.CommentService
+	WeatherService       *service.WeatherService
+	DatabrusService      *service.DatabrusService
+	AdventOfCodeService  *service.AdventOfCodeService
+	GroupService         *service.GroupService
+	ReactionService      *service.ReactionService
+	QuoteService         *service.QuoteService
+	CMSService           *service.CMSService
+}
+
+func RunServer(deps ServerDeps) {
+	r := router.New(deps.Logger, middleware.Logger(deps.Logger))
+
+	admin := middleware.NewAdminMiddleware(deps.AuthService, deps.Config.AdminAPIKey)
+	session := middleware.NewSessionMiddleware(deps.AuthService)
+	sessionOrAdmin := middleware.NewAdminOrSessionMiddleware(deps.AuthService, deps.Config.AdminAPIKey)
 
 	// Health check route
 	r.Handle("GET", "/", api.HealthHandler)
 
 	// Happening routes
-	r.Mount("/happenings", api.NewHappeningMux(logger, happeningService, admin))
+	r.Mount("/happenings", api.NewHappeningMux(deps.Logger, deps.HappeningService, admin))
 
 	// Degree routes
-	r.Mount("/degrees", api.NewDegreeMux(logger, degreeService, admin))
+	r.Mount("/degrees", api.NewDegreeMux(deps.Logger, deps.DegreeService, admin))
 
 	// Site feedback routes
-	r.Mount("/feedbacks", api.NewSiteFeedbackMux(logger, siteFeedbackService, admin))
+	r.Mount("/feedbacks", api.NewSiteFeedbackMux(deps.Logger, deps.SiteFeedbackService, admin))
 
 	// Shopping list routes
-	r.Mount("/shopping", api.NewShoppingListMux(logger, shoppingListService, admin))
+	r.Mount("/shopping", api.NewShoppingListMux(deps.Logger, deps.ShoppingListService, admin))
 
 	// Birthday routes
-	r.Mount("/birthdays", api.NewBirthdayMux(logger, userService))
+	r.Mount("/birthdays", api.NewBirthdayMux(deps.Logger, deps.UserService))
 
 	// Strike routes
-	r.Mount("/strikes", api.NewStrikesMux(logger, strikeSerivce, admin))
+	r.Mount("/strikes", api.NewStrikesMux(deps.Logger, deps.StrikeSerivce, admin))
 
 	// Access request routes
-	r.Mount("/access-requests", api.NewAccessRequestMux(logger, accessRequestService, admin))
+	r.Mount("/access-requests", api.NewAccessRequestMux(deps.Logger, deps.AccessRequestService, admin))
 
 	// Whitelist routes
-	r.Mount("/whitelist", api.NewWhitelistMux(logger, whitelistService, admin))
+	r.Mount("/whitelist", api.NewWhitelistMux(deps.Logger, deps.WhitelistService, admin))
 
 	// Comment routes
-	r.Mount("/comments", api.NewCommentMux(logger, commentService, admin))
+	r.Mount("/comments", api.NewCommentMux(deps.Logger, deps.CommentService, admin))
 
 	// Weather routes
-	r.Mount("/weather", api.NewWeatherMux(logger, weatherService))
+	r.Mount("/weather", api.NewWeatherMux(deps.Logger, deps.WeatherService))
 
 	// Databrus routes
-	r.Mount("/databrus", api.NewDatabrusMux(logger, databrusService))
+	r.Mount("/databrus", api.NewDatabrusMux(deps.Logger, deps.DatabrusService))
 
 	// Advent of Code routes
-	r.Mount("/advent-of-code", api.NewAdventOfCodeMux(logger, adventOfCodeService), admin)
+	r.Mount("/advent-of-code", api.NewAdventOfCodeMux(deps.Logger, deps.AdventOfCodeService), admin)
 
 	// Group routes
-	r.Mount("/groups", api.NewGroupMux(logger, groupService, admin))
+	r.Mount("/groups", api.NewGroupMux(deps.Logger, deps.GroupService, admin))
 
 	// Reaction routes
-	r.Mount("/reactions", api.NewReactionMux(logger, reactionService, admin))
+	r.Mount("/reactions", api.NewReactionMux(deps.Logger, deps.ReactionService, admin))
 
 	// User routes
-	r.Mount("/users", api.NewUsersMux(logger, userService, registrationRepo, admin, session))
+	r.Mount("/users", api.NewUsersMux(deps.Logger, deps.UserService, deps.HappeningService, admin, session))
 
 	// Quote routes
-	r.Mount("/quotes", api.NewQuoteMux(logger, quoteService, sessionOrAdmin, session, admin))
+	r.Mount("/quotes", api.NewQuoteMux(deps.Logger, deps.QuoteService, sessionOrAdmin, session, admin))
 
 	// Sanity routes
-	r.Mount("/sanity", api.NewSanityMux(logger, happeningService, admin, cmsService))
+	r.Mount("/sanity", api.NewSanityMux(deps.Logger, deps.HappeningService, admin, deps.CMSService))
 
 	// Swagger UI
-	r.Mount("/swagger", api.SwaggerRouter(config.ApiPort))
+	r.Mount("/swagger", api.SwaggerRouter(deps.Config.ApiPort))
 
-	r.Serve(notif, config.ApiPort)
+	r.Serve(deps.Notifier, deps.Config.ApiPort)
 }
