@@ -8,7 +8,6 @@
     "start": "pnpm run with-env next start",
     "clean": "rm -rf .next .turbo node_modules",
     "test:unit": "env TZ=UTC-1 vitest",
-    "analyze": "ANALYZE=true pnpm build",
     "with-env": "dotenv -e ../../.env --",
     "typegen": "pnpm run with-env next typegen",
     "check": "oxlint . && oxfmt --check . && tsc --noEmit",
