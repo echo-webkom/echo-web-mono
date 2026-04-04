@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"time"
+	"uno/domain/model"
 	"uno/domain/port"
 )
 
@@ -79,10 +80,10 @@ func (s *ShoppingListService) ToggleLike(ctx context.Context, itemID string, use
 	return s.usersToShoppingListItemRepo.AddUserToShoppingListItem(ctx, userID, itemID)
 }
 
-func (s *ShoppingListService) ShoppingListItemRepo() port.ShoppingListItemRepo {
-	return s.shoppingListeItemRepo
+func (s *ShoppingListService) CreateShoppingListItem(ctx context.Context, item model.NewShoppingListItem) (model.ShoppingListItem, error) {
+	return s.shoppingListeItemRepo.CreateShoppingListItem(ctx, item)
 }
 
-func (s *ShoppingListService) UsersToShoppingListItemRepo() port.UsersToShoppingListItemRepo {
-	return s.usersToShoppingListItemRepo
+func (s *ShoppingListService) DeleteShoppingListItem(ctx context.Context, itemID string) error {
+	return s.shoppingListeItemRepo.DeleteShoppingListItem(ctx, itemID)
 }

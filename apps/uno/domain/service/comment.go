@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"uno/domain/model"
 	"uno/domain/port"
 )
 
@@ -15,8 +16,16 @@ func NewCommentService(commentRepo port.CommentRepo) *CommentService {
 	}
 }
 
-func (s *CommentService) CommentRepo() port.CommentRepo {
-	return s.commentRepo
+func (s *CommentService) GetCommentsByID(ctx context.Context, id string) ([]model.CommentAggregate, error) {
+	return s.commentRepo.GetCommentsByID(ctx, id)
+}
+
+func (s *CommentService) CreateComment(ctx context.Context, content string, postID string, userID string, parentCommentID *string) error {
+	return s.commentRepo.CreateComment(ctx, content, postID, userID, parentCommentID)
+}
+
+func (s *CommentService) DeleteComment(ctx context.Context, id string) error {
+	return s.commentRepo.DeleteComment(ctx, id)
 }
 
 func (s *CommentService) ReactToComment(ctx context.Context, commentID string, userID string) error {

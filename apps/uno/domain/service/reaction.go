@@ -45,6 +45,6 @@ func (s *ReactionService) ToggleReaction(ctx context.Context, reaction model.New
 	})
 }
 
-func (s *ReactionService) ReactionRepo() port.ReactionRepo {
-	return s.reactionRepo
+func (s *ReactionService) GetReactionsByID(ctx context.Context, reactToKey string) ([]model.Reaction, error) {
+	return s.reactionRepo.GetReactionsByID(ctx, reactToKey)
 }

@@ -11,28 +11,43 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestStrikeService_UserRepo(t *testing.T) {
+func TestStrikeService_GetUserByID(t *testing.T) {
 	mockUserRepo := mocks.NewUserRepo(t)
 	strikeService := service.NewStrikeService(nil, nil, mockUserRepo)
 
-	userRepo := strikeService.UserRepo()
-	assert.NotNil(t, userRepo, "Expected UserRepo to be non-nil")
+	userID := "user-1"
+	mockUser := testutil.NewFakeStruct(func(u *model.User) { u.ID = userID })
+	mockUserRepo.EXPECT().GetUserByID(mock.Anything, userID).Return(mockUser, nil).Once()
+
+	user, err := strikeService.GetUserByID(t.Context(), userID)
+	assert.NoError(t, err)
+	assert.Equal(t, userID, user.ID)
 }
 
-func TestStrikeService_DotRepo(t *testing.T) {
+func TestStrikeService_CreateDot(t *testing.T) {
 	mockDotRepo := mocks.NewDotRepo(t)
 	strikeService := service.NewStrikeService(mockDotRepo, nil, nil)
 
-	dotRepo := strikeService.DotRepo()
-	assert.NotNil(t, dotRepo, "Expected DotRepo to be non-nil")
+	newDot := testutil.NewFakeStruct[model.NewDot]()
+	mockDot := testutil.NewFakeStruct[model.Dot]()
+	mockDotRepo.EXPECT().CreateDot(mock.Anything, newDot).Return(mockDot, nil).Once()
+
+	createdDot, err := strikeService.CreateDot(t.Context(), newDot)
+	assert.NoError(t, err)
+	assert.Equal(t, mockDot, createdDot)
 }
 
-func TestStrikeService_BanInfoRepo(t *testing.T) {
+func TestStrikeService_GetBanInfoByUserID(t *testing.T) {
 	mockBanInfoRepo := mocks.NewBanInfoRepo(t)
 	strikeService := service.NewStrikeService(nil, mockBanInfoRepo, nil)
 
-	banInfoRepo := strikeService.BanInfoRepo()
-	assert.NotNil(t, banInfoRepo, "Expected BanInfoRepo to be non-nil")
+	userID := "user-1"
+	banInfo := testutil.NewFakeStruct[model.ModBanInfo]()
+	mockBanInfoRepo.EXPECT().GetBanInfoByUserID(mock.Anything, userID).Return(&banInfo, nil).Once()
+
+	gotBanInfo, err := strikeService.GetBanInfoByUserID(t.Context(), userID)
+	assert.NoError(t, err)
+	assert.NotNil(t, gotBanInfo)
 }
 
 func TestStrikeService_UnbanUsersWithExpiredStrikes(t *testing.T) {

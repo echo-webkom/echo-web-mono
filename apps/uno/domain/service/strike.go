@@ -44,14 +44,30 @@ func (s *StrikeService) GetUsersWithStrikeDetails(ctx context.Context) ([]model.
 	return s.userRepo.GetUsersWithStrikeDetails(ctx)
 }
 
-func (s *StrikeService) UserRepo() port.UserRepo {
-	return s.userRepo
+func (s *StrikeService) GetUserByID(ctx context.Context, userID string) (model.User, error) {
+	return s.userRepo.GetUserByID(ctx, userID)
 }
 
-func (s *StrikeService) DotRepo() port.DotRepo {
-	return s.dotRepo
+func (s *StrikeService) GetBanInfoByUserID(ctx context.Context, userID string) (*model.ModBanInfo, error) {
+	return s.banInforepo.GetBanInfoByUserID(ctx, userID)
 }
 
-func (s *StrikeService) BanInfoRepo() port.BanInfoRepo {
-	return s.banInforepo
+func (s *StrikeService) CreateBan(ctx context.Context, ban model.NewBanInfo) (model.ModBanInfo, error) {
+	return s.banInforepo.CreateBan(ctx, ban)
+}
+
+func (s *StrikeService) DeleteDotsByUserID(ctx context.Context, userID string) error {
+	return s.dotRepo.DeleteDotsByUserID(ctx, userID)
+}
+
+func (s *StrikeService) CreateDot(ctx context.Context, dot model.NewDot) (model.Dot, error) {
+	return s.dotRepo.CreateDot(ctx, dot)
+}
+
+func (s *StrikeService) DeleteBanByUserID(ctx context.Context, userID string) error {
+	return s.banInforepo.DeleteBanByUserID(ctx, userID)
+}
+
+func (s *StrikeService) DeleteDotByIDAndUserID(ctx context.Context, id int, userID string) error {
+	return s.dotRepo.DeleteDotByIDAndUserID(ctx, id, userID)
 }

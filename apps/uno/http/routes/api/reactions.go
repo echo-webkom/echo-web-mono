@@ -43,7 +43,7 @@ func (r *reactions) getReactions(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing reaction key"))
 	}
 
-	reactions, err := r.reactionService.ReactionRepo().GetReactionsByID(ctx.Context(), key)
+	reactions, err := r.reactionService.GetReactionsByID(ctx.Context(), key)
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -86,7 +86,7 @@ func (r *reactions) toggleReaction(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 
-	reactions, err := r.reactionService.ReactionRepo().GetReactionsByID(ctx.Context(), key)
+	reactions, err := r.reactionService.GetReactionsByID(ctx.Context(), key)
 	if err != nil {
 		return ctx.InternalServerError()
 	}

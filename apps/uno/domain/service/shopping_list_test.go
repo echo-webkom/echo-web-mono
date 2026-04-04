@@ -155,20 +155,28 @@ func TestShoppingListService_GetShoppingList_UsersToShoppingListItemRepoError(t 
 	assert.Nil(t, list, "Expected shopping list to be nil on error")
 }
 
-func TestShoppingListService_ShoppingListItemRepo(t *testing.T) {
+func TestShoppingListService_CreateShoppingListItem(t *testing.T) {
 	mockRepo := mocks.NewShoppingListItemRepo(t)
 	shoppingListService := service.NewShoppingListService(mockRepo, nil)
 
-	shoppingListItemRepo := shoppingListService.ShoppingListItemRepo()
-	assert.NotNil(t, shoppingListItemRepo, "Expected ShoppingListItemRepo to be non-nil")
+	newItem := testutil.NewFakeStruct[model.NewShoppingListItem]()
+	created := testutil.NewFakeStruct[model.ShoppingListItem]()
+	mockRepo.EXPECT().CreateShoppingListItem(mock.Anything, newItem).Return(created, nil).Once()
+
+	item, err := shoppingListService.CreateShoppingListItem(t.Context(), newItem)
+	assert.NoError(t, err)
+	assert.Equal(t, created, item)
 }
 
-func TestShoppingListService_UsersToShoppingListItemRepo(t *testing.T) {
-	mockRepo := mocks.NewUsersToShoppingListItemRepo(t)
-	shoppingListService := service.NewShoppingListService(nil, mockRepo)
+func TestShoppingListService_DeleteShoppingListItem(t *testing.T) {
+	itemID := "item-1"
+	mockRepo := mocks.NewShoppingListItemRepo(t)
+	shoppingListService := service.NewShoppingListService(mockRepo, nil)
 
-	usersToShoppingListItemRepo := shoppingListService.UsersToShoppingListItemRepo()
-	assert.NotNil(t, usersToShoppingListItemRepo, "Expected UsersToShoppingListItemRepo to be non-nil")
+	mockRepo.EXPECT().DeleteShoppingListItem(mock.Anything, itemID).Return(nil).Once()
+
+	err := shoppingListService.DeleteShoppingListItem(t.Context(), itemID)
+	assert.NoError(t, err)
 }
 
 // Helper function to create a string pointer

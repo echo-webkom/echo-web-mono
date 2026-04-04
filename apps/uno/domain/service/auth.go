@@ -75,10 +75,6 @@ func (as *AuthService) ValidateToken(ctx context.Context, token string) (model.U
 	return user, session, nil
 }
 
-func (as *AuthService) SessionRepo() port.SessionRepo {
-	return as.sessionRepo
-}
-
-func (as *AuthService) UserRepo() port.UserRepo {
-	return as.userRepo
+func (as *AuthService) GetUserMemberships(ctx context.Context, userID string) ([]string, error) {
+	return as.userRepo.GetUserMemberships(ctx, userID)
 }

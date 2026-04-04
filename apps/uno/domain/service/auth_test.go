@@ -26,22 +26,18 @@ func createTestJWT(sessionToken string) string {
 	return signed
 }
 
-func TestAuthService_SessionRepo(t *testing.T) {
+func TestAuthService_GetUserMemberships(t *testing.T) {
 	mockSessionRepo := mocks.NewSessionRepo(t)
 	mockUserRepo := mocks.NewUserRepo(t)
 	authService := service.NewAuthService(mockSessionRepo, mockUserRepo, testSecret)
 
-	sessionRepo := authService.SessionRepo()
-	assert.NotNil(t, sessionRepo, "Expected SessionRepo to be non-nil")
-}
+	userID := "user123"
+	memberships := []string{"webkom", "fadder"}
+	mockUserRepo.EXPECT().GetUserMemberships(mock.Anything, userID).Return(memberships, nil).Once()
 
-func TestAuthService_UserRepo(t *testing.T) {
-	mockSessionRepo := mocks.NewSessionRepo(t)
-	mockUserRepo := mocks.NewUserRepo(t)
-	authService := service.NewAuthService(mockSessionRepo, mockUserRepo, testSecret)
-
-	userRepo := authService.UserRepo()
-	assert.NotNil(t, userRepo, "Expected UserRepo to be non-nil")
+	gotMemberships, err := authService.GetUserMemberships(t.Context(), userID)
+	assert.NoError(t, err)
+	assert.Equal(t, memberships, gotMemberships)
 }
 
 func TestAuthService_ValidateToken_Success(t *testing.T) {

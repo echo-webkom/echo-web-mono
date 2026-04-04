@@ -108,7 +108,7 @@ func (s *sanityCMS) handleWebhook(ctx *handler.Context) error {
 
 	// Delete the happening if the operation is "delete".
 	if req.Operation == "delete" {
-		if err := s.happeningService.HappeningRepo().DeleteHappening(ctx.Context(), req.DocumentID); err != nil {
+		if err := s.happeningService.DeleteHappening(ctx.Context(), req.DocumentID); err != nil {
 			return ctx.Error(err, http.StatusInternalServerError)
 		}
 

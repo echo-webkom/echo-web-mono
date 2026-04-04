@@ -29,7 +29,7 @@ func NewAdminMiddleware(authService *service.AuthService, adminAPIKey string) ha
 				return ctx.Error(fmt.Errorf("missing or invalid admin API key"), http.StatusUnauthorized)
 			}
 
-			groups, err := authService.UserRepo().GetUserMemberships(ctx.Context(), user.ID)
+			groups, err := authService.GetUserMemberships(ctx.Context(), user.ID)
 			// only webkom is allowed to access admin endpoints with their session token
 			if err == nil && slices.Contains(groups, "webkom") {
 				setSessionContext(ctx, user, session)

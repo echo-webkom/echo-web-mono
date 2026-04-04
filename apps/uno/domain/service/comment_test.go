@@ -3,6 +3,7 @@ package service_test
 import (
 	"errors"
 	"testing"
+	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
 
@@ -10,12 +11,15 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestCommentService_CommentRepo(t *testing.T) {
+func TestCommentService_GetCommentsByID(t *testing.T) {
+	commentID := "comment123"
 	mockRepo := mocks.NewCommentRepo(t)
 	commentService := service.NewCommentService(mockRepo)
+	mockRepo.EXPECT().GetCommentsByID(mock.Anything, commentID).Return([]model.CommentAggregate{}, nil).Once()
 
-	commentRepo := commentService.CommentRepo()
-	assert.NotNil(t, commentRepo, "Expected CommentRepo to be non-nil")
+	comments, err := commentService.GetCommentsByID(t.Context(), commentID)
+	assert.NoError(t, err)
+	assert.NotNil(t, comments)
 }
 
 func TestCommentService_ReactToComment_Exists(t *testing.T) {

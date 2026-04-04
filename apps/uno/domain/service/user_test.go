@@ -14,13 +14,17 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestUserService_UserRepo(t *testing.T) {
+func TestUserService_GetAllUsers(t *testing.T) {
 	mockRepo := mocks.NewUserRepo(t)
 	mockProfilePictureStore := mocks.NewProfilePictureRepo(t)
 	userService := service.NewUserService(mockRepo, mockProfilePictureStore)
 
-	userRepo := userService.UserRepo()
-	assert.NotNil(t, userRepo, "Expected UserRepo to be non-nil")
+	expectedUsers := []model.User{testutil.NewFakeStruct[model.User]()}
+	mockRepo.EXPECT().GetAllUsers(mock.Anything).Return(expectedUsers, nil).Once()
+
+	users, err := userService.GetAllUsers(t.Context())
+	assert.NoError(t, err)
+	assert.Equal(t, expectedUsers, users)
 }
 
 func TestUserService_GetUsersWithBirthdayToday_Success(t *testing.T) {
