@@ -7,6 +7,7 @@ import { TbUserEdit } from "react-icons/tb";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogBody,
@@ -18,7 +19,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 
 import { removeFromGroup, setGroupLeader } from "../actions";
 
@@ -90,7 +90,10 @@ export const GroupUserForm = ({ user, group, isLeader }: GroupUserFormProps) => 
               </p>
             </div>
             <div className="px-4">
-              <Switch checked={isLeader} onCheckedChange={handleSetIsLeader} />
+              <Checkbox
+                checked={isLeader}
+                onCheckedChange={(checked) => handleSetIsLeader(checked === true)}
+              />
             </div>
           </div>
 

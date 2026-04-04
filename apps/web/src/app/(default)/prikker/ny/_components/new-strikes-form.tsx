@@ -1,17 +1,8 @@
 "use client";
 
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import {
-  Button as AriaButton,
-  Input as AriaInput,
-  ComboBox,
-  ListBox,
-  ListBoxItem,
-  Popover,
-} from "react-aria-components";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { type z } from "zod";
@@ -30,6 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { UserSearchSelect } from "@/components/user-search-select";
 import { initials } from "@/utils/string";
 
 import { addStrikesAction } from "../_actions/add-strike";
@@ -66,6 +58,10 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
   const watched = form.watch();
 
   const existingDots = users.find((user) => user.id === watched.userId)?.strikes ?? 0;
+  const usersById = useMemo(() => {
+    return new Map(users.map((user) => [user.id, user]));
+  }, [users]);
+
   const newDots =
     Number(existingDots) +
     (watched.strikeType === StrikeType.Other
@@ -127,21 +123,61 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
             <FormItem>
               <FormLabel htmlFor="user">Bruker</FormLabel>
               <FormControl>
-                <UserSearch
+                <UserSearchSelect
                   value={user}
-                  onInputChange={setUser}
-                  onChange={(data) => {
-                    field.onChange(data);
+                  onInputChangeAction={(data) => {
+                    setUser(data);
+                    field.onChange("");
+                  }}
+                  onSelectAction={(selectedUser) => {
+                    const detailedUser = usersById.get(selectedUser.id);
+                    setUser(detailedUser?.name ?? selectedUser.name);
+                    field.onChange(selectedUser.id);
                     form.reset({
                       count: 1,
                       strikeExpiresInMonths: 10,
                       banExpiresInMonths: 3,
                       strikeType: StrikeType.DeregisterBeforeDeadline,
                       reason: "",
-                      userId: data,
+                      userId: selectedUser.id,
                     });
                   }}
-                  users={users}
+                  placeholder="Velg en bruker..."
+                  renderOptionAction={(candidate) => {
+                    const detailedUser = usersById.get(candidate.id);
+                    const userData = detailedUser ?? {
+                      id: candidate.id,
+                      name: candidate.name,
+                      hasImage: false,
+                      isBanned: false,
+                      strikes: 0,
+                    };
+                    const imageUrl = userData.hasImage
+                      ? createProfilePictureUrl(userData.id)
+                      : undefined;
+
+                    return (
+                      <>
+                        <Avatar className="size-12 md:size-14">
+                          <AvatarImage src={imageUrl} />
+                          <AvatarFallback className="bg-background text-foreground">
+                            {initials(userData.name)}
+                          </AvatarFallback>
+                        </Avatar>
+
+                        <div className="flex flex-col">
+                          <span className="text-foreground font-semibold">{userData.name}</span>
+                          {userData.isBanned ? (
+                            <span className="text-red-500">Bannet</span>
+                          ) : (
+                            <span className="text-muted-foreground">
+                              {userData.strikes} prikk(er)
+                            </span>
+                          )}
+                        </div>
+                      </>
+                    );
+                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -307,100 +343,5 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
         </Button>
       </form>
     </Form>
-  );
-};
-
-type UserSearchProps = {
-  users: Array<User>;
-  onChange?: (data: string) => void;
-  value?: string;
-  onInputChange?: (data: string) => void;
-};
-
-const UserSearch = ({ users, value, onInputChange, onChange }: UserSearchProps) => {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [inputWidth, setInputWidth] = useState(300);
-
-  useLayoutEffect(() => {
-    const handleResize = () => {
-      if (ref.current) {
-        setInputWidth(ref.current.offsetWidth);
-      }
-    };
-
-    handleResize();
-
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  return (
-    <ComboBox
-      aria-label="user"
-      name="user"
-      formValue="key"
-      inputValue={value}
-      onInputChange={onInputChange}
-      onSelectionChange={(data) => onChange?.(data?.toString() ?? "")}
-    >
-      <div
-        ref={ref}
-        className="group border-border bg-input ring-offset-background focus-visible:ring-ring relative flex h-10 w-full rounded-md border-2 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        <AriaInput
-          placeholder="Velg en bruker..."
-          className="placeholder:text-muted-foreground h-full w-full border-0 bg-transparent px-3 py-2 ring-0 outline-0 placeholder:text-sm focus:ring-0 focus:outline-hidden"
-        />
-        <AriaButton className="text-muted-foreground absolute inset-y-0 right-0 flex items-center px-2">
-          <ChevronDown className="h-4 w-4" />
-        </AriaButton>
-      </div>
-      <Popover
-        style={{
-          minWidth: "280px",
-          width: inputWidth,
-          maxWidth: "640px",
-        }}
-      >
-        <ListBox
-          items={users}
-          className="border-border bg-input text-foreground flex max-h-96 w-full flex-col overflow-y-scroll rounded-md border-2 px-3 py-2"
-        >
-          {(user) => {
-            return (
-              <ListBoxItem
-                className="group focus:border-border focus:bg-muted selected:border-border selected:bg-muted flex cursor-default items-center gap-2 rounded border-2 border-transparent py-2 pr-4 pl-2 text-gray-900 outline-hidden select-none"
-                key={user.id}
-                textValue={user.name}
-              >
-                {() => {
-                  const imageUrl = user.hasImage ? createProfilePictureUrl(user.id) : undefined;
-                  return (
-                    <>
-                      <Avatar className="size-12 md:size-14">
-                        <AvatarImage src={imageUrl} />
-                        <AvatarFallback className="bg-background text-foreground">
-                          {initials(user.name)}
-                        </AvatarFallback>
-                      </Avatar>
-
-                      <div className="flex flex-col">
-                        <span className="text-foreground font-semibold">{user.name}</span>
-                        {user.isBanned ? (
-                          <span className="text-red-500">Bannet</span>
-                        ) : (
-                          <span className="text-muted-foreground">{user.strikes} prikk(er)</span>
-                        )}
-                      </div>
-                    </>
-                  );
-                }}
-              </ListBoxItem>
-            );
-          }}
-        </ListBox>
-      </Popover>
-    </ComboBox>
   );
 };

@@ -90,7 +90,7 @@ export default async function ManageGroup(props: Props) {
           {isGroupAdmin && <AddUserToGroupDialog group={group} />}
         </div>
 
-        <Table wrapperClassName="border-none rounded-none">
+        <Table>
           <TableHeader>
             <TableRow>
               <TableHead scope="col">Navn</TableHead>
