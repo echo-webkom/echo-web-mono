@@ -1,9 +1,9 @@
 "use client";
 
+import { Circle, Square, Star, Triangle } from "lucide-react";
 import { motion } from "motion/react";
-import { LuCircle, LuSquare, LuStar, LuTriangle } from "react-icons/lu";
 
-const icons = [LuStar, LuCircle, LuSquare, LuTriangle];
+const icons = [Star, Circle, Square, Triangle];
 
 type Props = {
   children?: React.ReactNode;

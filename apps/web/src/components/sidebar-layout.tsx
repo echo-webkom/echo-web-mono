@@ -1,9 +1,9 @@
 "use client";
 
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
-import { RxArrowLeft as ArrowLeft } from "react-icons/rx";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";

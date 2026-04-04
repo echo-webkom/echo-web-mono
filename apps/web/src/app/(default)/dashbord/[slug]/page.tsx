@@ -1,6 +1,6 @@
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { LuArrowLeft } from "react-icons/lu";
 
 import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
@@ -70,7 +70,7 @@ export default async function EventDashboard(props: Props) {
 
 const BackButton = ({ link }: { link: string }) => (
   <Link className="text-muted-foreground hover:underline" href={link}>
-    <LuArrowLeft className="mr-2 inline-block" />
+    <ArrowLeft className="mr-2 inline-block" />
     <span>Tilbake til arrangementet</span>
   </Link>
 );

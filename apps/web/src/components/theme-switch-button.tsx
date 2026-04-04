@@ -1,8 +1,8 @@
 "use client";
 
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useState } from "react";
-import { LuMoon, LuSun } from "react-icons/lu";
 
 import { cn } from "@/utils/cn";
 
@@ -31,11 +31,11 @@ export const ThemeSwitchButton = () => {
       })}
       style={{ transition: "opacity 0.5s ease" }}
     >
-      <LuMoon
+      <Moon
         className="block h-full w-full p-1 dark:hidden"
         style={{ opacity: isTransitioning ? 0 : 1 }}
       />
-      <LuSun
+      <Sun
         className="hidden h-full w-full p-1 dark:block"
         style={{ opacity: isTransitioning ? 0 : 1 }}
       />

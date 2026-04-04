@@ -1,8 +1,8 @@
 "use client";
 
+import { Send } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { LuSend as Send } from "react-icons/lu";
 
 import { addReplyAction } from "@/actions/add-comment";
 

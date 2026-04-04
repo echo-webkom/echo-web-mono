@@ -1,7 +1,7 @@
 "use client";
 
+import { ChevronDown } from "lucide-react";
 import React, { useMemo, useState } from "react";
-import { RxChevronDown } from "react-icons/rx";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -48,7 +48,7 @@ export const DownloadCsvButton = ({ slug, questions }: DownloadCsvButtonProps) =
       <DropdownMenuTrigger asChild>
         <Button className="flex gap-2">
           Last ned
-          <RxChevronDown />
+          <ChevronDown />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

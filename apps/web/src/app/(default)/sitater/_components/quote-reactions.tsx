@@ -1,8 +1,8 @@
 "use client";
 
+import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useOptimistic, useTransition } from "react";
-import { LuThumbsDown, LuThumbsUp } from "react-icons/lu";
 import { toast } from "sonner";
 
 import type { QuoteReaction } from "@/api/uno/client";
@@ -84,7 +84,7 @@ export function QuoteReactions({ quoteId, reactions, userId }: QuoteReactionsPro
         disabled={!userId || isPending}
         className={cn(liked && "text-green-600 dark:text-green-400")}
       >
-        <LuThumbsUp className="h-4 w-4" />
+        <ThumbsUp className="h-4 w-4" />
       </Button>
       {likeCount > 0 && <span className="text-muted-foreground text-xs">{likeCount}</span>}
 
@@ -95,7 +95,7 @@ export function QuoteReactions({ quoteId, reactions, userId }: QuoteReactionsPro
         disabled={!userId || isPending}
         className={cn(disliked && "text-red-600 dark:text-red-400")}
       >
-        <LuThumbsDown className="h-4 w-4" />
+        <ThumbsDown className="h-4 w-4" />
       </Button>
       {dislikeCount > 0 && <span className="text-muted-foreground text-xs">{dislikeCount}</span>}
     </div>

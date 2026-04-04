@@ -1,12 +1,8 @@
 "use client";
 
+import { Check, ChevronRight, Circle } from "lucide-react";
 import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 import * as React from "react";
-import {
-  RxCheck as Check,
-  RxChevronRight as ChevronRight,
-  RxCircle as Circle,
-} from "react-icons/rx";
 
 import { cn } from "@/utils/cn";
 

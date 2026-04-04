@@ -1,5 +1,4 @@
-import { BiUndo } from "react-icons/bi";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { ArrowLeft, ArrowRight, Undo } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -14,14 +13,14 @@ export const CalendarControl = ({ prev, next, reset }: Props) => {
     <div className="flex items-center">
       {reset && (
         <Button variant="outline" size="icon" onClick={reset} className="mr-2">
-          <BiUndo />
+          <Undo className="size-4" />
         </Button>
       )}
-      <Button variant="outline" className="mr-1" onClick={prev}>
-        <FaArrowLeft />
+      <Button variant="outline" size="icon" className="mr-1" onClick={prev}>
+        <ArrowLeft className="size-4" />
       </Button>
-      <Button variant="outline" onClick={next}>
-        <FaArrowRight />
+      <Button variant="outline" size="icon" onClick={next}>
+        <ArrowRight className="size-4" />
       </Button>
     </div>
   );

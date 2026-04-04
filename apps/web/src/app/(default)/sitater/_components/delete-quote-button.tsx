@@ -1,8 +1,8 @@
 "use client";
 
+import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { RxTrash as Trash } from "react-icons/rx";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -38,7 +38,7 @@ export function DeleteQuoteButton({ id }: Props) {
       disabled={isPending}
       className="text-destructive hover:text-destructive"
     >
-      <Trash className="h-4 w-4" />
+      <Trash2 className="h-4 w-4" />
     </Button>
   );
 }

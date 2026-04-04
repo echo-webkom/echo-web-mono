@@ -1,6 +1,6 @@
+import { Briefcase, CalendarClock, Coffee, Pin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { LuBriefcase, LuCalendarClock, LuCoffee, LuPin } from "react-icons/lu";
 
 import type { UnoReturnType } from "@/api/uno/client";
 import { jobTypeString } from "@/lib/mappers";
@@ -43,21 +43,20 @@ export const JobAdPreview = ({ jobAd, hideBorder = false }: JobAdPreviewProps) =
           <ul className="mt-auto flex flex-wrap gap-3 gap-y-1 p-0 text-xs sm:text-sm">
             {jobAd.company && (
               <li className="flex items-center gap-2">
-                <LuBriefcase className="h-3 w-3 text-yellow-800 sm:h-4 sm:w-4" />{" "}
-                {jobAd.company.name}
+                <Briefcase className="h-3 w-3 text-yellow-800 sm:h-4 sm:w-4" /> {jobAd.company.name}
               </li>
             )}
             <li className="flex items-center gap-2">
-              <LuPin className="h-3 w-3 text-red-600 sm:h-4 sm:w-4" />{" "}
+              <Pin className="h-3 w-3 text-red-600 sm:h-4 sm:w-4" />{" "}
               {jobAd.locations.map((location) => location.name).join(", ")}
             </li>
             <li className="flex items-center gap-2">
-              <LuCalendarClock className="h-3 w-3 text-stone-700 sm:h-4 sm:w-4 dark:text-stone-400" />{" "}
+              <CalendarClock className="h-3 w-3 text-stone-700 sm:h-4 sm:w-4 dark:text-stone-400" />{" "}
               {jobAd.deadline !== null ? shortDateNoTime(jobAd.deadline) : "Fortløpende"}
             </li>
             {jobAd.jobType && (
               <li className="flex items-center gap-2">
-                <LuCoffee className="h-3 w-3 text-amber-900 sm:h-4 sm:w-4" />{" "}
+                <Coffee className="h-3 w-3 text-amber-900 sm:h-4 sm:w-4" />{" "}
                 {jobTypeString(jobAd.jobType as Parameters<typeof jobTypeString>[0])}
               </li>
             )}

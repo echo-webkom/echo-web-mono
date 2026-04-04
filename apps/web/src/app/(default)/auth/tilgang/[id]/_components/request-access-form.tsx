@@ -1,11 +1,11 @@
 "use client";
 
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { BiCheckCircle } from "react-icons/bi";
 import { toast } from "sonner";
 
 import { Text } from "@/components/typography/text";
@@ -84,7 +84,7 @@ export const RequestAccessForm = ({ email }: RequestAccessFormProps) => {
       <div>
         <hr className="py-4" />
 
-        <BiCheckCircle size={64} className="mx-auto mb-4 text-green-500" />
+        <CheckCircle2 className="mx-auto mb-4 h-16 w-16 text-green-500" />
 
         <Text>
           Din forespørsel om tilgang er sendt inn. Du vil motta en e-post, på {email}, når vi har

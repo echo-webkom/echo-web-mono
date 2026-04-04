@@ -1,8 +1,8 @@
 "use client";
 
+import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { LuArrowRight as ArrowRight } from "react-icons/lu";
 import { toast } from "sonner";
 
 import { addCommentAction } from "@/actions/add-comment";

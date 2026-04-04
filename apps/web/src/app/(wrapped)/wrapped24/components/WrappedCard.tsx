@@ -1,14 +1,14 @@
 "use client";
 
+import { Circle, Square, Star, Triangle } from "lucide-react";
 import { motion, type Easing, type Variants } from "motion/react";
 import { useState } from "react";
-import { LuCircle, LuSquare, LuStar, LuTriangle } from "react-icons/lu";
 
 import { useSound } from "@/hooks/use-sound";
 
 type ArrayOfLength<T, L extends number> = ([T, ...Array<T>] & { length: L }) | [];
 
-const ICONS = [LuStar, LuCircle, LuSquare, LuTriangle];
+const ICONS = [Star, Circle, Square, Triangle];
 
 export type WrappedCardStyle<C extends number> = {
   offX: ArrayOfLength<number, C>;

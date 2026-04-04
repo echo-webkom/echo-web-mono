@@ -1,8 +1,8 @@
 "use client";
 
 import { type SiteFeedback } from "@echo-webkom/db/schemas";
+import { Mail, MailOpen } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { RxEnvelopeClosed, RxEnvelopeOpen } from "react-icons/rx";
 import { toast } from "sonner";
 
 import { toggleReadFeedback } from "@/actions/feedback";
@@ -49,7 +49,7 @@ export const Feedback = ({ feedback }: { feedback: SiteFeedback }) => {
           onClick={handleToggleRead}
           variant={feedback.isRead ? "outline" : "secondary"}
         >
-          {feedback.isRead ? <RxEnvelopeOpen /> : <RxEnvelopeClosed />}
+          {feedback.isRead ? <MailOpen className="size-4" /> : <Mail className="size-4" />}
         </Button>
       </div>
 

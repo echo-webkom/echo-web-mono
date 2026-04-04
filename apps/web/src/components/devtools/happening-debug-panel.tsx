@@ -1,7 +1,7 @@
 "use client";
 
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
-import { LuChevronDown as ChevronDown, LuChevronUp as ChevronUp } from "react-icons/lu";
 
 import { type unoWithAdmin } from "@/api/server";
 import { type CMSHappening } from "@/api/uno/client";

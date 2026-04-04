@@ -1,8 +1,6 @@
 "use client";
 
-import { BiLogoGoogle } from "react-icons/bi";
-import { FaFileDownload } from "react-icons/fa";
-import { PiMicrosoftOutlookLogo } from "react-icons/pi";
+import { CalendarDays, FileDown, Mail } from "lucide-react";
 
 import {
   type CalendarEvent,
@@ -68,9 +66,9 @@ const CalendarButton = ({ title, date, endDate, calendarType }: CalendarButtonPr
     <a href={link} target="_blank" rel="noreferrer">
       <div className="bg-background flex flex-col rounded-sm py-3 sm:gap-4 sm:py-0">
         <div className="mx-auto">
-          {"Google" === calendarType && <BiLogoGoogle className={iconClassNames} />}
-          {"Outlook" === calendarType && <PiMicrosoftOutlookLogo className={iconClassNames} />}
-          {"Ics" === calendarType && <FaFileDownload className={iconClassNames} />}
+          {"Google" === calendarType && <CalendarDays className={iconClassNames} />}
+          {"Outlook" === calendarType && <Mail className={iconClassNames} />}
+          {"Ics" === calendarType && <FileDown className={iconClassNames} />}
         </div>
         <p className="text-center">{calendarType}</p>
       </div>

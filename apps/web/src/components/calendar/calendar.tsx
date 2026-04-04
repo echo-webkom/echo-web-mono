@@ -1,9 +1,9 @@
 "use client";
 
+import { Calendar as CalendarIcon, Download } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useEffectEvent, useState } from "react";
-import { BiCalendar, BiDownload } from "react-icons/bi";
 
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
+import { capitalize } from "@/utils/string";
 
 import { CalendarControl } from "./calendar-control";
 import { CalendarExport } from "./calendar-export";
@@ -94,7 +95,7 @@ export const Calendar = ({ events, type }: CalendarProps) => {
             <TabsTrigger value="month">Månedskalender</TabsTrigger>
           </TabsList>
           <Heading level={2} className="flex-1 justify-end overflow-hidden">
-            {topText}
+            {capitalize(topText)}
           </Heading>
           <CalendarControl
             prev={handlePrevStep}
@@ -114,7 +115,7 @@ export const Calendar = ({ events, type }: CalendarProps) => {
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="outline" className="gap-2">
-                <BiDownload className="size-5" />
+                <Download className="size-5" />
                 <Text size="sm">Last ned kalender</Text>
               </Button>
             </DialogTrigger>
@@ -134,7 +135,7 @@ export const Calendar = ({ events, type }: CalendarProps) => {
         <Button asChild variant="ghost">
           <Link href="/for-studenter/arrangementer">
             <Heading level={2}>
-              <BiCalendar />
+              <CalendarIcon />
             </Heading>
           </Link>
         </Button>

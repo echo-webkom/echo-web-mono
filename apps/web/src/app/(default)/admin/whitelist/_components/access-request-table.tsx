@@ -1,4 +1,4 @@
-import { LuX as X } from "react-icons/lu";
+import { X } from "lucide-react";
 
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";

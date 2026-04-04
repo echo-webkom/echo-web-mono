@@ -1,14 +1,10 @@
 "use client";
 
+import { ChevronDown, Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { createContext, useContext, useEffect, useEffectEvent, useState } from "react";
-import {
-  RxChevronDown as ChevronDown,
-  RxCross2 as Cross,
-  RxHamburgerMenu as HamburgerMenu,
-} from "react-icons/rx";
 
 import { useAuth } from "@/hooks/use-auth";
 import { headerRoutes } from "@/lib/routes";
@@ -67,7 +63,7 @@ const MenuButton = () => {
       onClick={() => setIsOpen(!isOpen)}
     >
       <span className="sr-only">Meny</span>
-      <HamburgerMenu className="h-7 w-7" />
+      <Menu className="h-7 w-7" />
     </button>
   );
 };
@@ -81,7 +77,7 @@ const CloseMenuButton = () => {
       onClick={() => setIsOpen(false)}
     >
       <span className="sr-only">Lukk meny</span>
-      <Cross className="h-7 w-7" />
+      <X className="h-7 w-7" />
     </button>
   );
 };
@@ -193,7 +189,9 @@ export const MobileNavigation = () => {
                       href={link.href}
                     >
                       <div className="flex items-center gap-4">
-                        {React.createElement(link.icon, { className: "h-6 w-6" })}
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center">
+                          {React.createElement(link.icon, { className: "h-6 w-6" })}
+                        </div>
                         <div>
                           <div>
                             <p className="text-gray-600 dark:text-gray-100">{link.label}</p>

@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown, type LucideProps } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -12,8 +13,6 @@ import React, {
   useState,
   type FC,
 } from "react";
-import { type IconBaseProps } from "react-icons";
-import { RxChevronDown as ChevronDown } from "react-icons/rx";
 
 import { useAuth } from "@/hooks/use-auth";
 import { useOutsideClick } from "@/hooks/use-outsideclick";
@@ -221,7 +220,7 @@ type IconLinkProps = {
   href: string;
   label: string;
   description: string;
-  icon: FC<IconBaseProps>;
+  icon: FC<LucideProps>;
 };
 
 const IconLink = ({ icon, ...props }: IconLinkProps) => {
@@ -231,7 +230,9 @@ const IconLink = ({ icon, ...props }: IconLinkProps) => {
       href={props.href}
     >
       <div className="flex items-center gap-6">
-        {React.createElement(icon, { className: "h-6 w-6" })}
+        <div className="flex h-6 w-6 shrink-0 items-center justify-center">
+          {React.createElement(icon, { className: "h-6 w-6" })}
+        </div>
         <div>
           <p className="font-semibold">{props.label}</p>
           <p className="text-muted-foreground text-sm font-medium">{props.description}</p>

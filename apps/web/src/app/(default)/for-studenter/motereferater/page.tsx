@@ -1,5 +1,5 @@
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { RxArrowRight } from "react-icons/rx";
 
 import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
@@ -27,12 +27,12 @@ export default async function MinuteOverview() {
 
                     <div className="flex items-center gap-2">
                       <p>{shortDateNoTime(minute.date)}</p>
-                      <RxArrowRight className="hidden h-8 w-8 rounded border p-2 sm:block" />
+                      <ArrowRight className="hidden h-8 w-8 rounded border p-2 sm:block" />
                     </div>
                   </div>
 
                   <div className="block sm:hidden">
-                    <RxArrowRight className="h-10 w-10 rounded border p-2" />
+                    <ArrowRight className="h-10 w-10 rounded border p-2" />
                   </div>
                 </div>
               </Link>
