@@ -1,9 +1,8 @@
 "use client";
 
+import { Trash, UserPen } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { LuTrash as Trash } from "react-icons/lu";
-import { TbUserEdit } from "react-icons/tb";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -63,7 +62,7 @@ export const GroupUserForm = ({ user, group, isLeader }: GroupUserFormProps) => 
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="icon">
-          <TbUserEdit className="h-4 w-4" />
+          <UserPen className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent>

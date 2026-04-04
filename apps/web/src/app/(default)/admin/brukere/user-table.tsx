@@ -1,8 +1,8 @@
 "use client";
 
 import { type Group } from "@echo-webkom/db/schemas";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useMemo, useState } from "react";
-import { RxArrowLeft, RxArrowRight } from "react-icons/rx";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
@@ -76,7 +76,7 @@ export const UserTableView = ({ users, groups }: { users: AllUsers; groups: Arra
               onHold={handleHoldPreviousPage}
             >
               <span className="sr-only">Tilbake</span>
-              <RxArrowLeft className="h-4 w-4" />
+              <ArrowLeft className="h-4 w-4" />
             </HoldableButton>
             <span>
               {page} av {totalPages}
@@ -89,7 +89,7 @@ export const UserTableView = ({ users, groups }: { users: AllUsers; groups: Arra
               disabled={page === totalPages}
             >
               <span className="sr-only">Neste</span>
-              <RxArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4" />
             </HoldableButton>
           </div>
 

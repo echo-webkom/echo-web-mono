@@ -1,8 +1,8 @@
 "use client";
 
+import { Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 import { useMemo } from "react";
-import { TiStarburst } from "react-icons/ti";
 
 import { useSound } from "@/hooks/use-sound";
 
@@ -225,7 +225,7 @@ export const RegistrationsCard = () => {
                 ease: "linear",
               }}
             >
-              <TiStarburst className="z-40 h-[70vh] w-[70vh] fill-yellow-300" />
+              <Sparkles className="z-40 h-[70vh] w-[70vh] fill-yellow-300" />
             </motion.div>
             <div className="absolute">
               <p className="text-wrapped-black text-center text-8xl font-bold">{REGISTRATIONS}</p>

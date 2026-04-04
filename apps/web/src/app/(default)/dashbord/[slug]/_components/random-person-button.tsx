@@ -1,8 +1,8 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import Confetti from "react-confetti";
-import { AiOutlineLoading } from "react-icons/ai";
 import { toast } from "sonner";
 
 import { Text } from "@/components/typography/text";
@@ -54,7 +54,7 @@ export const RandomPersonButton = ({ registrations }: RandomPersonButtonProps) =
         {isLoading ? (
           <>
             <span>
-              <AiOutlineLoading className="h-4 w-4 animate-spin" />
+              <Loader2 className="h-4 w-4 animate-spin" />
             </span>
             <span className="px-2">Velger..</span>
           </>

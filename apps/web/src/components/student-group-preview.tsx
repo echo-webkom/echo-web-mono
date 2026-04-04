@@ -1,6 +1,6 @@
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { RxArrowRight as ArrowRight } from "react-icons/rx";
 
 import type { UnoReturnType } from "@/api/uno/client";
 import { urlFor } from "@/lib/sanity";

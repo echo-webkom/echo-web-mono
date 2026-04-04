@@ -1,9 +1,8 @@
 "use client";
 
+import { MessageCircle, Reply, ThumbsUp } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
-import { FaRegThumbsUp, FaReply } from "react-icons/fa";
-import { SlSpeech } from "react-icons/sl";
 
 import { useSound } from "@/hooks/use-sound";
 
@@ -70,7 +69,7 @@ export const InteractionCard = () => {
           className="grid h-1/3 w-full grid-cols-3 grid-rows-2"
         >
           <div className="text-wrapped-yellow col-span-1 row-span-2 flex items-center justify-center">
-            <SlSpeech className="h-1/2 w-1/2" />
+            <MessageCircle className="h-1/2 w-1/2" />
           </div>
           <div className="col-span-2 row-span-1 flex items-end justify-center p-2">
             <p className="text-wrapped-black text-5xl">{COMMENTS}</p>
@@ -86,7 +85,7 @@ export const InteractionCard = () => {
           className="grid h-1/3 w-full grid-cols-3 grid-rows-2"
         >
           <div className="text-wrapped-pink col-span-1 row-span-2 flex items-center justify-center">
-            <FaReply className="h-1/2 w-1/2" />
+            <Reply className="h-1/2 w-1/2" />
           </div>
           <div className="col-span-2 row-span-1 flex items-end justify-center p-2">
             <p className="text-wrapped-black text-5xl">{REPLIES}</p>
@@ -102,7 +101,7 @@ export const InteractionCard = () => {
           className="grid h-1/3 w-full grid-cols-3 grid-rows-2"
         >
           <div className="text-wrapped-green col-span-1 row-span-2 flex items-center justify-center">
-            <FaRegThumbsUp className="h-1/2 w-1/2" />
+            <ThumbsUp className="h-1/2 w-1/2" />
           </div>
           <div className="col-span-2 row-span-1 flex items-end justify-center p-2">
             <p className="text-wrapped-black text-5xl">{REACTIONS}</p>
@@ -167,19 +166,19 @@ export const YourInteractions = () => {
         <div className="row-span-1 m-5 grid grid-cols-3 grid-rows-1 rounded-2xl p-10">
           <AppearingText delay={0.6}>
             <div className="text-wrapped-yellow col-span-1 flex flex-col items-center justify-center gap-3">
-              <SlSpeech className="h-16 w-16" />
+              <MessageCircle className="h-16 w-16" />
               <p className="text-2xl">{stats?.comments}</p>
             </div>
           </AppearingText>
           <AppearingText delay={0.9}>
             <div className="text-wrapped-pink col-span-1 flex flex-col items-center justify-center gap-3">
-              <FaReply className="h-16 w-16" />
+              <Reply className="h-16 w-16" />
               <p className="text-2xl">{stats?.replies}</p>
             </div>
           </AppearingText>
           <AppearingText delay={1.2}>
             <div className="text-wrapped-green col-span-1 flex flex-col items-center justify-center gap-3">
-              <FaRegThumbsUp className="h-16 w-16" />
+              <ThumbsUp className="h-16 w-16" />
               <p className="text-2xl">{stats?.reactions}</p>
             </div>
           </AppearingText>

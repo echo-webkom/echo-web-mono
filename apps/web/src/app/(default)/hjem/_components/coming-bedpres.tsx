@@ -1,5 +1,5 @@
 import { type HappeningType } from "@echo-webkom/lib";
-import { LuClock10 } from "react-icons/lu";
+import { Clock10 } from "lucide-react";
 
 import { unoWithAdmin } from "@/api/server";
 
@@ -43,7 +43,7 @@ export const ComingHappenings = async ({
         </ul>
       ) : (
         <div className="flex flex-1 flex-col items-center justify-center py-6 text-center text-gray-500">
-          <LuClock10 className="mb-4 size-16" />
+          <Clock10 className="mb-4 size-16" />
           <p className="font-medium">Ingen kommende {title.toLowerCase()}</p>
         </div>
       )}

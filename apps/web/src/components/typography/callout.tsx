@@ -1,8 +1,5 @@
+import { HelpCircle, TriangleAlert } from "lucide-react";
 import React from "react";
-import {
-  RxExclamationTriangle as Exclamation,
-  RxQuestionMarkCircled as QuestionMark,
-} from "react-icons/rx";
 
 import { cn } from "@/utils/cn";
 
@@ -29,8 +26,8 @@ export const Callout = ({ type = "info", noIcon = false, className, children }: 
     >
       {!noIcon && (
         <div>
-          {type === "info" && <QuestionMark className="h-5 w-5" />}
-          {type !== "info" && <Exclamation className="h-5 w-5" />}
+          {type === "info" && <HelpCircle className="h-5 w-5" />}
+          {type !== "info" && <TriangleAlert className="h-5 w-5" />}
         </div>
       )}
       <div>{children}</div>

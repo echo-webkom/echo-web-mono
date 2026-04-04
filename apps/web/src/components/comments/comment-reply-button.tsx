@@ -1,7 +1,7 @@
 "use client";
 
+import { Reply, X } from "lucide-react";
 import { useEffect } from "react";
-import { LuReply as Reply, LuX as X } from "react-icons/lu";
 
 import { useComment } from "./comment-provider";
 

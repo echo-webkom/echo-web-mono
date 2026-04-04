@@ -1,6 +1,6 @@
+import { ExternalLink } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { LuExternalLink as ExternalLink } from "react-icons/lu";
 
 import type { UnoReturnType } from "@/api/uno/client";
 import { degreeYearsToList, degreeYearText } from "@/lib/degree-year-text";

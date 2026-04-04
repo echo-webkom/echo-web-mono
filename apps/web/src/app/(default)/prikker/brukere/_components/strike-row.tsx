@@ -1,9 +1,9 @@
 "use client";
 
 import { type BanInfo, type Dot } from "@echo-webkom/db/schemas";
+import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { BiChevronDown } from "react-icons/bi";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
@@ -48,7 +48,7 @@ export const StrikeRow = ({ userId, name, strikes, banInfo, strikeCount }: Strik
             className="hover:bg-muted shrink-0 rounded-md p-1 transition-colors"
             onClick={toggle}
           >
-            <BiChevronDown
+            <ChevronDown
               className={cn("text-muted-foreground h-6 w-6 transition-all", {
                 "rotate-180": isOpen,
               })}

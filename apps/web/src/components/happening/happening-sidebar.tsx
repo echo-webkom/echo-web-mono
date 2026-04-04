@@ -1,8 +1,8 @@
 import { isFuture, isPast } from "date-fns";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { unstable_noStore as noStore } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
-import { RxArrowRight as ArrowRight, RxExternalLink as ExternalLink } from "react-icons/rx";
 
 import { type CMSHappening } from "@/api/uno/client";
 import { auth } from "@/auth/session";

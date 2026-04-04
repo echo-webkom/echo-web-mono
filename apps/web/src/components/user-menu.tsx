@@ -1,15 +1,9 @@
 "use client";
 
 import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
+import { CircleUser, Gavel, Lock, LogOut, User as UserIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  RxAvatar as Avatar,
-  RxExit as Exit,
-  RxLockClosed as LockClosed,
-  RxPerson as Person,
-} from "react-icons/rx";
-import { TbGavel } from "react-icons/tb";
 
 import { useSignOut } from "@/auth/client";
 import { isBedkom, isMemberOf } from "@/lib/memberships";
@@ -51,7 +45,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
               unoptimized
             />
           ) : (
-            <Avatar className="h-7 w-7" />
+            <CircleUser className="h-7 w-7" />
           )}
         </button>
       </DropdownMenuTrigger>
@@ -66,7 +60,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 
         <DropdownMenuItem asChild>
           <Link href={`/auth/user/${user.id}`}>
-            <Person className="mr-2 h-4 w-4" />
+            <UserIcon className="mr-2 h-4 w-4" />
             <span>Min profil</span>
           </Link>
         </DropdownMenuItem>
@@ -74,7 +68,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
         {isMemberOf(user, ["webkom", "hovedstyret"]) && (
           <DropdownMenuItem asChild>
             <Link href="/admin">
-              <LockClosed className="mr-2 h-4 w-4" />
+              <Lock className="mr-2 h-4 w-4" />
               <span>Dashboard</span>
             </Link>
           </DropdownMenuItem>
@@ -83,7 +77,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
         {isBedkom(user) && (
           <DropdownMenuItem asChild>
             <Link href="/prikker">
-              <TbGavel className="mr-2 h-4 w-4" />
+              <Gavel className="mr-2 h-4 w-4" />
               <span>Prikker</span>
             </Link>
           </DropdownMenuItem>
@@ -91,7 +85,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 
         <DropdownMenuItem asChild>
           <button onClick={() => void signOut()} className="w-full">
-            <Exit className="mr-2 h-4 w-4" />
+            <LogOut className="mr-2 h-4 w-4" />
             <span>Logg ut</span>
           </button>
         </DropdownMenuItem>

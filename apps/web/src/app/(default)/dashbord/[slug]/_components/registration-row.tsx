@@ -1,9 +1,9 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
+import { Ellipsis, TriangleAlert } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { RxDotsHorizontal as Dots, RxExclamationTriangle as Warning } from "react-icons/rx";
 
 import { type SpotRange } from "@/api/uno/client";
 import { EditRegistrationForm } from "@/components/edit-registration-button";
@@ -66,12 +66,7 @@ export const RegistrationRow = ({
             <Link href={`/auth/user/${registration.user.id}`} className="hover:underline">
               {registration.user.name}
             </Link>
-            {outsideAllRanges && (
-              <Warning
-                className="text-warning-dark h-4 w-4 shrink-0"
-                title="Brukeren passer ikke til noen spot ranges"
-              />
-            )}
+            {outsideAllRanges && <TriangleAlert className="text-warning-dark h-4 w-4 shrink-0" />}
           </div>
         </TableCell>
         <TableCell className={cn(statusColor[registration.status])}>
@@ -82,7 +77,7 @@ export const RegistrationRow = ({
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
                 <span className="sr-only">Open menu</span>
-                <Dots className="h-4 w-4" />
+                <Ellipsis className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

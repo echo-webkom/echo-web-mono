@@ -2,10 +2,10 @@
 
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { AiOutlineLoading } from "react-icons/ai";
 import { toast } from "sonner";
 
 import { updateRegistration } from "@/actions/update-registration";
@@ -207,7 +207,7 @@ export const EditRegistrationForm = ({ id, registration }: EditRegistrationFormP
               {isLoading ? (
                 <>
                   <span>
-                    <AiOutlineLoading className="h-4 w-4 animate-spin" />
+                    <Loader2 className="h-4 w-4 animate-spin" />
                   </span>
                   <span className="ml-2">Lagrer...</span>
                 </>

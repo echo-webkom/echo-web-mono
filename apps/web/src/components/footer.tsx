@@ -1,12 +1,10 @@
 "use client";
 
+import { ExternalLink, GitCommitHorizontal, Rss } from "lucide-react";
 import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useEffectEvent, useState } from "react";
-import { BiRss } from "react-icons/bi";
-import { MdCommit } from "react-icons/md";
-import { RxExternalLink as ExternalLink } from "react-icons/rx";
 
 import { footerRoutes } from "@/lib/routes";
 import { otherSponsors, sponsors } from "@/lib/sponsors";
@@ -56,7 +54,7 @@ export const Footer = ({ className }: FooterProps) => {
 
                             {isExternal && (
                               <span>
-                                <ExternalLink />
+                                <ExternalLink className="size-3" />
                               </span>
                             )}
                           </Link>
@@ -129,7 +127,7 @@ const CommitLabel = () => {
           className="flex items-center gap-1 hover:underline"
           href={`https://github.com/echo-webkom/echo-web-mono/commit/${COMMIT_SHA}`}
         >
-          <MdCommit className="inline-block h-4 w-4" />
+          <GitCommitHorizontal className="inline-block h-4 w-4" />
           {humanSha}
         </a>
       </p>
@@ -143,7 +141,7 @@ const UsefulLinks = () => {
       <ul className="text-muted-foreground flex flex-row gap-2 font-mono text-xs">
         <li>
           <Link className="flex items-center gap-1 hover:underline" href="/feed">
-            <BiRss className="inline-block h-4 w-4" />
+            <Rss className="inline-block h-4 w-4" />
             RSS Feed
           </Link>
         </li>

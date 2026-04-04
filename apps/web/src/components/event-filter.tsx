@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowDownNarrowWide, ChevronDown, ChevronRight } from "lucide-react";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import {
   usePathname,
@@ -8,11 +9,6 @@ import {
   type ReadonlyURLSearchParams,
 } from "next/navigation";
 import { useEffect, useState } from "react";
-import {
-  LuArrowDownNarrowWide as ArrowDownNarrowWide,
-  LuChevronDown as ChevronDown,
-  LuChevronRight as ChevronRight,
-} from "react-icons/lu";
 
 import { cn } from "@/utils/cn";
 

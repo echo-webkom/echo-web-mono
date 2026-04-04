@@ -1,5 +1,5 @@
+import { ArrowBigUp } from "lucide-react";
 import { useState } from "react";
-import { LuArrowBigUp } from "react-icons/lu";
 
 import { likeComment } from "@/actions/like-comment";
 import { cn } from "@/utils/cn";
@@ -31,7 +31,7 @@ export const CommentLikeButton = ({ currentUserId }: CommentLikeButtonProps) => 
       className="text-muted-foreground flex items-center gap-1 text-sm disabled:cursor-not-allowed"
       disabled={!userId}
     >
-      <LuArrowBigUp
+      <ArrowBigUp
         className={cn("h-4 w-4", {
           "fill-muted-dark dark:fill-slate-300": isLiked,
         })}

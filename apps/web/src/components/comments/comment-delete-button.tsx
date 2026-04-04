@@ -1,8 +1,8 @@
 "use client";
 
+import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { LuTrash } from "react-icons/lu";
 
 import { deleteCommentAction } from "@/actions/delete-comment";
 
@@ -29,7 +29,7 @@ export const CommentDeleteButton = ({ id }: CommentDeleteButtonProps) => {
         className="text-muted-foreground flex items-center text-sm hover:underline disabled:cursor-not-allowed disabled:opacity-50"
         disabled={isPending}
       >
-        <LuTrash className="mr-1 h-3 w-3" />
+        <Trash className="mr-1 h-3 w-3" />
         Slett
       </button>
     </form>

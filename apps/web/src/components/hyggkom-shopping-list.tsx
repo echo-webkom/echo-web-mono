@@ -1,9 +1,8 @@
 "use client";
 
+import { Ellipsis, Heart, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { IoHeartOutline, IoHeartSharp, IoTrashBinOutline } from "react-icons/io5";
-import { RxDotsHorizontal } from "react-icons/rx";
 import { toast } from "sonner";
 
 import { hyggkomLikeSubmit, hyggkomRemoveSubmit } from "@/actions/shopping-list";
@@ -107,7 +106,11 @@ export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppin
                     }}
                     className="hover:bg-reaction h-min rounded-md p-3 dark:hover:bg-gray-600"
                   >
-                    {item.hasLiked ? <IoHeartSharp fill="#ED725B" /> : <IoHeartOutline />}
+                    {item.hasLiked ? (
+                      <Heart className="fill-[#ED725B] text-[#ED725B]" />
+                    ) : (
+                      <Heart />
+                    )}
                   </button>
                 </div>
 
@@ -119,7 +122,7 @@ export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppin
                         onClick={() => toggleConfirmRemove(item.id)}
                         className="hover:bg-reaction h-min rounded-md p-3 dark:hover:bg-gray-600"
                       >
-                        <IoTrashBinOutline />
+                        <Trash2 />
                       </button>
                     ) : (
                       <div className="flex flex-col gap-2 py-2 md:flex-row">
@@ -146,7 +149,7 @@ export const HyggkomShoppingList = ({ isAdmin, items, withDots }: HyggkomShoppin
           className={`flex items-center justify-center rounded-b-md ${items.length % 2 === 1 ? "bg-transparent" : "bg-muted"} h-10 px-6`}
           key="dots"
         >
-          <RxDotsHorizontal />
+          <Ellipsis />
         </li>
       )}
     </ul>

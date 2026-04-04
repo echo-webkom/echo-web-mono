@@ -2,10 +2,10 @@
 
 import { type Question } from "@echo-webkom/db/schemas";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Activity, useEffect, useEffectEvent, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AiOutlineLoading } from "react-icons/ai";
 import { toast } from "sonner";
 import { type z } from "zod";
 
@@ -125,7 +125,7 @@ export const RegisterButton = ({
         {isLoading ? (
           <>
             <span>
-              <AiOutlineLoading className="h-4 w-4 animate-spin" />
+              <Loader2 className="h-4 w-4 animate-spin" />
             </span>
             <span className="ml-2">Vroom...</span>
           </>
@@ -148,7 +148,7 @@ export const RegisterButton = ({
           {isLoading ? (
             <>
               <span>
-                <AiOutlineLoading className="h-4 w-4 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
               </span>
               <span className="ml-2">Melder på...</span>
             </>

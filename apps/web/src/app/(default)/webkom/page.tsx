@@ -1,5 +1,5 @@
+import { Crown } from "lucide-react";
 import Image from "next/image";
-import { FaCrown } from "react-icons/fa";
 
 import Webkom from "@/assets/images/webkom.png";
 import { Container } from "@/components/container";
@@ -34,11 +34,11 @@ export default function WebkomPage() {
       <div className="mx-auto my-10 max-w-md space-y-8">
         <UnorderedList className="list-none p-0 text-lg">
           <ListItem className="relative mx-auto w-fit">
-            <FaCrown className="absolute top-1 -left-6 text-yellow-400" />
+            <Crown className="absolute top-1 -left-6 text-yellow-400" />
             <span>Andreas Bakseter (Co-founder)</span>
           </ListItem>
           <ListItem className="relative mx-auto w-fit">
-            <FaCrown className="absolute top-1 -left-6 text-yellow-400" />
+            <Crown className="absolute top-1 -left-6 text-yellow-400" />
             <span>Bo Aanes (Co-founder)</span>
           </ListItem>
         </UnorderedList>

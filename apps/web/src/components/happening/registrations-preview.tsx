@@ -1,18 +1,14 @@
+"use client";
+
 import { type RegistrationStatus } from "@echo-webkom/db/schemas";
+import { useState } from "react";
 
 import { createProfilePictureUrl } from "@/api/client";
 import { initials } from "@/utils/string";
 
 import { Text } from "../typography/text";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import {
-  Dialog,
-  DialogBody,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
+import { Dialog, DialogBody, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 type Registration = {
@@ -45,6 +41,8 @@ type RegistrationsPreviewProps = {
 const MAX = 13;
 
 export const RegistrationsPreview = ({ registrations }: RegistrationsPreviewProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const sorted = registrations
     .filter((registration) => registration.status === "registered")
     .sort((a, b) => {
@@ -63,27 +61,29 @@ export const RegistrationsPreview = ({ registrations }: RegistrationsPreviewProp
   }`;
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <TooltipProvider>
         <Tooltip>
-          <DialogTrigger asChild>
-            <TooltipTrigger asChild>
-              <button type="button" className="group flex w-fit items-start">
-                <div className="flex items-center">
-                  <div className="flex items-center -space-x-4">
-                    {sorted.map((registration) => (
-                      <ProfilePreview key={registration.userId} registration={registration} />
-                    ))}
-                  </div>
-                  {extra > 0 && (
-                    <div className="ml-2 text-sm font-medium text-gray-600 group-hover:underline">
-                      +{extra}
-                    </div>
-                  )}
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              className="group flex w-fit items-start"
+              onClick={() => setIsOpen(true)}
+            >
+              <div className="flex items-center">
+                <div className="flex items-center -space-x-4">
+                  {sorted.map((registration) => (
+                    <ProfilePreview key={registration.userId} registration={registration} />
+                  ))}
                 </div>
-              </button>
-            </TooltipTrigger>
-          </DialogTrigger>
+                {extra > 0 && (
+                  <div className="ml-2 text-sm font-medium text-gray-600 group-hover:underline">
+                    +{extra}
+                  </div>
+                )}
+              </div>
+            </button>
+          </TooltipTrigger>
           <TooltipContent>
             <p>{names}</p>
           </TooltipContent>

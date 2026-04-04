@@ -1,12 +1,9 @@
+import { CloudOff, Facebook, Instagram, Linkedin, Mail } from "lucide-react";
 import { type Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { AiOutlineInstagram, AiOutlineLinkedin } from "react-icons/ai";
-import { FaLinkedin } from "react-icons/fa";
-import { IoCloudOfflineSharp, IoMail } from "react-icons/io5";
-import { MdOutlineEmail, MdOutlineFacebook } from "react-icons/md";
 
 import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
@@ -102,7 +99,7 @@ export default async function GroupPage(props: Props) {
               className="flex items-center gap-2 hover:underline"
             >
               <span>
-                <MdOutlineEmail className="h-6 w-6" />
+                <Mail className="h-6 w-6" />
               </span>
               <span>E-post</span>
             </a>
@@ -110,7 +107,7 @@ export default async function GroupPage(props: Props) {
           {group.socials?.facebook && (
             <a href={group.socials.facebook} className="flex items-center gap-2 hover:underline">
               <span>
-                <MdOutlineFacebook className="h-6 w-6" />
+                <Facebook className="h-6 w-6" />
               </span>
               <span>Facebook</span>
             </a>
@@ -118,7 +115,7 @@ export default async function GroupPage(props: Props) {
           {group.socials?.instagram && (
             <a href={group.socials.instagram} className="flex items-center gap-2 hover:underline">
               <span>
-                <AiOutlineInstagram className="h-6 w-6" />
+                <Instagram className="h-6 w-6" />
               </span>
               <span>Instagram</span>
             </a>
@@ -126,7 +123,7 @@ export default async function GroupPage(props: Props) {
           {group.socials?.linkedin && (
             <a href={group.socials.linkedin} className="flex items-center gap-2 hover:underline">
               <span>
-                <AiOutlineLinkedin className="h-6 w-6" />
+                <Linkedin className="h-6 w-6" />
               </span>
               <span>LinkedIn</span>
             </a>
@@ -188,7 +185,7 @@ export default async function GroupPage(props: Props) {
                             <Link href={`mailto:${member.profile?.socials?.email}`}>
                               <Button className="flex items-center">
                                 <span>
-                                  <IoMail className="mr-1" />
+                                  <Mail className="mr-1" />
                                 </span>
                                 <span>E-post</span>
                               </Button>
@@ -198,7 +195,7 @@ export default async function GroupPage(props: Props) {
                             <Link href={member.profile?.socials?.linkedin}>
                               <Button>
                                 <span className="flex items-center">
-                                  <FaLinkedin className="mr-1" />
+                                  <Linkedin className="mr-1" />
                                 </span>
                                 <span>LinkedIn</span>
                               </Button>
@@ -207,7 +204,7 @@ export default async function GroupPage(props: Props) {
                           {!member.profile?.socials?.linkedin &&
                             !member.profile?.socials?.email && (
                               <div className="flex items-center justify-center gap-3">
-                                <IoCloudOfflineSharp />
+                                <CloudOff />
                                 <p>Ingen kontaktinfo</p>
                               </div>
                             )}

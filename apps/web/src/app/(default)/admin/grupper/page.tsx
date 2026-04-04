@@ -1,4 +1,4 @@
-import { RxDotsHorizontal as Dots } from "react-icons/rx";
+import { Ellipsis } from "lucide-react";
 
 import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
@@ -68,7 +68,7 @@ export default async function AdminGroupsPage() {
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="h-8 w-8 p-0">
                         <span className="sr-only">Open menu</span>
-                        <Dots className="h-4 w-4" />
+                        <Ellipsis className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">

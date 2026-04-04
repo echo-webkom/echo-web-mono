@@ -1,7 +1,7 @@
 "use client";
 
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { LuArrowRight } from "react-icons/lu";
 
 import { useIsMounted } from "@/hooks/use-is-mounted";
 
@@ -22,7 +22,7 @@ export const WrappedBanner = () => {
           <div className="bg-wrapped-yellow absolute flex h-14 w-full cursor-pointer items-center justify-center">
             <AnimatedBg />
             <p className="text-wrapped-black flex items-center gap-3 text-xl font-bold">
-              echo wrapped 2024 <LuArrowRight />
+              echo wrapped 2024 <ArrowRight />
             </p>
           </div>
         </Link>

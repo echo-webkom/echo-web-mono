@@ -1,5 +1,5 @@
 import { eachDayOfInterval } from "date-fns";
-import { RxExternalLink as ExternalLink } from "react-icons/rx";
+import { ExternalLink } from "lucide-react";
 
 import { type CMSRepeatingHappening } from "@/api/uno/client";
 import { auth } from "@/auth/session";

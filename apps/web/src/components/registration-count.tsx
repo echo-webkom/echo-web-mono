@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 "use client";
 
-import { BiInfinite } from "react-icons/bi";
+import { Infinity } from "lucide-react";
 
 type RegistrationCountProps = {
   registeredCount: number;
@@ -13,7 +13,7 @@ export const RegistrationCount = ({ maxCapacity, registeredCount }: Registration
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-1">
         {Math.min(registeredCount, maxCapacity || Number.POSITIVE_INFINITY)} /{" "}
-        {maxCapacity || <BiInfinite className="h-5 w-5" />}
+        {maxCapacity || <Infinity className="h-5 w-5" />}
       </div>
     </div>
   );
