@@ -705,7 +705,7 @@ export interface Comment {
 }
 
 export interface CommentWithReactions extends Comment {
-  user: CommentAuthor;
+  user: CommentAuthor | null;
   reactions: Array<CommentReaction>;
 }
 

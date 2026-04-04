@@ -72,10 +72,14 @@ export const ReplyTree = ({ comments, user, depth = 0 }: ReplyTreeProps) => {
                 })}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                  <h3 className="text-lg font-medium hover:underline">
-                    <Link href={userLink(comment.user.id)}>
-                      {comment.user?.name ?? "[slettet]"}
-                    </Link>
+                  <h3 className="text-lg font-medium">
+                    {comment.user ? (
+                      <Link className="hover:underline" href={userLink(comment.user.id)}>
+                        {comment.user.name}
+                      </Link>
+                    ) : (
+                      <span>[slettet]</span>
+                    )}
                   </h3>
                   <div className="flex items-center gap-2">
                     <p className="text-muted-foreground text-sm">{shortDate(comment.createdAt)}</p>
