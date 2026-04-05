@@ -1,12 +1,11 @@
-import type { UsersToGroups } from "@echo-webkom/db/schemas";
 import { type Group } from "@echo-webkom/lib";
 
 export type TUser = {
-  memberships: Array<UsersToGroups>;
+  groups: Array<{ id: string }>;
 };
 
 export const isMemberOf = <U extends TUser>(user: U, groupIds: Array<Group>) => {
-  return user.memberships.some((membership) => groupIds.includes(membership.groupId));
+  return user.groups.some((group) => groupIds.includes(group.id));
 };
 
 export const isWebkom = <U extends TUser>(user: U) => {

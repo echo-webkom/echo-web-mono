@@ -5,6 +5,8 @@ import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 import { cache } from "react";
 
+import { unoWithAdmin } from "@/api/server";
+
 const rawSecret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
 
 if (!rawSecret) {
@@ -33,22 +35,13 @@ async function getSessionCookie(): Promise<string | null> {
     const { payload } = await jwtVerify(sessionCookie, secret);
     return payload.sessionId as string;
   } catch {
-    return null; // Invalid or expired token
+    return null;
   }
 }
 
-export async function getSession() {
-  const sessionId = await getSessionCookie();
-
-  if (!sessionId) {
-    return null;
-  }
-
+async function validateSession(sessionId: string) {
   const session = await db.query.sessions.findFirst({
     where: (session) => eq(session.sessionToken, sessionId),
-    with: {
-      user: true,
-    },
   });
 
   if (!session) {
@@ -79,10 +72,14 @@ export async function signOut() {
     return;
   }
 
-  // Clear the session cookie
+  try {
+    await unoWithAdmin.auth.signOut();
+  } catch (error) {
+    console.error("Failed to sign out from uno:", error);
+  }
+
   cookieStore.delete(SESSION_COOKIE_NAME);
 
-  // Delete the session from the database
   await db.delete(sessions).where(eq(sessions.sessionToken, sessionId));
 }
 
@@ -95,32 +92,15 @@ export const auth = cache(async () => {
     return null;
   }
 
-  const session = await db.query.sessions.findFirst({
-    where: (session) => eq(session.sessionToken, sessionId),
-    with: {
-      user: {
-        with: {
-          degree: true,
-          banInfo: true,
-          memberships: {
-            with: {
-              group: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  const session = await validateSession(sessionId);
 
   if (!session) {
     return null;
   }
 
-  if (session.expires && session.expires < new Date()) {
-    console.warn(`Session ${sessionId} has expired`);
-    await db.delete(sessions).where(eq(sessions.sessionToken, sessionId));
+  try {
+    return await unoWithAdmin.users.byId(session.userId);
+  } catch {
     return null;
   }
-
-  return session.user;
 });

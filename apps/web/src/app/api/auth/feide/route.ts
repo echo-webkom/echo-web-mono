@@ -1,26 +1,11 @@
-import { generateState } from "arctic";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-import { feide } from "@/auth/feide";
+const UNO_URL = process.env.UNO_URL ?? "http://localhost:8000";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const cookieStore = await cookies();
-
-  const state = generateState();
-  const url = feide.createAuthorizationURL(state);
-
-  cookieStore.set("feide_oauth_state", state, {
-    path: "/",
-    maxAge: 60 * 10, // 10 minutes
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-  });
-
-  return NextResponse.redirect(url, {
+  return NextResponse.redirect(`${UNO_URL}/auth/feide`, {
     status: 302,
   });
 }

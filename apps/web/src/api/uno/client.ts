@@ -1132,6 +1132,37 @@ class StrikesApi {
     >("GET", "strikes/details");
   }
 
+  async getDetails(userId: string) {
+    return await this.client.requestJson<{
+      id: string;
+      name: string | null;
+      hasImage: boolean;
+      banInfo: {
+        id: number;
+        reason: string;
+        createdAt: string;
+        userId: string;
+        bannedBy: string;
+        expiresAt: string;
+        bannedByUser: {
+          name: string | null;
+        };
+      } | null;
+      dots: Array<{
+        id: number;
+        reason: string;
+        createdAt: string;
+        userId: string;
+        expiresAt: string;
+        count: number;
+        strikedBy: string;
+        strikedByUser: {
+          name: string | null;
+        };
+      }>;
+    }>("GET", `strikes/${encodeURIComponent(userId)}/details`);
+  }
+
   async add(payload: {
     userId: string;
     count: number;

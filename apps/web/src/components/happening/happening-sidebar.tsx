@@ -47,6 +47,11 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
     unoWithAdmin.happenings.questions(event._id),
   ]);
 
+  const strikeDetails =
+    user && event.happeningType === "bedpres"
+      ? await unoWithAdmin.strikes.getDetails(user.id).catch(() => null)
+      : null;
+
   const isRegistered = registrations.some(
     (registration) =>
       registration.userId === user?.id &&
@@ -76,14 +81,14 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
   const hostGroups = event?.organizers?.map((organizer) => organizer.slug) ?? [];
   const isHosting = user && event ? isHost(user, hostGroups) : false;
 
-  const isUserComplete = user?.degreeId && user.year && user.hasReadTerms;
+  const isUserComplete = user?.degree?.id && user.year && user.hasReadTerms;
 
   const canEarlyRegister = Boolean(
     user &&
     event &&
     doesIntersect(
       event.registrationGroups ?? [],
-      user.memberships.map((membership) => membership.group.id),
+      user.groups.map((group) => group.id),
     ),
   );
 
@@ -110,8 +115,8 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
       .findIndex((registration) => registration.userId === user?.id) + 1;
 
-  const isBanned = user?.banInfo
-    ? isFuture(new Date(user.banInfo.expiresAt)) && event.happeningType === "bedpres"
+  const isBanned = strikeDetails?.banInfo?.expiresAt
+    ? isFuture(new Date(strikeDetails.banInfo.expiresAt))
     : false;
 
   const hideRegistrations = event.hideRegistrations === true;
@@ -170,7 +175,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
         <Callout type="warning" noIcon>
           <p className="font-semibold">
             Du er utestengt fra bedriftspresentasjoner frem til{" "}
-            {shortDateNoTime(user!.banInfo.expiresAt)}.
+            {shortDateNoTime(strikeDetails!.banInfo!.expiresAt)}.
           </p>
         </Callout>
       )}

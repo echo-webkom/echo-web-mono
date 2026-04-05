@@ -25,7 +25,7 @@ export const Comments = async ({ id }: CommentsProps) => {
     ? {
         id: user.id,
         name: user.name,
-        hasImage: !!user.image,
+        hasImage: user.hasImage,
       }
     : null;
 

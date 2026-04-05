@@ -1,39 +1,13 @@
-import crypto from "node:crypto";
-
 import { describe, expect, it } from "vitest";
 
 import { isHost, isMemberOf, isWebkom, type TUser } from "../memberships";
 
-const userId = crypto.randomUUID();
-
 const user1: TUser = {
-  memberships: [
-    {
-      groupId: "webkom",
-      isLeader: false,
-      userId,
-    },
-    {
-      groupId: "tilde",
-      isLeader: false,
-      userId,
-    },
-  ],
+  groups: [{ id: "webkom" }, { id: "tilde" }],
 };
 
 const user2: TUser = {
-  memberships: [
-    {
-      groupId: "bedkom",
-      isLeader: false,
-      userId,
-    },
-    {
-      groupId: "tilde",
-      isLeader: false,
-      userId,
-    },
-  ],
+  groups: [{ id: "bedkom" }, { id: "tilde" }],
 };
 
 const groups = ["webkom"];
