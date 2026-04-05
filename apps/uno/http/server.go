@@ -68,6 +68,15 @@ func RunServer(deps ServerDeps) {
 	// Health check route
 	r.Handle("GET", "/", api.HealthHandler)
 
+	// Auth routes
+	r.Mount("/auth", api.NewAuthMux(
+		deps.Logger,
+		deps.Config,
+		deps.AuthService,
+		deps.UserService,
+		session,
+	))
+
 	// Happening routes
 	r.Mount("/happenings", api.NewHappeningMux(deps.Logger, deps.HappeningService, admin))
 

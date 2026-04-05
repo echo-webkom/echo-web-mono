@@ -1433,6 +1433,104 @@ paths:
       summary: Get Advent of Code leaderboard
       tags:
       - advent_of_code
+  /auth/callback/feide:
+    get:
+      parameters:
+      - description: Authorization code
+        in: query
+        name: code
+        required: true
+        type: string
+      - description: OAuth state
+        in: query
+        name: state
+        required: true
+        type: string
+      responses:
+        "302":
+          description: Redirect on success or error
+          schema:
+            type: string
+      summary: Feide callback
+      tags:
+      - auth
+  /auth/feide:
+    get:
+      responses:
+        "302":
+          description: Redirect to Feide
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Login with Feide
+      tags:
+      - auth
+  /auth/magic-link/verify:
+    get:
+      parameters:
+      - description: Magic link token
+        in: query
+        name: token
+        required: true
+        type: string
+      - description: User email
+        in: query
+        name: email
+        required: true
+        type: string
+      responses:
+        "302":
+          description: Redirect on success or error
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Verify magic link
+      tags:
+      - auth
+  /auth/me:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.UserResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get current user
+      tags:
+      - auth
+  /auth/sign-out:
+    post:
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Sign out
+      tags:
+      - auth
   /birthdays:
     get:
       description: Gets all the users who have birthday today
