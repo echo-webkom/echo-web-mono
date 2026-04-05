@@ -618,6 +618,7 @@ export class UnoClient {
   files: FilesApi;
   quotes: QuotesApi;
   sanity: SanityApi;
+  auth: AuthApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -648,6 +649,7 @@ export class UnoClient {
     this.files = new FilesApi(this);
     this.quotes = new QuotesApi(this);
     this.sanity = new SanityApi(this);
+    this.auth = new AuthApi(this);
   }
 
   normalizePath(path: string) {
@@ -1488,5 +1490,27 @@ class QuotesApi {
   async toggleDislike(id: string) {
     const response = await this.client.request("POST", `quotes/${id}/dislike`);
     return response.status === 200;
+  }
+}
+
+class AuthApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async me() {
+    return await this.client.requestJson<User>("GET", "auth/me");
+  }
+
+  async signOut() {
+    const response = await this.client.request("POST", "auth/sign-out");
+    return response.status === 200;
+  }
+
+  async verifyMagicLink(token: string, email: string) {
+    const query = new URLSearchParams({ token, email });
+    return await this.client.request("GET", `auth/magic-link/verify?${query.toString()}`);
   }
 }
