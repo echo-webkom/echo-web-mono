@@ -19,56 +19,34 @@ type users struct {
 	happeningService *service.HappeningService
 }
 
+// Endpoints you can find here.
+//
+//   - [x] GET    /users
+//   - [x] GET    /users/search
+//   - [x] GET    /users/{id}
+//   - [x] GET    /users/{id}/registrations
+//   - [ ] GET    /users/{id}/strikes
+//   - [ ] POST   /users/{id}/strikes
+//   - [ ] POST   /users/{id}/bans
+//   - [x] GET    /users/{id}/image
+//   - [x] DELETE /users/{id}/image
+//   - [x] POST   /users/{id}/image
 func NewUsersMux(logger port.Logger, userService *service.UserService, happeningService *service.HappeningService, admin handler.Middleware, session handler.Middleware) *router.Mux {
 	u := users{logger, userService, happeningService}
 
 	mux := router.NewMux()
 
-	// Public routes
-	mux.GET("/{id}/image", u.getUserImage)
-
-	// Session routes
+	mux.GET("/", u.getUsers, admin)
 	mux.GET("/search", u.searchUsers, session)
 
-	// Admin routes
-	mux.GET("/", u.getUsers, admin)
 	mux.GET("/{id}", u.getUserByID, admin)
 	mux.GET("/{id}/registrations", u.getUserRegistrations, admin)
+
+	mux.GET("/{id}/image", u.getUserImage)
 	mux.POST("/{id}/image", u.uploadUserImage, admin)
 	mux.DELETE("/{id}/image", u.deleteUserImage, admin)
-	mux.GET("/feide/{feideId}/groups", u.getUserGroups, admin)
 
 	return mux
-}
-
-// geUserGroups  gets the group IDs for a user based on the feide ID
-// @Summary      Gets the group IDs for a user based on the feide ID
-// @Tags         users
-// @Param        feideId  path      string  true  "Feide ID"
-// @Success      200      {array}   string  "OK"
-// @Failure      400      {string}  string  "Bad Request"
-// @Failure      401      {string}  string  "Unauthorized"
-// @Failure      404      {string}  string  "User Not Found"
-// @Failure      500      {string}  string  "Internal Server Error"
-// @Produce	     json
-// @Router       /users/feide/{feideId}/groups [get]
-func (u *users) getUserGroups(ctx *handler.Context) error {
-	// Get user ID from path parameters
-	feideID := ctx.PathValue("feideId")
-	if feideID == "" {
-		return ctx.BadRequest(errors.New("missing feide ID"))
-	}
-
-	// Get group IDs for the user from the database
-	groupIDs, err := u.userService.GetUserGroupIDs(ctx.Context(), feideID)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return ctx.NotFound(errors.New("user not found"))
-		}
-		return ctx.InternalServerError()
-	}
-
-	return ctx.JSON(groupIDs)
 }
 
 // searchUsers searches for users by name
@@ -127,7 +105,7 @@ func (u *users) getUsers(ctx *handler.Context) error {
 // getUserByID returns a user by ID
 // @Summary	     Gets a user by ID
 // @Tags         users
-// @Param        id   path      string  true  "User ID"
+// @Param        id   path      string  true  "User ID or Feide ID"
 // @Produces     json
 // @Success      200  {object}  dto.UserResponse  "OK"
 // @Failure      401  {string}  string  "Unauthorized"
@@ -138,13 +116,16 @@ func (u *users) getUsers(ctx *handler.Context) error {
 // @Router       /users/{id} [get]
 func (u *users) getUserByID(ctx *handler.Context) error {
 	// Get user ID from path parameters
-	userID := ctx.PathValue("id")
-	if userID == "" {
+	ID := ctx.PathValue("id")
+	if ID == "" {
 		return ctx.BadRequest(errors.New("missing user ID"))
 	}
 
-	// Get user from the database
-	user, err := u.userService.GetUserByID(ctx.Context(), userID)
+	// Get user from the database by ID, falling back to Feide ID
+	user, err := u.userService.GetUserByID(ctx.Context(), ID)
+	if errors.Is(err, sql.ErrNoRows) {
+		user, err = u.userService.GetUserByFeideID(ctx.Context(), ID)
+	}
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.NotFound(errors.New("user not found"))

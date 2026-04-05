@@ -3600,7 +3600,7 @@ paths:
   /users/{id}:
     get:
       parameters:
-      - description: User ID
+      - description: User ID or Feide ID
         in: path
         name: id
         required: true
@@ -3766,42 +3766,6 @@ paths:
       security:
       - AdminApiKey: []
       summary: Gets all registrations for a user
-      tags:
-      - users
-  /users/feide/{feideId}/groups:
-    get:
-      parameters:
-      - description: Feide ID
-        in: path
-        name: feideId
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              type: string
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-        "401":
-          description: Unauthorized
-          schema:
-            type: string
-        "404":
-          description: User Not Found
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      summary: Gets the group IDs for a user based on the feide ID
       tags:
       - users
   /users/search:

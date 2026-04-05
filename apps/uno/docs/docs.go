@@ -3601,61 +3601,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/feide/{feideId}/groups": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "users"
-                ],
-                "summary": "Gets the group IDs for a user based on the feide ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Feide ID",
-                        "name": "feideId",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "User Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/users/search": {
             "get": {
                 "security": [
@@ -3721,7 +3666,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "User ID",
+                        "description": "User ID or Feide ID",
                         "name": "id",
                         "in": "path",
                         "required": true

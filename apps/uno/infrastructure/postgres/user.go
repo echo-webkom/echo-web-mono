@@ -443,6 +443,29 @@ func (u *UserRepo) GetUserByID(ctx context.Context, id string) (model.User, erro
 	return user, nil
 }
 
+func (u *UserRepo) GetUserByFeideID(ctx context.Context, feideID string) (model.User, error) {
+	u.logger.Info(ctx, "getting user by feide ID",
+		"feide_id", feideID,
+	)
+
+	accountQuery := `--sql
+		SELECT user_id
+		FROM "account"
+		WHERE provider = 'feide'
+			AND provider_account_id = $1
+	`
+	var userID string
+	if err := u.db.GetContext(ctx, &userID, accountQuery, feideID); err != nil {
+		u.logger.Error(ctx, "failed to get user ID from feide ID",
+			"error", err,
+			"feide_id", feideID,
+		)
+		return model.User{}, err
+	}
+	// Use the normal GetByID function
+	return u.GetUserByID(ctx, userID)
+}
+
 func (u *UserRepo) GetUsersByIDs(ctx context.Context, ids []string) ([]model.User, error) {
 	u.logger.Info(ctx, "getting users by IDs",
 		"user_ids", ids,
@@ -632,42 +655,6 @@ func (u *UserRepo) UpdateUserImage(ctx context.Context, userID string, hasImage 
 		return err
 	}
 	return nil
-}
-
-func (u *UserRepo) GetUserGroupIDs(ctx context.Context, feideID string) ([]string, error) {
-	u.logger.Info(ctx, "getting user group IDs",
-		"feide_id", feideID,
-	)
-
-	query := `--sql
-		SELECT user_id
-		FROM "account"
-		WHERE provider = 'feide'
-			AND provider_account_id = $1
-	`
-	var userID string
-	if err := u.db.GetContext(ctx, &userID, query, feideID); err != nil {
-		u.logger.Error(ctx, "failed to get user ID from feide ID",
-			"error", err,
-			"feide_id", feideID,
-		)
-		return nil, err
-	}
-
-	groupIDs := []string{}
-	query = `--sql
-		SELECT group_id
-		FROM users_to_groups
-		WHERE user_id = $1
-	`
-	if err := u.db.SelectContext(ctx, &groupIDs, query, userID); err != nil {
-		u.logger.Error(ctx, "failed to get user group IDs",
-			"error", err,
-			"user_id", userID,
-		)
-		return nil, err
-	}
-	return groupIDs, nil
 }
 
 func (u *UserRepo) GetUserByEmail(ctx context.Context, email string) (model.User, error) {
