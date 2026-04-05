@@ -1,4 +1,4 @@
-package unsafeid
+package randid
 
 import (
 	"crypto/rand"
