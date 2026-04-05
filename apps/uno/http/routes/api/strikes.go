@@ -1,6 +1,7 @@
 package api
 
 import (
+	"database/sql"
 	"errors"
 	"time"
 	"uno/domain/model"
@@ -23,6 +24,7 @@ func NewStrikesMux(logger port.Logger, strikesService *service.StrikeService, ad
 	// Admin
 	mux.POST("/unban", s.unbanUsersWithExpiredStrikes, admin)
 	mux.GET("/details", s.getUsersWithStrikeDetails, admin)
+	mux.GET("/{userId}/details", s.getUserWithStrikeDetails, admin)
 	mux.POST("/", s.addStrike, admin)
 	mux.DELETE("/ban/{userId}", s.removeBan, admin)
 	mux.DELETE("/{id}", s.removeStrike, admin)
@@ -60,6 +62,34 @@ func (s *strikes) getUsersWithStrikeDetails(ctx *handler.Context) error {
 	}
 
 	response := dto.UsersWithStrikeDetailsFromDomainList(users)
+	return ctx.JSON(response)
+}
+
+// @Summary   Get strike details for a user
+// @Tags      strikes
+// @Param     userId  path      string  true  "The ID of the user to get strike details for"
+// @Success   200     {object}  dto.UserWithStrikeDetailsResponse  "OK"
+// @Failure   400     {string}  string  "Bad Request"
+// @Failure   401     {string}  string  "Unauthorized"
+// @Failure   404     {string}  string  "Not Found"
+// @Failure   500     {string}  string  "Internal Server Error"
+// @Security  AdminAPIKey
+// @Router    /strikes/{userId}/details [get]
+func (s *strikes) getUserWithStrikeDetails(ctx *handler.Context) error {
+	userID := ctx.PathValue("userId")
+	if userID == "" {
+		return ctx.BadRequest(errors.New("missing user id"))
+	}
+
+	user, err := s.strikeService.GetUserWithStrikeDetailsByID(ctx.Context(), userID)
+	if user == nil || err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return ctx.NotFound(errors.New("user not found"))
+		}
+		return ctx.InternalServerError()
+	}
+
+	response := dto.UserWithStrikeDetailsFromDomain(*user)
 	return ctx.JSON(response)
 }
 

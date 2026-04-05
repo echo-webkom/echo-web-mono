@@ -33,7 +33,6 @@ func (s *StrikeService) UnbanUsersWithExpiredStrikes(ctx context.Context) error 
 		return err
 	}
 	return nil
-
 }
 
 func (s *StrikeService) CleanupOldStrikes(ctx context.Context) (int64, error) {
@@ -42,6 +41,10 @@ func (s *StrikeService) CleanupOldStrikes(ctx context.Context) (int64, error) {
 
 func (s *StrikeService) GetUsersWithStrikeDetails(ctx context.Context) ([]model.UserWithStrikeDetails, error) {
 	return s.userRepo.GetUsersWithStrikeDetails(ctx)
+}
+
+func (s *StrikeService) GetUserWithStrikeDetailsByID(context context.Context, userID string) (*model.UserWithStrikeDetails, error) {
+	return s.userRepo.GetUserWithStrikeDetailsByID(context, userID)
 }
 
 func (s *StrikeService) GetUserByID(ctx context.Context, userID string) (model.User, error) {

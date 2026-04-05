@@ -3371,6 +3371,40 @@ paths:
       summary: Remove a strike by its ID and user ID
       tags:
       - strikes
+  /strikes/{userId}/details:
+    get:
+      parameters:
+      - description: The ID of the user to get strike details for
+        in: path
+        name: userId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.UserWithStrikeDetailsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get strike details for a user
+      tags:
+      - strikes
   /strikes/ban/{userId}:
     delete:
       parameters:
