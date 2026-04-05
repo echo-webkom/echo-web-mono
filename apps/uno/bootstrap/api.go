@@ -8,6 +8,7 @@ import (
 	"uno/config"
 	"uno/domain/port"
 	"uno/domain/service"
+	"uno/domain/service/providers"
 	"uno/http"
 	"uno/infrastructure/cache"
 	"uno/infrastructure/external"
@@ -61,6 +62,8 @@ func RunApi() {
 	groupRepo := postgres.NewGroupRepo(db, logger)
 	reactionRepo := postgres.NewReactionRepo(db, logger)
 	quoteRepo := postgres.NewQuoteRepo(db, logger)
+	accountRepo := postgres.NewAccountRepo(db, logger)
+	verificationTokenRepo := postgres.NewVerificationTokenRepo(db, logger)
 
 	// Initialize Sanity client and CMS repos
 	sanityClient, err := sanity.New(sanity.Config{
@@ -86,7 +89,20 @@ func RunApi() {
 	cmsHSApplicationRepo := sanityinfra.NewHSApplicationRepo(sanityClient, logger, redisClient)
 
 	// Initialize services
-	authService := service.NewAuthService(sessionRepo, userRepo, cfg.AuthSecret)
+	feideProvider := providers.NewFeideProvider(providers.FeideConfig{
+		ClientID:     cfg.FeideClientID,
+		ClientSecret: cfg.FeideClientSecret,
+		CallbackURL:  cfg.UnoBaseURL + "/auth/callback/feide",
+	})
+	authService := service.NewAuthService(service.AuthServiceConfig{
+		SessionRepo:           sessionRepo,
+		UserRepo:              userRepo,
+		AuthSecret:            cfg.AuthSecret,
+		FeideProvider:         feideProvider,
+		WhitelistRepo:         whitelistRepo,
+		AccountRepo:           accountRepo,
+		VerificationTokenRepo: verificationTokenRepo,
+	})
 	happeningService := service.NewHappeningService(happeningRepo, userRepo, registrationRepo, banInfoRepo, groupRepo)
 	degreeService := service.NewDegreeService(degreeRepo)
 	siteFeedbackService := service.NewSiteFeedbackService(siteFeedbackRepo)
@@ -122,6 +138,8 @@ func RunApi() {
 
 		Logger: logger,
 		Config: cfg,
+
+		FeideProvider: feideProvider,
 
 		AuthService:          authService,
 		HappeningService:     happeningService,

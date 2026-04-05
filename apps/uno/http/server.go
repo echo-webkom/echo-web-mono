@@ -4,6 +4,7 @@ import (
 	"uno/config"
 	"uno/domain/port"
 	"uno/domain/service"
+	"uno/domain/service/providers"
 	"uno/http/middleware"
 	"uno/http/router"
 	"uno/http/routes/api"
@@ -35,6 +36,8 @@ type ServerDeps struct {
 
 	Logger port.Logger
 	Config *config.Config
+
+	FeideProvider *providers.FeideProvider
 
 	AuthService          *service.AuthService
 	HappeningService     *service.HappeningService
