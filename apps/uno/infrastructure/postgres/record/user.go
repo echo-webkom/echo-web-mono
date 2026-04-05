@@ -214,7 +214,7 @@ func (db *SessionDB) ToDomain() *model.Session {
 type VerificationTokenDB struct {
 	Identifier string    `db:"identifier"`
 	Token      string    `db:"token"`
-	ExpiresAt  time.Time `db:"expires_at"`
+	ExpiresAt  time.Time `db:"expires"`
 }
 
 // FromDomain converts a domain VerificationToken model to a database VerificationTokenDB model.
