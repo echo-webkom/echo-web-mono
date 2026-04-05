@@ -13,6 +13,7 @@ type UserRepo interface {
 	GetUsersWithBirthday(ctx context.Context, date time.Time) ([]model.User, error)
 	ResetUserYears(ctx context.Context) (int64, error)
 	GetUsersWithStrikeDetails(ctx context.Context) ([]model.UserWithStrikeDetails, error)
+	GetUserWithStrikeDetailsByID(ctx context.Context, userID string) (*model.UserWithStrikeDetails, error)
 	GetUserMemberships(ctx context.Context, userID string) ([]string, error)
 	CreateUser(ctx context.Context, user model.User) (model.User, error)
 	UpdateUserImage(ctx context.Context, userID string, hasImage bool) error
