@@ -218,6 +218,17 @@ func (c *Context) SetCookie(cookie *http.Cookie) {
 	http.SetCookie(c, cookie)
 }
 
+func (c *Context) ClearCookie(name string, path string, domain string) {
+	http.SetCookie(c, &http.Cookie{
+		Name:    name,
+		Value:   "",
+		Path:    path,
+		Domain:  domain,
+		Expires: time.Unix(0, 0),
+		MaxAge:  -1,
+	})
+}
+
 func (c *Context) Redirect(url string) error {
 	http.Redirect(c, c.R, url, http.StatusSeeOther)
 	return nil
