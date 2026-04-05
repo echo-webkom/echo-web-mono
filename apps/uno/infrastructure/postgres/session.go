@@ -42,5 +42,49 @@ func (r *PostgresSessionImpl) GetSessionByToken(ctx context.Context, token strin
 		)
 		return model.Session{}, err
 	}
-	return *sessionDB.ToDomain(), nil
+	return sessionDB.ToDomain(), nil
+}
+
+// CreateSession creates a new session in the database.
+func (r *PostgresSessionImpl) CreateSession(ctx context.Context, session model.NewSession) (model.Session, error) {
+	r.logger.Info(ctx, "creating session",
+		"user_id", session.UserID,
+	)
+
+	query := `--sql
+		INSERT INTO "session" (session_token, user_id, expires)
+		VALUES ($1, $2, $3)
+		RETURNING session_token, user_id, expires
+	`
+	var sessionDB record.SessionDB
+	err := r.db.GetContext(ctx, &sessionDB, query, session.SessionToken, session.UserID, session.Expires)
+	if err != nil {
+		r.logger.Error(ctx, "failed to create session",
+			"error", err,
+			"user_id", session.UserID,
+		)
+		return model.Session{}, err
+	}
+	return sessionDB.ToDomain(), nil
+}
+
+// DeleteSession deletes a session from the database.
+func (r *PostgresSessionImpl) DeleteSession(ctx context.Context, token string) error {
+	r.logger.Info(ctx, "deleting session",
+		"token", token,
+	)
+
+	query := `--sql
+		DELETE FROM "session"
+		WHERE session_token = $1
+	`
+	_, err := r.db.ExecContext(ctx, query, token)
+	if err != nil {
+		r.logger.Error(ctx, "failed to delete session",
+			"error", err,
+			"token", token,
+		)
+		return err
+	}
+	return nil
 }
