@@ -176,6 +176,13 @@ type Session struct {
 	Expires      time.Time
 }
 
+// NewSession represents the input for creating a new session
+type NewSession struct {
+	SessionToken string
+	UserID       string
+	Expires      time.Time
+}
+
 // IsExpired checks if the session has expired.
 func (s *Session) IsExpired(now time.Time) bool {
 	return now.After(s.Expires)
