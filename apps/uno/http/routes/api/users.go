@@ -153,11 +153,8 @@ func (u *users) getUserByID(ctx *handler.Context) error {
 	}
 
 	// Map user to user response
-	userResponses := dto.UsersToUserResponses([]model.User{user})
-	if len(userResponses) == 0 {
-		return ctx.InternalServerError()
-	}
-	return ctx.JSON(userResponses[0])
+	response := dto.UserResponseFromDomain(user)
+	return ctx.JSON(response)
 }
 
 // getUserImage returns a user's profile image
