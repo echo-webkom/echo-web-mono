@@ -146,6 +146,21 @@ type Account struct {
 	SessionState      *string
 }
 
+// NewAccount represents the input for creating a new account
+type NewAccount struct {
+	UserID            string
+	Type              string
+	Provider          string
+	ProviderAccountID string
+	RefreshToken      *string
+	AccessToken       *string
+	ExpiresAt         *int
+	TokenType         *string
+	Scope             *string
+	IDToken           *string
+	SessionState      *string
+}
+
 // IsExpired checks if the account token has expired.
 func (a *Account) IsExpired(now time.Time) bool {
 	if a.ExpiresAt == nil {
