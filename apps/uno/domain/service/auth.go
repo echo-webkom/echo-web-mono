@@ -206,6 +206,16 @@ func (as *AuthService) CreateUserAndAccount(ctx context.Context, user model.User
 	return as.userRepo.CreateUserAndAccount(ctx, user, account)
 }
 
+// CreateAccount creates a new account linked to an existing user.
+func (as *AuthService) CreateAccount(ctx context.Context, account model.NewAccount) (model.Account, error) {
+	return as.accountRepo.CreateAccount(ctx, account)
+}
+
+// UpdateAccount updates the token fields of an existing provider account.
+func (as *AuthService) UpdateAccount(ctx context.Context, provider, providerAccountID string, update model.UpdateAccount) (model.Account, error) {
+	return as.accountRepo.UpdateAccount(ctx, provider, providerAccountID, update)
+}
+
 // GetVerificationToken retrieves a verification token by its token string.
 func (as *AuthService) GetVerificationToken(ctx context.Context, email string, token string) (model.VerificationToken, error) {
 	return as.verificationTokenRepo.GetVerificationToken(ctx, email, token)

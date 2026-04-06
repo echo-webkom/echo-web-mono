@@ -135,14 +135,40 @@ func (h *auth) handleFeideCallback(ctx *handler.Context) error {
 		return ctx.Redirect(h.config.WebBaseURL + "/auth/logg-inn?error=account_check_failed")
 	}
 
+	normalizedEmail := strings.ToLower(userInfo.Email)
 	var userID string
 
 	if existingAccount.UserID != "" {
 		userID = existingAccount.UserID
+		if _, err := h.authService.UpdateAccount(ctx.Context(), providers.FeideProviderName, userInfo.Sub, model.UpdateAccount{
+			AccessToken:  &tokens.AccessToken,
+			RefreshToken: ptr.Of(tokens.RefreshToken),
+			ExpiresAt:    ptr.Of(tokens.ExpiresIn),
+			TokenType:    &tokens.TokenType,
+			IDToken:      &tokens.IDToken,
+		}); err != nil {
+			h.logger.Error(ctx.Context(), "failed to update account tokens", "error", err)
+			// not necessarily critical, so we can proceed with the sign in process
+		}
 	} else {
-		existingUser, err := h.authService.GetUserByEmail(ctx.Context(), strings.ToLower(userInfo.Email))
+		existingUser, err := h.authService.GetUserByEmail(ctx.Context(), normalizedEmail)
 		if err == nil && existingUser.ID != "" {
 			userID = existingUser.ID
+			if _, err := h.authService.CreateAccount(ctx.Context(), model.NewAccount{
+				UserID:            existingUser.ID,
+				Type:              "oauth",
+				Provider:          providers.FeideProviderName,
+				ProviderAccountID: userInfo.Sub,
+				AccessToken:       &tokens.AccessToken,
+				RefreshToken:      ptr.Of(tokens.RefreshToken),
+				ExpiresAt:         ptr.Of(tokens.ExpiresIn),
+				TokenType:         &tokens.TokenType,
+				Scope:             ptr.Of("openid email profile groups"),
+				IDToken:           &tokens.IDToken,
+			}); err != nil {
+				h.logger.Error(ctx.Context(), "failed to link Feide account to existing user", "error", err)
+				return ctx.Redirect(h.config.WebBaseURL + "/auth/logg-inn?error=account_link_failed")
+			}
 		} else {
 			id, err := randid.Generate(24)
 			if err != nil {
@@ -153,7 +179,7 @@ func (h *auth) handleFeideCallback(ctx *handler.Context) error {
 			user := model.User{
 				ID:           id,
 				Name:         &userInfo.Name,
-				Email:        userInfo.Email,
+				Email:        normalizedEmail,
 				Type:         model.UserTypeStudent,
 				LastSignInAt: ptr.Of(time.Now()),
 			}
@@ -161,9 +187,10 @@ func (h *auth) handleFeideCallback(ctx *handler.Context) error {
 			account := model.NewAccount{
 				UserID:            id,
 				Type:              "oauth",
-				Provider:          "feide",
+				Provider:          providers.FeideProviderName,
 				ProviderAccountID: userInfo.Sub,
 				AccessToken:       &tokens.AccessToken,
+				RefreshToken:      ptr.Of(tokens.RefreshToken),
 				ExpiresAt:         ptr.Of(tokens.ExpiresIn),
 				TokenType:         &tokens.TokenType,
 				Scope:             ptr.Of("openid email profile groups"),
@@ -259,15 +286,12 @@ func (h *auth) verifyMagicLink(ctx *handler.Context) error {
 	email = strings.ToLower(email)
 
 	verificationToken, err := h.authService.GetAndMarkTokenAsUsed(ctx.Context(), email, token)
-	if err != nil {
+	if err != nil || verificationToken.Token == "" {
+		if errors.Is(err, model.ErrVerificationTokenExpired) {
+			return ctx.Redirect(h.config.WebBaseURL + "/auth/logg-inn?error=expired-token")
+		}
 		h.logger.Error(ctx.Context(), "failed to get and mark verification token", "error", err)
 		return ctx.Redirect(h.config.WebBaseURL + "/auth/logg-inn?error=invalid-token")
-	}
-	if verificationToken.Token == "" {
-		return ctx.Redirect(h.config.WebBaseURL + "/auth/logg-inn?error=invalid-token")
-	}
-	if verificationToken.IsExpired(time.Now()) {
-		return ctx.Redirect(h.config.WebBaseURL + "/auth/logg-inn?error=expired-token")
 	}
 
 	user, err := h.authService.GetUserByEmail(ctx.Context(), email)

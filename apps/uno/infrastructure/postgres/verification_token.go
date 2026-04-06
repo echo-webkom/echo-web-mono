@@ -148,7 +148,7 @@ func (r *VerificationTokenRepo) GetAndMarkTokenAsUsed(ctx context.Context, ident
 
 	tokenModel := tokenDB.ToDomain()
 	if tokenModel.IsExpired(time.Now()) {
-		return *tokenModel, nil
+		return *tokenModel, model.ErrVerificationTokenExpired
 	}
 
 	updateQuery := `--sql

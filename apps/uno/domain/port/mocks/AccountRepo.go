@@ -306,3 +306,81 @@ func (_c *AccountRepo_GetAccountsByUserID_Call) RunAndReturn(run func(ctx contex
 	_c.Call.Return(run)
 	return _c
 }
+
+// UpdateAccount provides a mock function for the type AccountRepo
+func (_mock *AccountRepo) UpdateAccount(ctx context.Context, provider string, providerAccountID string, update model.UpdateAccount) (model.Account, error) {
+	ret := _mock.Called(ctx, provider, providerAccountID, update)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateAccount")
+	}
+
+	var r0 model.Account
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, model.UpdateAccount) (model.Account, error)); ok {
+		return returnFunc(ctx, provider, providerAccountID, update)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, model.UpdateAccount) model.Account); ok {
+		r0 = returnFunc(ctx, provider, providerAccountID, update)
+	} else {
+		r0 = ret.Get(0).(model.Account)
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string, string, model.UpdateAccount) error); ok {
+		r1 = returnFunc(ctx, provider, providerAccountID, update)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// AccountRepo_UpdateAccount_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateAccount'
+type AccountRepo_UpdateAccount_Call struct {
+	*mock.Call
+}
+
+// UpdateAccount is a helper method to define mock.On call
+//   - ctx context.Context
+//   - provider string
+//   - providerAccountID string
+//   - update model.UpdateAccount
+func (_e *AccountRepo_Expecter) UpdateAccount(ctx interface{}, provider interface{}, providerAccountID interface{}, update interface{}) *AccountRepo_UpdateAccount_Call {
+	return &AccountRepo_UpdateAccount_Call{Call: _e.mock.On("UpdateAccount", ctx, provider, providerAccountID, update)}
+}
+
+func (_c *AccountRepo_UpdateAccount_Call) Run(run func(ctx context.Context, provider string, providerAccountID string, update model.UpdateAccount)) *AccountRepo_UpdateAccount_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 model.UpdateAccount
+		if args[3] != nil {
+			arg3 = args[3].(model.UpdateAccount)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+		)
+	})
+	return _c
+}
+
+func (_c *AccountRepo_UpdateAccount_Call) Return(account model.Account, err error) *AccountRepo_UpdateAccount_Call {
+	_c.Call.Return(account, err)
+	return _c
+}
+
+func (_c *AccountRepo_UpdateAccount_Call) RunAndReturn(run func(ctx context.Context, provider string, providerAccountID string, update model.UpdateAccount) (model.Account, error)) *AccountRepo_UpdateAccount_Call {
+	_c.Call.Return(run)
+	return _c
+}

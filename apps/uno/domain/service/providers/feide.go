@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"golang.org/x/oauth2"
 )
@@ -55,7 +56,9 @@ func NewFeideProvider(config FeideConfig) *FeideProvider {
 				TokenURL: "https://auth.dataporten.no/oauth/token",
 			},
 		},
-		httpClient: &http.Client{},
+		httpClient: &http.Client{
+			Timeout: 10 * time.Second,
+		},
 	}
 }
 
@@ -98,12 +101,14 @@ func (f *FeideProvider) ExchangeCode(ctx context.Context, code string) (*Token, 
 		return nil, fmt.Errorf("failed to exchange code: %w", err)
 	}
 
+	idToken, _ := token.Extra("id_token").(string)
+
 	return &Token{
 		AccessToken:  token.AccessToken,
 		TokenType:    token.TokenType,
 		ExpiresIn:    int(token.Expiry.Unix()),
 		RefreshToken: token.RefreshToken,
-		IDToken:      token.Extra("id_token").(string),
+		IDToken:      idToken,
 	}, nil
 }
 

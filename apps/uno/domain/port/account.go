@@ -9,6 +9,7 @@ type AccountRepo interface {
 	GetAccountByProvider(ctx context.Context, provider, providerAccountID string) (model.Account, error)
 	GetAccountsByUserID(ctx context.Context, userID string) ([]model.Account, error)
 	CreateAccount(ctx context.Context, account model.NewAccount) (model.Account, error)
+	UpdateAccount(ctx context.Context, provider, providerAccountID string, update model.UpdateAccount) (model.Account, error)
 	DeleteAccount(ctx context.Context, userID, provider string) error
 }
 

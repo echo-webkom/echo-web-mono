@@ -161,6 +161,15 @@ type NewAccount struct {
 	SessionState      *string
 }
 
+// UpdateAccount represents the fields that can be updated on an existing account.
+type UpdateAccount struct {
+	RefreshToken *string
+	AccessToken  *string
+	ExpiresAt    *int
+	TokenType    *string
+	IDToken      *string
+}
+
 // IsExpired checks if the account token has expired.
 func (a *Account) IsExpired(now time.Time) bool {
 	if a.ExpiresAt == nil {
@@ -255,6 +264,8 @@ type UserWithStrikeDetails struct {
 	BanInfo  *BanInfo
 	Dots     []DotInfo
 }
+
+var ErrVerificationTokenExpired = errors.New("verification token has expired")
 
 var (
 	ErrProfilePictureTooLarge           = errors.New("profile picture exceeds the maximum allowed size of 5 MB")

@@ -113,6 +113,43 @@ func (r *AccountRepo) CreateAccount(ctx context.Context, account model.NewAccoun
 	return *accountDB.ToDomain(), nil
 }
 
+func (r *AccountRepo) UpdateAccount(ctx context.Context, provider, providerAccountID string, update model.UpdateAccount) (model.Account, error) {
+	r.logger.Info(ctx, "updating account tokens",
+		"provider", provider,
+		"provider_account_id", providerAccountID,
+	)
+
+	query := `--sql
+		UPDATE "account"
+		SET refresh_token = COALESCE($3, refresh_token),
+		    access_token  = COALESCE($4, access_token),
+		    expires_at    = COALESCE($5, expires_at),
+		    token_type    = COALESCE($6, token_type),
+		    id_token      = COALESCE($7, id_token)
+		WHERE provider = $1 AND provider_account_id = $2
+		RETURNING user_id, type, provider, provider_account_id, refresh_token, access_token,
+		          expires_at, token_type, scope, id_token, session_state
+	`
+	var accountDB record.AccountDB
+	err := r.db.GetContext(ctx, &accountDB, query,
+		provider,
+		providerAccountID,
+		update.RefreshToken,
+		update.AccessToken,
+		update.ExpiresAt,
+		update.TokenType,
+		update.IDToken,
+	)
+	if err != nil {
+		r.logger.Error(ctx, "failed to update account",
+			"error", err,
+			"provider", provider,
+		)
+		return model.Account{}, err
+	}
+	return *accountDB.ToDomain(), nil
+}
+
 func (r *AccountRepo) DeleteAccount(ctx context.Context, userID, provider string) error {
 	r.logger.Info(ctx, "deleting account",
 		"user_id", userID,
