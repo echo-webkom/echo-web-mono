@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 
-const UNO_URL = process.env.UNO_URL ?? "http://localhost:8000";
+import { UNO_BASE_URL } from "@/config";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  return NextResponse.redirect(`${UNO_URL}/auth/feide`, {
+  return NextResponse.redirect(`${UNO_BASE_URL}/auth/feide`, {
     status: 302,
   });
 }
