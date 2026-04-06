@@ -3,14 +3,22 @@ package service
 import (
 	"context"
 	"crypto/rand"
+	"errors"
 	"fmt"
 	"strings"
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service/providers"
+	"uno/pkg/ptr"
+	"uno/pkg/randid"
 
 	"github.com/golang-jwt/jwt/v5"
+)
+
+var (
+	ErrNotAllowed   = errors.New("user not allowed to sign in")
+	ErrExpiredToken = errors.New("verification token has expired")
 )
 
 const (
@@ -228,7 +236,11 @@ func (as *AuthService) MarkTokenAsUsed(ctx context.Context, email string, token 
 
 // GetAndMarkTokenAsUsed atomically retrieves and marks a verification token as used, preventing race conditions.
 func (as *AuthService) GetAndMarkTokenAsUsed(ctx context.Context, email string, token string) (model.VerificationToken, error) {
-	return as.verificationTokenRepo.GetAndMarkTokenAsUsed(ctx, email, token)
+	t, err := as.verificationTokenRepo.GetAndMarkTokenAsUsed(ctx, email, token)
+	if errors.Is(err, model.ErrVerificationTokenExpired) {
+		return model.VerificationToken{}, ErrExpiredToken
+	}
+	return t, err
 }
 
 // IsAllowedToSignIn checks if the user is allowed to sign in based on their Feide group membership or email whitelist.
@@ -247,6 +259,98 @@ func (as *AuthService) IsAllowedToSignIn(ctx context.Context, userInfo *provider
 		return false, nil
 	}
 	return as.whitelistRepo.IsWhitelisted(ctx, email)
+}
+
+// SignInWithFeide exchanges a Feide authorization code, validates the user, and upserts
+// the user and account records. Returns the user ID to use for session creation.
+// Returns ErrNotAllowed if the user is not permitted to sign in.
+func (as *AuthService) SignInWithFeide(ctx context.Context, code string) (string, error) {
+	tokens, err := as.feideProvider.ExchangeCode(ctx, code)
+	if err != nil {
+		return "", fmt.Errorf("failed to exchange Feide code: %w", err)
+	}
+
+	userInfo, err := as.feideProvider.GetUserInfo(ctx, tokens.AccessToken)
+	if err != nil {
+		return "", fmt.Errorf("failed to get Feide user info: %w", err)
+	}
+
+	allowed, err := as.IsAllowedToSignIn(ctx, userInfo, tokens.AccessToken)
+	if err != nil {
+		return "", fmt.Errorf("failed to check sign-in permission: %w", err)
+	}
+	if !allowed {
+		return "", ErrNotAllowed
+	}
+
+	existingAccount, err := as.accountRepo.GetAccountByProvider(ctx, providers.FeideProviderName, userInfo.Sub)
+	if err != nil {
+		return "", fmt.Errorf("failed to look up existing account: %w", err)
+	}
+
+	normalizedEmail := strings.ToLower(userInfo.Email)
+
+	if existingAccount.UserID != "" {
+		if _, err := as.accountRepo.UpdateAccount(ctx, providers.FeideProviderName, userInfo.Sub, model.UpdateAccount{
+			AccessToken:  &tokens.AccessToken,
+			RefreshToken: ptr.Of(tokens.RefreshToken),
+			ExpiresAt:    ptr.Of(tokens.ExpiresIn),
+			TokenType:    &tokens.TokenType,
+			IDToken:      &tokens.IDToken,
+		}); err != nil {
+			// not critical — proceed with sign-in
+			_ = err
+		}
+		return existingAccount.UserID, nil
+	}
+
+	existingUser, err := as.userRepo.GetUserByEmail(ctx, normalizedEmail)
+	if err == nil && existingUser.ID != "" {
+		if _, err := as.accountRepo.CreateAccount(ctx, model.NewAccount{
+			UserID:            existingUser.ID,
+			Type:              "oauth",
+			Provider:          providers.FeideProviderName,
+			ProviderAccountID: userInfo.Sub,
+			AccessToken:       &tokens.AccessToken,
+			RefreshToken:      ptr.Of(tokens.RefreshToken),
+			ExpiresAt:         ptr.Of(tokens.ExpiresIn),
+			TokenType:         &tokens.TokenType,
+			Scope:             ptr.Of("openid email profile groups"),
+			IDToken:           &tokens.IDToken,
+		}); err != nil {
+			return "", fmt.Errorf("failed to link Feide account to existing user: %w", err)
+		}
+		return existingUser.ID, nil
+	}
+
+	id, err := randid.Generate(24)
+	if err != nil {
+		return "", fmt.Errorf("failed to generate user ID: %w", err)
+	}
+
+	createdUser, err := as.userRepo.CreateUserAndAccount(ctx, model.User{
+		ID:           id,
+		Name:         &userInfo.Name,
+		Email:        normalizedEmail,
+		Type:         model.UserTypeStudent,
+		LastSignInAt: ptr.Of(time.Now()),
+	}, model.NewAccount{
+		UserID:            id,
+		Type:              "oauth",
+		Provider:          providers.FeideProviderName,
+		ProviderAccountID: userInfo.Sub,
+		AccessToken:       &tokens.AccessToken,
+		RefreshToken:      ptr.Of(tokens.RefreshToken),
+		ExpiresAt:         ptr.Of(tokens.ExpiresIn),
+		TokenType:         &tokens.TokenType,
+		Scope:             ptr.Of("openid email profile groups"),
+		IDToken:           &tokens.IDToken,
+	})
+	if err != nil {
+		return "", fmt.Errorf("failed to create user and account: %w", err)
+	}
+
+	return createdUser.ID, nil
 }
 
 // generateSessionToken generates a secure random session token using crypto/rand.

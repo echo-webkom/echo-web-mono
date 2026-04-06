@@ -7,14 +7,11 @@ import (
 	"strings"
 	"time"
 	"uno/config"
-	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
-	"uno/domain/service/providers"
 	"uno/http/dto"
 	"uno/http/handler"
 	"uno/http/router"
-	"uno/pkg/ptr"
 	"uno/pkg/randid"
 )
 
@@ -60,10 +57,6 @@ func NewAuthMux(
 	return mux
 }
 
-func (h *auth) authError(ctx *handler.Context, errCode string) error {
-	return ctx.Redirect(h.config.WebBaseURL + "/auth/logg-inn?error=" + errCode)
-}
-
 // loginWithFeide redirects the user to the Feide login page
 // @Summary      Login with Feide
 // @Tags         auth
@@ -106,122 +99,31 @@ func (h *auth) loginWithFeide(ctx *handler.Context) error {
 func (h *auth) handleFeideCallback(ctx *handler.Context) error {
 	code, _ := ctx.QueryParam("code")
 	state, _ := ctx.QueryParam("state")
-
 	if code == "" || state == "" {
-		return h.authError(ctx, authErrUnknown)
+		return h.redirectWithError(ctx, authErrUnknown)
 	}
 
 	storedState, err := ctx.R.Cookie("feide_oauth_state")
 	if err != nil || storedState == nil || storedState.Value != state {
-		return h.authError(ctx, authErrUnknown)
+		return h.redirectWithError(ctx, authErrUnknown)
 	}
 
 	ctx.ClearCookie("feide_oauth_state", "/", "")
 
-	tokens, err := h.authService.ExchangeFeideCode(ctx.Context(), code)
+	userID, err := h.authService.SignInWithFeide(ctx.Context(), code)
+	if errors.Is(err, service.ErrNotAllowed) {
+		h.logger.Info(ctx.Context(), "user not allowed to sign in via Feide")
+		return h.redirectWithError(ctx, authErrNotAllowed)
+	}
 	if err != nil {
-		h.logger.Error(ctx.Context(), "failed to exchange Feide code", "error", err)
-		return h.authError(ctx, authErrUnknown)
-	}
-
-	userInfo, err := h.authService.GetFeideUserInfo(ctx.Context(), tokens.AccessToken)
-	if err != nil {
-		h.logger.Error(ctx.Context(), "failed to get Feide user info", "error", err)
-		return h.authError(ctx, authErrUnknown)
-	}
-
-	allowed, err := h.authService.IsAllowedToSignIn(ctx.Context(), userInfo, tokens.AccessToken)
-	if err != nil {
-		h.logger.Error(ctx.Context(), "failed to check if user is allowed to sign in", "error", err)
-		return h.authError(ctx, authErrUnknown)
-	}
-
-	if !allowed {
-		h.logger.Info(ctx.Context(), "user not allowed to sign in", "email", userInfo.Email)
-		return h.authError(ctx, authErrNotAllowed)
-	}
-
-	existingAccount, err := h.authService.GetAccountByProvider(ctx.Context(), providers.FeideProviderName, userInfo.Sub)
-	if err != nil {
-		h.logger.Error(ctx.Context(), "failed to check existing account", "error", err)
-		return h.authError(ctx, authErrUnknown)
-	}
-
-	normalizedEmail := strings.ToLower(userInfo.Email)
-	var userID string
-
-	if existingAccount.UserID != "" {
-		userID = existingAccount.UserID
-		if _, err := h.authService.UpdateAccount(ctx.Context(), providers.FeideProviderName, userInfo.Sub, model.UpdateAccount{
-			AccessToken:  &tokens.AccessToken,
-			RefreshToken: ptr.Of(tokens.RefreshToken),
-			ExpiresAt:    ptr.Of(tokens.ExpiresIn),
-			TokenType:    &tokens.TokenType,
-			IDToken:      &tokens.IDToken,
-		}); err != nil {
-			h.logger.Error(ctx.Context(), "failed to update account tokens", "error", err)
-			// not necessarily critical, so we can proceed with the sign in process
-		}
-	} else {
-		existingUser, err := h.authService.GetUserByEmail(ctx.Context(), normalizedEmail)
-		if err == nil && existingUser.ID != "" {
-			userID = existingUser.ID
-			if _, err := h.authService.CreateAccount(ctx.Context(), model.NewAccount{
-				UserID:            existingUser.ID,
-				Type:              "oauth",
-				Provider:          providers.FeideProviderName,
-				ProviderAccountID: userInfo.Sub,
-				AccessToken:       &tokens.AccessToken,
-				RefreshToken:      ptr.Of(tokens.RefreshToken),
-				ExpiresAt:         ptr.Of(tokens.ExpiresIn),
-				TokenType:         &tokens.TokenType,
-				Scope:             ptr.Of("openid email profile groups"),
-				IDToken:           &tokens.IDToken,
-			}); err != nil {
-				h.logger.Error(ctx.Context(), "failed to link Feide account to existing user", "error", err)
-				return h.authError(ctx, authErrUnknown)
-			}
-		} else {
-			id, err := randid.Generate(24)
-			if err != nil {
-				h.logger.Error(ctx.Context(), "failed to generate ID", "error", err)
-				return h.authError(ctx, authErrUnknown)
-			}
-
-			user := model.User{
-				ID:           id,
-				Name:         &userInfo.Name,
-				Email:        normalizedEmail,
-				Type:         model.UserTypeStudent,
-				LastSignInAt: ptr.Of(time.Now()),
-			}
-
-			account := model.NewAccount{
-				UserID:            id,
-				Type:              "oauth",
-				Provider:          providers.FeideProviderName,
-				ProviderAccountID: userInfo.Sub,
-				AccessToken:       &tokens.AccessToken,
-				RefreshToken:      ptr.Of(tokens.RefreshToken),
-				ExpiresAt:         ptr.Of(tokens.ExpiresIn),
-				TokenType:         &tokens.TokenType,
-				Scope:             ptr.Of("openid email profile groups"),
-				IDToken:           &tokens.IDToken,
-			}
-
-			createdUser, err := h.authService.CreateUserAndAccount(ctx.Context(), user, account)
-			if err != nil {
-				h.logger.Error(ctx.Context(), "failed to create user and account", "error", err)
-				return h.authError(ctx, authErrUnknown)
-			}
-			userID = createdUser.ID
-		}
+		h.logger.Error(ctx.Context(), "failed to sign in with Feide", "error", err)
+		return h.redirectWithError(ctx, authErrUnknown)
 	}
 
 	session, jwt, err := h.authService.CreateSession(ctx.Context(), userID, service.SessionExpiryDays)
 	if err != nil {
 		h.logger.Error(ctx.Context(), "failed to create session", "error", err)
-		return h.authError(ctx, authErrUnknown)
+		return h.redirectWithError(ctx, authErrUnknown)
 	}
 
 	ctx.SetCookie(h.sessionCookie(jwt, session.Expires))
@@ -299,22 +201,22 @@ func (h *auth) verifyMagicLink(ctx *handler.Context) error {
 
 	verificationToken, err := h.authService.GetAndMarkTokenAsUsed(ctx.Context(), email, token)
 	if err != nil || verificationToken.Token == "" {
-		if errors.Is(err, model.ErrVerificationTokenExpired) {
-			return h.authError(ctx, authErrExpiredToken)
+		if errors.Is(err, service.ErrExpiredToken) {
+			return h.redirectWithError(ctx, authErrExpiredToken)
 		}
 		h.logger.Error(ctx.Context(), "failed to get and mark verification token", "error", err)
-		return h.authError(ctx, authErrInvalidToken)
+		return h.redirectWithError(ctx, authErrInvalidToken)
 	}
 
 	user, err := h.authService.GetUserByEmail(ctx.Context(), email)
 	if err != nil {
-		return h.authError(ctx, authErrUserNotFound)
+		return h.redirectWithError(ctx, authErrUserNotFound)
 	}
 
 	session, jwt, err := h.authService.CreateSession(ctx.Context(), user.ID, service.SessionExpiryDays)
 	if err != nil {
 		h.logger.Error(ctx.Context(), "failed to create session", "error", err)
-		return h.authError(ctx, authErrUnknown)
+		return h.redirectWithError(ctx, authErrUnknown)
 	}
 
 	ctx.SetCookie(h.sessionCookie(jwt, session.Expires))
@@ -350,4 +252,8 @@ func rootDomain(baseURL string) string {
 		return strings.Join(parts[len(parts)-2:], ".")
 	}
 	return host
+}
+
+func (h *auth) redirectWithError(ctx *handler.Context, errCode string) error {
+	return ctx.Redirect(h.config.WebBaseURL + "/auth/logg-inn?error=" + errCode)
 }
