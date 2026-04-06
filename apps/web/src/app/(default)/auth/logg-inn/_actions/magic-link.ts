@@ -8,7 +8,7 @@ import { MagicLinkEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 import { eq } from "drizzle-orm";
 
-import { BASE_URL, DEV } from "@/config";
+import { DEV, UNO_BASE_URL } from "@/config";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { isValidEmail } from "@/utils/string";
 
@@ -90,7 +90,7 @@ export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
       used: false,
     });
 
-    const magicLinkUrl = `${BASE_URL}/api/auth/magic-link/verify?token=${token}&email=${encodeURIComponent(targetEmail)}`;
+    const magicLinkUrl = `${UNO_BASE_URL}/auth/magic-link/verify?token=${token}&email=${encodeURIComponent(targetEmail)}`;
 
     // Console log magic link in development
     if (DEV) {

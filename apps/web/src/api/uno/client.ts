@@ -610,7 +610,6 @@ export class UnoClient {
   shopping: ShoppingApi;
   siteFeedbacks: SiteFeedbackApi;
   whitelist: WhitelistApi;
-  strikes: StrikesApi;
   adventOfCode: AdventOfCodeApi;
   groups: GroupsApi;
   reactions: ReactionsApi;
@@ -618,6 +617,7 @@ export class UnoClient {
   files: FilesApi;
   quotes: QuotesApi;
   sanity: SanityApi;
+  auth: AuthApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -640,7 +640,6 @@ export class UnoClient {
     this.shopping = new ShoppingApi(this);
     this.siteFeedbacks = new SiteFeedbackApi(this);
     this.whitelist = new WhitelistApi(this);
-    this.strikes = new StrikesApi(this);
     this.adventOfCode = new AdventOfCodeApi(this);
     this.groups = new GroupsApi(this);
     this.reactions = new ReactionsApi(this);
@@ -648,6 +647,7 @@ export class UnoClient {
     this.files = new FilesApi(this);
     this.quotes = new QuotesApi(this);
     this.sanity = new SanityApi(this);
+    this.auth = new AuthApi(this);
   }
 
   normalizePath(path: string) {
@@ -1090,74 +1090,6 @@ class WhitelistApi {
     return response.status === 204;
   }
 }
-class StrikesApi {
-  private client: UnoClient;
-
-  constructor(client: UnoClient) {
-    this.client = client;
-  }
-
-  async listDetailed() {
-    return await this.client.requestJson<
-      Array<{
-        id: string;
-        name: string | null;
-        hasImage: boolean;
-        banInfo: {
-          id: number;
-          reason: string;
-          createdAt: Date;
-          userId: string;
-          bannedBy: string;
-          expiresAt: Date;
-          bannedByUser: {
-            name: string | null;
-          };
-        } | null;
-        dots: Array<{
-          id: number;
-          reason: string;
-          createdAt: Date;
-          userId: string;
-          expiresAt: Date;
-          count: number;
-          strikedBy: string;
-          strikedByUser: {
-            name: string | null;
-          };
-        }>;
-      }>
-    >("GET", "strikes/details");
-  }
-
-  async add(payload: {
-    userId: string;
-    count: number;
-    reason: string;
-    strikeExpiresInMonths: number;
-    banExpiresInMonths: number;
-    strikedBy: string;
-  }) {
-    return await this.client.requestJson<{ isBanned: boolean; message: string }>(
-      "POST",
-      "strikes",
-      payload,
-    );
-  }
-
-  async removeBan(userId: string) {
-    const response = await this.client.request("DELETE", `strikes/ban/${userId}`);
-    return response.status === 200;
-  }
-
-  async removeStrike(userId: string, strikeId: number) {
-    const response = await this.client.request(
-      "DELETE",
-      `strikes/${strikeId}?userId=${encodeURIComponent(userId)}`,
-    );
-    return response.status === 200;
-  }
-}
 
 export interface AdventOfCodeDay {
   stars: 0 | 1 | 2;
@@ -1375,6 +1307,31 @@ export interface UserRegistration {
   happening: Happening;
 }
 
+export interface Dot {
+  id: number;
+  reason: string;
+  createdAt: Date;
+  userId: string;
+  expiresAt: Date;
+  count: number;
+  strikedBy: string;
+  strikedByUser: {
+    name: string | null;
+  };
+}
+
+export interface BanInfo {
+  id: number;
+  reason: string;
+  createdAt: Date;
+  userId: string;
+  bannedBy: string;
+  expiresAt: Date;
+  bannedByUser: {
+    name: string | null;
+  };
+}
+
 class UsersApi {
   private client: UnoClient;
 
@@ -1404,6 +1361,60 @@ class UsersApi {
       "GET",
       `users/${userId}/registrations`,
     );
+  }
+
+  async withStrikes() {
+    return await this.client.requestJson<
+      Array<{
+        id: string;
+        name: string | null;
+        hasImage: boolean;
+        banInfo: BanInfo | null;
+        dots: Array<Dot>;
+      }>
+    >("GET", "users/with-strikes");
+  }
+
+  async strikeDetailsByUserId(userId: string) {
+    return await this.client.requestJson<{
+      id: string;
+      name: string | null;
+      hasImage: boolean;
+      banInfo: BanInfo | null;
+      dots: Array<Dot>;
+    }>("GET", `users/${userId}/strikes`);
+  }
+
+  async addStrike(
+    payload: {
+      count: number;
+      reason: string;
+      strikeExpiresInMonths: number;
+      banExpiresInMonths: number;
+      strikedBy: string;
+    },
+    userId: string,
+  ) {
+    return await this.client.requestJson<{ isBanned: boolean; message: string }>(
+      "POST",
+      `users/${userId}/strikes`,
+      payload,
+    );
+  }
+
+  async removeBan(userId: string) {
+    const response = await this.client.request("DELETE", `users/${userId}/ban`);
+    return response.status === 200;
+  }
+
+  async removeStrike(userId: string, strikeId: number) {
+    const response = await this.client.request("DELETE", `users/${userId}/strikes/${strikeId}`);
+    return response.status === 200;
+  }
+
+  async unbanExpired() {
+    const response = await this.client.request("POST", "users/strikes/unban");
+    return response.status === 200;
   }
 }
 
@@ -1488,5 +1499,27 @@ class QuotesApi {
   async toggleDislike(id: string) {
     const response = await this.client.request("POST", `quotes/${id}/dislike`);
     return response.status === 200;
+  }
+}
+
+class AuthApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async me() {
+    return await this.client.requestJson<User>("GET", "auth/me");
+  }
+
+  async signOut() {
+    const response = await this.client.request("POST", "auth/sign-out");
+    return response.status === 200;
+  }
+
+  async verifyMagicLink(token: string, email: string) {
+    const query = new URLSearchParams({ token, email });
+    return await this.client.request("GET", `auth/magic-link/verify?${query.toString()}`);
   }
 }

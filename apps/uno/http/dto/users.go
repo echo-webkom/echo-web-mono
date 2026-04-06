@@ -38,41 +38,45 @@ type UserResponse struct {
 func UsersToUserResponses(users []model.User) []UserResponse {
 	var userResponses []UserResponse
 	for _, user := range users {
-		var degreeResponse *DegreeResponse
-		if user.Degree != nil {
-			degreeResponse = &DegreeResponse{
-				ID:   user.Degree.ID,
-				Name: user.Degree.Name,
-			}
-		}
-
-		groups := make([]UserGroupResponse, len(user.Groups))
-		for i, group := range user.Groups {
-			groups[i] = UserGroupResponse{
-				Name:     group.Name,
-				ID:       group.ID,
-				IsLeader: group.IsLeader,
-			}
-		}
-
-		userResponses = append(userResponses, UserResponse{
-			ID:                         user.ID,
-			Name:                       user.Name,
-			Email:                      user.Email,
-			HasImage:                   user.HasImage,
-			AlternativeEmail:           user.AlternativeEmail,
-			AlternativeEmailVerifiedAt: user.AlternativeEmailVerifiedAt,
-			Degree:                     degreeResponse,
-			Year:                       user.Year.IntPtr(),
-			Type:                       user.Type.String(),
-			LastSignInAt:               user.LastSignInAt,
-			UpdatedAt:                  user.UpdatedAt,
-			CreatedAt:                  user.CreatedAt,
-			HasReadTerms:               user.HasReadTerms,
-			Birthday:                   user.Birthday,
-			IsPublic:                   user.IsPublic,
-			Groups:                     groups,
-		})
+		userResponses = append(userResponses, UserResponseFromDomain(user))
 	}
 	return userResponses
+}
+
+func UserResponseFromDomain(user model.User) UserResponse {
+	var degreeResponse *DegreeResponse
+	if user.Degree != nil {
+		degreeResponse = &DegreeResponse{
+			ID:   user.Degree.ID,
+			Name: user.Degree.Name,
+		}
+	}
+
+	groups := make([]UserGroupResponse, len(user.Groups))
+	for i, group := range user.Groups {
+		groups[i] = UserGroupResponse{
+			Name:     group.Name,
+			ID:       group.ID,
+			IsLeader: group.IsLeader,
+		}
+	}
+
+	return UserResponse{
+		ID:                         user.ID,
+		Name:                       user.Name,
+		Email:                      user.Email,
+		HasImage:                   user.HasImage,
+		AlternativeEmail:           user.AlternativeEmail,
+		AlternativeEmailVerifiedAt: user.AlternativeEmailVerifiedAt,
+		Degree:                     degreeResponse,
+		Year:                       user.Year.IntPtr(),
+		Type:                       user.Type.String(),
+		LastSignInAt:               user.LastSignInAt,
+		UpdatedAt:                  user.UpdatedAt,
+		CreatedAt:                  user.CreatedAt,
+		HasReadTerms:               user.HasReadTerms,
+		Birthday:                   user.Birthday,
+		IsPublic:                   user.IsPublic,
+		Groups:                     groups,
+	}
 }

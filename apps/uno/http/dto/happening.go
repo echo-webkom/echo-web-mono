@@ -3,7 +3,6 @@ package dto
 import (
 	"encoding/json"
 	"time"
-
 	"uno/domain/model"
 )
 
@@ -21,8 +20,8 @@ type HappeningResponse struct {
 }
 
 // FromDomain converts a domain Happening model to a HappeningResponse DTO.
-func (dto *HappeningResponse) FromDomain(h *model.Happening) *HappeningResponse {
-	return &HappeningResponse{
+func (dto *HappeningResponse) FromDomain(h *model.Happening) HappeningResponse {
+	return HappeningResponse{
 		ID:                      h.ID,
 		Slug:                    h.Slug,
 		Title:                   h.Title,
@@ -39,7 +38,7 @@ func (dto *HappeningResponse) FromDomain(h *model.Happening) *HappeningResponse 
 func HappeningListFromDomain(happenings []model.Happening) []HappeningResponse {
 	dtos := make([]HappeningResponse, len(happenings))
 	for i, happening := range happenings {
-		dtos[i] = *(&HappeningResponse{}).FromDomain(&happening)
+		dtos[i] = new(HappeningResponse).FromDomain(&happening)
 	}
 	return dtos
 }
@@ -54,8 +53,8 @@ type SpotRangeResponse struct {
 }
 
 // FromDomain converts a domain SpotRange model to a SpotRangeResponse DTO.
-func (dto *SpotRangeResponse) FromDomain(sr *model.SpotRange) *SpotRangeResponse {
-	return &SpotRangeResponse{
+func (dto *SpotRangeResponse) FromDomain(sr model.SpotRange) SpotRangeResponse {
+	return SpotRangeResponse{
 		ID:          sr.ID,
 		HappeningID: sr.HappeningID,
 		Spots:       sr.Spots,
@@ -68,7 +67,7 @@ func (dto *SpotRangeResponse) FromDomain(sr *model.SpotRange) *SpotRangeResponse
 func SpotRangeListFromDomain(spotRanges []model.SpotRange) []SpotRangeResponse {
 	dtos := make([]SpotRangeResponse, len(spotRanges))
 	for i, spotRange := range spotRanges {
-		dtos[i] = *(&SpotRangeResponse{}).FromDomain(&spotRange)
+		dtos[i] = new(SpotRangeResponse).FromDomain(spotRange)
 	}
 	return dtos
 }
@@ -85,8 +84,8 @@ type QuestionResponse struct {
 }
 
 // FromDomain converts a domain Question model to a QuestionResponse DTO.
-func (dto *QuestionResponse) FromDomain(q *model.Question) *QuestionResponse {
-	return &QuestionResponse{
+func (dto *QuestionResponse) FromDomain(q model.Question) QuestionResponse {
+	return QuestionResponse{
 		ID:          q.ID,
 		Title:       q.Title,
 		Required:    q.Required,
@@ -101,7 +100,7 @@ func (dto *QuestionResponse) FromDomain(q *model.Question) *QuestionResponse {
 func QuestionListFromDomain(questions []model.Question) []QuestionResponse {
 	dtos := make([]QuestionResponse, len(questions))
 	for i, question := range questions {
-		dtos[i] = *(&QuestionResponse{}).FromDomain(&question)
+		dtos[i] = new(QuestionResponse).FromDomain(question)
 	}
 	return dtos
 }
@@ -231,7 +230,7 @@ func FullRegistrationRowsFromDomain(h model.FullHappening, usersByID map[string]
 			row.Answers = append(row.Answers, RegistrationAnswerWithQuestionResponse{
 				QuestionID: a.QuestionID,
 				Answer:     answer,
-				Question:   *new(QuestionResponse).FromDomain(&q),
+				Question:   new(QuestionResponse).FromDomain(q),
 			})
 		}
 

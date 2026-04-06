@@ -209,6 +209,161 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/callback/feide": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Feide callback",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization code",
+                        "name": "code",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "OAuth state",
+                        "name": "state",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Redirect on success or error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/feide": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Login with Feide",
+                "responses": {
+                    "302": {
+                        "description": "Redirect to Feide",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/magic-link/verify": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Verify magic link",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Magic link token",
+                        "name": "token",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Redirect on success or error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/me": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Get current user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.UserResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/sign-out": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Sign out",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/birthdays": {
             "get": {
                 "description": "Gets all the users who have birthday today",
@@ -3128,231 +3283,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/strikes": {
-            "post": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "tags": [
-                    "strikes"
-                ],
-                "summary": "Add a strike",
-                "parameters": [
-                    {
-                        "description": "Strike payload",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.AddStrikeRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "The result of adding a strike",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.AddStrikeResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/strikes/ban/{userId}": {
-            "delete": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "tags": [
-                    "strikes"
-                ],
-                "summary": "Remove a ban for a user",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "The ID of the user to unban",
-                        "name": "userId",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/strikes/details": {
-            "get": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "tags": [
-                    "strikes"
-                ],
-                "summary": "Gets users with strike and ban details",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_http_dto.UserWithStrikeDetailsResponse"
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/strikes/unban": {
-            "post": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "tags": [
-                    "strikes"
-                ],
-                "summary": "Unban users with expired strikes and bans",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/strikes/{id}": {
-            "delete": {
-                "security": [
-                    {
-                        "AdminAPIKey": []
-                    }
-                ],
-                "tags": [
-                    "strikes"
-                ],
-                "summary": "Remove a strike by its ID and user ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "The ID of the strike to remove",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "The ID of the user whose strike to remove",
-                        "name": "userId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/users": {
             "get": {
                 "security": [
@@ -3379,61 +3309,6 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/users/feide/{feideId}/groups": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "users"
-                ],
-                "summary": "Gets the group IDs for a user based on the feide ID",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Feide ID",
-                        "name": "feideId",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "User Not Found",
                         "schema": {
                             "type": "string"
                         }
@@ -3495,6 +3370,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/users/with-strikes": {
+            "get": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Gets users with strike and ban details",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.UserWithStrikeDetailsResponse"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/users/{id}": {
             "get": {
                 "security": [
@@ -3512,7 +3423,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "User ID",
+                        "description": "User ID or Feide ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -3533,6 +3444,54 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "User Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/ban": {
+            "delete": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Remove a ban for a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The ID of the user to unban",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "type": "string"
                         }
@@ -3740,6 +3699,176 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/uno_http_dto.UserRegistrationResponse"
                             }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/strikes": {
+            "get": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get strike details for a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The ID of the user to get strike details for",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.UserWithStrikeDetailsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Add a strike to a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Strike payload",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.AddStrikeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The result of adding a strike",
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.AddStrikeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/strikes/{strikeId}": {
+            "delete": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Remove a strike by its ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The ID of the user",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "The ID of the strike to remove",
+                        "name": "strikeId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     "400": {

@@ -25,10 +25,6 @@ func NewUserService(
 	}
 }
 
-func (s *UserService) GetUserGroupIDs(ctx context.Context, feideID string) ([]string, error) {
-	return s.userRepo.GetUserGroupIDs(ctx, feideID)
-}
-
 func (s *UserService) SearchUsersByName(ctx context.Context, query string, limit int) ([]model.User, error) {
 	return s.userRepo.SearchUsersByName(ctx, query, limit)
 }
@@ -39,6 +35,10 @@ func (s *UserService) GetAllUsers(ctx context.Context) ([]model.User, error) {
 
 func (s *UserService) GetUserByID(ctx context.Context, userID string) (model.User, error) {
 	return s.userRepo.GetUserByID(ctx, userID)
+}
+
+func (s *UserService) GetUserByFeideID(ctx context.Context, feideID string) (model.User, error) {
+	return s.userRepo.GetUserByFeideID(ctx, feideID)
 }
 
 func (s *UserService) GetUsersWithBirthdayToday(ctx context.Context) ([]model.User, error) {

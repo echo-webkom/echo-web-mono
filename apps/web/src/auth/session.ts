@@ -5,6 +5,9 @@ import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 import { cache } from "react";
 
+import { unoWithAdmin } from "@/api/server";
+import { UnoClient } from "@/api/uno/client";
+
 const rawSecret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
 
 if (!rawSecret) {
@@ -33,22 +36,13 @@ async function getSessionCookie(): Promise<string | null> {
     const { payload } = await jwtVerify(sessionCookie, secret);
     return payload.sessionId as string;
   } catch {
-    return null; // Invalid or expired token
+    return null;
   }
 }
 
-export async function getSession() {
-  const sessionId = await getSessionCookie();
-
-  if (!sessionId) {
-    return null;
-  }
-
+async function validateSession(sessionId: string) {
   const session = await db.query.sessions.findFirst({
     where: (session) => eq(session.sessionToken, sessionId),
-    with: {
-      user: true,
-    },
   });
 
   if (!session) {
@@ -73,17 +67,29 @@ export async function createSessionCookie(sessionId: string) {
 
 export async function signOut() {
   const cookieStore = await cookies();
-  const sessionId = await getSessionCookie();
+  const sessionToken = await getSessionToken();
 
-  if (!sessionId) {
+  if (!sessionToken) {
     return;
   }
 
-  // Clear the session cookie
-  cookieStore.delete(SESSION_COOKIE_NAME);
+  try {
+    const unoClient = new UnoClient({
+      baseUrl: process.env.NEXT_PUBLIC_API_URL,
+      token: sessionToken,
+    });
+    // Sign out from uno with the users session token to invalidate it on the server side
+    await unoClient.auth.signOut();
+  } catch (error) {
+    console.error("Failed to sign out from uno:", error);
+    // Fall back to DB deletion if API call fails
+    const sessionId = await getSessionCookie();
+    if (sessionId) {
+      await db.delete(sessions).where(eq(sessions.sessionToken, sessionId));
+    }
+  }
 
-  // Delete the session from the database
-  await db.delete(sessions).where(eq(sessions.sessionToken, sessionId));
+  cookieStore.delete(SESSION_COOKIE_NAME);
 }
 
 export type AuthSessionUser = Awaited<ReturnType<typeof auth>>;
@@ -95,32 +101,15 @@ export const auth = cache(async () => {
     return null;
   }
 
-  const session = await db.query.sessions.findFirst({
-    where: (session) => eq(session.sessionToken, sessionId),
-    with: {
-      user: {
-        with: {
-          degree: true,
-          banInfo: true,
-          memberships: {
-            with: {
-              group: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  const session = await validateSession(sessionId);
 
   if (!session) {
     return null;
   }
 
-  if (session.expires && session.expires < new Date()) {
-    console.warn(`Session ${sessionId} has expired`);
-    await db.delete(sessions).where(eq(sessions.sessionToken, sessionId));
+  try {
+    return await unoWithAdmin.users.byId(session.userId);
+  } catch {
     return null;
   }
-
-  return session.user;
 });

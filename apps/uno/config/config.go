@@ -18,30 +18,46 @@ const (
 )
 
 type Config struct {
-	DatabaseURL string
+	// General configuration
+	Environment Environment
 	ApiPort     string
+
+	// URL configuration
+	UnoBaseURL string
+	WebBaseURL string
+
+	// Authentication configuration
 	AdminAPIKey string
 	AuthSecret  string
-	Environment Environment
 
+	// Feide configuration
+	FeideClientID     string
+	FeideClientSecret string
+
+	// Profile picture configuration
 	ProfilePictureEndpointURL     string
 	ProfilePictureBucketName      string
 	ProfilePictureAccessKeyID     string
 	ProfilePictureSecretAccessKey string
 
+	// Sanity configuration
 	SanityProjectID  string
 	SanityDataset    string
 	SanityAPIToken   string
 	SanityAPIVersion string
 
-	RedisURL string
+	// Storage configuration
+	DatabaseURL string
+	RedisURL    string
 }
 
 type CronConfig struct {
+	// Cron configuration
+	Environment  Environment
 	DatabaseURL  string
 	CronTimezone string
-	Environment  Environment
 
+	// Profile picture configuration
 	ProfilePictureEndpointURL     string
 	ProfilePictureBucketName      string
 	ProfilePictureAccessKeyID     string
@@ -49,39 +65,37 @@ type CronConfig struct {
 }
 
 func Load() *Config {
-	environment := parseEnvironment(os.Getenv("ENVIRONMENT"))
-
-	if environment == Development {
+	env := strings.ToLower(os.Getenv("ENVIRONMENT"))
+	if strings.HasPrefix(env, "dev") {
 		if err := cenv.VerifyEx("../../.env", "../../cenv.schema.json"); err != nil {
 			log.Println(err)
 		}
 	}
 
-	apiPort := toGoPort(getEnvOrDefault("UNO_API_PORT", "8000"))
-
 	return &Config{
-		// General configuration
-		DatabaseURL: os.Getenv("DATABASE_URL"),
+		Environment: parseEnvironment(os.Getenv("ENVIRONMENT")),
+		ApiPort:     toGoPort(getEnvOrDefault("UNO_API_PORT", "8000")),
+
+		UnoBaseURL: getEnvOrDefault("NEXT_PUBLIC_API_URL", "http://localhost:8000"),
+		WebBaseURL: getEnvOrDefault("NEXT_PUBLIC_WEB_BASE_URL", "http://localhost:3000"),
+
 		AdminAPIKey: os.Getenv("ADMIN_KEY"),
 		AuthSecret:  os.Getenv("AUTH_SECRET"),
-		Environment: environment,
 
-		// API configuration
-		ApiPort: apiPort,
+		FeideClientID:     os.Getenv("FEIDE_CLIENT_ID"),
+		FeideClientSecret: os.Getenv("FEIDE_CLIENT_SECRET"),
 
-		// Profile picture configuration
 		ProfilePictureEndpointURL:     os.Getenv("PROFILE_PICTURE_ENDPOINT_URL"),
 		ProfilePictureBucketName:      getEnvOrDefault("PROFILE_PICTURE_BUCKET_NAME", "profile-pictures"),
 		ProfilePictureAccessKeyID:     os.Getenv("PROFILE_PICTURE_ACCESS_KEY_ID"),
 		ProfilePictureSecretAccessKey: os.Getenv("PROFILE_PICTURE_SECRET_ACCESS_KEY"),
 
-		// Redis cache configuration
-		RedisURL: os.Getenv("REDIS_URL"),
-
-		// Sanity CMS configuration
 		SanityProjectID:  getEnvOrDefault("SANITY_PROJECT_ID", "pgq2pd26"),
 		SanityDataset:    getEnvOrDefault("NEXT_PUBLIC_SANITY_DATASET", "production"),
 		SanityAPIVersion: getEnvOrDefault("SANITY_API_VERSION", "2023-05-03"),
+
+		DatabaseURL: os.Getenv("DATABASE_URL"),
+		RedisURL:    os.Getenv("REDIS_URL"),
 	}
 }
 
@@ -100,7 +114,7 @@ func LoadCronConfig() *CronConfig {
 		Environment: environment,
 
 		// Cron configuration
-		CronTimezone: getEnvOrDefault("CRON_TIMEZONE", "Europe/Oslo"),
+		CronTimezone: "Europe/Oslo",
 
 		// Profile picture configuration
 		ProfilePictureEndpointURL:     os.Getenv("PROFILE_PICTURE_ENDPOINT_URL"),

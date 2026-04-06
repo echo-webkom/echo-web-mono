@@ -146,6 +146,30 @@ type Account struct {
 	SessionState      *string
 }
 
+// NewAccount represents the input for creating a new account
+type NewAccount struct {
+	UserID            string
+	Type              string
+	Provider          string
+	ProviderAccountID string
+	RefreshToken      *string
+	AccessToken       *string
+	ExpiresAt         *int
+	TokenType         *string
+	Scope             *string
+	IDToken           *string
+	SessionState      *string
+}
+
+// UpdateAccount represents the fields that can be updated on an existing account.
+type UpdateAccount struct {
+	RefreshToken *string
+	AccessToken  *string
+	ExpiresAt    *int
+	TokenType    *string
+	IDToken      *string
+}
+
 // IsExpired checks if the account token has expired.
 func (a *Account) IsExpired(now time.Time) bool {
 	if a.ExpiresAt == nil {
@@ -156,6 +180,13 @@ func (a *Account) IsExpired(now time.Time) bool {
 
 // Session represents an active user session.
 type Session struct {
+	SessionToken string
+	UserID       string
+	Expires      time.Time
+}
+
+// NewSession represents the input for creating a new session
+type NewSession struct {
 	SessionToken string
 	UserID       string
 	Expires      time.Time
@@ -233,6 +264,8 @@ type UserWithStrikeDetails struct {
 	BanInfo  *BanInfo
 	Dots     []DotInfo
 }
+
+var ErrVerificationTokenExpired = errors.New("verification token has expired")
 
 var (
 	ErrProfilePictureTooLarge           = errors.New("profile picture exceeds the maximum allowed size of 5 MB")

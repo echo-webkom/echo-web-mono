@@ -1,10 +1,10 @@
 "use client";
 
-import { type Group, type User, type UsersToGroups } from "@echo-webkom/db/schemas";
 import { CircleUser, Gavel, Lock, LogOut, User as UserIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import type { User } from "@/api/uno/client";
 import { useSignOut } from "@/auth/client";
 import { isBedkom, isMemberOf } from "@/lib/memberships";
 
@@ -19,13 +19,7 @@ import {
 } from "./ui/dropdown-menu";
 
 type UserMenuProps = {
-  user: User & {
-    memberships: Array<
-      UsersToGroups & {
-        group: Group;
-      }
-    >;
-  };
+  user: User;
 };
 
 export const UserMenu = ({ user }: UserMenuProps) => {
@@ -35,7 +29,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button data-testid="user-menu">
-          {user.image ? (
+          {user.hasImage ? (
             <Image
               src={createProfilePictureUrl(user.id) ?? ""}
               alt="User image"

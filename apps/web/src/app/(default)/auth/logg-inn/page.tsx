@@ -15,6 +15,25 @@ type Props = {
   }>;
 };
 
+const getErrorMessage = (error?: string) => {
+  if (!error) return null;
+
+  switch (error) {
+    case "not_allowed":
+      return "Du har ikke tilgang til å logge inn. Du må være student ved UiB.";
+    case "user_not_found":
+      return "Bruker ikke funnet. Du må være medlem av echo for å logge inn.";
+    case "expired_token":
+      return "Innloggingslenken har utløpt. Vennligst send en ny magic link.";
+    case "invalid_token":
+      return "Ugyldig innloggingslenke. Lenken kan være utløpt eller allerede brukt.";
+    case "unverified-alternative-email":
+      return "Du må bekrefte din alternative e-post før du kan logge inn med den. Sjekk din innboks for verifiseringsepost.";
+    default:
+      return "Innlogging feilet. Vennligst prøv igjen.";
+  }
+};
+
 export default async function SignInPage(props: Props) {
   const user = await auth();
 
@@ -23,27 +42,7 @@ export default async function SignInPage(props: Props) {
   }
 
   const { attemptId, error } = await props.searchParams;
-
   const attempt = attemptId && (await signInAttempt.get(attemptId));
-
-  const getErrorMessage = (error?: string) => {
-    switch (error) {
-      case "invalid-token":
-        return "Ugyldig innloggingslenke. Lenken kan være utløpt eller allerede brukt.";
-      case "expired-token":
-        return "Innloggingslenken har utløpt. Vennligst send en ny magic link.";
-      case "user-not-found":
-        return "Bruker ikke funnet. Du må være medlem av echo for å logge inn.";
-      case "unverified-alternative-email":
-        return "Du må bekrefte din alternative e-post før du kan logge inn med den. Sjekk din innboks for verifiseringsepost.";
-      case "verification-failed":
-        return "Innlogging feilet. Vennligst prøv igjen.";
-      case "token_exchange_failed":
-        return "Kunne ikke fullføre innlogging med Feide. Vennligst prøv igjen.";
-      default:
-        return null;
-    }
-  };
 
   const errorMessage = getErrorMessage(error);
 

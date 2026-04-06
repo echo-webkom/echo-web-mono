@@ -6,7 +6,7 @@ import (
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/infrastructure/postgres/record"
-	"uno/pkg/unsafeid"
+	"uno/pkg/randid"
 )
 
 type GroupRepo struct {
@@ -123,7 +123,7 @@ func (g *GroupRepo) CreateGroup(ctx context.Context, group model.NewGroup) (mode
 	if group.ID != nil {
 		id = *group.ID
 	} else {
-		id, err = unsafeid.Generate(21)
+		id, err = randid.Generate(21)
 		if err != nil {
 			return model.Group{}, err
 		}

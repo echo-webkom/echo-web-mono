@@ -2,7 +2,6 @@ package dto
 
 import (
 	"time"
-
 	"uno/domain/model"
 )
 
@@ -21,16 +20,16 @@ type AccessRequestResponse struct {
 }
 
 // ToDomain converts CreateAccessRequestRequest DTO to domain model
-func (r *CreateAccessRequestRequest) ToDomain() *model.NewAccessRequest {
-	return &model.NewAccessRequest{
+func (r *CreateAccessRequestRequest) ToDomain() model.NewAccessRequest {
+	return model.NewAccessRequest{
 		Email:  r.Email,
 		Reason: r.Reason,
 	}
 }
 
 // FromDomain converts domain model to AccessRequestResponse DTO
-func (r *AccessRequestResponse) FromDomain(ar *model.AccessRequest) *AccessRequestResponse {
-	return &AccessRequestResponse{
+func (r *AccessRequestResponse) FromDomain(ar model.AccessRequest) AccessRequestResponse {
+	return AccessRequestResponse{
 		ID:        ar.ID,
 		Email:     ar.Email,
 		Reason:    ar.Reason,
@@ -42,7 +41,7 @@ func (r *AccessRequestResponse) FromDomain(ar *model.AccessRequest) *AccessReque
 func AccessRequestsFromDomainList(accessRequests []model.AccessRequest) []AccessRequestResponse {
 	response := make([]AccessRequestResponse, len(accessRequests))
 	for i, ar := range accessRequests {
-		response[i] = *new(AccessRequestResponse).FromDomain(&ar)
+		response[i] = new(AccessRequestResponse).FromDomain(ar)
 	}
 	return response
 }

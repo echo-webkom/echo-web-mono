@@ -29,7 +29,9 @@ func createTestJWT(sessionToken string) string {
 
 // Test that it rejects requests with missing or invalid admin API key
 func TestAdminMiddleware_Unauthorized(t *testing.T) {
-	authService := service.NewAuthService(nil, nil, testSecret)
+	authService := service.NewAuthService(service.AuthServiceConfig{
+		AuthSecret: testSecret,
+	})
 	adminKey := "some-secret-key"
 
 	middleware := middleware.NewAdminMiddleware(authService, adminKey)
@@ -51,7 +53,9 @@ func TestAdminMiddleware_Unauthorized(t *testing.T) {
 
 // Test that it allows requests with valid admin API key
 func TestAdminMiddleware_Authorized(t *testing.T) {
-	authService := service.NewAuthService(nil, nil, testSecret)
+	authService := service.NewAuthService(service.AuthServiceConfig{
+		AuthSecret: testSecret,
+	})
 	adminKey := "some-secret-key"
 
 	middleware := middleware.NewAdminMiddleware(authService, adminKey)
@@ -81,7 +85,11 @@ func TestAdminMiddleware_Authorized(t *testing.T) {
 func TestAdminMiddleware_WebkomUser(t *testing.T) {
 	userRepo := mocks.NewUserRepo(t)
 	sessionRepo := mocks.NewSessionRepo(t)
-	authService := service.NewAuthService(sessionRepo, userRepo, testSecret)
+	authService := service.NewAuthService(service.AuthServiceConfig{
+		SessionRepo: sessionRepo,
+		UserRepo:    userRepo,
+		AuthSecret:  testSecret,
+	})
 
 	// Mock a valid session for a webkom user
 	userRepo.On("GetUserByID", mock.Anything, "user-123").Return(model.User{

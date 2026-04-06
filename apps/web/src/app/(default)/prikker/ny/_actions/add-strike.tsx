@@ -38,14 +38,16 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
       };
     }
 
-    const result = await unoWithAdmin.strikes.add({
-      userId: data.userId,
-      count: data.count,
-      reason: data.reason,
-      strikeExpiresInMonths: data.strikeExpiresInMonths,
-      banExpiresInMonths: data.banExpiresInMonths,
-      strikedBy: user.id,
-    });
+    const result = await unoWithAdmin.users.addStrike(
+      {
+        count: data.count,
+        reason: data.reason,
+        strikeExpiresInMonths: data.strikeExpiresInMonths,
+        banExpiresInMonths: data.banExpiresInMonths,
+        strikedBy: user.id,
+      },
+      data.userId,
+    );
 
     const shouldBeBanned = result.isBanned;
 

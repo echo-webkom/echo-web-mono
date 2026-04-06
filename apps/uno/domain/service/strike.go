@@ -2,9 +2,28 @@ package service
 
 import (
 	"context"
+	"errors"
+	"time"
 	"uno/domain/model"
 	"uno/domain/port"
 )
+
+var (
+	ErrUserNotFound      = errors.New("user not found")
+	ErrUserAlreadyBanned = errors.New("user is already banned")
+)
+
+type AddStrikeOptions struct {
+	Count               int
+	Reason              string
+	StrikedBy           string
+	StrikeExpiresMonths int
+	BanExpiresMonths    int
+}
+
+type AddStrikeResult struct {
+	IsBanned bool
+}
 
 type StrikeService struct {
 	dotRepo     port.DotRepo
@@ -33,7 +52,6 @@ func (s *StrikeService) UnbanUsersWithExpiredStrikes(ctx context.Context) error 
 		return err
 	}
 	return nil
-
 }
 
 func (s *StrikeService) CleanupOldStrikes(ctx context.Context) (int64, error) {
@@ -42,6 +60,10 @@ func (s *StrikeService) CleanupOldStrikes(ctx context.Context) (int64, error) {
 
 func (s *StrikeService) GetUsersWithStrikeDetails(ctx context.Context) ([]model.UserWithStrikeDetails, error) {
 	return s.userRepo.GetUsersWithStrikeDetails(ctx)
+}
+
+func (s *StrikeService) GetUserWithStrikeDetailsByID(context context.Context, userID string) (*model.UserWithStrikeDetails, error) {
+	return s.userRepo.GetUserWithStrikeDetailsByID(context, userID)
 }
 
 func (s *StrikeService) GetUserByID(ctx context.Context, userID string) (model.User, error) {
@@ -70,4 +92,74 @@ func (s *StrikeService) DeleteBanByUserID(ctx context.Context, userID string) er
 
 func (s *StrikeService) DeleteDotByIDAndUserID(ctx context.Context, id int, userID string) error {
 	return s.dotRepo.DeleteDotByIDAndUserID(ctx, id, userID)
+}
+
+func (s *StrikeService) AddStrike(ctx context.Context, userID string, opts AddStrikeOptions) (AddStrikeResult, error) {
+	if _, err := s.userRepo.GetUserByID(ctx, userID); err != nil {
+		return AddStrikeResult{}, ErrUserNotFound
+	}
+
+	banInfo, err := s.banInforepo.GetBanInfoByUserID(ctx, userID)
+	if err != nil {
+		return AddStrikeResult{}, err
+	}
+	if banInfo != nil {
+		return AddStrikeResult{}, ErrUserAlreadyBanned
+	}
+
+	userDetails, err := s.userRepo.GetUserWithStrikeDetailsByID(ctx, userID)
+	if err != nil {
+		return AddStrikeResult{}, err
+	}
+
+	previousStrikes := 0
+	if userDetails != nil {
+		for _, dot := range userDetails.Dots {
+			previousStrikes += dot.Count
+		}
+	}
+
+	shouldBeBanned := previousStrikes+opts.Count >= 5
+	overflowStrikes := previousStrikes + opts.Count - 5
+
+	if shouldBeBanned {
+		if _, err = s.banInforepo.CreateBan(ctx, model.NewBanInfo{
+			UserID:    userID,
+			Reason:    opts.Reason,
+			BannedBy:  opts.StrikedBy,
+			ExpiresAt: time.Now().AddDate(0, opts.BanExpiresMonths, 0),
+		}); err != nil {
+			return AddStrikeResult{}, err
+		}
+
+		if err = s.dotRepo.DeleteDotsByUserID(ctx, userID); err != nil {
+			return AddStrikeResult{}, err
+		}
+
+		if overflowStrikes > 0 {
+			if _, err = s.dotRepo.CreateDot(ctx, model.NewDot{
+				Count:     overflowStrikes,
+				Reason:    opts.Reason,
+				UserID:    userID,
+				StrikedBy: opts.StrikedBy,
+				ExpiresAt: time.Now().AddDate(0, opts.StrikeExpiresMonths, 0),
+			}); err != nil {
+				return AddStrikeResult{}, err
+			}
+		}
+
+		return AddStrikeResult{IsBanned: true}, nil
+	}
+
+	if _, err = s.dotRepo.CreateDot(ctx, model.NewDot{
+		Count:     opts.Count,
+		Reason:    opts.Reason,
+		UserID:    userID,
+		StrikedBy: opts.StrikedBy,
+		ExpiresAt: time.Now().AddDate(0, opts.StrikeExpiresMonths, 0),
+	}); err != nil {
+		return AddStrikeResult{}, err
+	}
+
+	return AddStrikeResult{IsBanned: false}, nil
 }

@@ -2,7 +2,6 @@ package dto
 
 import (
 	"time"
-
 	"uno/domain/model"
 )
 
@@ -21,8 +20,8 @@ type WhitelistResponse struct {
 }
 
 // ToDomain converts CreateWhitelistRequest DTO to domain model
-func (r *CreateWhitelistRequest) ToDomain() *model.NewWhitelist {
-	return &model.NewWhitelist{
+func (r *CreateWhitelistRequest) ToDomain() model.NewWhitelist {
+	return model.NewWhitelist{
 		Email:     r.Email,
 		ExpiresAt: r.ExpiresAt,
 		Reason:    r.Reason,

@@ -9,8 +9,8 @@ type CreateDegreeRequest struct {
 }
 
 // ToDomain converts CreateDegreeRequest DTO to domain model
-func (dto *CreateDegreeRequest) ToDomain() *model.Degree {
-	return &model.Degree{
+func (dto *CreateDegreeRequest) ToDomain() model.Degree {
+	return model.Degree{
 		ID:   dto.ID,
 		Name: dto.Name,
 	}
@@ -23,8 +23,8 @@ type UpdateDegreeRequest struct {
 }
 
 // ToDomain converts UpdateDegreeRequest DTO to domain model
-func (dto *UpdateDegreeRequest) ToDomain() *model.Degree {
-	return &model.Degree{
+func (dto *UpdateDegreeRequest) ToDomain() model.Degree {
+	return model.Degree{
 		ID:   dto.ID,
 		Name: dto.Name,
 	}

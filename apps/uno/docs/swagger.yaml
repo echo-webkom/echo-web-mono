@@ -1433,6 +1433,104 @@ paths:
       summary: Get Advent of Code leaderboard
       tags:
       - advent_of_code
+  /auth/callback/feide:
+    get:
+      parameters:
+      - description: Authorization code
+        in: query
+        name: code
+        required: true
+        type: string
+      - description: OAuth state
+        in: query
+        name: state
+        required: true
+        type: string
+      responses:
+        "302":
+          description: Redirect on success or error
+          schema:
+            type: string
+      summary: Feide callback
+      tags:
+      - auth
+  /auth/feide:
+    get:
+      responses:
+        "302":
+          description: Redirect to Feide
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Login with Feide
+      tags:
+      - auth
+  /auth/magic-link/verify:
+    get:
+      parameters:
+      - description: Magic link token
+        in: query
+        name: token
+        required: true
+        type: string
+      - description: User email
+        in: query
+        name: email
+        required: true
+        type: string
+      responses:
+        "302":
+          description: Redirect on success or error
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Verify magic link
+      tags:
+      - auth
+  /auth/me:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.UserResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get current user
+      tags:
+      - auth
+  /auth/sign-out:
+    post:
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Sign out
+      tags:
+      - auth
   /birthdays:
     get:
       description: Gets all the users who have birthday today
@@ -3301,146 +3399,6 @@ paths:
       summary: Toggle like on shopping list item
       tags:
       - shopping_list
-  /strikes:
-    post:
-      parameters:
-      - description: Strike payload
-        in: body
-        name: body
-        required: true
-        schema:
-          $ref: '#/definitions/uno_http_dto.AddStrikeRequest'
-      responses:
-        "200":
-          description: The result of adding a strike
-          schema:
-            $ref: '#/definitions/uno_http_dto.AddStrikeResponse'
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-        "401":
-          description: Unauthorized
-          schema:
-            type: string
-        "404":
-          description: Not Found
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      security:
-      - AdminAPIKey: []
-      summary: Add a strike
-      tags:
-      - strikes
-  /strikes/{id}:
-    delete:
-      parameters:
-      - description: The ID of the strike to remove
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: The ID of the user whose strike to remove
-        in: query
-        name: userId
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-        "401":
-          description: Unauthorized
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      security:
-      - AdminAPIKey: []
-      summary: Remove a strike by its ID and user ID
-      tags:
-      - strikes
-  /strikes/ban/{userId}:
-    delete:
-      parameters:
-      - description: The ID of the user to unban
-        in: path
-        name: userId
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            type: string
-        "401":
-          description: Unauthorized
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      security:
-      - AdminAPIKey: []
-      summary: Remove a ban for a user
-      tags:
-      - strikes
-  /strikes/details:
-    get:
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/uno_http_dto.UserWithStrikeDetailsResponse'
-            type: array
-        "401":
-          description: Unauthorized
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      security:
-      - AdminAPIKey: []
-      summary: Gets users with strike and ban details
-      tags:
-      - strikes
-  /strikes/unban:
-    post:
-      responses:
-        "200":
-          description: OK
-        "401":
-          description: Unauthorized
-          schema:
-            type: string
-        "500":
-          description: Internal Server Error
-          schema:
-            type: string
-      security:
-      - AdminAPIKey: []
-      summary: Unban users with expired strikes and bans
-      tags:
-      - strikes
   /users:
     get:
       produces:
@@ -3468,7 +3426,7 @@ paths:
   /users/{id}:
     get:
       parameters:
-      - description: User ID
+      - description: User ID or Feide ID
         in: path
         name: id
         required: true
@@ -3495,6 +3453,36 @@ paths:
       security:
       - AdminApiKey: []
       summary: Gets a user by ID
+      tags:
+      - users
+  /users/{id}/ban:
+    delete:
+      parameters:
+      - description: The ID of the user to unban
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Remove a ban for a user
       tags:
       - users
   /users/{id}/image:
@@ -3636,23 +3624,19 @@ paths:
       summary: Gets all registrations for a user
       tags:
       - users
-  /users/feide/{feideId}/groups:
+  /users/{id}/strikes:
     get:
       parameters:
-      - description: Feide ID
+      - description: The ID of the user to get strike details for
         in: path
-        name: feideId
+        name: id
         required: true
         type: string
-      produces:
-      - application/json
       responses:
         "200":
           description: OK
           schema:
-            items:
-              type: string
-            type: array
+            $ref: '#/definitions/uno_http_dto.UserWithStrikeDetailsResponse'
         "400":
           description: Bad Request
           schema:
@@ -3662,14 +3646,90 @@ paths:
           schema:
             type: string
         "404":
-          description: User Not Found
+          description: Not Found
           schema:
             type: string
         "500":
           description: Internal Server Error
           schema:
             type: string
-      summary: Gets the group IDs for a user based on the feide ID
+      security:
+      - AdminAPIKey: []
+      summary: Get strike details for a user
+      tags:
+      - users
+    post:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Strike payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.AddStrikeRequest'
+      responses:
+        "200":
+          description: The result of adding a strike
+          schema:
+            $ref: '#/definitions/uno_http_dto.AddStrikeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Add a strike to a user
+      tags:
+      - users
+  /users/{id}/strikes/{strikeId}:
+    delete:
+      parameters:
+      - description: The ID of the user
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: The ID of the strike to remove
+        in: path
+        name: strikeId
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Remove a strike by its ID
       tags:
       - users
   /users/search:
@@ -3700,6 +3760,28 @@ paths:
       security:
       - BearerAuth: []
       summary: Searches for users by name
+      tags:
+      - users
+  /users/with-strikes:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.UserWithStrikeDetailsResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Gets users with strike and ban details
       tags:
       - users
   /weather/yr:

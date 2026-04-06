@@ -2,7 +2,6 @@ package record
 
 import (
 	"time"
-
 	"uno/domain/model"
 )
 
@@ -193,8 +192,8 @@ type SessionDB struct {
 }
 
 // FromDomain converts a domain Session model to a database SessionDB model.
-func (db *SessionDB) FromDomain(s *model.Session) *SessionDB {
-	return &SessionDB{
+func (db *SessionDB) FromDomain(s model.Session) SessionDB {
+	return SessionDB{
 		SessionToken: s.SessionToken,
 		UserID:       s.UserID,
 		Expires:      s.Expires,
@@ -202,8 +201,8 @@ func (db *SessionDB) FromDomain(s *model.Session) *SessionDB {
 }
 
 // ToDomain converts a database SessionDB model to a domain Session model.
-func (db *SessionDB) ToDomain() *model.Session {
-	return &model.Session{
+func (db *SessionDB) ToDomain() model.Session {
+	return model.Session{
 		SessionToken: db.SessionToken,
 		UserID:       db.UserID,
 		Expires:      db.Expires,
@@ -214,7 +213,7 @@ func (db *SessionDB) ToDomain() *model.Session {
 type VerificationTokenDB struct {
 	Identifier string    `db:"identifier"`
 	Token      string    `db:"token"`
-	ExpiresAt  time.Time `db:"expires_at"`
+	ExpiresAt  time.Time `db:"expires"`
 }
 
 // FromDomain converts a domain VerificationToken model to a database VerificationTokenDB model.

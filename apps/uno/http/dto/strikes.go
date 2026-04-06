@@ -123,47 +123,51 @@ func BannedUsersFromDomainList(users []model.UserWithBanInfo) []UserWithBanInfoR
 func UsersWithStrikeDetailsFromDomainList(users []model.UserWithStrikeDetails) []UserWithStrikeDetailsResponse {
 	resp := make([]UserWithStrikeDetailsResponse, len(users))
 	for i, user := range users {
-		var banInfo *BanInfo
-		if user.BanInfo != nil {
-			banInfo = &BanInfo{
-				ID:        user.BanInfo.ID,
-				Reason:    user.BanInfo.Reason,
-				CreatedAt: FormatISO8601(user.BanInfo.CreatedAt),
-				UserID:    user.BanInfo.UserID,
-				BannedBy:  user.BanInfo.BannedByID,
-				ExpiresAt: FormatISO8601(user.BanInfo.ExpiresAt),
-				BannedByUser: BannedStrikedByUser{
-					Name: user.BanInfo.BannedByName,
-				},
-			}
-		}
-
-		dots := make([]DotInfo, len(user.Dots))
-		for j, dot := range user.Dots {
-			dots[j] = DotInfo{
-				ID:        dot.ID,
-				Reason:    dot.Reason,
-				CreatedAt: FormatISO8601(dot.CreatedAt),
-				UserID:    dot.UserID,
-				ExpiresAt: FormatISO8601(dot.ExpiresAt),
-				Count:     dot.Count,
-				StrikedBy: dot.StrikedByID,
-				StrikedByUser: BannedStrikedByUser{
-					Name: dot.StrikedByName,
-				},
-			}
-		}
-
-		resp[i] = UserWithStrikeDetailsResponse{
-			ID:       user.ID,
-			Name:     user.Name,
-			HasImage: user.HasImage,
-			BanInfo:  banInfo,
-			Dots:     dots,
-		}
+		resp[i] = UserWithStrikeDetailsFromDomain(user)
 	}
 
 	return resp
+}
+
+func UserWithStrikeDetailsFromDomain(user model.UserWithStrikeDetails) UserWithStrikeDetailsResponse {
+	var banInfo *BanInfo
+	if user.BanInfo != nil {
+		banInfo = &BanInfo{
+			ID:        user.BanInfo.ID,
+			Reason:    user.BanInfo.Reason,
+			CreatedAt: FormatISO8601(user.BanInfo.CreatedAt),
+			UserID:    user.BanInfo.UserID,
+			BannedBy:  user.BanInfo.BannedByID,
+			ExpiresAt: FormatISO8601(user.BanInfo.ExpiresAt),
+			BannedByUser: BannedStrikedByUser{
+				Name: user.BanInfo.BannedByName,
+			},
+		}
+	}
+
+	dots := make([]DotInfo, len(user.Dots))
+	for j, dot := range user.Dots {
+		dots[j] = DotInfo{
+			ID:        dot.ID,
+			Reason:    dot.Reason,
+			CreatedAt: FormatISO8601(dot.CreatedAt),
+			UserID:    dot.UserID,
+			ExpiresAt: FormatISO8601(dot.ExpiresAt),
+			Count:     dot.Count,
+			StrikedBy: dot.StrikedByID,
+			StrikedByUser: BannedStrikedByUser{
+				Name: dot.StrikedByName,
+			},
+		}
+	}
+
+	return UserWithStrikeDetailsResponse{
+		ID:       user.ID,
+		Name:     user.Name,
+		HasImage: user.HasImage,
+		BanInfo:  banInfo,
+		Dots:     dots,
+	}
 }
 
 // AddStrikeResponse represents the response for adding a strike

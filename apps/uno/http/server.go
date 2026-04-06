@@ -4,6 +4,7 @@ import (
 	"uno/config"
 	"uno/domain/port"
 	"uno/domain/service"
+	"uno/domain/service/providers"
 	"uno/http/middleware"
 	"uno/http/router"
 	"uno/http/routes/api"
@@ -36,6 +37,8 @@ type ServerDeps struct {
 	Logger port.Logger
 	Config *config.Config
 
+	FeideProvider *providers.FeideProvider
+
 	AuthService          *service.AuthService
 	HappeningService     *service.HappeningService
 	DegreeService        *service.DegreeService
@@ -65,6 +68,15 @@ func RunServer(deps ServerDeps) {
 	// Health check route
 	r.Handle("GET", "/", api.HealthHandler)
 
+	// Auth routes
+	r.Mount("/auth", api.NewAuthMux(
+		deps.Logger,
+		deps.Config,
+		deps.AuthService,
+		deps.UserService,
+		session,
+	))
+
 	// Happening routes
 	r.Mount("/happenings", api.NewHappeningMux(deps.Logger, deps.HappeningService, admin))
 
@@ -79,9 +91,6 @@ func RunServer(deps ServerDeps) {
 
 	// Birthday routes
 	r.Mount("/birthdays", api.NewBirthdayMux(deps.Logger, deps.UserService))
-
-	// Strike routes
-	r.Mount("/strikes", api.NewStrikesMux(deps.Logger, deps.StrikeSerivce, admin))
 
 	// Access request routes
 	r.Mount("/access-requests", api.NewAccessRequestMux(deps.Logger, deps.AccessRequestService, admin))
@@ -108,7 +117,7 @@ func RunServer(deps ServerDeps) {
 	r.Mount("/reactions", api.NewReactionMux(deps.Logger, deps.ReactionService, admin))
 
 	// User routes
-	r.Mount("/users", api.NewUsersMux(deps.Logger, deps.UserService, deps.HappeningService, admin, session))
+	r.Mount("/users", api.NewUsersMux(deps.Logger, deps.UserService, deps.HappeningService, deps.StrikeSerivce, admin, session))
 
 	// Quote routes
 	r.Mount("/quotes", api.NewQuoteMux(deps.Logger, deps.QuoteService, sessionOrAdmin, session, admin))

@@ -21,7 +21,7 @@ export const removeBanAction = async (userId: string) => {
     };
   }
 
-  await unoWithAdmin.strikes.removeBan(userId);
+  await unoWithAdmin.users.removeBan(userId);
 
   console.info(`User, ${user.id}, removed ban for user, ${userId}`);
 
@@ -48,7 +48,7 @@ export const removeStrikeAction = async (userId: string, strikeId: number) => {
     };
   }
 
-  await unoWithAdmin.strikes.removeStrike(userId, strikeId);
+  await unoWithAdmin.users.removeStrike(userId, strikeId);
 
   console.info(`User, ${user.id}, removed strike, ${strikeId}, for user, ${userId}`);
 

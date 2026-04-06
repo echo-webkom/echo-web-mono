@@ -11,6 +11,7 @@ import (
 	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/http/handler"
+	"uno/http/router"
 	"uno/http/routes/api"
 	"uno/testutil"
 
@@ -18,71 +19,9 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-func TestUnbanUsersWithExpiredStrikesHandler(t *testing.T) {
-	tests := []struct {
-		name           string
-		setupMocks     func(*mocks.DotRepo, *mocks.BanInfoRepo)
-		expectedStatus int
-	}{
-		{
-			name: "success",
-			setupMocks: func(mockDotRepo *mocks.DotRepo, mockBanInfoRepo *mocks.BanInfoRepo) {
-				mockDotRepo.EXPECT().
-					DeleteExpired(mock.Anything).
-					Return(nil).
-					Once()
-				mockBanInfoRepo.EXPECT().
-					DeleteExpired(mock.Anything).
-					Return(nil).
-					Once()
-			},
-			expectedStatus: http.StatusOK,
-		},
-		{
-			name: "error from dot repo",
-			setupMocks: func(mockDotRepo *mocks.DotRepo, mockBanInfoRepo *mocks.BanInfoRepo) {
-				mockDotRepo.EXPECT().
-					DeleteExpired(mock.Anything).
-					Return(errors.New("database error")).
-					Once()
-			},
-			expectedStatus: http.StatusInternalServerError,
-		},
-		{
-			name: "error from ban info repo",
-			setupMocks: func(mockDotRepo *mocks.DotRepo, mockBanInfoRepo *mocks.BanInfoRepo) {
-				mockDotRepo.EXPECT().
-					DeleteExpired(mock.Anything).
-					Return(nil).
-					Once()
-				mockBanInfoRepo.EXPECT().
-					DeleteExpired(mock.Anything).
-					Return(errors.New("database error")).
-					Once()
-			},
-			expectedStatus: http.StatusInternalServerError,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			mockDotRepo := mocks.NewDotRepo(t)
-			mockBanInfoRepo := mocks.NewBanInfoRepo(t)
-			mockUserRepo := mocks.NewUserRepo(t)
-
-			tt.setupMocks(mockDotRepo, mockBanInfoRepo)
-
-			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
-			mux := api.NewStrikesMux(testutil.NewTestLogger(), strikeService, handler.NoMiddleware)
-
-			r := httptest.NewRequest(http.MethodPost, "/unban", nil)
-			w := httptest.NewRecorder()
-
-			mux.ServeHTTP(w, r)
-
-			assert.Equal(t, tt.expectedStatus, w.Code)
-		})
-	}
+func newUsersTestMux(t *testing.T, strikeService *service.StrikeService) *router.Mux {
+	t.Helper()
+	return api.NewUsersMux(testutil.NewTestLogger(), nil, nil, strikeService, handler.NoMiddleware, handler.NoMiddleware)
 }
 
 func TestGetUsersWithStrikeDetails(t *testing.T) {
@@ -123,9 +62,9 @@ func TestGetUsersWithStrikeDetails(t *testing.T) {
 			tt.setupMocks(mockUserRepo)
 
 			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
-			mux := api.NewStrikesMux(testutil.NewTestLogger(), strikeService, handler.NoMiddleware)
+			mux := newUsersTestMux(t, strikeService)
 
-			r := httptest.NewRequest(http.MethodGet, "/details", nil)
+			r := httptest.NewRequest(http.MethodGet, "/with-strikes", nil)
 			w := httptest.NewRecorder()
 
 			mux.ServeHTTP(w, r)
@@ -138,14 +77,15 @@ func TestGetUsersWithStrikeDetails(t *testing.T) {
 func TestAddStrikeHandler(t *testing.T) {
 	tests := []struct {
 		name           string
+		userID         string
 		requestBody    map[string]interface{}
 		setupMocks     func(*mocks.DotRepo, *mocks.BanInfoRepo, *mocks.UserRepo)
 		expectedStatus int
 	}{
 		{
-			name: "success",
+			name:   "success",
+			userID: "user-1",
 			requestBody: map[string]interface{}{
-				"userId":                "user-1",
 				"count":                 1,
 				"reason":                "rule break",
 				"strikeExpiresInMonths": 1,
@@ -162,8 +102,8 @@ func TestAddStrikeHandler(t *testing.T) {
 					Return(nil, nil).
 					Once()
 				mockUserRepo.EXPECT().
-					GetUsersWithStrikeDetails(mock.Anything).
-					Return([]model.UserWithStrikeDetails{}, nil).
+					GetUserWithStrikeDetailsByID(mock.Anything, "user-1").
+					Return(&model.UserWithStrikeDetails{}, nil).
 					Once()
 				mockDotRepo.EXPECT().
 					CreateDot(mock.Anything, mock.Anything).
@@ -173,9 +113,10 @@ func TestAddStrikeHandler(t *testing.T) {
 			expectedStatus: http.StatusOK,
 		},
 		{
-			name: "missing required fields",
+			name:   "missing required fields",
+			userID: "user-1",
 			requestBody: map[string]interface{}{
-				"userId": "",
+				"count": 0,
 			},
 			setupMocks:     func(mockDotRepo *mocks.DotRepo, mockBanInfoRepo *mocks.BanInfoRepo, mockUserRepo *mocks.UserRepo) {},
 			expectedStatus: http.StatusBadRequest,
@@ -190,10 +131,11 @@ func TestAddStrikeHandler(t *testing.T) {
 			tt.setupMocks(mockDotRepo, mockBanInfoRepo, mockUserRepo)
 
 			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
-			mux := api.NewStrikesMux(testutil.NewTestLogger(), strikeService, handler.NoMiddleware)
+			mux := newUsersTestMux(t, strikeService)
 
 			body, _ := json.Marshal(tt.requestBody)
-			r := httptest.NewRequest(http.MethodPost, "/", bytes.NewReader(body))
+			r := httptest.NewRequest(http.MethodPost, "/"+tt.userID+"/strikes", bytes.NewReader(body))
+			r.SetPathValue("id", tt.userID)
 			w := httptest.NewRecorder()
 
 			mux.ServeHTTP(w, r)
@@ -237,10 +179,10 @@ func TestRemoveBanHandler(t *testing.T) {
 			tt.setupMocks(mockBanInfoRepo)
 
 			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
-			mux := api.NewStrikesMux(testutil.NewTestLogger(), strikeService, handler.NoMiddleware)
+			mux := newUsersTestMux(t, strikeService)
 
-			r := httptest.NewRequest(http.MethodDelete, "/ban/"+tt.userID, nil)
-			r.SetPathValue("userId", tt.userID)
+			r := httptest.NewRequest(http.MethodDelete, "/"+tt.userID+"/ban", nil)
+			r.SetPathValue("id", tt.userID)
 			w := httptest.NewRecorder()
 
 			mux.ServeHTTP(w, r)
@@ -253,15 +195,15 @@ func TestRemoveBanHandler(t *testing.T) {
 func TestRemoveStrikeHandler(t *testing.T) {
 	tests := []struct {
 		name           string
-		id             string
-		query          string
+		userID         string
+		strikeID       string
 		setupMocks     func(*mocks.DotRepo)
 		expectedStatus int
 	}{
 		{
-			name:  "success",
-			id:    "12",
-			query: "?userId=user-1",
+			name:     "success",
+			userID:   "user-1",
+			strikeID: "12",
 			setupMocks: func(mockDotRepo *mocks.DotRepo) {
 				mockDotRepo.EXPECT().
 					DeleteDotByIDAndUserID(mock.Anything, 12, "user-1").
@@ -272,8 +214,8 @@ func TestRemoveStrikeHandler(t *testing.T) {
 		},
 		{
 			name:           "missing user id",
-			id:             "12",
-			query:          "",
+			userID:         "",
+			strikeID:       "12",
 			setupMocks:     func(mockDotRepo *mocks.DotRepo) {},
 			expectedStatus: http.StatusBadRequest,
 		},
@@ -287,10 +229,11 @@ func TestRemoveStrikeHandler(t *testing.T) {
 			tt.setupMocks(mockDotRepo)
 
 			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
-			mux := api.NewStrikesMux(testutil.NewTestLogger(), strikeService, handler.NoMiddleware)
+			mux := newUsersTestMux(t, strikeService)
 
-			r := httptest.NewRequest(http.MethodDelete, "/"+tt.id+tt.query, nil)
-			r.SetPathValue("id", tt.id)
+			r := httptest.NewRequest(http.MethodDelete, "/"+tt.userID+"/strikes/"+tt.strikeID, nil)
+			r.SetPathValue("id", tt.userID)
+			r.SetPathValue("strikeId", tt.strikeID)
 			w := httptest.NewRecorder()
 
 			mux.ServeHTTP(w, r)

@@ -25,8 +25,8 @@ type UserSummaryResponse struct {
 }
 
 // FromDomain converts domain UserSummary to DTO
-func (u *UserSummaryResponse) FromDomain(user *model.UserSummary) *UserSummaryResponse {
-	return &UserSummaryResponse{
+func (u *UserSummaryResponse) FromDomain(user *model.UserSummary) UserSummaryResponse {
+	return UserSummaryResponse{
 		ID:       user.ID,
 		Name:     user.Name,
 		HasImage: user.HasImage,
@@ -42,8 +42,8 @@ type CommentsReactionResponse struct {
 }
 
 // FromDomain converts domain CommentsReaction to DTO
-func (r *CommentsReactionResponse) FromDomain(reaction *model.CommentsReaction) *CommentsReactionResponse {
-	return &CommentsReactionResponse{
+func (r *CommentsReactionResponse) FromDomain(reaction *model.CommentsReaction) CommentsReactionResponse {
+	return CommentsReactionResponse{
 		CommentID: reaction.CommentID,
 		UserID:    reaction.UserID,
 		Type:      reaction.Type,
@@ -65,18 +65,18 @@ type CommentResponse struct {
 }
 
 // FromDomain converts domain CommentAggregate to DTO
-func (c *CommentResponse) FromDomain(aggregate *model.CommentAggregate) *CommentResponse {
+func (c *CommentResponse) FromDomain(aggregate model.CommentAggregate) CommentResponse {
 	reactions := make([]CommentsReactionResponse, len(aggregate.Reactions))
 	for i, r := range aggregate.Reactions {
-		reactions[i] = *new(CommentsReactionResponse).FromDomain(&r)
+		reactions[i] = new(CommentsReactionResponse).FromDomain(&r)
 	}
 
-	var user *UserSummaryResponse
+	var user UserSummaryResponse
 	if aggregate.User != nil {
 		user = new(UserSummaryResponse).FromDomain(aggregate.User)
 	}
 
-	return &CommentResponse{
+	return CommentResponse{
 		ID:              aggregate.ID,
 		PostID:          aggregate.PostID,
 		ParentCommentID: aggregate.ParentCommentID,
@@ -85,7 +85,7 @@ func (c *CommentResponse) FromDomain(aggregate *model.CommentAggregate) *Comment
 		CreatedAt:       aggregate.CreatedAt,
 		UpdatedAt:       aggregate.UpdatedAt,
 		Reactions:       reactions,
-		User:            user,
+		User:            &user,
 	}
 }
 
@@ -93,7 +93,7 @@ func (c *CommentResponse) FromDomain(aggregate *model.CommentAggregate) *Comment
 func CommentsFromDomainList(aggregates []model.CommentAggregate) []CommentResponse {
 	dtos := make([]CommentResponse, len(aggregates))
 	for i, aggregate := range aggregates {
-		dtos[i] = *new(CommentResponse).FromDomain(&aggregate)
+		dtos[i] = new(CommentResponse).FromDomain(aggregate)
 	}
 	return dtos
 }
