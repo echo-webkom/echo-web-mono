@@ -8,7 +8,7 @@ import { StrikesList } from "./_components/strikes-list";
 export default async function StrikesDashboard() {
   await ensureBedkom();
 
-  const users = await unoWithAdmin.strikes.listDetailed();
+  const users = await unoWithAdmin.users.withStrikes();
 
   return (
     <Container>

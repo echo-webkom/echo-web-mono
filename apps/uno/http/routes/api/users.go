@@ -5,6 +5,7 @@ import (
 	"errors"
 	"net/http"
 	"strconv"
+	"time"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
@@ -17,30 +18,24 @@ type users struct {
 	logger           port.Logger
 	userService      *service.UserService
 	happeningService *service.HappeningService
+	strikeService    *service.StrikeService
 }
 
-// Endpoints you can find here.
-//
-//   - [x] GET    /users
-//   - [x] GET    /users/search
-//   - [x] GET    /users/{id}
-//   - [x] GET    /users/{id}/registrations
-//   - [ ] GET    /users/{id}/strikes
-//   - [ ] POST   /users/{id}/strikes
-//   - [ ] POST   /users/{id}/bans
-//   - [x] GET    /users/{id}/image
-//   - [x] DELETE /users/{id}/image
-//   - [x] POST   /users/{id}/image
-func NewUsersMux(logger port.Logger, userService *service.UserService, happeningService *service.HappeningService, admin handler.Middleware, session handler.Middleware) *router.Mux {
-	u := users{logger, userService, happeningService}
+func NewUsersMux(logger port.Logger, userService *service.UserService, happeningService *service.HappeningService, strikeService *service.StrikeService, admin handler.Middleware, session handler.Middleware) *router.Mux {
+	u := users{logger, userService, happeningService, strikeService}
 
 	mux := router.NewMux()
 
 	mux.GET("/", u.getUsers, admin)
 	mux.GET("/search", u.searchUsers, session)
+	mux.GET("/with-strikes", u.getUsersWithStrikeDetails, admin)
 
 	mux.GET("/{id}", u.getUserByID, admin)
 	mux.GET("/{id}/registrations", u.getUserRegistrations, admin)
+	mux.GET("/{id}/strikes", u.getUserWithStrikeDetails, admin)
+	mux.POST("/{id}/strikes", u.addStrike, admin)
+	mux.DELETE("/{id}/strikes/{strikeId}", u.removeStrike, admin)
+	mux.DELETE("/{id}/ban", u.removeBan, admin)
 
 	mux.GET("/{id}/image", u.getUserImage)
 	mux.POST("/{id}/image", u.uploadUserImage, admin)
@@ -281,4 +276,205 @@ func (u *users) deleteUserImage(ctx *handler.Context) error {
 
 	// Return 200 OK
 	return nil
+}
+
+// getUsersWithStrikeDetails returns all users with strikes or bans including full details
+// @Summary      Gets users with strike and ban details
+// @Tags         users
+// @Success      200  {array}   dto.UserWithStrikeDetailsResponse  "OK"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /users/with-strikes [get]
+func (u *users) getUsersWithStrikeDetails(ctx *handler.Context) error {
+	users, err := u.strikeService.GetUsersWithStrikeDetails(ctx.Context())
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+
+	response := dto.UsersWithStrikeDetailsFromDomainList(users)
+	return ctx.JSON(response)
+}
+
+// getUserWithStrikeDetails returns strike details for a user
+// @Summary   Get strike details for a user
+// @Tags      users
+// @Param     id  path      string  true  "The ID of the user to get strike details for"
+// @Success   200     {object}  dto.UserWithStrikeDetailsResponse  "OK"
+// @Failure   400     {string}  string  "Bad Request"
+// @Failure   401     {string}  string  "Unauthorized"
+// @Failure   404     {string}  string  "Not Found"
+// @Failure   500     {string}  string  "Internal Server Error"
+// @Security  AdminAPIKey
+// @Router    /users/{id}/strikes [get]
+func (u *users) getUserWithStrikeDetails(ctx *handler.Context) error {
+	userID := ctx.PathValue("id")
+	if userID == "" {
+		return ctx.BadRequest(errors.New("missing user id"))
+	}
+
+	user, err := u.strikeService.GetUserWithStrikeDetailsByID(ctx.Context(), userID)
+	if user == nil || err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return ctx.NotFound(errors.New("user not found"))
+		}
+		return ctx.InternalServerError()
+	}
+
+	response := dto.UserWithStrikeDetailsFromDomain(*user)
+	return ctx.JSON(response)
+}
+
+// addStrike adds a strike to a user
+// @Summary      Add a strike to a user
+// @Tags         users
+// @Param        id    path      string                 true  "User ID"
+// @Param        body  body      dto.AddStrikeRequest   true  "Strike payload"
+// @Success      200  {object}  dto.AddStrikeResponse  "The result of adding a strike"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      404  {string}  string  "Not Found"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /users/{id}/strikes [post]
+func (u *users) addStrike(ctx *handler.Context) error {
+	userID := ctx.PathValue("id")
+	if userID == "" {
+		return ctx.BadRequest(errors.New("missing user id"))
+	}
+
+	var req dto.AddStrikeRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.BadRequest(ErrFailedToReadJSON)
+	}
+
+	if req.StrikedBy == "" || req.Count <= 0 || req.Reason == "" {
+		return ctx.BadRequest(errors.New("missing required strike fields"))
+	}
+
+	if _, err := u.strikeService.GetUserByID(ctx.Context(), userID); err != nil {
+		return ctx.NotFound(errors.New("user not found"))
+	}
+
+	banInfo, err := u.strikeService.GetBanInfoByUserID(ctx.Context(), userID)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+	if banInfo != nil {
+		return ctx.BadRequest(errors.New("user is banned"))
+	}
+
+	usersWithStrikeDetails, err := u.strikeService.GetUsersWithStrikeDetails(ctx.Context())
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+
+	previousStrikes := 0
+	for _, user := range usersWithStrikeDetails {
+		if user.ID == userID {
+			for _, dot := range user.Dots {
+				previousStrikes += dot.Count
+			}
+			break
+		}
+	}
+
+	shouldBeBanned := previousStrikes+req.Count >= 5
+	overflowStrikes := previousStrikes + req.Count - 5
+
+	if shouldBeBanned {
+		_, err = u.strikeService.CreateBan(ctx.Context(), model.NewBanInfo{
+			UserID:    userID,
+			Reason:    req.Reason,
+			BannedBy:  req.StrikedBy,
+			ExpiresAt: time.Now().AddDate(0, req.BanExpiresMonths, 0),
+		})
+		if err != nil {
+			return ctx.InternalServerError()
+		}
+
+		if err = u.strikeService.DeleteDotsByUserID(ctx.Context(), userID); err != nil {
+			return ctx.InternalServerError()
+		}
+
+		if overflowStrikes > 0 {
+			_, err = u.strikeService.CreateDot(ctx.Context(), model.NewDot{
+				Count:     overflowStrikes,
+				Reason:    req.Reason,
+				UserID:    userID,
+				StrikedBy: req.StrikedBy,
+				ExpiresAt: time.Now().AddDate(0, req.StrikeExpiresMonths, 0),
+			})
+			if err != nil {
+				return ctx.InternalServerError()
+			}
+		}
+
+		return ctx.JSON(dto.AddStrikeResponse{IsBanned: true, Message: "user banned"})
+	}
+
+	_, err = u.strikeService.CreateDot(ctx.Context(), model.NewDot{
+		Count:     req.Count,
+		Reason:    req.Reason,
+		UserID:    userID,
+		StrikedBy: req.StrikedBy,
+		ExpiresAt: time.Now().AddDate(0, req.StrikeExpiresMonths, 0),
+	})
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.JSON(dto.AddStrikeResponse{IsBanned: false, Message: "strike added"})
+}
+
+// removeBan removes a ban for a user
+// @Summary      Remove a ban for a user
+// @Tags         users
+// @Param        id  path      string  true  "The ID of the user to unban"
+// @Success      200     {string}  string  "OK"
+// @Failure      400     {string}  string  "Bad Request"
+// @Failure      401     {string}  string  "Unauthorized"
+// @Failure      500     {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /users/{id}/ban [delete]
+func (u *users) removeBan(ctx *handler.Context) error {
+	userID := ctx.PathValue("id")
+	if userID == "" {
+		return ctx.BadRequest(errors.New("missing user id"))
+	}
+
+	if err := u.strikeService.DeleteBanByUserID(ctx.Context(), userID); err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.Ok()
+}
+
+// removeStrike removes a strike by its ID
+// @Summary      Remove a strike by its ID
+// @Tags         users
+// @Param        id        path      string  true  "The ID of the user"
+// @Param        strikeId  path      int     true  "The ID of the strike to remove"
+// @Success      200     {string}  string  "OK"
+// @Failure      400     {string}  string  "Bad Request"
+// @Failure      401     {string}  string  "Unauthorized"
+// @Failure      500     {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /users/{id}/strikes/{strikeId} [delete]
+func (u *users) removeStrike(ctx *handler.Context) error {
+	userID := ctx.PathValue("id")
+	if userID == "" {
+		return ctx.BadRequest(errors.New("missing user id"))
+	}
+
+	strikeID, err := ctx.PathValueInt("strikeId")
+	if err != nil {
+		return err
+	}
+
+	if err = u.strikeService.DeleteDotByIDAndUserID(ctx.Context(), strikeID, userID); err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.Ok()
 }

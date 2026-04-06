@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { type UnoReturnType } from "../../../../../api/uno/client";
 import { StrikeRow } from "./strike-row";
 
-type Users = UnoReturnType["strikes"]["listDetailed"];
+type Users = UnoReturnType["users"]["withStrikes"];
 
 type StrikesListProps = {
   users: Users;

@@ -92,9 +92,6 @@ func RunServer(deps ServerDeps) {
 	// Birthday routes
 	r.Mount("/birthdays", api.NewBirthdayMux(deps.Logger, deps.UserService))
 
-	// Strike routes
-	r.Mount("/strikes", api.NewStrikesMux(deps.Logger, deps.StrikeSerivce, admin))
-
 	// Access request routes
 	r.Mount("/access-requests", api.NewAccessRequestMux(deps.Logger, deps.AccessRequestService, admin))
 
@@ -120,7 +117,7 @@ func RunServer(deps ServerDeps) {
 	r.Mount("/reactions", api.NewReactionMux(deps.Logger, deps.ReactionService, admin))
 
 	// User routes
-	r.Mount("/users", api.NewUsersMux(deps.Logger, deps.UserService, deps.HappeningService, admin, session))
+	r.Mount("/users", api.NewUsersMux(deps.Logger, deps.UserService, deps.HappeningService, deps.StrikeSerivce, admin, session))
 
 	// Quote routes
 	r.Mount("/quotes", api.NewQuoteMux(deps.Logger, deps.QuoteService, sessionOrAdmin, session, admin))

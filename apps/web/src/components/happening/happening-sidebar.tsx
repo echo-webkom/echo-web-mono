@@ -49,7 +49,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
 
   const strikeDetails =
     user && event.happeningType === "bedpres"
-      ? await unoWithAdmin.strikes.getDetails(user.id).catch(() => null)
+      ? await unoWithAdmin.users.strikeDetailsByUserId(user.id).catch(() => null)
       : null;
 
   const isRegistered = registrations.some(

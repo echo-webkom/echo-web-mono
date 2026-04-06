@@ -7,7 +7,7 @@ import { NewStrikesForm } from "./_components/new-strikes-form";
 
 export default async function CreateStrikes() {
   await ensureBedkom();
-  const detailedUsers = await unoWithAdmin.strikes.listDetailed();
+  const detailedUsers = await unoWithAdmin.users.withStrikes();
 
   // Map the detailed user data to a simpler format for the form
   const users = detailedUsers.map((user) => {
