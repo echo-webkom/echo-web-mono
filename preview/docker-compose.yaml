@@ -32,6 +32,10 @@ services:
     environment:
       DATABASE_URL: postgresql://postgres:${DB_PASSWORD}@db:5432/echo-db?sslmode=disable
       UNO_API_PORT: "8000"
+      NEXT_PUBLIC_API_URL: https://pr-${PR_NUMBER}.uno.${PREVIEW_DOMAIN}
+      NEXT_PUBLIC_WEB_BASE_URL: https://pr-${PR_NUMBER}.web.${PREVIEW_DOMAIN}
+      FEIDE_CLIENT_ID: ${FEIDE_CLIENT_ID}
+      FEIDE_CLIENT_SECRET: ${FEIDE_CLIENT_SECRET}
       ADMIN_KEY: ${ADMIN_KEY}
       AUTH_SECRET: ${AUTH_SECRET}
       ENVIRONMENT: staging
@@ -56,8 +60,6 @@ services:
       NEXT_PUBLIC_API_URL: https://pr-${PR_NUMBER}.uno.${PREVIEW_DOMAIN}
       NEXT_PUBLIC_SANITY_DATASET: develop
       NEXT_PUBLIC_SANITY_PROJECT_ID: pgq2pd26
-      FEIDE_CLIENT_ID: ${FEIDE_CLIENT_ID}
-      FEIDE_CLIENT_SECRET: ${FEIDE_CLIENT_SECRET}
       AUTH_SECRET: ${AUTH_SECRET}
       ADMIN_KEY: ${ADMIN_KEY}
       ENVIRONMENT: staging
