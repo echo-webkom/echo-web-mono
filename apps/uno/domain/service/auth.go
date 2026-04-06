@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"crypto/rand"
 	"errors"
 	"fmt"
 	"strings"
@@ -104,7 +103,7 @@ func (as *AuthService) CreateSessionJWT(sessionID string) (string, error) {
 
 // CreateSession creates a new session for the user and returns the session with JWT cookie value.
 func (as *AuthService) CreateSession(ctx context.Context, userID string, expiry time.Duration) (model.Session, string, error) {
-	sessionToken, err := generateSessionToken()
+	sessionToken, err := randid.Generate(32)
 	if err != nil {
 		return model.Session{}, "", err
 	}
@@ -351,13 +350,4 @@ func (as *AuthService) SignInWithFeide(ctx context.Context, code string) (string
 	}
 
 	return createdUser.ID, nil
-}
-
-// generateSessionToken generates a secure random session token using crypto/rand.
-func generateSessionToken() (string, error) {
-	b := make([]byte, 32)
-	if _, err := rand.Read(b); err != nil {
-		return "", fmt.Errorf("failed to generate session token: %w", err)
-	}
-	return fmt.Sprintf("%x", b)[:40], nil
 }
