@@ -177,7 +177,7 @@ func (h *happenings) getHappeningRegistrationByUser(ctx *handler.Context) error 
 		return ctx.NotFound(errors.New("registration not found"))
 	}
 
-	response := new(dto.RegistrationResponse).FromDomain(reg)
+	response := new(dto.RegistrationResponse).FromDomain(*reg)
 	return ctx.JSON(response)
 }
 

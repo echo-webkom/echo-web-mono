@@ -66,7 +66,7 @@ func (d *degrees) createDegree(ctx *handler.Context) error {
 	}
 
 	// Create the degree in the database
-	createdDegree, err := d.degreeService.CreateDegree(ctx.Context(), *degree.ToDomain())
+	createdDegree, err := d.degreeService.CreateDegree(ctx.Context(), degree.ToDomain())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
@@ -99,7 +99,7 @@ func (d *degrees) updateDegree(ctx *handler.Context) error {
 	}
 
 	// Update the degree in the database
-	updatedDegree, err := d.degreeService.UpdateDegree(ctx.Context(), *degree.ToDomain())
+	updatedDegree, err := d.degreeService.UpdateDegree(ctx.Context(), degree.ToDomain())
 	if err != nil {
 		return ctx.InternalServerError()
 	}

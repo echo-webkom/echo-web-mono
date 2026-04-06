@@ -11,14 +11,14 @@ type WeatherResponse struct {
 	WindSpeed   float64 `json:"wind_speed"`
 }
 
-func WeatherResponseFromDomain(weather *model.Weather) *WeatherResponse {
+func WeatherResponseFromDomain(weather model.Weather) WeatherResponse {
 	var condition *string
 	if weather.Condition != nil {
 		weatherCond := weather.Condition.String()
 		condition = &weatherCond
 	}
 
-	return &WeatherResponse{
+	return WeatherResponse{
 		Temperature: toFixed(weather.Temperature, 2),
 		Condition:   condition,
 		WindSpeed:   toFixed(weather.WindSpeed, 2),

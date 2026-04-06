@@ -36,6 +36,6 @@ func (s *weather) getCurrentWeather(ctx *handler.Context) error {
 	}
 
 	// Convert to DTO
-	response := dto.WeatherResponseFromDomain(&weather)
+	response := dto.WeatherResponseFromDomain(weather)
 	return ctx.JSON(response)
 }

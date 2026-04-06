@@ -3,7 +3,6 @@ package dto
 import (
 	"encoding/json"
 	"time"
-
 	"uno/domain/model"
 )
 
@@ -20,8 +19,8 @@ type RegistrationResponse struct {
 }
 
 // FromDomain converts a domain Registration model to a RegistrationResponse DTO.
-func (dto *RegistrationResponse) FromDomain(r *model.Registration) *RegistrationResponse {
-	return &RegistrationResponse{
+func (dto *RegistrationResponse) FromDomain(r model.Registration) RegistrationResponse {
+	return RegistrationResponse{
 		UserID:           r.UserID,
 		HappeningID:      r.HappeningID,
 		Status:           string(r.Status),
@@ -37,7 +36,7 @@ func (dto *RegistrationResponse) FromDomain(r *model.Registration) *Registration
 func RegistrationListFromDomain(registrations []model.Registration) []RegistrationResponse {
 	dtos := make([]RegistrationResponse, len(registrations))
 	for i, reg := range registrations {
-		dtos[i] = *(&RegistrationResponse{}).FromDomain(&reg)
+		dtos[i] = new(RegistrationResponse).FromDomain(reg)
 	}
 	return dtos
 }
@@ -56,8 +55,8 @@ type QuestionAnswerDTO struct {
 }
 
 // ToDomain converts a QuestionAnswerDTO to a domain QuestionAnswer model.
-func (dto *QuestionAnswerDTO) ToDomain() *model.QuestionAnswer {
-	return &model.QuestionAnswer{
+func (dto *QuestionAnswerDTO) ToDomain() model.QuestionAnswer {
+	return model.QuestionAnswer{
 		QuestionID: dto.QuestionID,
 		Answer:     dto.Answer,
 	}
@@ -67,7 +66,7 @@ func (dto *QuestionAnswerDTO) ToDomain() *model.QuestionAnswer {
 func QuestionAnswerListToDomain(dtos []QuestionAnswerDTO) []model.QuestionAnswer {
 	answers := make([]model.QuestionAnswer, len(dtos))
 	for i, dto := range dtos {
-		answers[i] = *dto.ToDomain()
+		answers[i] = dto.ToDomain()
 	}
 	return answers
 }

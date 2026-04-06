@@ -98,7 +98,7 @@ func (w *whitelist) upsertWhitelist(ctx *handler.Context) error {
 		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
-	wl, err := w.whitelistService.UpsertWhitelist(ctx.Context(), *req.ToDomain())
+	wl, err := w.whitelistService.UpsertWhitelist(ctx.Context(), req.ToDomain())
 	if err != nil {
 		return ctx.InternalServerError()
 	}

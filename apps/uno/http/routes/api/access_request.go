@@ -65,12 +65,12 @@ func (a *accessRequests) createAccessRequest(ctx *handler.Context) error {
 		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
-	created, err := a.accessRequestService.CreateAccessRequest(ctx.Context(), *req.ToDomain())
+	created, err := a.accessRequestService.CreateAccessRequest(ctx.Context(), req.ToDomain())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
 
-	response := new(dto.AccessRequestResponse).FromDomain(&created)
+	response := new(dto.AccessRequestResponse).FromDomain(created)
 	return ctx.JSON(response)
 }
 
