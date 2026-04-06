@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 	"uno/config"
 	"uno/domain/port"
 	"uno/domain/service"
@@ -120,17 +119,16 @@ func (h *auth) handleFeideCallback(ctx *handler.Context) error {
 		return h.redirectWithError(ctx, authErrUnknown)
 	}
 
-	session, jwt, err := h.authService.CreateSession(ctx.Context(), userID, service.SessionExpiryDays)
+	_, jwt, err := h.authService.CreateSession(ctx.Context(), userID, service.SessionExpiryDays)
 	if err != nil {
 		h.logger.Error(ctx.Context(), "failed to create session", "error", err)
 		return h.redirectWithError(ctx, authErrUnknown)
 	}
 
-	ctx.SetCookie(h.sessionCookie(jwt, session.Expires))
-
 	h.logger.Info(ctx.Context(), "user signed in via Feide", "user_id", userID)
 
-	return ctx.Redirect(h.config.WebBaseURL)
+	callbackURL := h.config.WebBaseURL + "/api/auth/callback?token=" + url.QueryEscape(jwt)
+	return ctx.Redirect(callbackURL)
 }
 
 // signOut signs the current user out
@@ -150,8 +148,6 @@ func (h *auth) signOut(ctx *handler.Context) error {
 		h.logger.Error(ctx.Context(), "failed to delete session", "error", err)
 		// fail silently, since we still want to clear the cookie even if the session deletion fails
 	}
-
-	ctx.ClearCookie("session-token", "/", rootDomain(h.config.UnoBaseURL))
 
 	return ctx.Ok()
 }
@@ -213,46 +209,18 @@ func (h *auth) verifyMagicLink(ctx *handler.Context) error {
 		return h.redirectWithError(ctx, authErrUserNotFound)
 	}
 
-	session, jwt, err := h.authService.CreateSession(ctx.Context(), user.ID, service.SessionExpiryDays)
+	_, jwt, err := h.authService.CreateSession(ctx.Context(), user.ID, service.SessionExpiryDays)
 	if err != nil {
 		h.logger.Error(ctx.Context(), "failed to create session", "error", err)
 		return h.redirectWithError(ctx, authErrUnknown)
 	}
 
-	ctx.SetCookie(h.sessionCookie(jwt, session.Expires))
-
 	h.logger.Info(ctx.Context(), "user signed in via magic link", "user_id", user.ID)
 
-	return ctx.Redirect(h.config.WebBaseURL)
+	callbackURL := h.config.WebBaseURL + "/api/auth/callback?token=" + url.QueryEscape(jwt)
+	return ctx.Redirect(callbackURL)
 }
 
-func (h *auth) sessionCookie(value string, expires time.Time) *http.Cookie {
-	isSecure := h.config.Environment != config.Development
-	return &http.Cookie{
-		Name:     "session-token",
-		Value:    value,
-		Path:     "/",
-		Domain:   rootDomain(h.config.UnoBaseURL),
-		Expires:  expires,
-		HttpOnly: true,
-		Secure:   isSecure,
-		SameSite: http.SameSiteLaxMode,
-	}
-}
-
-func rootDomain(baseURL string) string {
-	u, err := url.Parse(baseURL)
-	if err != nil {
-		return baseURL
-	}
-	host := u.Hostname()
-	// Extract the root domain (api.example.com -> example.com)
-	parts := strings.Split(host, ".")
-	if len(parts) >= 2 {
-		return strings.Join(parts[len(parts)-2:], ".")
-	}
-	return host
-}
 
 func (h *auth) redirectWithError(ctx *handler.Context, errCode string) error {
 	return ctx.Redirect(h.config.WebBaseURL + "/auth/logg-inn?error=" + errCode)
