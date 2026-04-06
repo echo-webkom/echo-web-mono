@@ -102,8 +102,8 @@ func TestAddStrikeHandler(t *testing.T) {
 					Return(nil, nil).
 					Once()
 				mockUserRepo.EXPECT().
-					GetUsersWithStrikeDetails(mock.Anything).
-					Return([]model.UserWithStrikeDetails{}, nil).
+					GetUserWithStrikeDetailsByID(mock.Anything, "user-1").
+					Return(&model.UserWithStrikeDetails{}, nil).
 					Once()
 				mockDotRepo.EXPECT().
 					CreateDot(mock.Anything, mock.Anything).

@@ -5,7 +5,6 @@ import (
 	"errors"
 	"net/http"
 	"strconv"
-	"time"
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service"
@@ -352,78 +351,26 @@ func (u *users) addStrike(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing required strike fields"))
 	}
 
-	if _, err := u.strikeService.GetUserByID(ctx.Context(), userID); err != nil {
+	result, err := u.strikeService.AddStrike(ctx.Context(), userID, service.AddStrikeOptions{
+		Count:               req.Count,
+		Reason:              req.Reason,
+		StrikedBy:           req.StrikedBy,
+		StrikeExpiresMonths: req.StrikeExpiresMonths,
+		BanExpiresMonths:    req.BanExpiresMonths,
+	})
+	if errors.Is(err, service.ErrUserNotFound) {
 		return ctx.NotFound(errors.New("user not found"))
 	}
-
-	banInfo, err := u.strikeService.GetBanInfoByUserID(ctx.Context(), userID)
-	if err != nil {
-		return ctx.InternalServerError()
-	}
-	if banInfo != nil {
+	if errors.Is(err, service.ErrUserAlreadyBanned) {
 		return ctx.BadRequest(errors.New("user is banned"))
 	}
-
-	usersWithStrikeDetails, err := u.strikeService.GetUsersWithStrikeDetails(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
 
-	previousStrikes := 0
-	for _, user := range usersWithStrikeDetails {
-		if user.ID == userID {
-			for _, dot := range user.Dots {
-				previousStrikes += dot.Count
-			}
-			break
-		}
-	}
-
-	shouldBeBanned := previousStrikes+req.Count >= 5
-	overflowStrikes := previousStrikes + req.Count - 5
-
-	if shouldBeBanned {
-		_, err = u.strikeService.CreateBan(ctx.Context(), model.NewBanInfo{
-			UserID:    userID,
-			Reason:    req.Reason,
-			BannedBy:  req.StrikedBy,
-			ExpiresAt: time.Now().AddDate(0, req.BanExpiresMonths, 0),
-		})
-		if err != nil {
-			return ctx.InternalServerError()
-		}
-
-		if err = u.strikeService.DeleteDotsByUserID(ctx.Context(), userID); err != nil {
-			return ctx.InternalServerError()
-		}
-
-		if overflowStrikes > 0 {
-			_, err = u.strikeService.CreateDot(ctx.Context(), model.NewDot{
-				Count:     overflowStrikes,
-				Reason:    req.Reason,
-				UserID:    userID,
-				StrikedBy: req.StrikedBy,
-				ExpiresAt: time.Now().AddDate(0, req.StrikeExpiresMonths, 0),
-			})
-			if err != nil {
-				return ctx.InternalServerError()
-			}
-		}
-
+	if result.IsBanned {
 		return ctx.JSON(dto.AddStrikeResponse{IsBanned: true, Message: "user banned"})
 	}
-
-	_, err = u.strikeService.CreateDot(ctx.Context(), model.NewDot{
-		Count:     req.Count,
-		Reason:    req.Reason,
-		UserID:    userID,
-		StrikedBy: req.StrikedBy,
-		ExpiresAt: time.Now().AddDate(0, req.StrikeExpiresMonths, 0),
-	})
-	if err != nil {
-		return ctx.InternalServerError()
-	}
-
 	return ctx.JSON(dto.AddStrikeResponse{IsBanned: false, Message: "strike added"})
 }
 
