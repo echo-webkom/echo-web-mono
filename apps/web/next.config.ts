@@ -12,12 +12,6 @@ const config = {
 
   transpilePackages: ["@echo-webkom/db", "@echo-webkom/lib", "@echo-webkom/email"],
 
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-  },
-
   experimental: {
     serverActions: {
       bodySizeLimit: "5mb",
