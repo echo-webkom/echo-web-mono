@@ -37,6 +37,11 @@ func (r *AccessRequestResponse) FromDomain(ar model.AccessRequest) AccessRequest
 	}
 }
 
+// DenyAccessRequestRequest represents the payload for denying an access request
+type DenyAccessRequestRequest struct {
+	Reason string `json:"reason"`
+}
+
 // AccessRequestsFromDomainList converts a slice of domain models to DTOs
 func AccessRequestsFromDomainList(accessRequests []model.AccessRequest) []AccessRequestResponse {
 	response := make([]AccessRequestResponse, len(accessRequests))

@@ -29,17 +29,20 @@ type StrikeService struct {
 	dotRepo     port.DotRepo
 	banInforepo port.BanInfoRepo
 	userRepo    port.UserRepo
+	emailClient port.EmailClient
 }
 
 func NewStrikeService(
 	dotRepo port.DotRepo,
 	banInfoRepo port.BanInfoRepo,
 	userRepo port.UserRepo,
+	emailClient port.EmailClient,
 ) *StrikeService {
 	return &StrikeService{
 		dotRepo:     dotRepo,
 		banInforepo: banInfoRepo,
 		userRepo:    userRepo,
+		emailClient: emailClient,
 	}
 }
 
@@ -95,7 +98,8 @@ func (s *StrikeService) DeleteDotByIDAndUserID(ctx context.Context, id int, user
 }
 
 func (s *StrikeService) AddStrike(ctx context.Context, userID string, opts AddStrikeOptions) (AddStrikeResult, error) {
-	if _, err := s.userRepo.GetUserByID(ctx, userID); err != nil {
+	user, err := s.userRepo.GetUserByID(ctx, userID)
+	if err != nil {
 		return AddStrikeResult{}, ErrUserNotFound
 	}
 
@@ -148,6 +152,7 @@ func (s *StrikeService) AddStrike(ctx context.Context, userID string, opts AddSt
 			}
 		}
 
+		s.sendStrikeNotification(ctx, user, opts.Reason, opts.Count, true)
 		return AddStrikeResult{IsBanned: true}, nil
 	}
 
@@ -161,5 +166,21 @@ func (s *StrikeService) AddStrike(ctx context.Context, userID string, opts AddSt
 		return AddStrikeResult{}, err
 	}
 
+	s.sendStrikeNotification(ctx, user, opts.Reason, opts.Count, false)
 	return AddStrikeResult{IsBanned: false}, nil
+}
+
+func (s *StrikeService) sendStrikeNotification(ctx context.Context, user model.User, reason string, count int, isBanned bool) {
+	if s.emailClient == nil {
+		return
+	}
+	sendTo := user.Email
+	if user.AlternativeEmail != nil {
+		sendTo = *user.AlternativeEmail
+	}
+	name := "Ola Nordmann"
+	if user.Name != nil {
+		name = *user.Name
+	}
+	_ = s.emailClient.SendStrikeNotification(ctx, []string{sendTo}, "VIKTIG: Du har fått prikk", name, reason, count, isBanned)
 }

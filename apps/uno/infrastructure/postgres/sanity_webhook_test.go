@@ -61,7 +61,7 @@ func setupWebhookTest(t *testing.T) (*Database, http.Handler) {
 	logger := testutil.NewTestLogger()
 	happeningRepo := NewHappeningRepo(db, logger)
 	groupRepo := NewGroupRepo(db, logger)
-	happeningService := service.NewHappeningService(happeningRepo, nil, nil, nil, groupRepo)
+	happeningService := service.NewHappeningService(happeningRepo, nil, nil, nil, groupRepo, nil, nil)
 
 	mux := api.NewSanityMux(logger, happeningService, handler.NoMiddleware, nil)
 	return db, mux

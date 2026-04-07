@@ -61,7 +61,7 @@ func TestGetUsersWithStrikeDetails(t *testing.T) {
 
 			tt.setupMocks(mockUserRepo)
 
-			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
+			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo, nil)
 			mux := newUsersTestMux(t, strikeService)
 
 			r := httptest.NewRequest(http.MethodGet, "/with-strikes", nil)
@@ -130,7 +130,7 @@ func TestAddStrikeHandler(t *testing.T) {
 			mockUserRepo := mocks.NewUserRepo(t)
 			tt.setupMocks(mockDotRepo, mockBanInfoRepo, mockUserRepo)
 
-			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
+			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo, nil)
 			mux := newUsersTestMux(t, strikeService)
 
 			body, _ := json.Marshal(tt.requestBody)
@@ -178,7 +178,7 @@ func TestRemoveBanHandler(t *testing.T) {
 			mockUserRepo := mocks.NewUserRepo(t)
 			tt.setupMocks(mockBanInfoRepo)
 
-			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
+			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo, nil)
 			mux := newUsersTestMux(t, strikeService)
 
 			r := httptest.NewRequest(http.MethodDelete, "/"+tt.userID+"/ban", nil)
@@ -228,7 +228,7 @@ func TestRemoveStrikeHandler(t *testing.T) {
 			mockUserRepo := mocks.NewUserRepo(t)
 			tt.setupMocks(mockDotRepo)
 
-			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
+			strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo, nil)
 			mux := newUsersTestMux(t, strikeService)
 
 			r := httptest.NewRequest(http.MethodDelete, "/"+tt.userID+"/strikes/"+tt.strikeID, nil)

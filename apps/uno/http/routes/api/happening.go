@@ -397,29 +397,10 @@ func (h *happenings) deregisterFromHappening(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing user ID"))
 	}
 
-	reg, err := h.happeningService.GetRegistrationByUserAndHappening(ctx.Context(), req.UserID, happeningID)
-	if err != nil {
-		return ctx.InternalServerError()
-	}
-	if reg == nil {
-		return ctx.NotFound(errors.New("registration not found"))
-	}
-
-	now := time.Now()
-	if err = h.happeningService.UpdateRegistrationStatus(
-		ctx.Context(),
-		req.UserID,
-		happeningID,
-		model.RegistrationStatusUnregistered,
-		stringPtr(string(reg.Status)),
-		nil,
-		&now,
-		&req.Reason,
-	); err != nil {
-		return ctx.InternalServerError()
-	}
-
-	if err = h.happeningService.DeleteAnswersByUserAndHappening(ctx.Context(), req.UserID, happeningID); err != nil {
+	if err := h.happeningService.Deregister(ctx.Context(), req.UserID, happeningID, req.Reason); err != nil {
+		if errors.Is(err, service.ErrRegistrationNotFound) {
+			return ctx.NotFound(errors.New("registration not found"))
+		}
 		return ctx.InternalServerError()
 	}
 
