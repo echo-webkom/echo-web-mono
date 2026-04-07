@@ -1,7 +1,5 @@
 "use server";
 
-import { DeregistrationNotificationEmail } from "@echo-webkom/email";
-import { emailClient } from "@echo-webkom/email/client";
 import { z } from "zod";
 
 import { unoWithAdmin } from "@/api/server";
@@ -22,7 +20,6 @@ export const deregister = async (id: string, payload: z.infer<typeof deregisterP
       };
     }
 
-    const happening = await unoWithAdmin.happenings.byId(id);
     const exisitingRegistration = await unoWithAdmin.happenings.registrationByUser(id, user.id);
 
     if (!exisitingRegistration) {
@@ -35,20 +32,6 @@ export const deregister = async (id: string, payload: z.infer<typeof deregisterP
     const data = await deregisterPayloadSchema.parseAsync(payload);
 
     await unoWithAdmin.happenings.deregister(id, user.id, data.reason);
-
-    const contacts = await unoWithAdmin.sanity.happenings.contacts(happening.slug).catch(() => []);
-
-    if (contacts.length > 0) {
-      await emailClient.sendEmail(
-        contacts.map((contact) => contact.email),
-        `${user.name ?? "Ukjent"} har meldt seg av ${happening.title}`,
-        DeregistrationNotificationEmail({
-          happeningTitle: happening.title,
-          name: user.name ?? "Ukjent",
-          reason: data.reason,
-        }),
-      );
-    }
 
     return {
       success: true,

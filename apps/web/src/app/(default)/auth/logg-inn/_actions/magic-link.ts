@@ -4,11 +4,10 @@ import crypto from "crypto";
 
 import { verificationTokens } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
-import { MagicLinkEmail } from "@echo-webkom/email";
-import { emailClient } from "@echo-webkom/email/client";
 import { eq } from "drizzle-orm";
 
 import { DEV, UNO_BASE_URL } from "@/config";
+import { emailClient } from "@/lib/email-client";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { isValidEmail } from "@/utils/string";
 
@@ -106,14 +105,12 @@ export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
       console.log("================================");
     }
 
-    await emailClient.sendEmail(
+    await emailClient.sendMagicLink(
       [targetEmail],
       "Logg inn på echo",
-      MagicLinkEmail({
-        magicLinkUrl,
-        code,
-        firstName: existingUser.name?.split(" ")[0] ?? "der",
-      }),
+      magicLinkUrl,
+      code,
+      existingUser.name?.split(" ")[0] ?? "der",
     );
 
     return {
