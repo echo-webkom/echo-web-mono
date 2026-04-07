@@ -1,0 +1,31 @@
+{
+  "name": "@echo-webkom/email-service",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "dotenv -e ../../.env -- tsx watch src/index.ts",
+    "build": "tsdown src/index.ts --format cjs --out-dir dist",
+    "start": "node dist/index.js",
+    "check": "oxlint . && oxfmt --check . && tsc --noEmit",
+    "check:fix": "oxlint . --fix && oxfmt . && tsc --noEmit",
+    "clean": "rm -rf dist .turbo node_modules"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "@react-email/components": "1.0.6",
+    "@react-email/render": "2.0.4",
+    "hono": "^4.7.10",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "resend": "6.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.7",
+    "@types/react": "19.2.10",
+    "@types/react-dom": "19.2.3",
+    "dotenv-cli": "11.0.0",
+    "tsdown": "^0.21.7",
+    "tsx": "^4.19.4",
+    "typescript": "5.9.3"
+  }
+}
