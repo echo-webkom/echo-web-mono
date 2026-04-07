@@ -494,6 +494,63 @@ func (_c *GroupRepo_GetUserGroupMembership_Call) RunAndReturn(run func(ctx conte
 	return _c
 }
 
+// RemoveAllUserMemberships provides a mock function for the type GroupRepo
+func (_mock *GroupRepo) RemoveAllUserMemberships(ctx context.Context, userID string) error {
+	ret := _mock.Called(ctx, userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for RemoveAllUserMemberships")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = returnFunc(ctx, userID)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// GroupRepo_RemoveAllUserMemberships_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RemoveAllUserMemberships'
+type GroupRepo_RemoveAllUserMemberships_Call struct {
+	*mock.Call
+}
+
+// RemoveAllUserMemberships is a helper method to define mock.On call
+//   - ctx context.Context
+//   - userID string
+func (_e *GroupRepo_Expecter) RemoveAllUserMemberships(ctx interface{}, userID interface{}) *GroupRepo_RemoveAllUserMemberships_Call {
+	return &GroupRepo_RemoveAllUserMemberships_Call{Call: _e.mock.On("RemoveAllUserMemberships", ctx, userID)}
+}
+
+func (_c *GroupRepo_RemoveAllUserMemberships_Call) Run(run func(ctx context.Context, userID string)) *GroupRepo_RemoveAllUserMemberships_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *GroupRepo_RemoveAllUserMemberships_Call) Return(err error) *GroupRepo_RemoveAllUserMemberships_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *GroupRepo_RemoveAllUserMemberships_Call) RunAndReturn(run func(ctx context.Context, userID string) error) *GroupRepo_RemoveAllUserMemberships_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // RemoveUserFromGroup provides a mock function for the type GroupRepo
 func (_mock *GroupRepo) RemoveUserFromGroup(ctx context.Context, groupID string, userID string) error {
 	ret := _mock.Called(ctx, groupID, userID)

@@ -3,7 +3,25 @@ package dto
 import (
 	"time"
 	"uno/domain/model"
+	"uno/pkg/option"
 )
+
+// UpdateUserRequest represents the request body for updating a user.
+// All fields are optional and will only be updated if they are provided.
+type UpdateUserRequest struct {
+	AlternativeEmail option.Option[*string]    `json:"alternativeEmail"`
+	DegreeID         option.Option[*string]    `json:"degreeId"`
+	Year             option.Option[*int]       `json:"year"`
+	HasReadTerms     option.Option[*bool]      `json:"hasReadTerms"`
+	Birthday         option.Option[*time.Time] `json:"birthday"`
+	IsPublic         option.Option[*bool]      `json:"isPublic"`
+}
+
+// UpdateUserResponse represents the response after updating a user.
+type UpdateUserResponse struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
 
 type UserSearchResult struct {
 	ID   string  `json:"id"`

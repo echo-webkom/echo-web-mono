@@ -94,7 +94,7 @@ func TestResetUserYearsRun(t *testing.T) {
 		Return(expected, nil).
 		Once()
 
-	userService := service.NewUserService(userRepo, nil)
+	userService := service.NewUserService(userRepo, nil, nil, nil)
 	job := NewResetUserYears(userService, &testutil.NoOpLogger{})
 
 	err := job.Run(t.Context())
@@ -111,7 +111,7 @@ func TestResetUserYearsRunError(t *testing.T) {
 		Return(int64(0), expectedErr).
 		Once()
 
-	userService := service.NewUserService(userRepo, nil)
+	userService := service.NewUserService(userRepo, nil, nil, nil)
 	job := NewResetUserYears(userService, &testutil.NoOpLogger{})
 
 	err := job.Run(t.Context())

@@ -74,7 +74,7 @@ func TestBirthdaysTodayHandler(t *testing.T) {
 			mockProfilePictureStore := mocks.NewProfilePictureRepo(t)
 			tt.setupMocks(mockUserRepo)
 
-			userService := service.NewUserService(mockUserRepo, mockProfilePictureStore)
+			userService := service.NewUserService(mockUserRepo, mockProfilePictureStore, nil, nil)
 			mux := api.NewBirthdayMux(testutil.NewTestLogger(), userService)
 
 			r := httptest.NewRequest(http.MethodGet, "/", nil)

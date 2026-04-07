@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"net/http"
+	"slices"
 	"strconv"
 	"uno/domain/model"
 	"uno/domain/port"
@@ -20,7 +21,14 @@ type users struct {
 	strikeService    *service.StrikeService
 }
 
-func NewUsersMux(logger port.Logger, userService *service.UserService, happeningService *service.HappeningService, strikeService *service.StrikeService, admin handler.Middleware, session handler.Middleware) *router.Mux {
+func NewUsersMux(
+	logger port.Logger,
+	userService *service.UserService,
+	happeningService *service.HappeningService,
+	strikeService *service.StrikeService,
+	admin handler.Middleware,
+	session handler.Middleware,
+) *router.Mux {
 	u := users{logger, userService, happeningService, strikeService}
 
 	mux := router.NewMux()
@@ -30,6 +38,8 @@ func NewUsersMux(logger port.Logger, userService *service.UserService, happening
 	mux.GET("/with-strikes", u.getUsersWithStrikeDetails, admin)
 
 	mux.GET("/{id}", u.getUserByID, admin)
+	mux.PATCH("/{id}", u.updateUser, session)
+
 	mux.GET("/{id}/registrations", u.getUserRegistrations, admin)
 	mux.GET("/{id}/strikes", u.getUserWithStrikeDetails, admin)
 	mux.POST("/{id}/strikes", u.addStrike, admin)
@@ -130,6 +140,87 @@ func (u *users) getUserByID(ctx *handler.Context) error {
 	// Map user to user response
 	response := dto.UserResponseFromDomain(user)
 	return ctx.JSON(response)
+}
+
+// updateUser updates a user by ID
+// @Summary	     Updates a user by ID
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string               true  "User ID"
+// @Param        body body      dto.UpdateUserRequest true  "User update payload"
+// @Success      200  {object}  dto.UpdateUserResponse  "OK"
+// @Failure      400  {string}  string  "Bad Request"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      404  {string}  string  "User Not Found"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Security     BearerAuth
+// @Router       /users/{id} [patch]
+func (u *users) updateUser(ctx *handler.Context) error {
+	// Get user ID from path parameters
+	userID := ctx.PathValue("id")
+	if userID == "" {
+		return ctx.BadRequest(errors.New("missing user ID"))
+	}
+
+	// Get the current user from context and verify they are updating their own profile
+	currentUser, ok := handler.UserFromContext(ctx.Context())
+	if !ok {
+		return ctx.Unauthorized(errors.New("user not found in context"))
+	}
+	if currentUser.ID != userID {
+		return ctx.Forbidden(errors.New("cannot update another user's profile"))
+	}
+
+	// Parse request body
+	var req dto.UpdateUserRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.BadRequest(ErrFailedToReadJSON)
+	}
+
+	// Check if at least one field is provided for update
+	hasProfileFields := slices.Contains([]bool{
+		req.AlternativeEmail.IsSome(),
+		req.DegreeID.IsSome(),
+		req.Year.IsSome(),
+		req.HasReadTerms.IsSome(),
+		req.Birthday.IsSome(),
+		req.IsPublic.IsSome(),
+	}, true)
+
+	// If no fields are provided, return a bad request error
+	if !hasProfileFields {
+		return ctx.BadRequest(errors.New("no fields to update"))
+	}
+
+	updateParams := port.UpdateUserParams{
+		AlternativeEmail: req.AlternativeEmail,
+		DegreeID:         req.DegreeID,
+		Year:             req.Year,
+		HasReadTerms:     req.HasReadTerms,
+		Birthday:         req.Birthday,
+		IsPublic:         req.IsPublic,
+	}
+
+	_, err := u.userService.UpdateUser(ctx.Context(), userID, updateParams)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return ctx.NotFound(errors.New("user not found"))
+		}
+		// Check for validation errors
+		if errors.Is(err, service.ErrInvalidEmail) ||
+			errors.Is(err, service.ErrInvalidYear) ||
+			errors.Is(err, service.ErrDegreeNotFound) {
+			return ctx.BadRequest(err)
+		}
+		u.logger.Error(ctx.Context(), "failed to update user", "userID", userID, "error", err)
+		return ctx.InternalServerError()
+	}
+
+	return ctx.JSON(dto.UpdateUserResponse{
+		Success: true,
+		Message: "User updated successfully",
+	})
 }
 
 // getUserImage returns a user's profile image

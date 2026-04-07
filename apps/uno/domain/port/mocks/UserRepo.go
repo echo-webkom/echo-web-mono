@@ -8,6 +8,7 @@ import (
 	"context"
 	"time"
 	"uno/domain/model"
+	"uno/domain/port"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -901,6 +902,78 @@ func (_c *UserRepo_SearchUsersByName_Call) Return(users []model.User, err error)
 }
 
 func (_c *UserRepo_SearchUsersByName_Call) RunAndReturn(run func(ctx context.Context, query string, limit int) ([]model.User, error)) *UserRepo_SearchUsersByName_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateUser provides a mock function for the type UserRepo
+func (_mock *UserRepo) UpdateUser(ctx context.Context, userID string, params port.UpdateUserParams) (model.User, error) {
+	ret := _mock.Called(ctx, userID, params)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateUser")
+	}
+
+	var r0 model.User
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, port.UpdateUserParams) (model.User, error)); ok {
+		return returnFunc(ctx, userID, params)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, port.UpdateUserParams) model.User); ok {
+		r0 = returnFunc(ctx, userID, params)
+	} else {
+		r0 = ret.Get(0).(model.User)
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string, port.UpdateUserParams) error); ok {
+		r1 = returnFunc(ctx, userID, params)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// UserRepo_UpdateUser_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateUser'
+type UserRepo_UpdateUser_Call struct {
+	*mock.Call
+}
+
+// UpdateUser is a helper method to define mock.On call
+//   - ctx context.Context
+//   - userID string
+//   - params port.UpdateUserParams
+func (_e *UserRepo_Expecter) UpdateUser(ctx interface{}, userID interface{}, params interface{}) *UserRepo_UpdateUser_Call {
+	return &UserRepo_UpdateUser_Call{Call: _e.mock.On("UpdateUser", ctx, userID, params)}
+}
+
+func (_c *UserRepo_UpdateUser_Call) Run(run func(ctx context.Context, userID string, params port.UpdateUserParams)) *UserRepo_UpdateUser_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 port.UpdateUserParams
+		if args[2] != nil {
+			arg2 = args[2].(port.UpdateUserParams)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *UserRepo_UpdateUser_Call) Return(user model.User, err error) *UserRepo_UpdateUser_Call {
+	_c.Call.Return(user, err)
+	return _c
+}
+
+func (_c *UserRepo_UpdateUser_Call) RunAndReturn(run func(ctx context.Context, userID string, params port.UpdateUserParams) (model.User, error)) *UserRepo_UpdateUser_Call {
 	_c.Call.Return(run)
 	return _c
 }

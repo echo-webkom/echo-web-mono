@@ -1190,6 +1190,28 @@ definitions:
       status:
         type: string
     type: object
+  uno_http_dto.UpdateUserRequest:
+    properties:
+      alternativeEmail:
+        $ref: '#/definitions/uno_pkg_option.Option-string'
+      birthday:
+        $ref: '#/definitions/uno_pkg_option.Option-time_Time'
+      degreeId:
+        $ref: '#/definitions/uno_pkg_option.Option-string'
+      hasReadTerms:
+        $ref: '#/definitions/uno_pkg_option.Option-bool'
+      isPublic:
+        $ref: '#/definitions/uno_pkg_option.Option-bool'
+      year:
+        $ref: '#/definitions/uno_pkg_option.Option-int'
+    type: object
+  uno_http_dto.UpdateUserResponse:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
   uno_http_dto.UserGroupResponse:
     properties:
       id:
@@ -1320,6 +1342,14 @@ definitions:
         type: string
       reason:
         type: string
+    type: object
+  uno_pkg_option.Option-bool:
+    type: object
+  uno_pkg_option.Option-int:
+    type: object
+  uno_pkg_option.Option-string:
+    type: object
+  uno_pkg_option.Option-time_Time:
     type: object
 info:
   contact:
@@ -3529,6 +3559,49 @@ paths:
       security:
       - AdminApiKey: []
       summary: Gets a user by ID
+      tags:
+      - users
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User update payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.UpdateUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: User Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Updates a user by ID
       tags:
       - users
   /users/{id}/ban:

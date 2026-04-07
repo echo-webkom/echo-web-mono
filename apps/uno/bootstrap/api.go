@@ -108,7 +108,7 @@ func RunApi() {
 	degreeService := service.NewDegreeService(degreeRepo)
 	siteFeedbackService := service.NewSiteFeedbackService(siteFeedbackRepo)
 	shoppingListService := service.NewShoppingListService(shoppingListItemRepo, usersToShoppingListItemRepo)
-	userService := service.NewUserService(userRepo, profilePictureRepo)
+	userService := service.NewUserService(userRepo, profilePictureRepo, groupRepo, degreeRepo)
 	strikeService := service.NewStrikeService(dotRepo, banInfoRepo, userRepo)
 	accessRequestService := service.NewAccessRequestService(accessRequestRepo)
 	whitelistService := service.NewWhitelistService(whitelistRepo)

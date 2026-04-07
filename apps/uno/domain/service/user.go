@@ -8,20 +8,31 @@ import (
 	"uno/domain/port"
 )
 
-var ErrFileStorageNotConfigured = errors.New("file storage not configured")
+var (
+	ErrFileStorageNotConfigured = errors.New("file storage not configured")
+	ErrInvalidEmail             = errors.New("invalid email format")
+	ErrInvalidYear              = errors.New("year must be between 1 and 5")
+	ErrDegreeNotFound           = errors.New("degree not found")
+)
 
 type UserService struct {
 	userRepo           port.UserRepo
 	profilePictureRepo port.ProfilePictureRepo
+	groupRepo          port.GroupRepo
+	degreeRepo         port.DegreeRepo
 }
 
 func NewUserService(
 	userRepo port.UserRepo,
 	profilePictureRepo port.ProfilePictureRepo,
+	groupRepo port.GroupRepo,
+	degreeRepo port.DegreeRepo,
 ) *UserService {
 	return &UserService{
 		userRepo:           userRepo,
 		profilePictureRepo: profilePictureRepo,
+		groupRepo:          groupRepo,
+		degreeRepo:         degreeRepo,
 	}
 }
 
@@ -106,4 +117,57 @@ func (s *UserService) UploadProfileImage(ctx context.Context, userID string, pro
 
 	// Mark that the user has a profile picture
 	return s.userRepo.UpdateUserImage(ctx, userID, true)
+}
+
+func (s *UserService) UpdateUser(ctx context.Context, userID string, params port.UpdateUserParams) (model.User, error) {
+	// Validate alternative email if provided
+	if params.AlternativeEmail.IsSome() {
+		email := params.AlternativeEmail.Value()
+		if email != nil {
+			_, err := model.NewEmail(*email)
+			if err != nil {
+				return model.User{}, ErrInvalidEmail
+			}
+		}
+	}
+
+	// Validate degree ID if provided
+	if params.DegreeID.IsSome() {
+		degreeID := params.DegreeID.Value()
+		if degreeID != nil {
+			if !s.isValidDegree(ctx, *degreeID) {
+				return model.User{}, ErrDegreeNotFound
+			}
+		}
+	}
+
+	// Validate year if provided
+	if params.Year.IsSome() {
+		year := params.Year.Value()
+		if year != nil {
+			_, err := model.NewDegreeYear(*year)
+			if err != nil {
+				return model.User{}, ErrInvalidYear
+			}
+		}
+	}
+
+	return s.userRepo.UpdateUser(ctx, userID, params)
+}
+
+// isValidDegree checks if a degree ID exists in the database
+func (s *UserService) isValidDegree(ctx context.Context, degreeID string) bool {
+	if s.degreeRepo == nil {
+		return true // Skip validation if degreeRepo is not configured
+	}
+	degrees, err := s.degreeRepo.GetAllDegrees(ctx)
+	if err != nil {
+		return true // Skip validation on error
+	}
+	for _, degree := range degrees {
+		if degree.ID == degreeID {
+			return true
+		}
+	}
+	return false
 }
