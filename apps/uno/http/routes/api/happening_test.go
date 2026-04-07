@@ -66,6 +66,8 @@ func TestGetHappeningsHandler(t *testing.T) {
 				mockRegistrationRepo,
 				mockBanInfoRepo,
 				nil,
+			nil,
+			nil,
 			)
 
 			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
@@ -129,6 +131,8 @@ func TestGetHappeningById(t *testing.T) {
 				mockRegistrationRepo,
 				mockBanInfoRepo,
 				nil,
+			nil,
+			nil,
 			)
 
 			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
@@ -193,6 +197,8 @@ func TestGetHappeningQuestions(t *testing.T) {
 				mockRegistrationRepo,
 				mockBanInfoRepo,
 				nil,
+			nil,
+			nil,
 			)
 
 			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
@@ -331,6 +337,8 @@ func TestRegisterForHappening(t *testing.T) {
 				mockRegistrationRepo,
 				mockBanInfoRepo,
 				nil,
+			nil,
+			nil,
 			)
 
 			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
@@ -370,6 +378,8 @@ func TestGetHappeningRegistrationsCountMany(t *testing.T) {
 		mockRegistrationRepo,
 		mockBanInfoRepo,
 		nil,
+	nil,
+	nil,
 	)
 
 	mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
@@ -403,6 +413,8 @@ func TestGetHappeningRegistrations(t *testing.T) {
 		mockRegistrationRepo,
 		mockBanInfoRepo,
 		nil,
+	nil,
+	nil,
 	)
 
 	mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
@@ -439,6 +451,8 @@ func TestGetHappeningSpotRanges(t *testing.T) {
 		mockRegistrationRepo,
 		mockBanInfoRepo,
 		nil,
+	nil,
+	nil,
 	)
 
 	mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
@@ -512,6 +526,8 @@ func TestDeregisterFromHappeningHandler(t *testing.T) {
 				mockRegistrationRepo,
 				mockBanInfoRepo,
 				nil,
+			nil,
+			nil,
 			)
 
 			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
@@ -580,6 +596,8 @@ func TestUpdateRegistrationStatusHandler(t *testing.T) {
 				mockRegistrationRepo,
 				mockBanInfoRepo,
 				nil,
+			nil,
+			nil,
 			)
 
 			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)
@@ -638,6 +656,8 @@ func TestDeleteAllRegistrationsHandler(t *testing.T) {
 				mockRegistrationRepo,
 				mockBanInfoRepo,
 				nil,
+			nil,
+			nil,
 			)
 
 			mux := api.NewHappeningMux(testutil.NewTestLogger(), happeningService, handler.NoMiddleware)

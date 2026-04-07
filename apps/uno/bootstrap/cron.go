@@ -101,7 +101,7 @@ func RunCron(job string) {
 		logger.Warn(context.Background(), "file storage not configured, profile picture features disabled")
 	}
 	questionService := service.NewQuestionService(questionRepo)
-	strikeService := service.NewStrikeService(dotRepo, banInfoRepo, userRepo)
+	strikeService := service.NewStrikeService(dotRepo, banInfoRepo, userRepo, nil)
 	userService := service.NewUserService(userRepo, profilePictureRepo, nil, nil)
 
 	// Job to clean up sensitive questions and strikes every 6 months.
