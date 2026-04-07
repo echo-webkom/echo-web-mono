@@ -14,6 +14,7 @@ import { FPCalendar } from "./_components/fp-calendar";
 import { HyggkomList } from "./_components/hyggkom-list";
 import { JobAds } from "./_components/job-ads";
 import { Posts } from "./_components/posts";
+import { WebathonBanner } from "./_components/webathon-banner";
 
 export default async function Home() {
   await ensureUser();
