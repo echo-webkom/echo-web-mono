@@ -138,3 +138,13 @@ required = false
 [[entries]]
 key = "AOC_SESSION_COOKIE"
 required = false
+
+# Email microservice configuration
+# ---------------------------------
+# The URL of the email microservice used for sending transactional emails.
+# Used by: web, uno
+[[entries]]
+key = "EMAIL_BASE_URL"
+required = false
+default = "http://localhost:3001"
+kind = "Url"
