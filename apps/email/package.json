@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "dotenv -e ../../.env -- tsx watch src/index.ts",
+    "email:dev": "react-email dev --port 3001",
     "build": "tsdown src/index.ts --format cjs --out-dir dist",
     "start": "node dist/index.js",
     "check": "oxlint . && oxfmt --check . && tsc --noEmit",
