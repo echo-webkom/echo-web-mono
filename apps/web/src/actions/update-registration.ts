@@ -1,8 +1,6 @@
 "use server";
 
 import { registrationStatusEnum } from "@echo-webkom/db/schemas";
-import { GotSpotNotificationEmail } from "@echo-webkom/email";
-import { emailClient } from "@echo-webkom/email/client";
 import { z } from "zod";
 
 import { unoWithAdmin } from "@/api/server";
@@ -57,26 +55,6 @@ export const updateRegistration = async (
       reason: data.reason,
       changedBy: user.id,
     });
-
-    if (data.status === "registered") {
-      const sendTo = exisitingRegistration.userEmail;
-
-      if (!sendTo) {
-        return {
-          success: false,
-          message: "Kunne ikke finne e-post for brukeren",
-        };
-      }
-
-      await emailClient.sendEmail(
-        [sendTo],
-        "Du har fått plass!",
-        GotSpotNotificationEmail({
-          happeningTitle: happening.title,
-          name: exisitingRegistration.userName ?? exisitingRegistration.userEmail ?? undefined,
-        }),
-      );
-    }
 
     return {
       success: true,

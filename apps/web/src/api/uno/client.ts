@@ -938,6 +938,18 @@ class AccessRequestApi {
     const response = await this.client.request("DELETE", `/access-requests/${id}`);
     return response.status === 200;
   }
+
+  async approve(id: string) {
+    const response = await this.client.request("POST", `/access-requests/${id}/approve`);
+    return response.status === 200;
+  }
+
+  async deny(id: string, reason: string) {
+    const response = await this.client.request("POST", `/access-requests/${id}/deny`, {
+      body: JSON.stringify({ reason }),
+    });
+    return response.status === 200;
+  }
 }
 
 export interface Degree {

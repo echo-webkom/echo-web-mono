@@ -1,7 +1,5 @@
 "use server";
 
-import { StrikeNotificationEmail } from "@echo-webkom/email";
-import { emailClient } from "@echo-webkom/email/client";
 import { type z } from "zod";
 
 import { unoWithAdmin } from "@/api/server";
@@ -50,19 +48,6 @@ export const addStrikesAction = async (input: z.infer<typeof addStrikesSchema>) 
     );
 
     const shouldBeBanned = result.isBanned;
-
-    const sendToEmail = strikedUser.alternativeEmail ?? strikedUser.email;
-
-    await emailClient.sendEmail(
-      [sendToEmail],
-      "VIKTIG: Du har fått prikk",
-      <StrikeNotificationEmail
-        amount={data.count}
-        isBanned={shouldBeBanned}
-        name={strikedUser.name ?? "Ola Nordmann"}
-        reason={data.reason}
-      />,
-    );
 
     const message = shouldBeBanned
       ? `Brukeren er bannet i ${data.banExpiresInMonths} måneder`

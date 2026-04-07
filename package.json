@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --filter=@echo-webkom/web --filter=@echo-webkom/cms --filter=@echo-webkom/uno --filter=@echo-webkom/db",
+    "dev": "turbo run dev --filter=@echo-webkom/web --filter=@echo-webkom/cms --filter=@echo-webkom/uno --filter=@echo-webkom/db --filter=@echo-webkom/email-service",
     "dev:all": "turbo run dev",
     "web:dev": "pnpm run --filter=web dev",
     "cms:dev": "pnpm run --filter=cms dev",
@@ -23,8 +23,7 @@
     "db:setup": "pnpm db:remove && pnpm db:up && pnpm sleep2s && pnpm db:migrate",
     "seed": "pnpm --filter=seeder seed:start",
     "sleep2s": "node -e \"setTimeout(() => process.exit(0), 2000)\"",
-    "email:preview": "pnpm --filter=email preview",
-    "lint": "echo 'Use pnpm check or pnpm check:fix instead'",
+    "lint":"echo 'Use pnpm check or pnpm check:fix instead'",
     "lint:fix": "echo 'Use pnpm check or pnpm check:fix instead'",
     "format": "echo 'Use pnpm check or pnpm check:fix instead'",
     "format:check": "echo 'Use pnpm check or pnpm check:fix instead'",

@@ -30,10 +30,6 @@
       "persistent": true,
       "cache": false
     },
-    "email:preview": {
-      "persistent": true,
-      "cache": false
-    },
     "test:unit": {},
     "check": {},
     "check:fix": {
@@ -66,6 +62,7 @@
     "PORT",
     "SANITY_TOKEN",
     "RESEND_API_KEY",
+    "EMAIL_BASE_URL",
     "ECHOGRAM_API_KEY",
     "NEXT_PUBLIC_SANITY_PROJECT_ID",
     "NEXT_PUBLIC_ECHOGRAM_URL",
