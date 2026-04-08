@@ -361,7 +361,7 @@ jobs:
 
   auto-deploy:
     if:  github.event_name == 'pull_request' && github.ref_name == 'main'
-    needs: [ build-and-push-web ]
+    needs: [build-and-push-web]
     name: Auto deploy web
     runs-on: ubuntu-latest
     
