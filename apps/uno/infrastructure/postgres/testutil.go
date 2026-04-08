@@ -3,9 +3,7 @@ package postgres
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
-	"path/filepath"
 	"testing"
 	"time"
 
@@ -69,62 +67,9 @@ func SetupTestDB(t *testing.T) *Database {
 		t.Fatalf("failed to connect to database after %d retries (host: %s, port: %s): %v", maxRetries, host, port.Port(), err)
 	}
 
-	if err := runMigrations(ctx, db); err != nil {
+	if err := RunMigrations(db.DB.DB); err != nil {
 		t.Fatalf("failed to run migrations: %v", err)
 	}
 
 	return db
-}
-
-func runMigrations(ctx context.Context, db *Database) error {
-	dir, err := os.Getwd()
-	if err != nil {
-		return fmt.Errorf("failed to get current working directory: %w", err)
-	}
-
-	var migrationsPath string
-
-	// Walk up the directories to find the migrations folder
-	for range 10 {
-		migrationsFolder := filepath.Join(dir, "packages/db/drizzle/migrations")
-		if _, err := os.Stat(migrationsFolder); err == nil {
-			migrationsPath = migrationsFolder
-			break
-		}
-
-		// Move up one directory
-		parent := filepath.Dir(dir)
-		if parent == dir {
-			log.Fatalln("reached root of file system")
-			break
-		}
-		dir = parent
-	}
-
-	if migrationsPath == "" {
-		return fmt.Errorf("could not find migrations folder")
-	}
-
-	files, err := os.ReadDir(migrationsPath)
-	if err != nil {
-		return fmt.Errorf("failed to read migrations directory: %w", err)
-	}
-
-	for _, file := range files {
-		if file.IsDir() || filepath.Ext(file.Name()) != ".sql" {
-			continue
-		}
-
-		path := filepath.Join(migrationsPath, file.Name())
-		content, err := os.ReadFile(path)
-		if err != nil {
-			return fmt.Errorf("failed to read migration file %s: %w", file.Name(), err)
-		}
-
-		if _, err := db.ExecContext(ctx, string(content)); err != nil {
-			return fmt.Errorf("failed to execute migration %s: %w", file.Name(), err)
-		}
-	}
-
-	return nil
 }

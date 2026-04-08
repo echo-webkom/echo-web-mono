@@ -34,6 +34,12 @@ func RunApi() {
 	// Initialize database connection
 	db := initDatabase(cfg.DatabaseURL, logger)
 
+	// Run database migrations on startup
+	if err := postgres.RunMigrations(db.DB.DB); err != nil {
+		logger.Error(context.Background(), "failed to run migrations", "error", err)
+		log.Fatal(err)
+	}
+
 	// Initialize Redis client (falls back to in-memory cache if not configured)
 	redisClient, cacheInvalidator := initRedis(cfg.RedisURL, logger)
 

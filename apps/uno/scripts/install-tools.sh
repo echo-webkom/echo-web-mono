@@ -7,6 +7,9 @@ echo ""
 echo "Installing air (hot reload)..."
 go install github.com/air-verse/air@latest
 
+echo "Installing goose (database migrations)..."
+go install github.com/pressly/goose/v3/cmd/goose@latest
+
 echo "Installing swag (API docs)..."
 go install github.com/swaggo/swag/cmd/swag@latest
 
