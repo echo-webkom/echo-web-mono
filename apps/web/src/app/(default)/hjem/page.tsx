@@ -1,6 +1,7 @@
 import { Container } from "@/components/container";
 import { ensureUser } from "@/lib/ensure";
 
+import { featureFlags } from "../../../data/kv/namespaces";
 import { Banner } from "./_components/banner";
 import BirthdayBanner from "./_components/birthday-banner";
 import { ComingHappenings } from "./_components/coming-bedpres";
@@ -8,7 +9,7 @@ import Cookies from "./_components/cookies-banner";
 import EchoBirthdayBanner from "./_components/echo-birthday";
 import { FilmklubbMovies } from "./_components/filmklubb";
 import { FPCalendar } from "./_components/fp-calendar";
-// import { HSApplications } from "./_components/hs-applications";
+import { HSApplications } from "./_components/hs-applications";
 import { HyggkomList } from "./_components/hyggkom-list";
 import { JobAds } from "./_components/job-ads";
 import { Posts } from "./_components/posts";
@@ -16,6 +17,9 @@ import { Posts } from "./_components/posts";
 export default async function Home() {
   await ensureUser();
 
+  const flags = await featureFlags.get("HS-Application");
+
+  console.info(flags);
   return (
     <>
       <Cookies />
@@ -28,9 +32,11 @@ export default async function Home() {
           <FPCalendar />
         </Container>
 
-        {/* <Container layout="larger">
-          <HSApplications />
-        </Container> */}
+        {flags?.showHSApplications && (
+          <Container layout="larger">
+            <HSApplications />
+          </Container>
+        )}
 
         <Container
           layout="larger"
