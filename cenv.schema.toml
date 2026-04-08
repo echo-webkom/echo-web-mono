@@ -32,6 +32,7 @@ kind = "Url"
 # Used by: web, uno
 [[entries]]
 key = "NEXT_PUBLIC_WEB_BASE_URL"
+required = true
 default = "http://localhost:3000"
 kind = "Url"
 

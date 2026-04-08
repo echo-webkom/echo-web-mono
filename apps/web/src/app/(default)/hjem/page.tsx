@@ -28,9 +28,9 @@ export default async function Home() {
           <FPCalendar />
         </Container>
 
-        <Container layout="larger">
+        {/* <Container layout="larger">
           <HSApplications />
-        </Container>
+        </Container> */}
 
         <Container
           layout="larger"
