@@ -20,3 +20,7 @@ echo "Available commands:"
 echo "  air              - Hot reload server"
 echo "  swag             - Generate Swagger docs"
 echo "  mockery          - Generate test mocks"
+
+echo ""
+echo "Install golangci-lint with:"
+echo "  curl -sSfL https://golangci-lint.run/install.sh | sh -s -- -b \$(go env GOPATH)/bin v2.11.4"
