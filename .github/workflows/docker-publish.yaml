@@ -358,3 +358,13 @@ jobs:
                 body,
               });
             }
+
+  auto-deploy:
+    if:  github.event_name == 'pull_request' && github.ref_name == 'main'
+    needs: [build-and-push-web]
+    name: 🚗 Auto deploy web
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🚗 Auto deploy web
+        run: curl ${{secrets.DEPLOY_WEB_URL}}
