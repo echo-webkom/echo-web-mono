@@ -366,5 +366,5 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: post deployment
+      - name: 🚗 Auto deploy web
         run: curl ${{secrets.DEPLOY_WEB_URL}}
