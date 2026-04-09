@@ -115,11 +115,6 @@ func (hs *HappeningService) Register(
 	happeningID string,
 	questions []model.QuestionAnswer,
 ) (*RegisterResult, error) {
-	osloLoc, err := time.LoadLocation("Europe/Oslo")
-	if err != nil {
-		return &RegisterResult{Success: false, Message: "Internal error"}, fmt.Errorf("serveren finner ikke seg selv: %w", err)
-	}
-
 	// 1. Get user
 	user, err := hs.userRepo.GetUserByID(ctx, userID)
 	if err != nil {
@@ -154,7 +149,7 @@ func (hs *HappeningService) Register(
 	// 4. Check if user is banned (for bedpres)
 	if happening.IsBedpres() {
 		banInfo, err := hs.banInfoRepo.GetBanInfoByUserID(ctx, userID)
-		if err == nil && banInfo != nil && banInfo.ExpiresAt.After(time.Now().In(osloLoc)) {
+		if err == nil && banInfo != nil && banInfo.ExpiresAt.After(time.Now()) {
 			return &RegisterResult{
 				Success: false,
 				Message: "Du er bannet",
@@ -204,7 +199,7 @@ func (hs *HappeningService) Register(
 				Message: "Påmelding er bare for inviterte undergrupper",
 			}, nil
 		}
-		if happening.RegistrationStart.After(time.Now().In(osloLoc)) {
+		if happening.RegistrationStart.After(time.Now()) {
 			return &RegisterResult{
 				Success: false,
 				Message: "Påmeldingen har ikke startet",
@@ -213,7 +208,7 @@ func (hs *HappeningService) Register(
 	}
 
 	// Check if registration is closed
-	if happening.RegistrationEnd != nil && happening.RegistrationEnd.Before(time.Now().In(osloLoc)) {
+	if happening.RegistrationEnd != nil && happening.RegistrationEnd.Before(time.Now()) {
 		return &RegisterResult{
 			Success: false,
 			Message: "Påmeldingen har allerede stengt",
@@ -454,8 +449,6 @@ func mapSanityHappening(data SanityHappeningData) (model.Happening, error) {
 		if err != nil {
 			return model.Happening{}, fmt.Errorf("failed to parse date %q: %w", data.Date, err)
 		}
-	} else {
-		date = date.In(loc)
 	}
 
 	regGroups := make([]string, 0, len(data.RegistrationGroups))
@@ -486,7 +479,6 @@ func mapSanityHappening(data SanityHappeningData) (model.Happening, error) {
 	if data.RegistrationStartGroups != nil {
 		t, err := time.Parse(time.RFC3339, *data.RegistrationStartGroups)
 		if err == nil {
-			t = t.In(loc)
 			happening.RegistrationStartGroups = &t
 		}
 	}
@@ -494,7 +486,6 @@ func mapSanityHappening(data SanityHappeningData) (model.Happening, error) {
 	if data.RegistrationStart != nil {
 		t, err := time.Parse(time.RFC3339, *data.RegistrationStart)
 		if err == nil {
-			t = t.In(loc)
 			happening.RegistrationStart = &t
 		}
 	}
@@ -502,7 +493,6 @@ func mapSanityHappening(data SanityHappeningData) (model.Happening, error) {
 	if data.RegistrationEnd != nil {
 		t, err := time.Parse(time.RFC3339, *data.RegistrationEnd)
 		if err == nil {
-			t = t.In(loc)
 			happening.RegistrationEnd = &t
 		}
 	}
