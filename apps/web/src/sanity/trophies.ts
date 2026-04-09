@@ -1,15 +1,17 @@
-import { type AllTrophiesQueryResult } from "@echo-webkom/cms/types";
-import { allTrophiesQuery } from "@echo-webkom/sanity/queries";
+import { createClient } from "@sanity/client";
+import { allTrophiesQuery } from "./trophies-queries";
 
-import { sanityFetch } from "./client";
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "pgq2pd26";
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
+const apiVersion = "2023-05-03";
+
+const client = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: true,
+});
 
 export const fetchAllTrophies = async () => {
-  return await sanityFetch<AllTrophiesQueryResult>({
-    query: allTrophiesQuery,
-    cdn: true,
-    tags: ["trophies"],
-  }).catch(() => {
-    console.error("Failed to fetch all trophies");
-    return [];
-  });
+  return client.fetch(allTrophiesQuery);
 };
