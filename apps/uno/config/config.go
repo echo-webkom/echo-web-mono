@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/echo-webkom/cenv"
+	cenv "github.com/echo-webkom/cenv/clients/cenv-go"
 )
 
 type Environment string
@@ -67,7 +67,10 @@ type CronConfig struct {
 func Load() *Config {
 	env := strings.ToLower(os.Getenv("ENVIRONMENT"))
 	if strings.HasPrefix(env, "dev") {
-		if err := cenv.VerifyEx("../../.env", "../../cenv.schema.json"); err != nil {
+		if err := cenv.Check(&cenv.Config{
+			EnvPath:    "../../.env",
+			SchemaPath: "../../cenv.schema.toml",
+		}); err != nil {
 			log.Println(err)
 		}
 	}
@@ -103,7 +106,10 @@ func LoadCronConfig() *CronConfig {
 	environment := parseEnvironment(os.Getenv("ENVIRONMENT"))
 
 	if environment == Development {
-		if err := cenv.VerifyEx("../../.env", "../../cenv.schema.json"); err != nil {
+		if err := cenv.Check(&cenv.Config{
+			EnvPath:    "../../.env",
+			SchemaPath: "../../cenv.schema.toml",
+		}); err != nil {
 			log.Println(err)
 		}
 	}
