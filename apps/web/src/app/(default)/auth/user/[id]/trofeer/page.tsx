@@ -1,12 +1,15 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
-import { urlFor } from "@echo-webkom/sanity";
-
 import { auth } from "@/auth/session";
 import { Heading } from "@/components/typography/heading";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { fetchAllTrophies } from "@/sanity/trophies";
+import { urlFor } from "../../../../../../lib/sanity";
 
 export default async function UserTrophies() {
   const user = await auth();
