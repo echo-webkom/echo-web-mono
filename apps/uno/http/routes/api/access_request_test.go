@@ -54,7 +54,7 @@ func TestGetAccessRequestsHandler(t *testing.T) {
 			mockAccessRequestRepo := mocks.NewAccessRequestRepo(t)
 			tt.setupMocks(mockAccessRequestRepo)
 
-			accessRequestService := service.NewAccessRequestService(mockAccessRequestRepo)
+			accessRequestService := service.NewAccessRequestService(mockAccessRequestRepo, nil, nil)
 			mux := api.NewAccessRequestMux(testutil.NewTestLogger(), accessRequestService, handler.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/", nil)
@@ -121,7 +121,7 @@ func TestCreateAccessRequestHandler(t *testing.T) {
 			mockAccessRequestRepo := mocks.NewAccessRequestRepo(t)
 			tt.setupMocks(mockAccessRequestRepo)
 
-			accessRequestService := service.NewAccessRequestService(mockAccessRequestRepo)
+			accessRequestService := service.NewAccessRequestService(mockAccessRequestRepo, nil, nil)
 			mux := api.NewAccessRequestMux(testutil.NewTestLogger(), accessRequestService, handler.NoMiddleware)
 
 			var r *http.Request
@@ -195,7 +195,7 @@ func TestDeleteAccessRequestHandler(t *testing.T) {
 			mockAccessRequestRepo := mocks.NewAccessRequestRepo(t)
 			tt.setupMocks(mockAccessRequestRepo)
 
-			accessRequestService := service.NewAccessRequestService(mockAccessRequestRepo)
+			accessRequestService := service.NewAccessRequestService(mockAccessRequestRepo, nil, nil)
 			mux := api.NewAccessRequestMux(testutil.NewTestLogger(), accessRequestService, handler.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodDelete, "/"+tt.id, nil)

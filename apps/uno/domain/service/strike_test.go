@@ -13,7 +13,7 @@ import (
 
 func TestStrikeService_GetUserByID(t *testing.T) {
 	mockUserRepo := mocks.NewUserRepo(t)
-	strikeService := service.NewStrikeService(nil, nil, mockUserRepo)
+	strikeService := service.NewStrikeService(nil, nil, mockUserRepo, nil)
 
 	userID := "user-1"
 	mockUser := testutil.NewFakeStruct(func(u *model.User) { u.ID = userID })
@@ -26,7 +26,7 @@ func TestStrikeService_GetUserByID(t *testing.T) {
 
 func TestStrikeService_CreateDot(t *testing.T) {
 	mockDotRepo := mocks.NewDotRepo(t)
-	strikeService := service.NewStrikeService(mockDotRepo, nil, nil)
+	strikeService := service.NewStrikeService(mockDotRepo, nil, nil, nil)
 
 	newDot := testutil.NewFakeStruct[model.NewDot]()
 	mockDot := testutil.NewFakeStruct[model.Dot]()
@@ -39,7 +39,7 @@ func TestStrikeService_CreateDot(t *testing.T) {
 
 func TestStrikeService_GetBanInfoByUserID(t *testing.T) {
 	mockBanInfoRepo := mocks.NewBanInfoRepo(t)
-	strikeService := service.NewStrikeService(nil, mockBanInfoRepo, nil)
+	strikeService := service.NewStrikeService(nil, mockBanInfoRepo, nil, nil)
 
 	userID := "user-1"
 	banInfo := testutil.NewFakeStruct[model.ModBanInfo]()
@@ -59,7 +59,7 @@ func TestStrikeService_UnbanUsersWithExpiredStrikes(t *testing.T) {
 	mockBanInfoRepo := mocks.NewBanInfoRepo(t)
 	mockBanInfoRepo.EXPECT().DeleteExpired(mock.Anything).Return(nil).Once()
 
-	strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
+	strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo, nil)
 
 	err := strikeService.UnbanUsersWithExpiredStrikes(t.Context())
 	assert.NoError(t, err, "Expected no error from UnbanUsersWithExpiredStrikes")
@@ -75,7 +75,7 @@ func TestStrikeService_UnbanUsersWithExpiredStrikes_BanInfoErr(t *testing.T) {
 	mockBanInfoRepo := mocks.NewBanInfoRepo(t)
 	mockBanInfoRepo.EXPECT().DeleteExpired(mock.Anything).Return(assert.AnError).Once()
 
-	strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
+	strikeService := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo, nil)
 
 	err := strikeService.UnbanUsersWithExpiredStrikes(t.Context())
 	assert.Error(t, err, "Expected error from UnbanUsersWithExpiredStrikes due to BanInfoRepo failure")
@@ -90,7 +90,7 @@ func TestStrikeService_UnbanUsersWithExpiredStrikes_DotRepoErr(t *testing.T) {
 
 	mockBanInfoRepo := mocks.NewBanInfoRepo(t) // Does not get called
 
-	strikeServiceErr := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo)
+	strikeServiceErr := service.NewStrikeService(mockDotRepo, mockBanInfoRepo, mockUserRepo, nil)
 
 	err := strikeServiceErr.UnbanUsersWithExpiredStrikes(t.Context())
 	assert.Error(t, err, "Expected error from UnbanUsersWithExpiredStrikes due to DotRepo failure")
@@ -105,7 +105,7 @@ func TestStrikeService_GetUsersWithStrikeDetails(t *testing.T) {
 	}
 	mockUserRepo.EXPECT().GetUsersWithStrikeDetails(mock.Anything).Return(expectedUsers, nil).Once()
 
-	strikeService := service.NewStrikeService(nil, nil, mockUserRepo)
+	strikeService := service.NewStrikeService(nil, nil, mockUserRepo, nil)
 
 	users, err := strikeService.GetUsersWithStrikeDetails(t.Context())
 	assert.NoError(t, err, "Expected no error from GetUsersWithStrikeDetails")

@@ -768,6 +768,11 @@ definitions:
       name:
         type: string
     type: object
+  uno_http_dto.DenyAccessRequestRequest:
+    properties:
+      reason:
+        type: string
+    type: object
   uno_http_dto.DeregisterRequest:
     properties:
       reason:
@@ -1409,6 +1414,78 @@ paths:
       security:
       - AdminAPIKey: []
       summary: Delete access request
+      tags:
+      - access-request
+  /access-requests/{id}/approve:
+    post:
+      parameters:
+      - description: Access request ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Approve access request
+      tags:
+      - access-request
+  /access-requests/{id}/deny:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Access request ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Denial payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/uno_http_dto.DenyAccessRequestRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Deny access request
       tags:
       - access-request
   /advent-of-code/leaderboard:

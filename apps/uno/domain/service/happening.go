@@ -18,6 +18,8 @@ type HappeningService struct {
 	registrationRepo port.RegistrationRepo
 	banInfoRepo      port.BanInfoRepo
 	groupRepo        port.GroupRepo
+	cmsHappeningRepo port.CMSHappeningRepo
+	emailClient      port.EmailClient
 }
 
 func NewHappeningService(
@@ -26,6 +28,8 @@ func NewHappeningService(
 	registrationRepo port.RegistrationRepo,
 	banInfoRepo port.BanInfoRepo,
 	groupRepo port.GroupRepo,
+	cmsHappeningRepo port.CMSHappeningRepo,
+	emailClient port.EmailClient,
 ) *HappeningService {
 	return &HappeningService{
 		happeningRepo:    happeningRepo,
@@ -33,6 +37,8 @@ func NewHappeningService(
 		registrationRepo: registrationRepo,
 		banInfoRepo:      banInfoRepo,
 		groupRepo:        groupRepo,
+		cmsHappeningRepo: cmsHappeningRepo,
+		emailClient:      emailClient,
 	}
 }
 
@@ -86,11 +92,118 @@ func (hs *HappeningService) UpdateRegistrationStatus(
 	changedAt *time.Time,
 	unregisterReason *string,
 ) error {
-	return hs.registrationRepo.UpdateRegistrationStatus(ctx, userID, happeningID, status, prevStatus, changedBy, changedAt, unregisterReason)
+	if err := hs.registrationRepo.UpdateRegistrationStatus(ctx, userID, happeningID, status, prevStatus, changedBy, changedAt, unregisterReason); err != nil {
+		return err
+	}
+
+	if status == model.RegistrationStatusRegistered && hs.emailClient != nil {
+		hs.sendGotSpotNotification(ctx, userID, happeningID)
+	}
+
+	return nil
+}
+
+func (hs *HappeningService) sendGotSpotNotification(ctx context.Context, userID, happeningID string) {
+	user, err := hs.userRepo.GetUserByID(ctx, userID)
+	if err != nil {
+		return
+	}
+
+	happening, err := hs.happeningRepo.GetHappeningById(ctx, happeningID)
+	if err != nil {
+		return
+	}
+
+	sendTo := user.Email
+	if user.AlternativeEmail != nil {
+		sendTo = *user.AlternativeEmail
+	}
+
+	name := "Ola Nordmann"
+	if user.Name != nil {
+		name = *user.Name
+	}
+
+	subject := fmt.Sprintf("Du har fått plass på %s", happening.Title)
+	_ = hs.emailClient.SendGotSpotNotification(ctx, []string{sendTo}, subject, name, happening.Title)
 }
 
 func (hs *HappeningService) DeleteAnswersByUserAndHappening(ctx context.Context, userID string, happeningID string) error {
 	return hs.registrationRepo.DeleteAnswersByUserAndHappening(ctx, userID, happeningID)
+}
+
+// ErrRegistrationNotFound is returned when no registration exists for the given user and happening.
+var ErrRegistrationNotFound = errors.New("registration not found")
+
+// Deregister removes a user from a happening and notifies the happening contacts.
+func (hs *HappeningService) Deregister(ctx context.Context, userID, happeningID, reason string) error {
+	reg, err := hs.registrationRepo.GetByUserAndHappening(ctx, userID, happeningID)
+	if err != nil {
+		return err
+	}
+	if reg == nil {
+		return ErrRegistrationNotFound
+	}
+
+	now := time.Now()
+	prevStatus := string(reg.Status)
+	if err = hs.registrationRepo.UpdateRegistrationStatus(
+		ctx,
+		userID,
+		happeningID,
+		model.RegistrationStatusUnregistered,
+		&prevStatus,
+		nil,
+		&now,
+		&reason,
+	); err != nil {
+		return err
+	}
+
+	if err = hs.registrationRepo.DeleteAnswersByUserAndHappening(ctx, userID, happeningID); err != nil {
+		return err
+	}
+
+	if hs.emailClient != nil && hs.cmsHappeningRepo != nil {
+		hs.sendDeregistrationNotification(ctx, userID, happeningID, reason)
+	}
+
+	return nil
+}
+
+func (hs *HappeningService) sendDeregistrationNotification(ctx context.Context, userID, happeningID, reason string) {
+	happening, err := hs.happeningRepo.GetHappeningById(ctx, happeningID)
+	if err != nil {
+		return
+	}
+
+	contacts, err := hs.cmsHappeningRepo.GetHappeningContactsBySlug(ctx, happening.Slug)
+	if err != nil || len(contacts) == 0 {
+		return
+	}
+
+	user, err := hs.userRepo.GetUserByID(ctx, userID)
+	if err != nil {
+		return
+	}
+
+	name := "Ukjent"
+	if user.Name != nil {
+		name = *user.Name
+	}
+
+	to := make([]string, 0, len(contacts))
+	for _, c := range contacts {
+		if c.Email != "" {
+			to = append(to, c.Email)
+		}
+	}
+	if len(to) == 0 {
+		return
+	}
+
+	subject := fmt.Sprintf("%s har meldt seg av %s", name, happening.Title)
+	_ = hs.emailClient.SendDeregistrationNotification(ctx, to, subject, name, reason, happening.Title)
 }
 
 func (hs *HappeningService) DeleteRegistrationsByHappeningID(ctx context.Context, happeningID string) error {

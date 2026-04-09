@@ -15,7 +15,11 @@ type accessRequests struct {
 	accessRequestService *service.AccessRequestService
 }
 
-func NewAccessRequestMux(logger port.Logger, accessRequestService *service.AccessRequestService, admin handler.Middleware) *router.Mux {
+func NewAccessRequestMux(
+	logger port.Logger,
+	accessRequestService *service.AccessRequestService,
+	admin handler.Middleware,
+) *router.Mux {
 	a := accessRequests{logger, accessRequestService}
 	mux := router.NewMux()
 
@@ -23,6 +27,8 @@ func NewAccessRequestMux(logger port.Logger, accessRequestService *service.Acces
 	mux.POST("/", a.createAccessRequest, admin)
 	mux.GET("/", a.getAccessRequests, admin)
 	mux.DELETE("/{id}", a.deleteAccessRequest, admin)
+	mux.POST("/{id}/approve", a.approveAccessRequest, admin)
+	mux.POST("/{id}/deny", a.denyAccessRequest, admin)
 
 	return mux
 }
@@ -37,13 +43,11 @@ func NewAccessRequestMux(logger port.Logger, accessRequestService *service.Acces
 // @Security     AdminAPIKey
 // @Router       /access-requests [get]
 func (a *accessRequests) getAccessRequests(ctx *handler.Context) error {
-	// Get domain models from service
 	accessRequests, err := a.accessRequestService.GetAccessRequests(ctx.Context())
 	if err != nil {
 		return ctx.InternalServerError()
 	}
 
-	// Convert to DTOs
 	response := dto.AccessRequestsFromDomainList(accessRequests)
 	return ctx.JSON(response)
 }
@@ -100,6 +104,67 @@ func (a *accessRequests) deleteAccessRequest(ctx *handler.Context) error {
 	}
 
 	if err = a.accessRequestService.DeleteAccessRequestByID(ctx.Context(), id); err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.Ok()
+}
+
+// approveAccessRequest approves an access request, adding the email to the whitelist and sending a confirmation email.
+// @Summary      Approve access request
+// @Tags         access-request
+// @Produce      json
+// @Param        id   path      string  true  "Access request ID"
+// @Success      200  {string}  string  "OK"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      404  {string}  string  "Not Found"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /access-requests/{id}/approve [post]
+func (a *accessRequests) approveAccessRequest(ctx *handler.Context) error {
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.BadRequest(errors.New("missing access request id"))
+	}
+
+	if err := a.accessRequestService.ApproveAccessRequest(ctx.Context(), id); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return ctx.NotFound(errors.New("access request not found"))
+		}
+		return ctx.InternalServerError()
+	}
+
+	return ctx.Ok()
+}
+
+// denyAccessRequest denies an access request, deleting it and sending a rejection email.
+// @Summary      Deny access request
+// @Tags         access-request
+// @Accept       json
+// @Produce      json
+// @Param        id    path  string                        true  "Access request ID"
+// @Param        body  body  dto.DenyAccessRequestRequest  true  "Denial payload"
+// @Success      200  {string}  string  "OK"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Failure      404  {string}  string  "Not Found"
+// @Failure      500  {string}  string  "Internal Server Error"
+// @Security     AdminAPIKey
+// @Router       /access-requests/{id}/deny [post]
+func (a *accessRequests) denyAccessRequest(ctx *handler.Context) error {
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.BadRequest(errors.New("missing access request id"))
+	}
+
+	var req dto.DenyAccessRequestRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.BadRequest(ErrFailedToReadJSON)
+	}
+
+	if err := a.accessRequestService.DenyAccessRequest(ctx.Context(), id, req.Reason); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return ctx.NotFound(errors.New("access request not found"))
+		}
 		return ctx.InternalServerError()
 	}
 

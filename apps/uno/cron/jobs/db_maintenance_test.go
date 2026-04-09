@@ -57,7 +57,7 @@ func TestCleanupOldStrikesRun(t *testing.T) {
 	banInfoRepo := mocks.NewBanInfoRepo(t)
 	userRepo := mocks.NewUserRepo(t)
 
-	strikeService := service.NewStrikeService(dotRepo, banInfoRepo, userRepo)
+	strikeService := service.NewStrikeService(dotRepo, banInfoRepo, userRepo, nil)
 	job := NewCleanupOldStrikes(strikeService, &testutil.NoOpLogger{})
 
 	err := job.Run(t.Context())
@@ -77,7 +77,7 @@ func TestCleanupOldStrikesRunError(t *testing.T) {
 	banInfoRepo := mocks.NewBanInfoRepo(t)
 	userRepo := mocks.NewUserRepo(t)
 
-	strikeService := service.NewStrikeService(dotRepo, banInfoRepo, userRepo)
+	strikeService := service.NewStrikeService(dotRepo, banInfoRepo, userRepo, nil)
 	job := NewCleanupOldStrikes(strikeService, &testutil.NoOpLogger{})
 
 	err := job.Run(t.Context())

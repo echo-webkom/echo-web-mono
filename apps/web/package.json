@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@echo-webkom/db": "workspace:*",
-    "@echo-webkom/email": "workspace:*",
     "@echo-webkom/lib": "workspace:*",
     "@hookform/resolvers": "5.2.2",
     "@json2csv/plainjs": "7.0.6",
