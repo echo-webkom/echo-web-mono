@@ -365,6 +365,14 @@ func (h *happenings) registerForHappening(ctx *handler.Context) error {
 		IsWaitlisted: result.IsWaitlisted,
 	}
 
+	h.logger.Info(ctx.Context(), "registration attempt",
+		"userID", req.UserID,
+		"happeningID", happeningID,
+		"success", result.Success,
+		"waitlisted", result.IsWaitlisted,
+		"message", result.Message,
+	)
+
 	return ctx.JSON(response)
 }
 
