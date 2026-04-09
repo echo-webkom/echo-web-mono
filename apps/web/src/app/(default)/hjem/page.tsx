@@ -3,6 +3,7 @@ import { ensureUser } from "@/lib/ensure";
 
 import { Banner } from "./_components/banner";
 import BirthdayBanner from "./_components/birthday-banner";
+import { WebathonBanner } from "./_components/webathon-banner";
 import { ComingHappenings } from "./_components/coming-bedpres";
 import Cookies from "./_components/cookies-banner";
 import EchoBirthdayBanner from "./_components/echo-birthday";
@@ -20,6 +21,7 @@ export default async function Home() {
     <>
       <Cookies />
       <Banner />
+      <WebathonBanner />
       <BirthdayBanner />
       <EchoBirthdayBanner />
 
