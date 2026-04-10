@@ -201,14 +201,14 @@ func initFileStorage(cfg *config.Config, logger port.Logger) port.ProfilePicture
 
 func initRedis(redisURL string, logger port.Logger) (*redis.Client, port.CacheInvalidator) {
 	if redisURL == "" {
-		logger.Info(context.Background(), "redis not configured, using in-memory cache")
+		logger.Warn(context.Background(), "redis not configured, using in-memory cache")
 		return nil, cache.NoopInvalidator{}
 	}
 
 	opt, err := redis.ParseURL(redisURL)
 	if err != nil {
 		logger.Error(context.Background(), "failed to parse redis url", "error", err)
-		logger.Info(context.Background(), "redis not configured, using in-memory cache")
+		logger.Warn(context.Background(), "redis not configured, using in-memory cache")
 		return nil, cache.NoopInvalidator{}
 	}
 
