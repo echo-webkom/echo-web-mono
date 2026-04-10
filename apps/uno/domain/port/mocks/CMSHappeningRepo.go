@@ -100,6 +100,68 @@ func (_c *CMSHappeningRepo_GetAllHappenings_Call) RunAndReturn(run func(ctx cont
 	return _c
 }
 
+// GetAllPinnedHappenings provides a mock function for the type CMSHappeningRepo
+func (_mock *CMSHappeningRepo) GetAllPinnedHappenings(ctx context.Context) ([]model.CMSHappening, error) {
+	ret := _mock.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetAllPinnedHappenings")
+	}
+
+	var r0 []model.CMSHappening
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]model.CMSHappening, error)); ok {
+		return returnFunc(ctx)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context) []model.CMSHappening); ok {
+		r0 = returnFunc(ctx)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]model.CMSHappening)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context) error); ok {
+		r1 = returnFunc(ctx)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// CMSHappeningRepo_GetAllPinnedHappenings_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetAllPinnedHappenings'
+type CMSHappeningRepo_GetAllPinnedHappenings_Call struct {
+	*mock.Call
+}
+
+// GetAllPinnedHappenings is a helper method to define mock.On call
+//   - ctx context.Context
+func (_e *CMSHappeningRepo_Expecter) GetAllPinnedHappenings(ctx interface{}) *CMSHappeningRepo_GetAllPinnedHappenings_Call {
+	return &CMSHappeningRepo_GetAllPinnedHappenings_Call{Call: _e.mock.On("GetAllPinnedHappenings", ctx)}
+}
+
+func (_c *CMSHappeningRepo_GetAllPinnedHappenings_Call) Run(run func(ctx context.Context)) *CMSHappeningRepo_GetAllPinnedHappenings_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *CMSHappeningRepo_GetAllPinnedHappenings_Call) Return(cMSHappenings []model.CMSHappening, err error) *CMSHappeningRepo_GetAllPinnedHappenings_Call {
+	_c.Call.Return(cMSHappenings, err)
+	return _c
+}
+
+func (_c *CMSHappeningRepo_GetAllPinnedHappenings_Call) RunAndReturn(run func(ctx context.Context) ([]model.CMSHappening, error)) *CMSHappeningRepo_GetAllPinnedHappenings_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetHappeningBySlug provides a mock function for the type CMSHappeningRepo
 func (_mock *CMSHappeningRepo) GetHappeningBySlug(ctx context.Context, slug string) (*model.CMSHappening, error) {
 	ret := _mock.Called(ctx, slug)
@@ -306,6 +368,63 @@ func (_c *CMSHappeningRepo_GetHomeHappenings_Call) Return(cMSHomeHappenings []mo
 }
 
 func (_c *CMSHappeningRepo_GetHomeHappenings_Call) RunAndReturn(run func(ctx context.Context, types []string, n int) ([]model.CMSHomeHappening, error)) *CMSHappeningRepo_GetHomeHappenings_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UnpinHappenings provides a mock function for the type CMSHappeningRepo
+func (_mock *CMSHappeningRepo) UnpinHappenings(ctx context.Context, ids []string) error {
+	ret := _mock.Called(ctx, ids)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UnpinHappenings")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, []string) error); ok {
+		r0 = returnFunc(ctx, ids)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// CMSHappeningRepo_UnpinHappenings_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UnpinHappenings'
+type CMSHappeningRepo_UnpinHappenings_Call struct {
+	*mock.Call
+}
+
+// UnpinHappenings is a helper method to define mock.On call
+//   - ctx context.Context
+//   - ids []string
+func (_e *CMSHappeningRepo_Expecter) UnpinHappenings(ctx interface{}, ids interface{}) *CMSHappeningRepo_UnpinHappenings_Call {
+	return &CMSHappeningRepo_UnpinHappenings_Call{Call: _e.mock.On("UnpinHappenings", ctx, ids)}
+}
+
+func (_c *CMSHappeningRepo_UnpinHappenings_Call) Run(run func(ctx context.Context, ids []string)) *CMSHappeningRepo_UnpinHappenings_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 []string
+		if args[1] != nil {
+			arg1 = args[1].([]string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *CMSHappeningRepo_UnpinHappenings_Call) Return(err error) *CMSHappeningRepo_UnpinHappenings_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *CMSHappeningRepo_UnpinHappenings_Call) RunAndReturn(run func(ctx context.Context, ids []string) error) *CMSHappeningRepo_UnpinHappenings_Call {
 	_c.Call.Return(run)
 	return _c
 }

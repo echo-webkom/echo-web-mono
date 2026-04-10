@@ -286,3 +286,32 @@ func (s *CMSService) InvalidateByType(ctx context.Context, docType string) {
 		s.invalidator.InvalidateNamespace(ctx, ns)
 	}
 }
+
+func (s *CMSService) UnpinHappeningsAfterRegistrationEnd(ctx context.Context) error {
+	happenings, err := s.happeningRepo.GetAllPinnedHappenings(ctx)
+	if err != nil {
+		return err
+	}
+	if len(happenings) == 0 {
+		return nil
+	}
+
+	IDs := []string{}
+	now := time.Now()
+	for _, h := range happenings {
+		if h.RegistrationEnd == nil {
+			continue
+		}
+		regEnd, err := time.Parse(time.RFC3339, *h.RegistrationEnd)
+		if err != nil {
+			continue
+		}
+		if now.After(regEnd) {
+			IDs = append(IDs, h.ID)
+		}
+	}
+	if len(IDs) == 0 {
+		return nil
+	}
+	return s.happeningRepo.UnpinHappenings(ctx, IDs)
+}

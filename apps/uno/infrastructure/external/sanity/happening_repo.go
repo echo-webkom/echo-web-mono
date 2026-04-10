@@ -21,10 +21,18 @@ const (
 	CMSHappeningHomeHappeningsTTL       = 15 * time.Minute
 )
 
-const allHappeningsQuery = `
-*[_type == "happening"
-  && !(_id in path('drafts.**'))]
-  | order(date asc) {
+func createAllHappeningsQuery(extraFilters []string) string {
+	filters := []string{
+		`*[_type == "happening"`,
+		`&& !(_id in path('drafts.**'))`,
+	}
+	filters = append(filters, extraFilters...)
+	filters = append(filters, `] | order(date asc) { ... }`)
+
+	filtersStr := strings.Join(filters, "\n")
+
+	return fmt.Sprintf(`
+%s {
   _id,
   _createdAt,
   _updatedAt,
@@ -78,7 +86,8 @@ const allHappeningsQuery = `
   externalLink,
   body
 }
-`
+`, filtersStr)
+}
 
 const homeHappeningsQuery = `
 *[_type == "happening"
@@ -152,6 +161,7 @@ func (r *HappeningRepo) GetAllHappenings(ctx context.Context) ([]model.CMSHappen
 			return v, nil
 		}
 	}
+	allHappeningsQuery := createAllHappeningsQuery(nil)
 	r.logger.Info(ctx, "cache miss for all happenings")
 	result, err := sanity.Query[[]model.CMSHappening](ctx, r.client, allHappeningsQuery, nil)
 	if err != nil {
@@ -219,4 +229,28 @@ func (r *HappeningRepo) GetHappeningContactsBySlug(ctx context.Context, slug str
 
 	r.contactsBySlugCache.Set(slug, result, cmsCacheTTL)
 	return result, nil
+}
+
+// GetAllPinnedHappenings gets all the happenings that are currently pinned.
+func (r *HappeningRepo) GetAllPinnedHappenings(ctx context.Context) ([]model.CMSHappening, error) {
+	r.logger.Info(ctx, "getting all pinned happenings from sanity")
+	allPinnedHappeningsQuery := createAllHappeningsQuery([]string{`&& isPinned == true`})
+	result, err := sanity.Query[[]model.CMSHappening](ctx, r.client, allPinnedHappeningsQuery, nil)
+	if err != nil {
+		r.logger.Error(ctx, "failed to get all pinned happenings from sanity", "error", err)
+		return nil, err
+	}
+	return result, nil
+}
+
+// UnpinHappenings unpins all provided happening ids.
+func (r *HappeningRepo) UnpinHappenings(ctx context.Context, ids []string) error {
+	r.logger.Info(ctx, "unpinning happenings in sanity", "ids", ids)
+	patch := r.client.Patch()
+	for _, id := range ids {
+		patch.Set(id, map[string]any{
+			"isPinned": false,
+		})
+	}
+	return patch.Commit(ctx)
 }

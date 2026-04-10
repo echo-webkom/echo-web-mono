@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"os"
 	"syscall"
@@ -11,9 +12,11 @@ import (
 	"uno/cron/jobs"
 	"uno/domain/port"
 	"uno/domain/service"
+	sanityinfra "uno/infrastructure/external/sanity"
 	"uno/infrastructure/filestorage"
 	"uno/infrastructure/logging"
 	"uno/infrastructure/postgres"
+	"uno/pkg/sanity"
 
 	"github.com/jesperkha/notifier"
 )
@@ -48,6 +51,35 @@ func RunCron() {
 	} else {
 		logger.Info(context.Background(), "file storage connected")
 	}
+
+	// Initialize Redis client (falls back to in-memory cache if not configured)
+	redisClient, cacheInvalidator := initRedis(cfg.RedisURL, logger)
+
+	sanityClient, err := sanity.New(sanity.Config{
+		ProjectID:  cfg.SanityProjectID,
+		Dataset:    cfg.SanityDataset,
+		APIVersion: cfg.SanityAPIVersion,
+		Token:      cfg.SanityAPIToken,
+	})
+	if err != nil {
+		logger.Error(context.Background(), "failed to create sanity client", "error", err)
+		log.Fatal(err)
+	}
+	cmsHappeningRepo := sanityinfra.NewHappeningRepo(sanityClient, logger, redisClient)
+	cmsService := service.NewCMSService(
+		cmsHappeningRepo,
+		nil,
+		nil,
+		nil,
+		nil,
+		nil,
+		nil,
+		nil,
+		nil,
+		nil,
+		nil,
+		cacheInvalidator,
+	)
 
 	client := &http.Client{
 		Timeout: 30 * time.Second,
@@ -108,9 +140,12 @@ func RunCron() {
 		Spec: "0 2 * * *",
 		Job:  jobs.NewModerationCleanup(strikeService),
 	})
-
-	// TODO: Add job for unpinning happenings after registration end.
-	// Requires Sanity client integration in Uno cron worker.
+	// Job to unpin happenings after registration end every hour.
+	runner.AddSchedule(cronrunner.Schedule{
+		Name: "unpin_happenings_after_registration_end",
+		Spec: "0 * * * *",
+		Job:  jobs.NewUnpinHappeningsAfterRegistrationEnd(logger, cmsService),
+	})
 
 	if err := runner.Start(); err != nil {
 		logger.Error(context.Background(), "failed to start cron runner", "error", err)

@@ -131,3 +131,90 @@ func Query[T any](ctx context.Context, client *Client, query string, params map[
 
 	return out, nil
 }
+
+type Mutation interface {
+	Body() map[string]any
+}
+
+type SetMutation struct {
+	DocumentID string         `json:"id"`
+	SetBody    map[string]any `json:"set"`
+}
+
+func (m SetMutation) Body() map[string]any {
+	return map[string]any{
+		"id":  m.DocumentID,
+		"set": m.SetBody,
+	}
+}
+
+func (m SetMutation) MarshalJSON() ([]byte, error) {
+	return json.Marshal(map[string]any{
+		"patch": m.Body(),
+	})
+}
+
+type PatchBuilder struct {
+	client    *Client
+	Mutations []Mutation
+}
+
+func (c *Client) Patch() *PatchBuilder {
+	return &PatchBuilder{
+		client: c,
+	}
+}
+
+func (c *PatchBuilder) Set(docID string, set map[string]any) *PatchBuilder {
+	c.Mutations = append(c.Mutations, SetMutation{
+		DocumentID: docID,
+		SetBody:    set,
+	})
+	return c
+}
+
+func (c *PatchBuilder) Commit(ctx context.Context) error {
+	if len(c.Mutations) == 0 {
+		return nil
+	}
+
+	endpoint, err := url.Parse(c.client.baseURL)
+	if err != nil {
+		return ErrFailedToCreateURL
+	}
+
+	endpoint.Path = strings.Replace(endpoint.Path, "/data/query/", "/data/mutate/", 1)
+
+	reqBody := map[string]any{
+		"mutations": c.Mutations,
+	}
+
+	bodyBytes, err := json.Marshal(reqBody)
+	if err != nil {
+		return ErrFailedToCreateRequest
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint.String(), strings.NewReader(string(bodyBytes)))
+	if err != nil {
+		return ErrFailedToCreateRequest
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	if c.client.token != "" {
+		req.Header.Set("Authorization", "Bearer "+c.client.token)
+	}
+
+	resp, err := HttpClient.Do(req)
+	if err != nil {
+		return ErrFailedToFetchData
+	}
+	defer func() {
+		_ = resp.Body.Close()
+	}()
+
+	if resp.StatusCode < 200 || resp.StatusCode >= 400 {
+		return ErrUnexpectedStatusCode
+	}
+
+	return nil
+}

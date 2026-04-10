@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"uno/domain/port"
+	"uno/domain/service"
 )
 
 const (
@@ -49,5 +50,27 @@ func (j *CloseProgrammerBarJob) Run(ctx context.Context) error {
 	} else {
 		j.logger.Info(ctx, "closed bar", "status", resp.StatusCode)
 	}
+	return nil
+}
+
+type UnpinHappeningsAfterRegistrationEndJob struct {
+	logger     port.Logger
+	cmsService *service.CMSService
+}
+
+func NewUnpinHappeningsAfterRegistrationEnd(logger port.Logger, cmsService *service.CMSService) *UnpinHappeningsAfterRegistrationEndJob {
+	return &UnpinHappeningsAfterRegistrationEndJob{
+		logger:     logger,
+		cmsService: cmsService,
+	}
+}
+
+func (j *UnpinHappeningsAfterRegistrationEndJob) Run(ctx context.Context) error {
+	err := j.cmsService.UnpinHappeningsAfterRegistrationEnd(ctx)
+	if err != nil {
+		j.logger.Error(ctx, "failed to unpin happenings after registration end", "error", err)
+		return err
+	}
+	j.logger.Info(ctx, "unpinned happenings after registration end")
 	return nil
 }
