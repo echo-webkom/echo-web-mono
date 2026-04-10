@@ -36,12 +36,18 @@ required = true
 default = "http://localhost:3000"
 kind = "Url"
 
-# The URL we use to send analytics events to
-# Used by: uno
+# The URL of the Umami analytics instance
+# Used by: web
 [[entries]]
-key = "NEXT_PUBLIC_PLAUSIBLE_SCRIPT_URL"
+key = "NEXT_PUBLIC_UMAMI_URL"
 required = false
 kind = "Url"
+
+# The Umami website ID for tracking
+# Used by: web
+[[entries]]
+key = "NEXT_PUBLIC_UMAMI_WEBSITE_ID"
+required = false
 
 # What port the Uno API server should listen on.
 # Used by: uno

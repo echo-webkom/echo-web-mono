@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import { type Metadata, type Viewport } from "next";
-import PlausibleProvider from "next-plausible";
 import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
+import Script from "next/script";
 import NextTopLoader from "nextjs-toploader";
 
 import { auth, getSessionToken } from "@/auth/session";
@@ -11,7 +11,7 @@ import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { GlobalSearch } from "@/components/global-search";
 import { Toaster } from "@/components/toaster";
-import { BASE_URL, ENVIRONMENT, IS_DEVTOOLS_ENABLED } from "@/config";
+import { BASE_URL, IS_DEVTOOLS_ENABLED } from "@/config";
 import { cn } from "@/utils/cn";
 
 import { Providers } from "./providers";
@@ -86,7 +86,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const isChristmas = (month === 10 && date.getDate() >= 16) || month === 11;
   const theme = isOctober ? "halloween" : isChristmas ? "christmas" : "default";
 
-  const plausibleSrc = process.env.NEXT_PUBLIC_PLAUSIBLE_BASE_URL;
+  const umamiUrl = process.env.NEXT_PUBLIC_UMAMI_URL;
+  const umamiWebsiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
 
   return (
     <html lang="no" data-theme={theme} suppressHydrationWarning>
@@ -99,26 +100,24 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           vt323.variable,
         )}
       >
-        <PlausibleProvider
-          domain="echo.uib.no"
-          customDomain={plausibleSrc}
-          enabled={ENVIRONMENT === "production" && Boolean(plausibleSrc)}
-          taggedEvents
-          selfHosted
-          trackOutboundLinks
-          manualPageviews
-        >
-          <Providers user={user} sessionToken={sessionToken}>
-            <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
-            {children}
-            <Toaster />
-            <FeedbackBlob />
-            <TailwindIndicator />
-            <EasterEgg />
-            <GlobalSearch />
-            {IS_DEVTOOLS_ENABLED && <DevtoolsLoginDialog />}
-          </Providers>
-        </PlausibleProvider>
+        {umamiUrl && umamiWebsiteId && (
+          <Script
+            src={`${umamiUrl}/script.js`}
+            data-website-id={umamiWebsiteId}
+            data-endpoint="/api/t"
+            strategy="afterInteractive"
+          />
+        )}
+        <Providers user={user} sessionToken={sessionToken}>
+          <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
+          {children}
+          <Toaster />
+          <FeedbackBlob />
+          <TailwindIndicator />
+          <EasterEgg />
+          <GlobalSearch />
+          {IS_DEVTOOLS_ENABLED && <DevtoolsLoginDialog />}
+        </Providers>
       </body>
     </html>
   );
