@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --filter=@echo-webkom/web --filter=@echo-webkom/cms --filter=@echo-webkom/uno --filter=@echo-webkom/db",
-    "dev:all": "turbo run dev",
+    "dev": "./check.sh && turbo run dev --filter=@echo-webkom/web --filter=@echo-webkom/cms --filter=@echo-webkom/uno --filter=@echo-webkom/db",
+    "dev:all": "./check.sh && turbo run dev",
     "web:dev": "pnpm run --filter=web dev",
     "cms:dev": "pnpm run --filter=cms dev",
     "db:dev": "pnpm run --filter=db dev",
