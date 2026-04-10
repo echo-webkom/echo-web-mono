@@ -10,6 +10,11 @@ export function proxy(req: NextRequest) {
       return NextResponse.next();
     }
 
+    const isPrefetch = req.headers.get("next-router-prefetch") === "1";
+    if (isPrefetch) {
+      return NextResponse.next();
+    }
+
     const ip = req.headers.get("x-forwarded-for") ?? req.headers.get("x-real-ip") ?? "";
     const ua = req.headers.get("user-agent") ?? "";
     const referrer = req.headers.get("referer") ?? "";
