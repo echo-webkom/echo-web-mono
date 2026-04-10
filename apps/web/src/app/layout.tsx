@@ -8,6 +8,7 @@ import { DevtoolsLoginDialog } from "@/components/devtools/devtools-login-dialog
 import { TailwindIndicator } from "@/components/devtools/tailwind-indicator";
 import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
+import { GlobalSearch } from "@/components/global-search";
 import { Toaster } from "@/components/toaster";
 import { BASE_URL, IS_DEVTOOLS_ENABLED } from "@/config";
 import { cn } from "@/utils/cn";
@@ -102,6 +103,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <FeedbackBlob />
           <TailwindIndicator />
           <EasterEgg />
+          <GlobalSearch />
           {IS_DEVTOOLS_ENABLED && <DevtoolsLoginDialog />}
         </Providers>
       </body>
