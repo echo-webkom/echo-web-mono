@@ -24,7 +24,7 @@ export const JobAdCarousel = ({ jobAds }: { jobAds: Array<JobAd> }) => {
       <ul className="flex snap-x snap-mandatory gap-5 overflow-x-auto sm:hidden">
         {jobAds.map((jobAd) => (
           <li key={jobAd._id} className="min-w-[90%] snap-center">
-            <JobAdPreview jobAd={jobAd} hideBorder={true} />
+            <JobAdPreview jobAd={jobAd} className="border-0" />
           </li>
         ))}
       </ul>
@@ -43,7 +43,7 @@ export const JobAdCarousel = ({ jobAds }: { jobAds: Array<JobAd> }) => {
         <ul className="flex gap-2">
           {currentAds.map((jobAd) => (
             <li key={jobAd._id} className="flex-1">
-              <JobAdPreview jobAd={jobAd} hideBorder={true} />
+              <JobAdPreview jobAd={jobAd} className="border-0" />
             </li>
           ))}
         </ul>

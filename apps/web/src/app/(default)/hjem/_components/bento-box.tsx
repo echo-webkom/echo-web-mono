@@ -1,6 +1,6 @@
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-import { Heading } from "@/components/typography/heading";
 import { cn } from "@/utils/cn";
 
 type BentoBoxProps = {
@@ -12,21 +12,23 @@ type BentoBoxProps = {
 
 export const BentoBox = ({ title, href, children, className }: BentoBoxProps) => {
   return (
-    <section className={cn("flex flex-col gap-2 rounded-md border-2 p-2", className)}>
-      {href ? (
-        <Link
-          href={href}
-          className="group relative mx-auto flex items-center underline-offset-4 hover:underline"
-        >
-          <Heading className="text-center text-2xl font-medium">{title}</Heading>
-        </Link>
-      ) : (
-        <Heading className="mx-auto text-center text-2xl font-medium">{title}</Heading>
-      )}
-
-      <hr className="border-b" />
-
-      {children}
+    <section
+      className={cn("flex flex-col overflow-hidden rounded-xl border bg-card shadow-sm", className)}
+    >
+      <div className="flex items-center border-b px-5 py-3">
+        {href ? (
+          <Link
+            href={href}
+            className="group flex items-center gap-1 underline-offset-4 hover:underline"
+          >
+            <span className="text-lg font-semibold">{title}</span>
+            <ChevronRight className="text-muted-foreground size-4 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        ) : (
+          <span className="text-lg font-semibold">{title}</span>
+        )}
+      </div>
+      <div className="flex flex-1 flex-col gap-2 p-4">{children}</div>
     </section>
   );
 };

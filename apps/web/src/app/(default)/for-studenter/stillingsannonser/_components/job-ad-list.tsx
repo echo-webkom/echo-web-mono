@@ -228,8 +228,7 @@ export const JobAdList = ({ jobAds }: JobAdListProps) => {
         <ul className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           {filteredJobAds.map((jobAd) => (
             <li key={jobAd._id}>
-              {/* FIX hideBorder thing */}
-              <JobAdPreview jobAd={jobAd} hideBorder />
+              <JobAdPreview jobAd={jobAd} />
             </li>
           ))}
         </ul>
