@@ -3,6 +3,8 @@ packages:
   - packages/*
   - playwright
 
+minimumReleaseAge: 10080
+
 onlyBuiltDependencies:
   - "@swc/core"
   - "@tailwindcss/oxide"
