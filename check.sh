@@ -12,14 +12,14 @@ check() {
     fi
 }
 
-check "Docker (running)"     "docker info"                              "Docker is not running"
-check "Go"                   "go version"                               "Go is not installed"
-check "cenv"                 "command -v cenv"                          "cenv is not installed"
-check "air"                  "command -v air"                           "air is not installed (go install github.com/air-verse/air@latest)"
-check "swag"                 "command -v swag"                          "swag is not installed (go install github.com/swaggo/swag/cmd/swag@latest)"
-check "mockery"              "command -v mockery"                       "mockery is not installed (go install github.com/vektra/mockery/v3@latest)"
-check "golangci-lint"        "command -v golangci-lint"                 "golangci-lint is not installed"
-check "node_modules"         "[ -d node_modules ]"                      "node_modules not found, run: pnpm i"
-check "cenv configuration"   "cenv check"                               "cenv check failed, check your .env file"
+check "Docker (running)"     "docker info"                                      "Docker is not running"
+check "Go"                   "go version"                                       "Go is not installed"
+check "cenv"                 "command -v cenv"                                  "cenv is not installed"
+check "air"                  "command -v air"                                   "air is not installed (go install github.com/air-verse/air@latest)"
+check "swag"                 "command -v swag"                                  "swag is not installed (go install github.com/swaggo/swag/cmd/swag@latest)"
+check "mockery"              "command -v mockery"                               "mockery is not installed (go install github.com/vektra/mockery/v3@latest)"
+check "golangci-lint"        "command -v golangci-lint"                         "golangci-lint is not installed"
+check "node_modules"         "pnpm install --frozen-lockfile --lockfile-only"   "missing dependencies (pnpm i)"
+check "cenv configuration"   "cenv check"                                       "cenv check failed (cenv fix)"
 
 [ $FAILED -eq 0 ] && echo "All checks passed." || { echo "Some checks failed."; exit 1; }
