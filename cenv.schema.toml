@@ -36,6 +36,13 @@ required = true
 default = "http://localhost:3000"
 kind = "Url"
 
+# The URL we use to send analytics events to
+# Used by: uno
+[[entries]]
+key = "NEXT_PUBLIC_PLAUSIBLE_SCRIPT_URL"
+required = false
+kind = "Url"
+
 # What port the Uno API server should listen on.
 # Used by: uno
 [[entries]]
