@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import { type Metadata, type Viewport } from "next";
+import PlausibleProvider from "next-plausible";
 import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
@@ -10,7 +11,7 @@ import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { GlobalSearch } from "@/components/global-search";
 import { Toaster } from "@/components/toaster";
-import { BASE_URL, IS_DEVTOOLS_ENABLED } from "@/config";
+import { BASE_URL, ENVIRONMENT, IS_DEVTOOLS_ENABLED } from "@/config";
 import { cn } from "@/utils/cn";
 
 import { Providers } from "./providers";
@@ -85,6 +86,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const isChristmas = (month === 10 && date.getDate() >= 16) || month === 11;
   const theme = isOctober ? "halloween" : isChristmas ? "christmas" : "default";
 
+  const plausibleSrc = process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_URL;
+
   return (
     <html lang="no" data-theme={theme} suppressHydrationWarning>
       <head />
@@ -96,16 +99,26 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           vt323.variable,
         )}
       >
-        <Providers user={user} sessionToken={sessionToken}>
-          <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
-          {children}
-          <Toaster />
-          <FeedbackBlob />
-          <TailwindIndicator />
-          <EasterEgg />
-          <GlobalSearch />
-          {IS_DEVTOOLS_ENABLED && <DevtoolsLoginDialog />}
-        </Providers>
+        <PlausibleProvider
+          domain="echo.uib.no"
+          customDomain={plausibleSrc}
+          enabled={ENVIRONMENT === "production" && Boolean(plausibleSrc)}
+          taggedEvents
+          selfHosted
+          trackOutboundLinks
+          manualPageviews
+        >
+          <Providers user={user} sessionToken={sessionToken}>
+            <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
+            {children}
+            <Toaster />
+            <FeedbackBlob />
+            <TailwindIndicator />
+            <EasterEgg />
+            <GlobalSearch />
+            {IS_DEVTOOLS_ENABLED && <DevtoolsLoginDialog />}
+          </Providers>
+        </PlausibleProvider>
       </body>
     </html>
   );

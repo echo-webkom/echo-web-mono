@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withPlausibleProxy } from "next-plausible";
 
 let NEXT_OUTPUT = process.env.NEXT_OUTPUT as "export" | "standalone" | undefined;
 
@@ -6,7 +7,7 @@ if (NEXT_OUTPUT && !["export", "standalone"]?.includes(NEXT_OUTPUT)) {
   NEXT_OUTPUT = undefined;
 }
 
-const config = {
+const config = withPlausibleProxy({ customDomain: process.env.NEXT_PUBLIC_PLAUSIBLE_SCRIPT_URL })({
   reactCompiler: true,
   output: NEXT_OUTPUT,
 
@@ -104,6 +105,6 @@ const config = {
   skipTrailingSlashRedirect: true,
 
   typescript: { ignoreBuildErrors: !!process.env.CI },
-} satisfies NextConfig;
+} satisfies NextConfig);
 
 export default config;
