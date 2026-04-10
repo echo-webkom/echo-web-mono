@@ -2,6 +2,7 @@ package sanity
 
 import (
 	"context"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -98,5 +99,51 @@ func TestQuery(t *testing.T) {
 		require.Error(t, err)
 		assert.ErrorIs(t, err, ErrFailedToDecodeData)
 		assert.Equal(t, map[string]any(nil), resp)
+	})
+}
+
+func TestPatchCommit(t *testing.T) {
+	t.Run("sends mutations wrapped in patch key", func(t *testing.T) {
+		var capturedBody []byte
+
+		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			assert.Equal(t, http.MethodPost, r.Method)
+			assert.Equal(t, "application/json", r.Header.Get("Content-Type"))
+			assert.Equal(t, "Bearer secret", r.Header.Get("Authorization"))
+
+			var err error
+			capturedBody, err = io.ReadAll(r.Body)
+			require.NoError(t, err)
+
+			w.WriteHeader(http.StatusOK)
+		}))
+		defer server.Close()
+
+		previous := HttpClient
+		HttpClient = server.Client()
+		t.Cleanup(func() {
+			HttpClient = previous
+		})
+
+		client := &Client{
+			baseURL: server.URL + "/v2025-02-19/data/query/production",
+			token:   "secret",
+		}
+
+		err := client.Patch().Set("doc-123", map[string]any{
+			"isPinned": false,
+		}).Commit(context.Background())
+		require.NoError(t, err)
+
+		assert.JSONEq(t,
+			`{"mutations":[{"patch":{"id":"doc-123","set":{"isPinned":false}}}]}`,
+			string(capturedBody),
+		)
+	})
+
+	t.Run("does nothing when there are no mutations", func(t *testing.T) {
+		client := &Client{baseURL: "http://localhost"}
+		err := client.Patch().Commit(context.Background())
+		require.NoError(t, err)
 	})
 }
