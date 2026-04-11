@@ -28,7 +28,7 @@ export const Footer = ({ className }: FooterProps) => {
 
   return (
     <div className={cn("selection:bg-primary mt-32", className)}>
-      <footer className="border-footer-border bg-footer text-footer-foreground relative border-2 px-10 py-24">
+      <footer className="bg-footer text-footer-foreground relative border-t px-10 py-24">
         <CommitLabel />
         <UsefulLinks />
 
