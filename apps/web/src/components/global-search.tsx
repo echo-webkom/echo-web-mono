@@ -11,6 +11,8 @@ import { cn } from "@/utils/cn";
 
 import { headerRoutes, type Route } from "../lib/routes";
 
+const MAX_RESULTS = 10;
+
 type SearchItem = {
   title: string;
   href: string;
@@ -131,9 +133,9 @@ export const GlobalSearch = () => {
         .map((item) => ({ item, score: fuzzyScore(query, item.title) }))
         .filter(({ score }) => score > 0)
         .sort((a, b) => b.score - a.score)
-        .slice(0, 10)
+        .slice(0, MAX_RESULTS)
         .map(({ item }) => item)
-    : staticPages.slice(0, 10);
+    : [];
 
   const clampedIndex = Math.min(selectedIndex, results.length - 1);
 
@@ -169,61 +171,61 @@ export const GlobalSearch = () => {
   return (
     <>
       <div
-        className="bg-background/80 fixed inset-0 z-50 backdrop-blur-xs"
+        className="bg-background/60 fixed inset-0 z-50 backdrop-blur-sm"
         onClick={() => setIsOpen(false)}
       />
       <div
         className={cn(
-          "fixed top-[20%] left-1/2 z-50 w-full max-w-xl -translate-x-1/2 overflow-hidden rounded-lg border bg-background shadow-lg",
+          "fixed top-[18%] left-1/2 z-50 flex w-full max-w-3xl -translate-x-1/2 flex-col gap-2",
           "animate-in fade-in-0 zoom-in-95 duration-150",
         )}
       >
-        <div className="flex items-center gap-3 border-b px-4 py-3">
-          <SearchIcon className="text-muted-foreground size-4 shrink-0" />
+        {/* Search bar */}
+        <div className="bg-background flex items-center gap-3 rounded-md border px-6 py-2 shadow-2xl">
+          <SearchIcon className="text-muted-foreground size-5 shrink-0" />
           <input
             ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="placeholder:text-muted-foreground flex-1 bg-transparent text-sm outline-none"
+            className="placeholder:text-muted-foreground flex-1 border-none bg-transparent text-base outline-none focus:ring-0 focus:outline-none"
             placeholder="Søk etter sider og arrangementer..."
           />
-          <kbd className="text-muted-foreground rounded border px-1.5 py-0.5 font-mono text-xs">
-            ESC
-          </kbd>
+          <kbd className="text-muted-foreground rounded px-1.5 py-0.5 font-mono text-xs">ESC</kbd>
         </div>
 
-        <div className="max-h-[min(60vh,400px)] overflow-y-auto p-1">
-          {results.length === 0 ? (
-            <p className="text-muted-foreground px-3 py-6 text-center text-sm">Ingen resultater</p>
-          ) : (
-            results.map((item, i) => (
-              <button
-                key={item.href}
-                onClick={() => {
-                  router.push(item.href);
-                  setIsOpen(false);
-                }}
-                onMouseEnter={() => setSelectedIndex(i)}
-                className={cn(
-                  "flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm",
-                  i === clampedIndex
-                    ? "bg-primary text-primary-foreground"
-                    : "hover:bg-accent hover:text-accent-foreground",
-                )}
-              >
-                <span className="font-medium">{item.title}</span>
-                <span
+        {/* Results */}
+        {results.length > 0 && (
+          <div className="bg-background overflow-hidden rounded-md border shadow-2xl">
+            <div className="overflow-y-auto p-1">
+              {results.map((item, i) => (
+                <button
+                  key={item.href}
+                  onClick={() => {
+                    router.push(item.href);
+                    setIsOpen(false);
+                  }}
+                  onMouseEnter={() => setSelectedIndex(i)}
                   className={cn(
-                    "text-xs",
-                    i === clampedIndex ? "text-primary-foreground/70" : "text-muted-foreground",
+                    "flex w-full items-center justify-between rounded-sm px-3 py-2.5 text-left text-sm",
+                    i === clampedIndex
+                      ? "bg-primary text-primary-foreground"
+                      : "hover:bg-accent hover:text-accent-foreground",
                   )}
                 >
-                  {item.category}
-                </span>
-              </button>
-            ))
-          )}
-        </div>
+                  <span className="font-medium">{item.title}</span>
+                  <span
+                    className={cn(
+                      "text-xs",
+                      i === clampedIndex ? "text-primary-foreground/70" : "text-muted-foreground",
+                    )}
+                  >
+                    {item.category}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
