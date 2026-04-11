@@ -617,6 +617,7 @@ export class UnoClient {
   sanity: SanityApi;
   auth: AuthApi;
   notifications: NotificationsApi;
+  trophies: TrophiesApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -648,6 +649,7 @@ export class UnoClient {
     this.sanity = new SanityApi(this);
     this.auth = new AuthApi(this);
     this.notifications = new NotificationsApi(this);
+    this.trophies = new TrophiesApi(this);
   }
 
   normalizePath(path: string) {
@@ -1597,5 +1599,22 @@ class NotificationsApi {
   async archive(id: number) {
     const response = await this.client.request("PATCH", `notifications/${id}/archive`);
     return response.status === 200;
+  }
+}
+
+class TrophiesApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all() {
+    const response = await this.client.request("GET", "sanity/trophies");
+    if (!response.ok) {
+      console.log("resp = ", await response.text());
+      return [];
+    }
+    return await response.json();
   }
 }

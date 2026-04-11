@@ -8,8 +8,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { fetchAllTrophies } from "@/sanity/trophies";
 import { urlFor } from "../../../../../../lib/sanity";
+import { unoWithAdmin } from "../../../../../../api/server";
 
 export default async function UserTrophies() {
   const user = await auth();
@@ -18,7 +18,7 @@ export default async function UserTrophies() {
     return redirect("/auth/logg-inn");
   }
 
-  const trophies = await fetchAllTrophies();
+  const trophies = await Promise.all([unoWithAdmin.trophies.all()]);
 
   if (!trophies) {
     return <p>Kunne ikke hente troféer.</p>;

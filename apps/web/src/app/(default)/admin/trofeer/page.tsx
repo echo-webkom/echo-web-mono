@@ -4,7 +4,6 @@ import { Container } from "@/components/container";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { ensureWebkomOrHovedstyret } from "@/lib/ensure";
-import { fetchAllTrophies } from "@/sanity/trophies";
 import { UserTrophiesModal } from "./usertrophies-modal";
 import { unoWithAdmin } from "../../../../api/server";
 import { urlFor } from "../../../../lib/sanity";
@@ -12,7 +11,7 @@ import { urlFor } from "../../../../lib/sanity";
 export default async function TrophyPage() {
   await ensureWebkomOrHovedstyret();
 
-  const trophies = await fetchAllTrophies();
+  const trophies = await Promise.all([unoWithAdmin.trophies.all()]);
   const [users] = await Promise.all([unoWithAdmin.users.all()]);
 
   if (!trophies) {
