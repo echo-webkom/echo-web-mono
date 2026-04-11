@@ -64,3 +64,7 @@ type CMSMovieRepo interface {
 type CMSHSApplicationRepo interface {
 	GetAllHSApplications(ctx context.Context) ([]model.CMSHSApplication, error)
 }
+
+type CMSTrophyRepo interface {
+	GetAllTrophies(ctx context.Context) ([]model.CMSTrophy, error)
+}

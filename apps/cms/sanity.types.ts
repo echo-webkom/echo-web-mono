@@ -549,11 +549,6 @@ type ArrayOf<T> = Array<T & {
   _key: string;
 }>;
 
-// Source: ../web/src/sanity/trophies-queries.ts
-// Variable: allTrophiesQuery
-// Query: *[_type == "trophies"] | order(title asc) {  _id,  title,  "slug": slug.current,  baseImage,  baseDescription,  trophies[]{    _key,    title,    description,    level,    image  },}
-export type AllTrophiesQueryResult = Array<never>;
-
 // Source: ../../packages/seeder/src/sanity/query.ts
 // Variable: happeningQueryList
 // Query: *[_type == "happening" && !(_id in path('drafts.**'))] {  _id,  title,  "slug": slug.current,  "date": date,  happeningType,  "registrationStartGroups": registrationStartGroups,  "registrationGroups": registrationGroups[]->slug.current,  "registrationStart": registrationStart,  "registrationEnd": registrationEnd,  "groups": organizers[]->slug.current,  "spotRanges": spotRanges[] {    spots,    minYear,    maxYear,  },  "questions": additionalQuestions[] {    id,    title,    required,    type,    isSensitive,    options,  }}
