@@ -26,5 +26,11 @@
     "**/.turbo": true,
     "**/node_modules": true,
     "**/pnpm-lock.yaml": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   }
 }
