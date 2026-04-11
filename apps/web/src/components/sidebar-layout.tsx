@@ -73,7 +73,7 @@ export const SidebarItem = ({ children, href }: { children: React.ReactNode; hre
     <li key={href}>
       <Link
         className={cn(
-          "hover:border-muted-dark hover:bg-muted flex rounded-xl border-2 border-transparent px-3 py-1 text-lg font-medium",
+          "hover:border-muted-dark hover:bg-muted flex rounded-md border border-transparent px-3 py-1 text-lg font-medium",
           {
             "bg-muted": isActive,
           },

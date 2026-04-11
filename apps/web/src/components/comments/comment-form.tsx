@@ -53,7 +53,7 @@ export const CommentForm = ({ id }: CommentFormProps) => {
         className="group text-muted-foreground flex w-fit items-center px-2 font-medium hover:underline"
       >
         Legg til kommentar
-        <ArrowRight className="ml-1 inline-block transform opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
+        <ArrowRight className="ml-1 inline-block size-4 transform opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
       </button>
     </form>
   );

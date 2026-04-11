@@ -135,7 +135,7 @@ export const UserSearchSelect = ({
 
   return (
     <div ref={ref} className="relative">
-      <div className="group border-border bg-input ring-offset-background focus-within:ring-ring relative flex h-10 w-full rounded-md border-2 text-sm font-semibold focus-within:ring-2 focus-within:ring-offset-2 focus-within:outline-hidden disabled:cursor-not-allowed disabled:opacity-50">
+      <div className="group border-border bg-input ring-offset-background focus-within:ring-ring relative flex h-10 w-full rounded-md border text-sm font-semibold focus-within:ring-2 focus-within:ring-offset-2 focus-within:outline-hidden disabled:cursor-not-allowed disabled:opacity-50">
         <input
           aria-label="user"
           autoComplete="off"
@@ -160,7 +160,7 @@ export const UserSearchSelect = ({
       </div>
 
       {isOpen && (
-        <ul className="border-border bg-input text-foreground absolute z-50 mt-1 flex max-h-96 w-full flex-col overflow-y-auto rounded-md border-2 px-3 py-2">
+        <ul className="border-border bg-input text-foreground absolute z-50 mt-1 flex max-h-96 w-full flex-col overflow-y-auto rounded-md border px-3 py-2">
           {query.length < MIN_SEARCH_LENGTH ? (
             <li className="text-muted-foreground px-2 py-2 text-sm">
               {minCharsText ?? `Skriv minst ${MIN_SEARCH_LENGTH} bokstaver for å søke`}
@@ -180,7 +180,7 @@ export const UserSearchSelect = ({
                     setIsOpen(false);
                   }}
                   className={cn(
-                    "focus:border-border flex w-full cursor-default items-center gap-2 rounded border-2 py-2 pr-4 pl-2 text-left outline-hidden select-none",
+                    "focus:border-border flex w-full cursor-default items-center gap-2 rounded border py-2 pr-4 pl-2 text-left outline-hidden select-none",
                     {
                       "border-border bg-muted": highlightedIndex === index,
                       "border-transparent": highlightedIndex !== index,

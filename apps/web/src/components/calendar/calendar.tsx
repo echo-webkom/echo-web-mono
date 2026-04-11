@@ -86,7 +86,7 @@ export const Calendar = ({ events, type }: CalendarProps) => {
 
   if (type === "multi") {
     return (
-      <div className="bg-card overflow-hidden rounded-xl border shadow-sm">
+      <div className="bg-card overflow-hidden rounded-md border shadow-sm">
         <Tabs value={currenetTab} className="w-full" onValueChange={handleViewChange}>
           <div className="flex w-full items-center gap-3 border-b px-4 py-2">
             <TabsList>

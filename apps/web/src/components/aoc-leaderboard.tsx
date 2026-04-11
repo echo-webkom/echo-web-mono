@@ -46,7 +46,7 @@ export const AocLeaderboard = async ({ className }: AocLeaderboardProps) => {
       title={`Advent of Code ${YEAR}`}
       href={LEADERBOARD_URL}
       className={cn(
-        "relative max-h-100 overflow-hidden rounded-lg border-2 border-[#298a08] bg-[#0f0f23] p-4 font-mono text-xs text-white sm:text-sm lg:text-base",
+        "relative max-h-100 overflow-hidden rounded-lg border border-[#298a08] bg-[#0f0f23] p-4 font-mono text-xs text-white sm:text-sm lg:text-base",
         className,
       )}
     >

@@ -72,7 +72,7 @@ export const SignInButtons = () => {
   };
 
   return (
-    <div className="border-muted-dark bg-muted mx-auto flex w-full max-w-95 flex-col rounded-xl border-2 p-8">
+    <div className="border-muted-dark bg-muted mx-auto flex w-full max-w-95 flex-col rounded-md border p-8">
       <Image src={EchoLogo} alt="echo logo" width={100} height={100} className="mx-auto" />
 
       <Heading level={3} className="mx-auto mb-8">

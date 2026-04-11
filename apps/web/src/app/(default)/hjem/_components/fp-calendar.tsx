@@ -6,7 +6,7 @@ export const FPCalendar = async ({ className }: { className?: string }) => {
   const calendarEvents = await getCalendarEvents();
 
   return (
-    <div className={cn("overflow-hidden rounded-xl border bg-card shadow-sm", className)}>
+    <div className={cn("overflow-hidden rounded-md border bg-card shadow-sm", className)}>
       <Calendar events={calendarEvents} type="week" />
     </div>
   );

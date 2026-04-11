@@ -18,7 +18,7 @@ export const JobAdPreview = ({ jobAd, className }: JobAdPreviewProps) => {
     <Link href={`/for-studenter/stillingsannonse/${jobAd.slug}`} className="h-full">
       <div
         className={cn(
-          "flex h-full flex-row items-center gap-4 rounded-xl border bg-card p-6 shadow-sm sm:gap-8",
+          "flex h-full flex-row items-center gap-4 rounded-md border bg-card p-6 shadow-sm sm:gap-8",
           "transition-colors duration-200 ease-in-out hover:bg-muted",
           className,
         )}

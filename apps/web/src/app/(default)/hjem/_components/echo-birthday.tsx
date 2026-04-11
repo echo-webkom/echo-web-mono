@@ -60,7 +60,7 @@ export default function EchoBirthdayBanner() {
           </p>
 
           {/* progress bar */}
-          <div className="border-border relative h-8 w-full overflow-hidden rounded-full border-2 bg-yellow-200">
+          <div className="border-border relative h-8 w-full overflow-hidden rounded-full border bg-yellow-200">
             <div
               className="absolute top-0 left-0 h-full rounded-full bg-sky-200"
               style={{ width: `${progressbar}%` }}

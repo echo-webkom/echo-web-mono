@@ -13,7 +13,7 @@ type BentoBoxProps = {
 export const BentoBox = ({ title, href, children, className }: BentoBoxProps) => {
   return (
     <section
-      className={cn("flex flex-col overflow-hidden rounded-xl border bg-card shadow-sm", className)}
+      className={cn("flex flex-col rounded-md overflow-hidden border bg-card shadow-sm", className)}
     >
       <div className="flex items-center border-b px-5 py-3">
         {href ? (

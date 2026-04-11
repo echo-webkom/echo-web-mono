@@ -3,7 +3,7 @@ import React from "react";
 
 import { cn } from "@/utils/cn";
 
-const chipVariants = cva("inline-block rounded-full border-2 px-3 py-1 text-xs font-semibold", {
+const chipVariants = cva("inline-block rounded-full border px-3 py-1 text-xs font-semibold", {
   variants: {
     variant: {
       primary: "border-primary-dark bg-primary text-primary-foreground",

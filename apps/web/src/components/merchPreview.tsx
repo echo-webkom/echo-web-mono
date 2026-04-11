@@ -12,7 +12,7 @@ type MerchPreviewProps = {
 export const MerchPreview = ({ item }: MerchPreviewProps) => {
   return (
     <Link href={`/for-studenter/merch/${item.slug}`} className="group block h-full">
-      <div className="flex h-full flex-col overflow-hidden rounded-lg border-2 transition-colors hover:bg-slate-50 dark:hover:bg-slate-900">
+      <div className="flex h-full flex-col overflow-hidden rounded-lg border transition-colors hover:bg-slate-50 dark:hover:bg-slate-900">
         <div className="relative aspect-video w-full overflow-hidden">
           <Image
             src={urlFor(item.image).width(800).height(450).fit("crop").url()}

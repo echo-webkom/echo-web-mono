@@ -99,7 +99,7 @@ const NavigationItem = ({ label, children }: { label: string; children: React.Re
   return (
     <li className="relative">
       <button
-        className="hover:bg-muted dark:text-foreground flex h-10 flex-row items-center gap-1 rounded-xl p-2 font-semibold text-gray-600"
+        className="hover:bg-muted dark:text-foreground flex h-10 flex-row items-center gap-1 rounded-md p-2 font-semibold text-gray-600"
         onClick={handleClick}
       >
         <span>{label}</span>
@@ -120,7 +120,7 @@ const NavigationLink = ({ children, to }: { children: React.ReactNode; to: strin
     <li>
       <Link
         href={to}
-        className="hover:bg-muted dark:text-foreground h-10 rounded-xl p-2 font-semibold text-gray-600 hover:underline"
+        className="hover:bg-muted dark:text-foreground h-10 rounded-md p-2 font-semibold text-gray-600 hover:underline"
       >
         {children}
       </Link>
@@ -240,7 +240,7 @@ type IconLinkProps = {
 const IconLink = ({ icon, ...props }: IconLinkProps) => {
   return (
     <Link
-      className="hover:border-border hover:bg-muted flex items-center rounded-xl border-2 border-transparent p-4"
+      className="hover:border-border hover:bg-muted flex items-center rounded-md border border-transparent p-4"
       href={props.href}
     >
       <div className="flex items-center gap-6">

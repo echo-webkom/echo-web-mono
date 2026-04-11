@@ -15,7 +15,7 @@ type StudentGroupPreviewProps = {
 export const StudentGroupPreview = ({ group }: StudentGroupPreviewProps) => {
   return (
     <Link href={`/for-studenter/gruppe/${group.slug}`} className="group block h-full">
-      <div className="flex h-full flex-col overflow-hidden rounded-lg border-2 transition-colors hover:bg-slate-50 dark:hover:bg-slate-900">
+      <div className="flex h-full flex-col overflow-hidden rounded-lg border transition-colors hover:bg-slate-50 dark:hover:bg-slate-900">
         {group.image && (
           <div className="relative h-32 w-full overflow-hidden">
             <Image

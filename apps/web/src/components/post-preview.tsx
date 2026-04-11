@@ -22,7 +22,7 @@ export const PostPreview = ({ post, withBorder = false, className }: PostPreview
     <Link href={`/for-studenter/innlegg/${post.slug}`}>
       <div
         className={cn(
-          "hover:border-muted-dark hover:bg-muted relative flex flex-col gap-1 rounded-xl border-2 p-6 transition-colors duration-200 ease-in-out",
+          "hover:border-muted-dark hover:bg-muted relative flex flex-col gap-1 rounded-md border p-6 transition-colors duration-200 ease-in-out",
           {
             "border-transparent": !withBorder,
             "bg-muted hover:bg-transparent": isNew,

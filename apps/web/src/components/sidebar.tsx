@@ -13,7 +13,7 @@ export const Sidebar = ({ className, children }: SidebarProps) => {
   return (
     <div
       className={cn(
-        "flex w-full flex-col gap-3 rounded-xl border bg-card p-6 shadow-sm",
+        "flex w-full flex-col gap-3 rounded-md border bg-card p-6 shadow-sm",
         className,
       )}
     >

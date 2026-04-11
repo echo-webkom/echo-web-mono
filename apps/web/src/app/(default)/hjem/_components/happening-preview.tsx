@@ -27,7 +27,7 @@ export const HappeningPreview = ({
     <Link href={href}>
       <div
         className={cn(
-          "hover:border-muted-dark hover:bg-muted relative flex h-18 items-center gap-4 rounded-xl border-2 border-transparent p-4",
+          "hover:border-muted-dark hover:bg-muted relative flex h-18 items-center gap-4 rounded-md border border-transparent p-4",
           {
             "h-26": happening.happeningType === "bedpres",
             "border-secondary-dark": happening.isPinned === true,

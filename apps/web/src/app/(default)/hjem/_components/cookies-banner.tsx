@@ -25,7 +25,7 @@ export default function Cookies() {
   if (consent !== "Accepted") {
     return (
       <div className="fixed bottom-10 z-50 flex w-full items-center justify-center">
-        <div className="flex w-full justify-self-center rounded-2xl border-2 border-black bg-white p-5 text-black sm:max-w-1/2">
+        <div className="flex w-full justify-self-center rounded-2xl border border-black bg-white p-5 text-black sm:max-w-1/2">
           <div className="space-y-5">
             <h1 className="text-2xl font-bold">Vi bruker cookies!</h1>
             <p>

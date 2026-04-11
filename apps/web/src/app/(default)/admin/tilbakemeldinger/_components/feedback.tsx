@@ -35,7 +35,7 @@ export const Feedback = ({ feedback }: { feedback: SiteFeedback }) => {
   };
 
   return (
-    <div className="bg-card text-card-foreground h-full w-full max-w-xl space-y-2 overflow-hidden rounded-lg border-2 px-4 py-5 sm:p-6">
+    <div className="bg-card text-card-foreground h-full w-full max-w-xl space-y-2 overflow-hidden rounded-lg border px-4 py-5 sm:p-6">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-muted-foreground text-xs">{parseDate(feedback.createdAt)}</p>

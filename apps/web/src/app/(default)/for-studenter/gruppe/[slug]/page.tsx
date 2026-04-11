@@ -138,7 +138,7 @@ export default async function GroupPage(props: Props) {
             height={475}
             src={urlFor(group.image).url()}
             alt={group.name}
-            className="rounded-lg border-2"
+            className="rounded-lg border"
           />
         </div>
       )}

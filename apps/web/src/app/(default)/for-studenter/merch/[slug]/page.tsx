@@ -43,7 +43,7 @@ export default async function MerchPage(props: Props) {
     <Container className="mx-auto max-w-6xl px-6 py-10">
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
         {/* Image Column */}
-        <div className="relative aspect-square w-full overflow-hidden rounded-lg border-2">
+        <div className="relative aspect-square w-full overflow-hidden rounded-lg border">
           <Image
             src={urlFor(merch.image).width(800).height(800).fit("crop").url()}
             alt={merch.title}
@@ -65,7 +65,7 @@ export default async function MerchPage(props: Props) {
             </div>
           )}
 
-          <div className="rounded-lg border-2 bg-slate-50 p-6 dark:bg-slate-900">
+          <div className="rounded-lg border bg-slate-50 p-6 dark:bg-slate-900">
             <Text className="text-base">
               Send mail til <span className="font-semibold underline">echo@uib.no</span> for kjøp
             </Text>

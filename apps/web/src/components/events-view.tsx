@@ -122,7 +122,7 @@ export const EventsView = async ({ searchParams }: { searchParams: SearchParams 
   }
 
   return (
-    <ul className="bg-card overflow-hidden rounded-xl border shadow-sm">
+    <ul className="bg-card overflow-hidden rounded-md border shadow-sm">
       {happenings.map((event) => (
         <li key={event._id} className="border-b last:border-b-0">
           <CombinedHappeningPreview happening={event} />

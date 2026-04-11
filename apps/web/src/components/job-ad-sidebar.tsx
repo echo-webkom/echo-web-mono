@@ -17,11 +17,11 @@ type JobAdSidebarProps = {
 
 export const JobAdSidebar = ({ jobAd }: JobAdSidebarProps) => {
   return (
-    <Sidebar className="flex h-fit w-full flex-col gap-4 lg:max-w-[360px]">
+    <Sidebar className="flex h-fit w-full flex-col gap-4 lg:max-w-90">
       {jobAd.company && (
         <SidebarItem>
           <Link href={jobAd.company.website}>
-            <div className="overflow-hidden rounded-xl border bg-white">
+            <div className="overflow-hidden rounded-md border bg-white">
               <div className="relative aspect-square w-full">
                 <Image
                   src={urlFor(jobAd.company.image).url()}
