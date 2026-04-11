@@ -131,13 +131,12 @@ export const Calendar = ({ events, type }: CalendarProps) => {
   return (
     <div className="flex flex-col">
       <div className="flex w-full items-center gap-2 border-b px-4 py-2">
-        <Button asChild variant="ghost" size="sm">
+        <Button variant="outline" size="icon" asChild>
           <Link href="/for-studenter/arrangementer">
             <CalendarIcon className="size-4" />
           </Link>
         </Button>
         <span className="flex-1 text-sm font-semibold capitalize">{topText}</span>
-        <Legend />
         <CalendarControl
           prev={handlePrevStep}
           next={handleNextStep}
@@ -149,6 +148,9 @@ export const Calendar = ({ events, type }: CalendarProps) => {
       ) : (
         <MonthCalendar events={events} steps={steps} setMonthText={setTopText} />
       )}
+      <div className="hidden border-t p-4 sm:block">
+        <Legend />
+      </div>
     </div>
   );
 };
