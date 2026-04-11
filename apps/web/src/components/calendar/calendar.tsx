@@ -3,13 +3,14 @@
 import { Calendar as CalendarIcon, Download } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useEffectEvent, useState } from "react";
+import { useEffect, useEffectEvent, useMemo, useState } from "react";
 
 import { Text } from "@/components/typography/text";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { type CalendarEvent } from "@/lib/calendar-event-helpers";
+import { type CalendarEvent, type CalendarEventType } from "@/lib/calendar-event-helpers";
+import { cn } from "@/utils/cn";
 
 import { CalendarControl } from "./calendar-control";
 import { CalendarExport } from "./calendar-export";
@@ -18,6 +19,26 @@ import { MonthCalendar } from "./month-calendar";
 
 const STEP_PARAM_NAME = "step";
 const TAB_PARAM_NAME = "view";
+
+const ALL_TYPES: Array<CalendarEventType> = ["bedpres", "event", "movie", "boardgame", "other"];
+
+const LEGEND_ITEMS: Array<{
+  type: CalendarEventType;
+  label: string;
+  bgClass: string;
+  borderClass: string;
+}> = [
+  { type: "bedpres", label: "Bedpres", bgClass: "bg-primary", borderClass: "border-primary" },
+  { type: "event", label: "Arrangement", bgClass: "bg-secondary", borderClass: "border-secondary" },
+  { type: "movie", label: "Film", bgClass: "bg-pink-400", borderClass: "border-pink-400" },
+  {
+    type: "boardgame",
+    label: "Brettspill",
+    bgClass: "bg-green-600",
+    borderClass: "border-green-600",
+  },
+  { type: "other", label: "Annet", bgClass: "bg-gray-600", borderClass: "border-gray-600" },
+];
 
 type CalendarTabType = "week" | "month";
 
@@ -33,6 +54,21 @@ export const Calendar = ({ events, type }: CalendarProps) => {
 
   const [topText, setTopText] = useState("Kalender");
   const [steps, setSteps] = useState(() => parseStepParam(searchParams));
+  const [activeTypes, setActiveTypes] = useState<Set<CalendarEventType>>(new Set(ALL_TYPES));
+
+  const toggleType = (type: CalendarEventType) => {
+    setActiveTypes((prev) => {
+      const next = new Set(prev);
+      if (next.has(type)) next.delete(type);
+      else next.add(type);
+      return next;
+    });
+  };
+
+  const filteredEvents = useMemo(
+    () => events.filter((e) => activeTypes.has(e.type)),
+    [events, activeTypes],
+  );
   const [currenetTab, currentTab] = useState<CalendarTabType>(() =>
     searchParams.get(TAB_PARAM_NAME) === "month" ? "month" : "week",
   );
@@ -102,10 +138,10 @@ export const Calendar = ({ events, type }: CalendarProps) => {
           </div>
 
           <TabsContent value="week">
-            <DaysCalendar events={events} steps={steps} isWeek setWeekText={setTopText} />
+            <DaysCalendar events={filteredEvents} steps={steps} isWeek setWeekText={setTopText} />
           </TabsContent>
           <TabsContent value="month">
-            <MonthCalendar events={events} steps={steps} setMonthText={setTopText} />
+            <MonthCalendar events={filteredEvents} steps={steps} setMonthText={setTopText} />
           </TabsContent>
 
           <div className="flex items-center gap-4 border-t px-4 py-3">
@@ -121,7 +157,7 @@ export const Calendar = ({ events, type }: CalendarProps) => {
                 <CalendarExport />
               </DialogContent>
             </Dialog>
-            <Legend />
+            <Legend activeTypes={activeTypes} onToggle={toggleType} />
           </div>
         </Tabs>
       </div>
@@ -131,13 +167,12 @@ export const Calendar = ({ events, type }: CalendarProps) => {
   return (
     <div className="flex flex-col">
       <div className="flex w-full items-center gap-2 border-b px-4 py-2">
-        <Button asChild variant="ghost" size="sm">
+        <Button variant="outline" size="icon" asChild>
           <Link href="/for-studenter/arrangementer">
             <CalendarIcon className="size-4" />
           </Link>
         </Button>
-        <span className="flex-1 text-sm font-semibold capitalize">{topText}</span>
-        <Legend />
+        <span className="flex-1 pl-2 text-sm font-semibold capitalize">{topText}</span>
         <CalendarControl
           prev={handlePrevStep}
           next={handleNextStep}
@@ -145,10 +180,13 @@ export const Calendar = ({ events, type }: CalendarProps) => {
         />
       </div>
       {type === "week" ? (
-        <DaysCalendar events={events} steps={steps} isWeek setWeekText={setTopText} />
+        <DaysCalendar events={filteredEvents} steps={steps} isWeek setWeekText={setTopText} />
       ) : (
-        <MonthCalendar events={events} steps={steps} setMonthText={setTopText} />
+        <MonthCalendar events={filteredEvents} steps={steps} setMonthText={setTopText} />
       )}
+      <div className="hidden border-t px-4 py-2 sm:block">
+        <Legend activeTypes={activeTypes} onToggle={toggleType} />
+      </div>
     </div>
   );
 };
@@ -167,29 +205,37 @@ function parseStepParam(params: URLSearchParams) {
   return v;
 }
 
-const Legend = () => {
+type LegendProps = {
+  activeTypes: Set<CalendarEventType>;
+  onToggle: (type: CalendarEventType) => void;
+};
+
+const Legend = ({ activeTypes, onToggle }: LegendProps) => {
   return (
-    <div className="hidden flex-wrap gap-3 text-xs sm:flex">
-      <div className="mr-2 flex items-center">
-        <div className="bg-primary mr-1 h-3 w-3 rounded-full"></div>
-        <div>Bedpres</div>
-      </div>
-      <div className="mr-2 flex items-center">
-        <div className="bg-secondary mr-1 h-3 w-3 rounded-full"></div>
-        <div>Arrangement</div>
-      </div>
-      <div className="mr-2 flex items-center">
-        <div className="mr-1 h-3 w-3 rounded-full bg-pink-400"></div>
-        <div>Film</div>
-      </div>
-      <div className="mr-2 flex items-center">
-        <div className="mr-1 h-3 w-3 rounded-full bg-green-600"></div>
-        <div>Brettspill</div>
-      </div>
-      <div className="flex items-center">
-        <div className="mr-1 h-3 w-3 rounded-full bg-gray-600"></div>
-        <div>Annet</div>
-      </div>
+    <div className="hidden flex-wrap gap-2 text-xs sm:flex">
+      {LEGEND_ITEMS.map(({ type, label, bgClass, borderClass }) => {
+        const active = activeTypes.has(type);
+        return (
+          <button
+            key={type}
+            onClick={() => onToggle(type)}
+            className="group flex cursor-pointer items-center gap-1"
+          >
+            <div
+              className={cn(
+                "h-3 w-3 rounded-full border transition-colors",
+                borderClass,
+                active ? bgClass : "bg-transparent",
+              )}
+            />
+            <span
+              className={cn("transition-opacity group-hover:underline", !active && "opacity-40")}
+            >
+              {label}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 };

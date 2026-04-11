@@ -7,7 +7,7 @@ import { stripMarkdown } from "@/utils/strip-markdown";
 
 import { createHappeningLink } from "./create-link";
 
-type CalendarEventType = "event" | "bedpres" | "movie" | "boardgame" | "other";
+export type CalendarEventType = "event" | "bedpres" | "movie" | "boardgame" | "other";
 
 type Happening = CMSHappening | CMSRepeatingHappening;
 

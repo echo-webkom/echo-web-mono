@@ -19,7 +19,7 @@ export const JobAdPreview = ({ jobAd, className }: JobAdPreviewProps) => {
       <div
         className={cn(
           "flex h-full flex-row items-center gap-4 rounded-md border bg-card p-6 shadow-sm sm:gap-8",
-          "transition-colors duration-200 ease-in-out hover:bg-muted",
+          "transition-colors duration-200 ease-in-out hover:bg-muted hover:border-border",
           className,
         )}
       >
