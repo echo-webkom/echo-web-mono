@@ -65,13 +65,13 @@ function isInputFocused() {
 function getStaticPages(routes: Array<Route>): Array<SearchItem> {
   return routes.flatMap((route) => {
     if ("href" in route) {
-      return [{ title: route.label, href: route.href, category: "Side", slug: "" }];
+      return [{ title: route.label, href: route.href, category: "Side", time: "" }];
     }
     return route.links.map((link) => ({
       title: link.label,
       href: link.href,
       category: route.label,
-      slug: "",
+      time: "",
     }));
   });
 }
