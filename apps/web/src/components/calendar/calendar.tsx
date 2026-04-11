@@ -22,12 +22,17 @@ const TAB_PARAM_NAME = "view";
 
 const ALL_TYPES: Array<CalendarEventType> = ["bedpres", "event", "movie", "boardgame", "other"];
 
-const LEGEND_ITEMS: Array<{ type: CalendarEventType; label: string; colorClass: string }> = [
-  { type: "bedpres", label: "Bedpres", colorClass: "bg-primary" },
-  { type: "event", label: "Arrangement", colorClass: "bg-secondary" },
-  { type: "movie", label: "Film", colorClass: "bg-pink-400" },
-  { type: "boardgame", label: "Brettspill", colorClass: "bg-green-600" },
-  { type: "other", label: "Annet", colorClass: "bg-gray-600" },
+const LEGEND_ITEMS: Array<{
+  type: CalendarEventType;
+  label: string;
+  bgClass: string;
+  borderClass: string;
+}> = [
+  { type: "bedpres", label: "Bedpres", bgClass: "bg-primary", borderClass: "border-primary" },
+  { type: "event", label: "Arrangement", bgClass: "bg-secondary", borderClass: "border-secondary" },
+  { type: "movie", label: "Film", bgClass: "bg-pink-400", borderClass: "border-pink-400" },
+  { type: "boardgame", label: "Brettspill", bgClass: "bg-green-600", borderClass: "border-green-600" },
+  { type: "other", label: "Annet", bgClass: "bg-gray-600", borderClass: "border-gray-600" },
 ];
 
 type CalendarTabType = "week" | "month";
@@ -202,20 +207,28 @@ type LegendProps = {
 
 const Legend = ({ activeTypes, onToggle }: LegendProps) => {
   return (
-    <div className="hidden flex-wrap gap-3 text-xs sm:flex">
-      {LEGEND_ITEMS.map(({ type, label, colorClass }) => (
-        <button
-          key={type}
-          onClick={() => onToggle(type)}
-          className={cn(
-            "flex cursor-pointer items-center gap-1 transition-opacity",
-            !activeTypes.has(type) && "opacity-40",
-          )}
-        >
-          <div className={cn("h-3 w-3 rounded-full", colorClass)} />
-          <span>{label}</span>
-        </button>
-      ))}
+    <div className="hidden flex-wrap gap-2 text-xs sm:flex">
+      {LEGEND_ITEMS.map(({ type, label, bgClass, borderClass }) => {
+        const active = activeTypes.has(type);
+        return (
+          <button
+            key={type}
+            onClick={() => onToggle(type)}
+            className="group flex cursor-pointer items-center gap-1"
+          >
+            <div
+              className={cn(
+                "h-3 w-3 rounded-full border transition-colors",
+                borderClass,
+                active ? bgClass : "bg-transparent",
+              )}
+            />
+            <span className={cn("transition-opacity group-hover:underline", !active && "opacity-40")}>
+              {label}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 };
