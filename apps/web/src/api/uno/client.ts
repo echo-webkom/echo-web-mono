@@ -618,6 +618,7 @@ export class UnoClient {
   quotes: QuotesApi;
   sanity: SanityApi;
   auth: AuthApi;
+  trophies: TrophiesApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -648,6 +649,7 @@ export class UnoClient {
     this.quotes = new QuotesApi(this);
     this.sanity = new SanityApi(this);
     this.auth = new AuthApi(this);
+    this.trophies = new TrophiesApi(this);
   }
 
   normalizePath(path: string) {
@@ -1521,5 +1523,22 @@ class AuthApi {
   async verifyMagicLink(token: string, email: string) {
     const query = new URLSearchParams({ token, email });
     return await this.client.request("GET", `auth/magic-link/verify?${query.toString()}`);
+  }
+}
+
+class TrophiesApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all() {
+    const response = await this.client.request("GET", "sanity/trophies");
+    if (!response.ok) {
+      console.log("resp = ", await response.text());
+      return [];
+    }
+    return await response.json();
   }
 }
