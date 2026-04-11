@@ -71,6 +71,7 @@ func (p *WhitelistRepo) IsWhitelisted(ctx context.Context, email string) (bool, 
 		SELECT COUNT(1)
 		FROM whitelist
 		WHERE email = $1
+		AND expires_at > NOW()
 	`
 	var count int
 	if err := p.db.GetContext(ctx, &count, query, email); err != nil {

@@ -1,7 +1,12 @@
 package main
 
-import "uno/bootstrap"
+import (
+	"flag"
+	"uno/bootstrap"
+)
 
 func main() {
-	bootstrap.RunCron()
+	job := flag.String("job", "", "run a specific job by name and exit")
+	flag.Parse()
+	bootstrap.RunCron(*job)
 }

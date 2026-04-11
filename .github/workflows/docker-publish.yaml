@@ -221,6 +221,8 @@ jobs:
             GIT_COMMIT_SHA=${{ github.sha }}
             NEXT_PUBLIC_API_URL=${{ steps.api-url.outputs.value }}
             NEXT_PUBLIC_SANITY_DATASET=${{ steps.sanity-dataset.outputs.value }}
+            NEXT_PUBLIC_UMAMI_URL=${{ secrets.NEXT_PUBLIC_UMAMI_URL }}
+            NEXT_PUBLIC_UMAMI_WEBSITE_ID=${{ secrets.NEXT_PUBLIC_UMAMI_WEBSITE_ID }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
@@ -360,11 +362,11 @@ jobs:
             }
 
   auto-deploy:
-    if:  github.event_name == 'pull_request' && github.ref_name == 'main'
+    if: github.event_name == 'pull_request' && github.ref_name == 'main'
     needs: [build-and-push-web]
     name: 🚗 Auto deploy web
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 🚗 Auto deploy web
         run: curl ${{secrets.DEPLOY_WEB_URL}}

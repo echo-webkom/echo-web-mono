@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import { type Metadata, type Viewport } from "next";
 import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
+import Script from "next/script";
 import NextTopLoader from "nextjs-toploader";
 
 import { auth, getSessionToken } from "@/auth/session";
@@ -85,6 +86,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const isChristmas = (month === 10 && date.getDate() >= 16) || month === 11;
   const theme = isOctober ? "halloween" : isChristmas ? "christmas" : "default";
 
+  const umamiUrl = process.env.NEXT_PUBLIC_UMAMI_URL;
+  const umamiWebsiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID;
+
   return (
     <html lang="no" data-theme={theme} suppressHydrationWarning>
       <head />
@@ -96,6 +100,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           vt323.variable,
         )}
       >
+        {umamiUrl && umamiWebsiteId && (
+          <Script
+            src={`${umamiUrl}/script.js`}
+            data-website-id={umamiWebsiteId}
+            data-endpoint="/api/t"
+            strategy="afterInteractive"
+          />
+        )}
         <Providers user={user} sessionToken={sessionToken}>
           <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
           {children}

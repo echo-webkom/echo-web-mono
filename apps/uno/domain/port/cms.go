@@ -6,10 +6,15 @@ import (
 )
 
 type CMSHappeningRepo interface {
+	// Queries
 	GetAllHappenings(ctx context.Context) ([]model.CMSHappening, error)
 	GetHappeningBySlug(ctx context.Context, slug string) (*model.CMSHappening, error)
 	GetHomeHappenings(ctx context.Context, types []string, n int) ([]model.CMSHomeHappening, error)
 	GetHappeningContactsBySlug(ctx context.Context, slug string) ([]model.CMSContact, error)
+	GetAllPinnedHappenings(ctx context.Context) ([]model.CMSHappening, error)
+
+	// Commands
+	UnpinHappenings(ctx context.Context, ids []string) error
 }
 
 type CMSRepeatingHappeningRepo interface {

@@ -54,14 +54,23 @@ type Config struct {
 type CronConfig struct {
 	// Cron configuration
 	Environment  Environment
-	DatabaseURL  string
 	CronTimezone string
+
+	// Sanity configuration
+	SanityProjectID  string
+	SanityDataset    string
+	SanityAPIToken   string
+	SanityAPIVersion string
 
 	// Profile picture configuration
 	ProfilePictureEndpointURL     string
 	ProfilePictureBucketName      string
 	ProfilePictureAccessKeyID     string
 	ProfilePictureSecretAccessKey string
+
+	// Storage configuration
+	DatabaseURL string
+	RedisURL    string
 }
 
 func Load() *Config {
@@ -93,6 +102,7 @@ func Load() *Config {
 		SanityProjectID:  getEnvOrDefault("SANITY_PROJECT_ID", "pgq2pd26"),
 		SanityDataset:    getEnvOrDefault("NEXT_PUBLIC_SANITY_DATASET", "production"),
 		SanityAPIVersion: getEnvOrDefault("SANITY_API_VERSION", "2023-05-03"),
+		SanityAPIToken:   os.Getenv("SANITY_API_TOKEN"),
 
 		DatabaseURL: os.Getenv("DATABASE_URL"),
 		RedisURL:    os.Getenv("REDIS_URL"),
@@ -109,18 +119,22 @@ func LoadCronConfig() *CronConfig {
 	}
 
 	return &CronConfig{
-		// General configuration
-		DatabaseURL: os.Getenv("DATABASE_URL"),
 		Environment: environment,
 
-		// Cron configuration
 		CronTimezone: "Europe/Oslo",
 
-		// Profile picture configuration
+		SanityProjectID:  getEnvOrDefault("SANITY_PROJECT_ID", "pgq2pd26"),
+		SanityDataset:    getEnvOrDefault("NEXT_PUBLIC_SANITY_DATASET", "production"),
+		SanityAPIVersion: getEnvOrDefault("SANITY_API_VERSION", "2023-05-03"),
+		SanityAPIToken:   os.Getenv("SANITY_API_TOKEN"),
+
 		ProfilePictureEndpointURL:     os.Getenv("PROFILE_PICTURE_ENDPOINT_URL"),
 		ProfilePictureBucketName:      getEnvOrDefault("PROFILE_PICTURE_BUCKET_NAME", "profile-pictures"),
 		ProfilePictureAccessKeyID:     os.Getenv("PROFILE_PICTURE_ACCESS_KEY_ID"),
 		ProfilePictureSecretAccessKey: os.Getenv("PROFILE_PICTURE_SECRET_ACCESS_KEY"),
+
+		DatabaseURL: os.Getenv("DATABASE_URL"),
+		RedisURL:    os.Getenv("REDIS_URL"),
 	}
 }
 
