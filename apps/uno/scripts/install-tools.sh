@@ -24,5 +24,5 @@ echo "  mockery          - Generate test mocks"
 if ! command -v golangci-lint &>/dev/null; then
     echo ""
     echo "Install golangci-lint with:"
-    echo "  curl -sSfL https://golangci-lint.run/install.sh | sh -s -- -b \$(go env GOPATH)/bin v2.11.4"
+    echo "  curl -sSfL https://golangci-lint.run/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.11.4"
 fi

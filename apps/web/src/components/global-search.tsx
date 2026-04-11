@@ -9,45 +9,13 @@ import type { CMSHappening } from "@/api/uno/client";
 import { useUnoClient } from "@/providers/uno";
 import { cn } from "@/utils/cn";
 
+import { headerRoutes, type Route } from "../lib/routes";
+
 type SearchItem = {
   title: string;
   href: string;
   category: string;
 };
-
-const STATIC_PAGES: Array<SearchItem> = [
-  { title: "Hjem", href: "/", category: "Side" },
-  {
-    title: "Arrangementer",
-    href: "/for-studenter/arrangementer",
-    category: "Side",
-  },
-  { title: "Innlegg", href: "/for-studenter/innlegg", category: "Side" },
-  {
-    title: "Stillingsannonser",
-    href: "/for-studenter/stillingsannonser",
-    category: "Side",
-  },
-  {
-    title: "Møtereferater",
-    href: "/for-studenter/motereferater",
-    category: "Side",
-  },
-  { title: "Merch", href: "/for-studenter/merch", category: "Side" },
-  { title: "Sitater", href: "/sitater", category: "Side" },
-  { title: "Tilbakemelding", href: "/tilbakemelding", category: "Side" },
-  { title: "Prikker", href: "/prikker", category: "Side" },
-  { title: "Personvern", href: "/personvern", category: "Side" },
-  {
-    title: "Informasjonskapsler",
-    href: "/informasjonskapsler",
-    category: "Side",
-  },
-  { title: "Webkom", href: "/webkom", category: "Side" },
-  { title: "Helse", href: "/helse", category: "Side" },
-  { title: "Logg inn", href: "/auth/logg-inn", category: "Side" },
-  { title: "Dashbord", href: "/dashbord", category: "Side" },
-];
 
 function fuzzyScore(query: string, target: string): number {
   if (query.length === 0) return 1;
@@ -91,29 +59,46 @@ function isInputFocused() {
   );
 }
 
+function getStaticPages(routes: Array<Route>): Array<SearchItem> {
+  return routes.flatMap((route) => {
+    if ("href" in route) {
+      return [{ title: route.label, href: route.href, category: "Side" }];
+    }
+    return route.links.map((link) => ({
+      title: link.label,
+      href: link.href,
+      category: route.label,
+    }));
+  });
+}
+
 export const GlobalSearch = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [allItems, setAllItems] = useState<Array<SearchItem>>(STATIC_PAGES);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const hasFetched = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const unoClient = useUnoClient();
 
+  const staticPages = getStaticPages(headerRoutes);
+  const [allItems, setAllItems] = useState<Array<SearchItem>>(staticPages);
+
   const fetchHappenings = useCallback(async () => {
     if (hasFetched.current) return;
     hasFetched.current = true;
     try {
       const happenings = await unoClient.sanity.happenings.all();
-      const items = happenings.map(
-        (h: CMSHappening): SearchItem => ({
-          title: h.title,
-          href: `${happeningTypeToPath[h.happeningType]}/${h.slug}`,
-          category: h.happeningType === "bedpres" ? "Bedriftspresentasjon" : "Arrangement",
-        }),
-      );
-      setAllItems([...STATIC_PAGES, ...items]);
+      const items = happenings
+        .sort((a, b) => (new Date(a._createdAt) > new Date(b._createdAt) ? 1 : -1))
+        .map(
+          (h: CMSHappening): SearchItem => ({
+            title: h.title,
+            href: `${happeningTypeToPath[h.happeningType]}/${h.slug}`,
+            category: h.happeningType === "bedpres" ? "Bedriftspresentasjon" : "Arrangement",
+          }),
+        );
+      setAllItems([...staticPages, ...items]);
     } catch {
       // keep static pages only
     }
@@ -148,7 +133,7 @@ export const GlobalSearch = () => {
         .sort((a, b) => b.score - a.score)
         .slice(0, 10)
         .map(({ item }) => item)
-    : STATIC_PAGES.slice(0, 10);
+    : staticPages.slice(0, 10);
 
   const clampedIndex = Math.min(selectedIndex, results.length - 1);
 
