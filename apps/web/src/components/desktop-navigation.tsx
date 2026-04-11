@@ -19,6 +19,8 @@ import { useOutsideClick } from "@/hooks/use-outsideclick";
 import { headerRoutes } from "@/lib/routes";
 import { cn } from "@/utils/cn";
 
+const BORDER_OFFSET = 2;
+
 type NavigationContextType = {
   activeDropdown: { id: string; children: React.ReactNode } | null;
   setActiveDropdown: React.Dispatch<
@@ -133,8 +135,6 @@ const NavigationDropdown = ({ children }: { children: React.ReactNode }) => {
     </ul>
   );
 };
-
-const BORDER_OFFSET = 4;
 
 export const NavigationViewport = () => {
   const { activeDropdown } = useNavigation();

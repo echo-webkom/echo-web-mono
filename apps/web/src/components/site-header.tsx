@@ -5,7 +5,11 @@ import { getRandomMessage } from "@/lib/random-message";
 
 import { ENVIRONMENT } from "../config";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
-import { MobileNavigation } from "./mobile-navigation";
+import {
+  MobileNavigation,
+  MobileNavigationRoot,
+  MobileNavigationViewport,
+} from "./mobile-navigation";
 import { ThemeSwitchButton } from "./theme-switch-button";
 import { Chip } from "./typography/chip";
 import { Button } from "./ui/button";
@@ -34,38 +38,42 @@ export const SiteHeader = async () => {
       <EnvironmentWarning />
 
       <div className="bg-card border-b">
-        <NavigationRoot>
-          <header className="bg-card mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
-            <div className="absolute -bottom-3 flex space-x-2">
-              {randomMessage.link ? (
-                <Link className="z-50" href={randomMessage.link}>
-                  <Chip className="underline">{randomMessage.text}</Chip>
-                </Link>
-              ) : (
-                <Chip className="z-50">{randomMessage.text}</Chip>
-              )}
-              {progbarStatus !== "" && <Chip className="z-50">{progbarStatus}</Chip>}
-            </div>
+        <MobileNavigationRoot>
+          <NavigationRoot>
+            <header className="bg-card mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
+              <div className="absolute -bottom-3 flex space-x-2">
+                {randomMessage.link ? (
+                  <Link className="z-50" href={randomMessage.link}>
+                    <Chip className="underline">{randomMessage.text}</Chip>
+                  </Link>
+                ) : (
+                  <Chip className="z-50">{randomMessage.text}</Chip>
+                )}
+                {progbarStatus !== "" && <Chip className="z-50">{progbarStatus}</Chip>}
+              </div>
 
-            <div className="flex items-center">
-              <HeaderLogo />
-              <DesktopNavigation />
-            </div>
-            <div className="flex items-center space-x-2">
-              <ThemeSwitchButton />
-              {user ? (
-                <UserMenu user={user} />
-              ) : (
-                <Button variant="secondary" asChild>
-                  <Link href="/auth/logg-inn">Logg inn</Link>
-                </Button>
-              )}
-              <MobileNavigation />
-            </div>
-          </header>
+              <div className="flex items-center">
+                <HeaderLogo />
+                <DesktopNavigation />
+              </div>
+              <div className="flex items-center space-x-2">
+                <ThemeSwitchButton />
+                {user ? (
+                  <UserMenu user={user} />
+                ) : (
+                  <Button variant="secondary" asChild>
+                    <Link href="/auth/logg-inn">Logg inn</Link>
+                  </Button>
+                )}
+                <MobileNavigation />
+              </div>
+            </header>
 
-          <NavigationViewport />
-        </NavigationRoot>
+            <NavigationViewport />
+          </NavigationRoot>
+
+          <MobileNavigationViewport />
+        </MobileNavigationRoot>
       </div>
     </div>
   );

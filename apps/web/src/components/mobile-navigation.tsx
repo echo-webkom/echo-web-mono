@@ -4,11 +4,20 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { createContext, useContext, useEffect, useEffectEvent, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useEffectEvent,
+  useRef,
+  useState,
+} from "react";
 
 import { useAuth } from "@/hooks/use-auth";
 import { headerRoutes } from "@/lib/routes";
 import { cn } from "@/utils/cn";
+
+const BORDER_OFFSET = 4;
 
 type NavigationContextType = {
   isOpen: boolean;
@@ -21,35 +30,23 @@ const useNavigation = () => {
   const context = useContext(NavigationContext);
 
   if (!context) {
-    throw new Error("useNavigation must be used within a NavigationProvider");
+    throw new Error("useNavigation must be used within a MobileNavigationRoot");
   }
 
   return context;
 };
 
-const NavigationRoot = ({ children }: { children: React.ReactNode }) => {
+export const MobileNavigationRoot = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
-  const onNavigation = useEffectEvent(() => {
+  useEffect(() => {
     setIsOpen(false);
-  });
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
-    onNavigation();
   }, [pathname]);
 
   return (
     <NavigationContext.Provider value={{ isOpen, setIsOpen }}>
-      <div className="md:hidden">{children}</div>
+      {children}
     </NavigationContext.Provider>
   );
 };
@@ -62,57 +59,9 @@ const MenuButton = () => {
       className="hover:bg-muted dark:text-foreground flex flex-row items-center gap-1 rounded-md p-2 text-gray-600"
       onClick={() => setIsOpen(!isOpen)}
     >
-      <span className="sr-only">Meny</span>
-      <Menu className="h-7 w-7" />
+      <span className="sr-only">{isOpen ? "Lukk meny" : "Meny"}</span>
+      {isOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
     </button>
-  );
-};
-
-const CloseMenuButton = () => {
-  const { setIsOpen } = useNavigation();
-
-  return (
-    <button
-      className="text-muted-foreground hover:bg-muted flex flex-row items-center gap-1 rounded-md p-2"
-      onClick={() => setIsOpen(false)}
-    >
-      <span className="sr-only">Lukk meny</span>
-      <X className="h-7 w-7" />
-    </button>
-  );
-};
-
-const MenuContent = ({ children }: { children: React.ReactNode }) => {
-  const { isOpen } = useNavigation();
-
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ y: -1000 }}
-          animate={{ y: 0 }}
-          exit={{ y: -1000 }}
-          transition={{ duration: 0.5 }}
-          className="bg-background dark:text-foreground fixed top-0 left-0 z-50 h-full min-h-screen w-full overflow-y-scroll px-6 pt-6 pb-24"
-        >
-          {children}
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-};
-
-const MenuLink = ({ to, children }: { to: string; children: React.ReactNode }) => {
-  const { setIsOpen } = useNavigation();
-
-  return (
-    <Link
-      href={to}
-      className="hover:bg-muted dark:text-foreground block rounded-md p-4 text-2xl text-gray-600"
-      onClick={() => setIsOpen(false)}
-    >
-      {children}
-    </Link>
   );
 };
 
@@ -156,57 +105,101 @@ const MenuDropdown = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const MobileNavigation = () => {
+  return (
+    <div className="md:hidden">
+      <MenuButton />
+    </div>
+  );
+};
+
+export const MobileNavigationViewport = () => {
+  const { isOpen, setIsOpen } = useNavigation();
   const { user } = useAuth();
   const isAuthed = Boolean(user);
 
+  const [contentHeight, setContentHeight] = useState(0);
+  const [maxAvailableHeight, setMaxAvailableHeight] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const onToggle = useEffectEvent(() => {
+    if (!isOpen) {
+      setContentHeight(0);
+      return;
+    }
+
+    const dropdownTop = ref.current?.getBoundingClientRect().top ?? 0;
+    const available = window.innerHeight - dropdownTop + BORDER_OFFSET;
+
+    setMaxAvailableHeight(available);
+    setContentHeight(available);
+  });
+
+  useEffect(() => {
+    onToggle();
+  }, [isOpen]);
+
   return (
-    <NavigationRoot>
-      <MenuButton />
+    <div className="md:hidden">
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="bg-card absolute left-0 z-20 w-full overflow-hidden"
+            initial={{ height: 0 }}
+            animate={{ height: contentHeight }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div
+              ref={ref}
+              className="overflow-y-auto px-2 pt-4 pb-24"
+              style={{ maxHeight: maxAvailableHeight > 0 ? maxAvailableHeight : undefined }}
+            >
+              {headerRoutes.map((route) => {
+                if ("href" in route) {
+                  const targetHref = isAuthed && route.authedHref ? route.authedHref : route.href;
 
-      <MenuContent>
-        <div className="flex items-center justify-end">
-          <CloseMenuButton />
-        </div>
-
-        {headerRoutes.map((route) => {
-          if ("href" in route) {
-            const targetHref = isAuthed && route.authedHref ? route.authedHref : route.href;
-
-            return (
-              <MenuLink key={route.label} to={targetHref}>
-                {route.label}
-              </MenuLink>
-            );
-          }
-
-          return (
-            <MenuItem key={route.label} label={route.label}>
-              <MenuDropdown>
-                {route.links.map((link) => (
-                  <li key={link.label} className="w-full">
+                  return (
                     <Link
-                      className="hover:bg-muted flex items-center rounded-lg p-4"
-                      href={link.href}
+                      key={route.label}
+                      href={targetHref}
+                      className="hover:bg-muted dark:text-foreground block rounded-md p-4 text-2xl text-gray-600"
+                      onClick={() => setIsOpen(false)}
                     >
-                      <div className="flex items-center gap-4">
-                        <div className="flex h-6 w-6 shrink-0 items-center justify-center">
-                          {React.createElement(link.icon, { className: "h-6 w-6" })}
-                        </div>
-                        <div>
-                          <div>
-                            <p className="text-gray-600 dark:text-gray-100">{link.label}</p>
-                            <p className="text-muted-foreground text-sm">{link.description}</p>
-                          </div>
-                        </div>
-                      </div>
+                      {route.label}
                     </Link>
-                  </li>
-                ))}
-              </MenuDropdown>
-            </MenuItem>
-          );
-        })}
-      </MenuContent>
-    </NavigationRoot>
+                  );
+                }
+
+                return (
+                  <MenuItem key={route.label} label={route.label}>
+                    <MenuDropdown>
+                      {route.links.map((link) => (
+                        <li key={link.label} className="w-full">
+                          <Link
+                            className="hover:bg-muted flex items-center rounded-lg p-4"
+                            href={link.href}
+                            onClick={() => setIsOpen(false)}
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className="flex h-6 w-6 shrink-0 items-center justify-center">
+                                {React.createElement(link.icon, { className: "h-6 w-6" })}
+                              </div>
+                              <div>
+                                <p className="text-gray-600 dark:text-gray-100">{link.label}</p>
+                                <p className="text-muted-foreground text-sm">{link.description}</p>
+                              </div>
+                            </div>
+                          </Link>
+                        </li>
+                      ))}
+                    </MenuDropdown>
+                  </MenuItem>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
