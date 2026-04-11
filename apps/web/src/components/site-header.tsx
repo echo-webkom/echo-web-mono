@@ -35,6 +35,7 @@ export const SiteHeader = async () => {
 
   return (
     <div className="sticky top-0 z-20">
+      <ConstitutionDay />
       <EnvironmentWarning />
 
       <div className="bg-card border-b">
@@ -101,3 +102,32 @@ const EnvironmentWarning = () => {
 
   return null;
 };
+
+const NORWAY_COLORS = [
+  "#e40303", // Red
+  "#ffffff", // White
+  "#004dff", // Blue
+  "#ffffff", // White
+  "#e40303", // Red
+];
+
+function ConstitutionDay() {
+  const date = new Date();
+  const isConstitutionDay = date.getDate() === 17 && date.getMonth() === 4; // May 17th
+
+  if (!isConstitutionDay) {
+    return null;
+  }
+
+  return (
+    <div className="flex h-4 w-[110%] overflow-hidden">
+      {NORWAY_COLORS.map((color) => (
+        <div
+          key={color}
+          className="h-full flex-1"
+          style={{ backgroundColor: color, transform: "skewX(-15deg)" }}
+        />
+      ))}
+    </div>
+  );
+}
