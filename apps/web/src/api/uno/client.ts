@@ -583,7 +583,11 @@ export class SanityApi {
   }
 
   async banner() {
-    return await this.client.requestJson<CMSBanner | null>("GET", "sanity/banner");
+    try {
+      return await this.client.requestJson<CMSBanner | null>("GET", "sanity/banner");
+    } catch {
+      return null;
+    }
   }
 }
 
