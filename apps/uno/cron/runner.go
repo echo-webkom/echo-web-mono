@@ -96,6 +96,28 @@ func (r *Runner) StopWithContext(ctx context.Context) error {
 	}
 }
 
+func (r *Runner) RunJob(ctx context.Context, name string) error {
+	for _, s := range r.schedules {
+		if s.Name == name {
+			logger := r.logger.With("job", s.Name)
+			logger.Info(ctx, "cron job started", "name", s.Name)
+			start := time.Now()
+			if err := s.Job.Run(ctx); err != nil {
+				logger.Error(ctx, "cron job failed", "name", s.Name, "duration", time.Since(start), "error", err)
+				return err
+			}
+			logger.Info(ctx, "cron job completed", "name", s.Name, "duration", time.Since(start))
+			return nil
+		}
+	}
+
+	names := make([]string, len(r.schedules))
+	for i, s := range r.schedules {
+		names[i] = s.Name
+	}
+	return fmt.Errorf("job %q not found, available jobs: %v", name, names)
+}
+
 type scheduledJob struct {
 	name   string
 	logger port.Logger

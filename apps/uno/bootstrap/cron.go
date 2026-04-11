@@ -21,7 +21,7 @@ import (
 	"github.com/jesperkha/notifier"
 )
 
-func RunCron() {
+func RunCron(job string) {
 	cfg := config.LoadCronConfig()
 	notif := notifier.New()
 
@@ -146,6 +146,13 @@ func RunCron() {
 		Spec: "0 * * * *",
 		Job:  jobs.NewUnpinHappeningsAfterRegistrationEnd(logger, cmsService),
 	})
+
+	if job != "" {
+		if err := runner.RunJob(context.Background(), job); err != nil {
+			logger.Error(context.Background(), "failed to run job", "job", job, "error", err)
+		}
+		return
+	}
 
 	if err := runner.Start(); err != nil {
 		logger.Error(context.Background(), "failed to start cron runner", "error", err)
