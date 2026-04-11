@@ -134,10 +134,13 @@ const NavigationDropdown = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+const BORDER_OFFSET = 4;
+
 export const NavigationViewport = () => {
   const { activeDropdown } = useNavigation();
 
   const [contentHeight, setContentHeight] = useState(0);
+  const [maxAvailableHeight, setMaxAvailableHeight] = useState(0);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -147,7 +150,12 @@ export const NavigationViewport = () => {
       return;
     }
 
-    setContentHeight(ref.current?.clientHeight ?? 0);
+    const dropdownTop = ref.current?.getBoundingClientRect().top ?? 0;
+    const available = window.innerHeight - dropdownTop + BORDER_OFFSET;
+    const naturalHeight = ref.current?.clientHeight ?? 0;
+
+    setMaxAvailableHeight(available);
+    setContentHeight(Math.min(naturalHeight, available));
   });
 
   useEffect(() => {
@@ -172,7 +180,13 @@ export const NavigationViewport = () => {
             duration: 0.3,
           }}
         >
-          <div ref={ref}>{activeDropdown.children}</div>
+          <div
+            ref={ref}
+            className="overflow-y-auto"
+            style={{ maxHeight: maxAvailableHeight > 0 ? maxAvailableHeight : undefined }}
+          >
+            {activeDropdown.children}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
