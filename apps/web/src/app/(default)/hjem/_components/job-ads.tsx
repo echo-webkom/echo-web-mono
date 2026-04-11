@@ -20,7 +20,7 @@ export const JobAds = async ({ className }: { className?: string }) => {
       <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
         {jobAds.map((jobAd) => (
           <li key={jobAd._id}>
-            <JobAdPreview jobAd={jobAd} />
+            <JobAdPreview jobAd={jobAd} className="border-0 bg-transparent shadow-none" />
           </li>
         ))}
       </ul>

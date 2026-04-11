@@ -95,7 +95,7 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
   const BIRTHDAY = new Date(2025, 10, 7, 12, 0, 0);
 
   return (
-    <div className="border-border w-full overflow-x-scroll rounded-xl border-2 md:overflow-hidden">
+    <div className="border-border w-full overflow-x-scroll md:overflow-hidden">
       <div className="border-border bg-border grid min-w-200 grid-cols-7 gap-0.5 border-b-2">
         {weekdays.map((day) => (
           <Heading

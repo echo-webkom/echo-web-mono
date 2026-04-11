@@ -80,7 +80,7 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
 
   return (
     <div ref={ref} className="space-y-4">
-      <div className="h-72 overflow-hidden rounded-xl border-2">
+      <div className="h-72 overflow-hidden">
         <div
           className="h-full divide-x"
           style={{
@@ -109,7 +109,7 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
             return (
               <div key={day.toString()} className="bg-background">
                 <div className="flex flex-col gap-2">
-                  <div className="bg-muted flex h-16 flex-col items-center justify-center border-b-2 py-2 font-medium">
+                  <div className="bg-muted flex h-16 flex-col items-center justify-center border-b py-2 font-medium">
                     {isToday ? (
                       <p>I dag</p>
                     ) : (

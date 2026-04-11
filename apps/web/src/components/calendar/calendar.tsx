@@ -5,13 +5,11 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useEffectEvent, useState } from "react";
 
-import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
-import { capitalize } from "@/utils/string";
 
 import { CalendarControl } from "./calendar-control";
 import { CalendarExport } from "./calendar-export";
@@ -88,60 +86,58 @@ export const Calendar = ({ events, type }: CalendarProps) => {
 
   if (type === "multi") {
     return (
-      <Tabs value={currenetTab} className="w-full gap-2" onValueChange={handleViewChange}>
-        <div className="flex w-full flex-col items-center gap-4 md:flex-row">
-          <TabsList>
-            <TabsTrigger value="week">Ukekalender</TabsTrigger>
-            <TabsTrigger value="month">Månedskalender</TabsTrigger>
-          </TabsList>
-          <Heading level={2} className="flex-1 justify-end overflow-hidden">
-            {capitalize(topText)}
-          </Heading>
-          <CalendarControl
-            prev={handlePrevStep}
-            next={handleNextStep}
-            reset={steps !== 0 ? handleReset : undefined}
-          />
-        </div>
+      <div className="bg-card overflow-hidden rounded-xl border shadow-sm">
+        <Tabs value={currenetTab} className="w-full" onValueChange={handleViewChange}>
+          <div className="flex w-full items-center gap-3 border-b px-4 py-2">
+            <TabsList>
+              <TabsTrigger value="week">Uke</TabsTrigger>
+              <TabsTrigger value="month">Måned</TabsTrigger>
+            </TabsList>
+            <span className="flex-1 text-sm font-semibold capitalize">{topText}</span>
+            <CalendarControl
+              prev={handlePrevStep}
+              next={handleNextStep}
+              reset={steps !== 0 ? handleReset : undefined}
+            />
+          </div>
 
-        <div className="py-4">
           <TabsContent value="week">
             <DaysCalendar events={events} steps={steps} isWeek setWeekText={setTopText} />
           </TabsContent>
           <TabsContent value="month">
             <MonthCalendar events={events} steps={steps} setMonthText={setTopText} />
           </TabsContent>
-          <Legend />
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="gap-2">
-                <Download className="size-5" />
-                <Text size="sm">Last ned kalender</Text>
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogTitle className="sr-only">Last ned kalender</DialogTitle>
-              <CalendarExport />
-            </DialogContent>
-          </Dialog>
-        </div>
-      </Tabs>
+
+          <div className="flex items-center gap-4 border-t px-4 py-3">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <Download className="size-4" />
+                  <Text size="sm">Last ned kalender</Text>
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogTitle className="sr-only">Last ned kalender</DialogTitle>
+                <CalendarExport />
+              </DialogContent>
+            </Dialog>
+            <Legend />
+          </div>
+        </Tabs>
+      </div>
     );
   }
 
   return (
-    <div className="space-y-2">
-      <div className="flex w-full gap-4">
-        <Button asChild variant="ghost">
+    <div className="flex flex-col">
+      <div className="flex w-full items-center gap-2 border-b px-4 py-2">
+        <Button asChild variant="ghost" size="sm">
           <Link href="/for-studenter/arrangementer">
-            <Heading level={2}>
-              <CalendarIcon />
-            </Heading>
+            <CalendarIcon className="size-4" />
           </Link>
         </Button>
-        <Heading level={2} className="flex-1 justify-end">
-          {topText}
-        </Heading>
+        <span className="flex-1 text-sm font-semibold capitalize">{topText}</span>
+        <Legend />
         <CalendarControl
           prev={handlePrevStep}
           next={handleNextStep}
@@ -153,7 +149,6 @@ export const Calendar = ({ events, type }: CalendarProps) => {
       ) : (
         <MonthCalendar events={events} steps={steps} setMonthText={setTopText} />
       )}
-      <Legend />
     </div>
   );
 };
@@ -174,7 +169,7 @@ function parseStepParam(params: URLSearchParams) {
 
 const Legend = () => {
   return (
-    <div className="flex flex-wrap gap-4 p-5 text-xs">
+    <div className="hidden flex-wrap gap-3 text-xs sm:flex">
       <div className="mr-2 flex items-center">
         <div className="bg-primary mr-1 h-3 w-3 rounded-full"></div>
         <div>Bedpres</div>

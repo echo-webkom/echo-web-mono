@@ -21,7 +21,7 @@ export const JobAdSidebar = ({ jobAd }: JobAdSidebarProps) => {
       {jobAd.company && (
         <SidebarItem>
           <Link href={jobAd.company.website}>
-            <div className="overflow-hidden rounded-xl border-2 bg-white">
+            <div className="overflow-hidden rounded-xl border bg-white">
               <div className="relative aspect-square w-full">
                 <Image
                   src={urlFor(jobAd.company.image).url()}

@@ -19,8 +19,7 @@ export const CombinedHappeningPreview = ({ happening }: CombinedHappeningPreview
     <Link href={`/${parentPath}/${happening.slug}`}>
       <div
         className={cn(
-          "flex h-full items-center justify-between gap-5 rounded-md p-5",
-          "hover:bg-muted",
+          "flex h-full items-center justify-between gap-5 p-5 transition-colors hover:bg-muted",
         )}
       >
         <div className="overflow-x-hidden">
