@@ -31,7 +31,12 @@ const LEGEND_ITEMS: Array<{
   { type: "bedpres", label: "Bedpres", bgClass: "bg-primary", borderClass: "border-primary" },
   { type: "event", label: "Arrangement", bgClass: "bg-secondary", borderClass: "border-secondary" },
   { type: "movie", label: "Film", bgClass: "bg-pink-400", borderClass: "border-pink-400" },
-  { type: "boardgame", label: "Brettspill", bgClass: "bg-green-600", borderClass: "border-green-600" },
+  {
+    type: "boardgame",
+    label: "Brettspill",
+    bgClass: "bg-green-600",
+    borderClass: "border-green-600",
+  },
   { type: "other", label: "Annet", bgClass: "bg-gray-600", borderClass: "border-gray-600" },
 ];
 
@@ -223,7 +228,9 @@ const Legend = ({ activeTypes, onToggle }: LegendProps) => {
                 active ? bgClass : "bg-transparent",
               )}
             />
-            <span className={cn("transition-opacity group-hover:underline", !active && "opacity-40")}>
+            <span
+              className={cn("transition-opacity group-hover:underline", !active && "opacity-40")}
+            >
               {label}
             </span>
           </button>

@@ -42,7 +42,7 @@ export const PostPreview = ({ post, withBorder = false, className }: PostPreview
           <p className="my-2 line-clamp-3 text-sm italic">{stripMarkdown(post.body)}</p>
         )}
 
-        <div className="flex flex-row flex-wrap items-center gap-1 sm:absolute sm:right-4 sm:-bottom-4">
+        <div className="flex flex-row flex-wrap items-center gap-1 sm:absolute sm:right-4 sm:-bottom-3">
           {isNew && <Chip>NY</Chip>}
           {post.authors?.map((author) => (
             <Chip variant="secondary" key={author._id}>
