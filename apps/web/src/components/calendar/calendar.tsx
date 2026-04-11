@@ -136,7 +136,7 @@ export const Calendar = ({ events, type }: CalendarProps) => {
             <CalendarIcon className="size-4" />
           </Link>
         </Button>
-        <span className="flex-1 text-sm font-semibold capitalize">{topText}</span>
+        <span className="flex-1 pl-2 text-sm font-semibold capitalize">{topText}</span>
         <CalendarControl
           prev={handlePrevStep}
           next={handleNextStep}
@@ -148,7 +148,7 @@ export const Calendar = ({ events, type }: CalendarProps) => {
       ) : (
         <MonthCalendar events={events} steps={steps} setMonthText={setTopText} />
       )}
-      <div className="hidden border-t p-4 sm:block">
+      <div className="hidden border-t px-4 py-2 sm:block">
         <Legend />
       </div>
     </div>
