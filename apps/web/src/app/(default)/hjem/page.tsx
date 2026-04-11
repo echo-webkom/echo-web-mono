@@ -23,7 +23,7 @@ export default async function Home() {
       <BirthdayBanner />
       <EchoBirthdayBanner />
 
-      <div className="space-y-8 py-24">
+      <div className="space-y-8 py-10">
         <Container layout="larger">
           <FPCalendar />
         </Container>

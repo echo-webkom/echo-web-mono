@@ -158,7 +158,7 @@ export const NavigationViewport = () => {
     <AnimatePresence>
       {activeDropdown && (
         <motion.div
-          className="bg-background absolute left-0 z-20 w-full overflow-hidden border-b-2"
+          className="bg-card absolute left-0 z-20 w-full overflow-hidden border-b-2"
           initial={{
             height: 0,
           }}
