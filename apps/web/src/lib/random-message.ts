@@ -78,6 +78,7 @@ export const baseMessages: Array<MessageItem> = [
   { text: "Fonn Group!" },
   { text: "Spaghettikode" },
   { text: "Feature not a bug" },
+  { text: "sudo reboot" },
   // ISO
   { text: "ISO 8601", link: "https://en.wikipedia.org/wiki/ISO_8601" },
   // JS
