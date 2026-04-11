@@ -17,6 +17,7 @@ type SearchItem = {
   title: string;
   href: string;
   category: string;
+  time: string;
 };
 
 function fuzzyScore(query: string, target: string): number {
@@ -64,12 +65,13 @@ function isInputFocused() {
 function getStaticPages(routes: Array<Route>): Array<SearchItem> {
   return routes.flatMap((route) => {
     if ("href" in route) {
-      return [{ title: route.label, href: route.href, category: "Side" }];
+      return [{ title: route.label, href: route.href, category: "Side", slug: "" }];
     }
     return route.links.map((link) => ({
       title: link.label,
       href: link.href,
       category: route.label,
+      slug: "",
     }));
   });
 }
@@ -98,6 +100,11 @@ export const GlobalSearch = () => {
             title: h.title,
             href: `${happeningTypeToPath[h.happeningType]}/${h.slug}`,
             category: h.happeningType === "bedpres" ? "Bedriftspresentasjon" : "Arrangement",
+            time: new Date(h._createdAt).toLocaleDateString("no-NO", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "2-digit",
+            }),
           }),
         );
       setAllItems([...staticPages, ...items]);
@@ -206,16 +213,24 @@ export const GlobalSearch = () => {
                   }}
                   onMouseEnter={() => setSelectedIndex(i)}
                   className={cn(
-                    "flex w-full items-center justify-between rounded-sm px-3 py-2.5 text-left text-sm",
+                    "w-full grid grid-cols-4 rounded-sm px-3 py-2.5 text-left text-sm",
                     i === clampedIndex
                       ? "bg-primary text-primary-foreground"
                       : "hover:bg-accent hover:text-accent-foreground",
                   )}
                 >
-                  <span className="font-medium">{item.title}</span>
+                  <span className="col-span-2 font-medium">{item.title}</span>
                   <span
                     className={cn(
-                      "text-xs",
+                      "text-xs text-end",
+                      i === clampedIndex ? "text-primary-foreground/70" : "text-muted-foreground",
+                    )}
+                  >
+                    {item.time}
+                  </span>
+                  <span
+                    className={cn(
+                      "text-xs text-end",
                       i === clampedIndex ? "text-primary-foreground/70" : "text-muted-foreground",
                     )}
                   >
