@@ -22,7 +22,7 @@ export default function WebkomPage() {
         <Image src={Bo} alt="Bo Aanes" width={100} height={100} />
       </div>
 
-      <Heading className="font-display mx-auto">Webkom</Heading>
+      <Heading className="font-display mx-auto justify-center">Webkom</Heading>
       {/* Forslag om å opprette gruppe var 28. jul 2020 */}
       {/* Slack ble laget 5. aug 2020 */}
       <Text className="text-muted-foreground text-xs">EST. 2020</Text>
@@ -34,11 +34,11 @@ export default function WebkomPage() {
       <div className="mx-auto my-10 max-w-md space-y-8">
         <UnorderedList className="list-none p-0 text-lg">
           <ListItem className="relative mx-auto w-fit">
-            <Crown className="absolute top-1 -left-6 text-yellow-400" />
+            <Crown className="absolute top-1 -left-6 size-4 fill-yellow-400 text-yellow-400" />
             <span>Andreas Bakseter (Co-founder)</span>
           </ListItem>
           <ListItem className="relative mx-auto w-fit">
-            <Crown className="absolute top-1 -left-6 text-yellow-400" />
+            <Crown className="absolute top-1 -left-6 size-4 fill-yellow-400 text-yellow-400" />
             <span>Bo Aanes (Co-founder)</span>
           </ListItem>
         </UnorderedList>
@@ -99,6 +99,27 @@ export default function WebkomPage() {
           <ListItem>Marcelina Dylewska</ListItem>
         </UnorderedList>
       </div>
+
+      <div className="mx-auto my-10 max-w-md space-y-8">
+        <Heading className="font-display mx-auto justify-center">Hall of Shame</Heading>
+
+        <UnorderedList className="list-none space-y-0 p-0 text-lg">
+          <ShameListItem
+            date="2026/04/11"
+            description="Ole Magnus seedet produksjon med test-data."
+          />
+        </UnorderedList>
+      </div>
     </Container>
+  );
+}
+
+function ShameListItem({ date, description }: { date: string; description: string }) {
+  return (
+    <ListItem className="grid grid-cols-[auto_auto_1fr] py-2">
+      <span className="text-right font-bold">{date}</span>
+      <span className="bg-border mx-2 -my-2 w-0.5" />
+      <span className="text-left">{description}</span>
+    </ListItem>
   );
 }
