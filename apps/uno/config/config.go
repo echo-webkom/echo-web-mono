@@ -126,6 +126,7 @@ func LoadCronConfig() *CronConfig {
 		SanityProjectID:  getEnvOrDefault("SANITY_PROJECT_ID", "pgq2pd26"),
 		SanityDataset:    getEnvOrDefault("NEXT_PUBLIC_SANITY_DATASET", "production"),
 		SanityAPIVersion: getEnvOrDefault("SANITY_API_VERSION", "2023-05-03"),
+		SanityAPIToken:   os.Getenv("SANITY_API_TOKEN"),
 
 		ProfilePictureEndpointURL:     os.Getenv("PROFILE_PICTURE_ENDPOINT_URL"),
 		ProfilePictureBucketName:      getEnvOrDefault("PROFILE_PICTURE_BUCKET_NAME", "profile-pictures"),
