@@ -9,45 +9,16 @@ import type { CMSHappening } from "@/api/uno/client";
 import { useUnoClient } from "@/providers/uno";
 import { cn } from "@/utils/cn";
 
+import { headerRoutes, type Route } from "../lib/routes";
+
+const MAX_RESULTS = 10;
+
 type SearchItem = {
   title: string;
   href: string;
   category: string;
+  time: string;
 };
-
-const STATIC_PAGES: Array<SearchItem> = [
-  { title: "Hjem", href: "/", category: "Side" },
-  {
-    title: "Arrangementer",
-    href: "/for-studenter/arrangementer",
-    category: "Side",
-  },
-  { title: "Innlegg", href: "/for-studenter/innlegg", category: "Side" },
-  {
-    title: "Stillingsannonser",
-    href: "/for-studenter/stillingsannonser",
-    category: "Side",
-  },
-  {
-    title: "Møtereferater",
-    href: "/for-studenter/motereferater",
-    category: "Side",
-  },
-  { title: "Merch", href: "/for-studenter/merch", category: "Side" },
-  { title: "Sitater", href: "/sitater", category: "Side" },
-  { title: "Tilbakemelding", href: "/tilbakemelding", category: "Side" },
-  { title: "Prikker", href: "/prikker", category: "Side" },
-  { title: "Personvern", href: "/personvern", category: "Side" },
-  {
-    title: "Informasjonskapsler",
-    href: "/informasjonskapsler",
-    category: "Side",
-  },
-  { title: "Webkom", href: "/webkom", category: "Side" },
-  { title: "Helse", href: "/helse", category: "Side" },
-  { title: "Logg inn", href: "/auth/logg-inn", category: "Side" },
-  { title: "Dashbord", href: "/dashbord", category: "Side" },
-];
 
 function fuzzyScore(query: string, target: string): number {
   if (query.length === 0) return 1;
@@ -91,29 +62,52 @@ function isInputFocused() {
   );
 }
 
+function getStaticPages(routes: Array<Route>): Array<SearchItem> {
+  return routes.flatMap((route) => {
+    if ("href" in route) {
+      return [{ title: route.label, href: route.href, category: "Side", time: "" }];
+    }
+    return route.links.map((link) => ({
+      title: link.label,
+      href: link.href,
+      category: route.label,
+      time: "",
+    }));
+  });
+}
+
 export const GlobalSearch = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [allItems, setAllItems] = useState<Array<SearchItem>>(STATIC_PAGES);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const hasFetched = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const unoClient = useUnoClient();
 
+  const staticPages = getStaticPages(headerRoutes);
+  const [allItems, setAllItems] = useState<Array<SearchItem>>(staticPages);
+
   const fetchHappenings = useCallback(async () => {
     if (hasFetched.current) return;
     hasFetched.current = true;
     try {
       const happenings = await unoClient.sanity.happenings.all();
-      const items = happenings.map(
-        (h: CMSHappening): SearchItem => ({
-          title: h.title,
-          href: `${happeningTypeToPath[h.happeningType]}/${h.slug}`,
-          category: h.happeningType === "bedpres" ? "Bedriftspresentasjon" : "Arrangement",
-        }),
-      );
-      setAllItems([...STATIC_PAGES, ...items]);
+      const items = happenings
+        .sort((a, b) => (new Date(a._createdAt) > new Date(b._createdAt) ? 1 : -1))
+        .map(
+          (h: CMSHappening): SearchItem => ({
+            title: h.title,
+            href: `${happeningTypeToPath[h.happeningType]}/${h.slug}`,
+            category: h.happeningType === "bedpres" ? "Bedriftspresentasjon" : "Arrangement",
+            time: new Date(h._createdAt).toLocaleDateString("no-NO", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "2-digit",
+            }),
+          }),
+        );
+      setAllItems([...staticPages, ...items]);
     } catch {
       // keep static pages only
     }
@@ -146,9 +140,9 @@ export const GlobalSearch = () => {
         .map((item) => ({ item, score: fuzzyScore(query, item.title) }))
         .filter(({ score }) => score > 0)
         .sort((a, b) => b.score - a.score)
-        .slice(0, 10)
+        .slice(0, MAX_RESULTS)
         .map(({ item }) => item)
-    : STATIC_PAGES.slice(0, 10);
+    : [];
 
   const clampedIndex = Math.min(selectedIndex, results.length - 1);
 
@@ -184,61 +178,69 @@ export const GlobalSearch = () => {
   return (
     <>
       <div
-        className="bg-background/80 fixed inset-0 z-50 backdrop-blur-xs"
+        className="bg-background/60 fixed inset-0 z-50 backdrop-blur-sm"
         onClick={() => setIsOpen(false)}
       />
       <div
         className={cn(
-          "fixed top-[20%] left-1/2 z-50 w-full max-w-xl -translate-x-1/2 overflow-hidden rounded-lg border bg-background shadow-lg",
+          "fixed top-[18%] left-1/2 z-50 flex w-full max-w-3xl -translate-x-1/2 flex-col gap-2",
           "animate-in fade-in-0 zoom-in-95 duration-150",
         )}
       >
-        <div className="flex items-center gap-3 border-b px-4 py-3">
-          <SearchIcon className="text-muted-foreground size-4 shrink-0" />
+        {/* Search bar */}
+        <div className="bg-background flex items-center gap-3 rounded-md border px-6 py-2 shadow-2xl">
+          <SearchIcon className="text-muted-foreground size-5 shrink-0" />
           <input
             ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="placeholder:text-muted-foreground flex-1 bg-transparent text-sm outline-none"
+            className="placeholder:text-muted-foreground flex-1 border-none bg-transparent text-base outline-none focus:ring-0 focus:outline-none"
             placeholder="Søk etter sider og arrangementer..."
           />
-          <kbd className="text-muted-foreground rounded border px-1.5 py-0.5 font-mono text-xs">
-            ESC
-          </kbd>
+          <kbd className="text-muted-foreground rounded px-1.5 py-0.5 font-mono text-xs">ESC</kbd>
         </div>
 
-        <div className="max-h-[min(60vh,400px)] overflow-y-auto p-1">
-          {results.length === 0 ? (
-            <p className="text-muted-foreground px-3 py-6 text-center text-sm">Ingen resultater</p>
-          ) : (
-            results.map((item, i) => (
-              <button
-                key={item.href}
-                onClick={() => {
-                  router.push(item.href);
-                  setIsOpen(false);
-                }}
-                onMouseEnter={() => setSelectedIndex(i)}
-                className={cn(
-                  "flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm",
-                  i === clampedIndex
-                    ? "bg-primary text-primary-foreground"
-                    : "hover:bg-accent hover:text-accent-foreground",
-                )}
-              >
-                <span className="font-medium">{item.title}</span>
-                <span
+        {/* Results */}
+        {results.length > 0 && (
+          <div className="bg-background overflow-hidden rounded-md border shadow-2xl">
+            <div className="overflow-y-auto p-1">
+              {results.map((item, i) => (
+                <button
+                  key={item.href}
+                  onClick={() => {
+                    router.push(item.href);
+                    setIsOpen(false);
+                  }}
+                  onMouseEnter={() => setSelectedIndex(i)}
                   className={cn(
-                    "text-xs",
-                    i === clampedIndex ? "text-primary-foreground/70" : "text-muted-foreground",
+                    "w-full grid grid-cols-4 rounded-sm px-3 py-2.5 text-left text-sm",
+                    i === clampedIndex
+                      ? "bg-primary text-primary-foreground"
+                      : "hover:bg-accent hover:text-accent-foreground",
                   )}
                 >
-                  {item.category}
-                </span>
-              </button>
-            ))
-          )}
-        </div>
+                  <span className="col-span-2 font-medium">{item.title}</span>
+                  <span
+                    className={cn(
+                      "text-xs text-end",
+                      i === clampedIndex ? "text-primary-foreground/70" : "text-muted-foreground",
+                    )}
+                  >
+                    {item.time}
+                  </span>
+                  <span
+                    className={cn(
+                      "text-xs text-end",
+                      i === clampedIndex ? "text-primary-foreground/70" : "text-muted-foreground",
+                    )}
+                  >
+                    {item.category}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

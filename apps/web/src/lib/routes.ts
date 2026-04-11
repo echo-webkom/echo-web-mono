@@ -24,7 +24,7 @@ import { mailTo } from "@/utils/prefixes";
 
 import { RouteGroup } from "./route-builder";
 
-type Route =
+export type Route =
   | {
       label: string;
       href: string;
