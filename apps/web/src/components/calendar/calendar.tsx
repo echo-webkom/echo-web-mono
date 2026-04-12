@@ -176,7 +176,7 @@ export const Calendar = ({ events, type }: CalendarProps) => {
             </Button>
             <span className="flex-1 pl-2 text-sm font-semibold capitalize">{topText}</span>
           </div>
-          <div className="border border-y-0 border-l-0 p-1 sm:block hidden"></div>
+          <div className="hidden border border-y-0 border-l-0 p-1 sm:block"></div>
           <Legend activeTypes={activeTypes} onToggle={toggleType} />
         </div>
         <CalendarControl
