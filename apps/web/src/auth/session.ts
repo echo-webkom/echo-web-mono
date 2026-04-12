@@ -104,12 +104,14 @@ export const auth = cache(async () => {
   const session = await validateSession(sessionId);
 
   if (!session) {
+    console.warn(`Invalid session ${sessionId}`);
     return null;
   }
 
   try {
     return await unoWithAdmin.users.byId(session.userId);
   } catch {
+    console.error(`Failed to fetch user for session ${sessionId}`);
     return null;
   }
 });
