@@ -122,6 +122,7 @@ func (f *feedbacks) createSiteFeedback(ctx *handler.Context) error {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      404  {string}  string  "Not Found"
 // @Router       /feedbacks/{id}/seen [put]
+// @Security     AdminAPIKey
 func (f *feedbacks) markSiteFeedbackAsSeen(ctx *handler.Context) error {
 	feedbackID := ctx.PathValue("id")
 	if feedbackID == "" {

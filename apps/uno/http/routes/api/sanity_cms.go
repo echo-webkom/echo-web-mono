@@ -81,6 +81,7 @@ func NewSanityMux(
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Router       /sanity/webhook [get]
+// @Security     AdminAPIKey
 func (s *sanityCMS) handleWebhook(ctx *handler.Context) error {
 	var req dto.SanityWebhookRequest
 	if err := ctx.ReadJSON(&req); err != nil {
@@ -149,6 +150,7 @@ func (s *sanityCMS) handleWebhook(ctx *handler.Context) error {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Router       /sanity/revalidate [post]
+// @Security     AdminAPIKey
 func (s *sanityCMS) handleRevalidate(ctx *handler.Context) error {
 	var req dto.SanityRevalidateRequest
 	if err := ctx.ReadJSON(&req); err != nil {

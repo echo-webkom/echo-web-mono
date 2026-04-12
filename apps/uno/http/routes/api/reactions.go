@@ -37,6 +37,7 @@ func NewReactionMux(logger port.Logger, reactionService *service.ReactionService
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Router       /reactions/{key} [get]
+// @Security     AdminAPIKey
 func (r *reactions) getReactions(ctx *handler.Context) error {
 	key := ctx.PathValue("key")
 	if key == "" {
@@ -64,6 +65,7 @@ func (r *reactions) getReactions(ctx *handler.Context) error {
 // @Failure      401  {string}  string  "Unauthorized"
 // @Failure      500  {string}  string  "Internal Server Error"
 // @Router       /reactions/{key} [post]
+// @Security     AdminAPIKey
 func (r *reactions) toggleReaction(ctx *handler.Context) error {
 	key := ctx.PathValue("key")
 	if key == "" {
