@@ -26,7 +26,7 @@ export const CommentDeleteButton = ({ id }: CommentDeleteButtonProps) => {
       <input type="hidden" name="id" value={id} />
       <button
         type="submit"
-        className="text-muted-foreground flex items-center text-sm hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+        className="text-muted-foreground flex items-center text-xs hover:underline disabled:cursor-not-allowed disabled:opacity-50"
         disabled={isPending}
       >
         <Trash className="mr-1 h-3 w-3" />

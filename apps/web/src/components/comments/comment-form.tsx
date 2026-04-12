@@ -47,6 +47,12 @@ export const CommentForm = ({ id }: CommentFormProps) => {
         placeholder="Skriv din kommentar her..."
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            e.currentTarget.form?.requestSubmit();
+          }
+        }}
       />
       <button
         type="submit"

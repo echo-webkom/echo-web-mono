@@ -34,8 +34,14 @@ export const CommentReplyTextarea = () => {
         placeholder="Svar på kommentaren..."
         value={content}
         onChange={(event) => setContent(event.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            e.currentTarget.form?.requestSubmit();
+          }
+        }}
       />
-      <button className="text-muted-foreground mt-2 flex items-center text-sm hover:underline">
+      <button className="text-muted-foreground mt-2 flex items-center text-xs hover:underline">
         <Send className="mr-1 h-3 w-3" />
         Svar
       </button>

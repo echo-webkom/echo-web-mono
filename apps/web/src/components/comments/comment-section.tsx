@@ -18,7 +18,7 @@ export const CommentSection = async ({ id, className }: CommentSectionProps) => 
   }
 
   return (
-    <div className={cn("space-y-4", className)}>
+    <div className={cn("space-y-2", className)}>
       <Heading className="font-medium" level={2}>
         Kommentarer
       </Heading>

@@ -28,11 +28,11 @@ export const CommentLikeButton = ({ currentUserId }: CommentLikeButtonProps) => 
     <button
       type="button"
       onClick={toggleLiked}
-      className="text-muted-foreground flex items-center gap-1 text-sm disabled:cursor-not-allowed"
+      className="text-muted-foreground flex items-center gap-1 text-xs disabled:cursor-not-allowed"
       disabled={!userId}
     >
       <ArrowBigUp
-        className={cn("h-4 w-4", {
+        className={cn("h-3 w-3", {
           "fill-muted-dark dark:fill-slate-300": isLiked,
         })}
       />
