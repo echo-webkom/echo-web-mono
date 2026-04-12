@@ -11,6 +11,8 @@ import { otherSponsors, sponsors } from "@/lib/sponsors";
 import { cn } from "@/utils/cn";
 import { shuffle } from "@/utils/list";
 
+import { Bybanen } from "./bybanen";
+
 type FooterProps = {
   className?: string;
 };
@@ -28,7 +30,7 @@ export const Footer = ({ className }: FooterProps) => {
 
   return (
     <div className={cn("selection:bg-primary mt-32", className)}>
-      <footer className="bg-footer text-footer-foreground relative border-t px-10 py-24">
+      <footer className="bg-footer text-footer-foreground relative border-t px-10 py-24 pb-32">
         <CommitLabel />
         <UsefulLinks />
 
@@ -108,6 +110,8 @@ export const Footer = ({ className }: FooterProps) => {
             </div>
           </div>
         </div>
+
+        <Bybanen />
       </footer>
     </div>
   );
@@ -121,7 +125,7 @@ const humanSha = COMMIT_SHA.slice(0, 7);
 
 const CommitLabel = () => {
   return (
-    <div className="absolute bottom-0 left-0 p-1.5">
+    <div className="absolute bottom-0 left-0 z-30 p-1.5">
       <p className="text-muted-foreground font-mono text-xs">
         <a
           className="flex items-center gap-1 hover:underline"
@@ -137,7 +141,7 @@ const CommitLabel = () => {
 
 const UsefulLinks = () => {
   return (
-    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 p-1.5">
+    <div className="absolute bottom-0 left-1/2 z-30 -translate-x-1/2 p-1.5">
       <ul className="text-muted-foreground flex flex-row gap-2 font-mono text-xs">
         <li>
           <Link className="flex items-center gap-1 hover:underline" href="/feed">
