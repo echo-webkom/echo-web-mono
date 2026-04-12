@@ -27,6 +27,16 @@ required = true
 default = "http://localhost:8000"
 kind = "Url"
 
+# The internal URL of the Uno API server. This can be used by the next server to
+# make API requests within the same network, to avoid going through the reverse proxy.
+# Not required for local development, but can make stuff faster in production.
+# Used by: web
+[[entries]]
+key = "INTERNAL_API_URL"
+required = false
+default = "http://localhost:8000"
+kind = "Url"
+
 # The URL that the web application should be served from. Used to construct links and
 # make Uno and the web app work together in production.
 # Used by: web, uno
