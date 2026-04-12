@@ -12,6 +12,12 @@
  * ---------------------------------------------------------------------------------
  */
 
+export declare const internalGroqTypeReferenceTo: unique symbol;
+
+type ArrayOf<T> = Array<T & {
+  _key: string;
+}>;
+
 // Source: schema.json
 export type ProfileReference = {
   _ref: string;
@@ -542,12 +548,6 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes = ProfileReference | HungerGames | SanityImageAssetReference | Merch | Markdown | SanityImageCrop | SanityImageHotspot | Slug | Ttime | Banner | Color | Movie | Question | ContactProfile | SpotRange | SanityFileAssetReference | MeetingMinute | StudentGroup | StaticInfo | CompanyReference | LocationReference | Job | StudentGroupReference | Post | RepeatingHappening | Happening | Location | Company | HsApplication | Profile | RgbaColor | HsvaColor | HslaColor | MediaTag | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
-
-export declare const internalGroqTypeReferenceTo: unique symbol;
-
-type ArrayOf<T> = Array<T & {
-  _key: string;
-}>;
 
 // Source: ../../packages/seeder/src/sanity/query.ts
 // Variable: happeningQueryList

@@ -5,6 +5,10 @@ packages:
 
 minimumReleaseAge: 10080
 
+minimumReleaseAgeExclude:
+  - "@astrojs/starlight"
+  - "astro"
+
 onlyBuiltDependencies:
   - "@swc/core"
   - "@tailwindcss/oxide"

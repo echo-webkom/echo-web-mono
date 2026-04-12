@@ -22,18 +22,18 @@
     "check:fix": "oxlint . --fix && oxfmt . && tsc --noEmit"
   },
   "dependencies": {
-    "drizzle-orm": "0.45.1",
+    "drizzle-orm": "0.45.2",
     "drizzle-zod": "0.8.3",
-    "nanoid": "5.1.6",
-    "pg": "8.18.0",
+    "nanoid": "5.1.7",
+    "pg": "8.20.0",
     "postgres": "3.4.8",
     "zod": "4.3.6"
   },
   "devDependencies": {
     "@types/node": "22.19.7",
-    "@types/pg": "8.16.0",
+    "@types/pg": "8.20.0",
     "dotenv-cli": "11.0.0",
-    "drizzle-kit": "0.31.8",
+    "drizzle-kit": "0.31.10",
     "drizzle-seed": "^0.3.1",
     "tsx": "4.21.0",
     "typescript": "5.9.3"
