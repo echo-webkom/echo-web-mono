@@ -100,6 +100,7 @@ export const baseMessages: Array<MessageItem> = [
   { text: "ʕ•ᴥ•ʔ" },
   { text: "( ͡° ͜ʖ ͡°)" },
   { text: "༼ つ ◕_◕ ༽つ" },
+  { text: "Søk med '/' 🔍" },
 ];
 
 export const getRandomMessage = (): MessageItem => {

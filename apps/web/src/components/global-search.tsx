@@ -94,7 +94,7 @@ export const GlobalSearch = () => {
     try {
       const happenings = await unoClient.sanity.happenings.all();
       const items = happenings
-        .sort((a, b) => (new Date(a._createdAt) > new Date(b._createdAt) ? 1 : -1))
+        .sort((a, b) => (new Date(a._createdAt) < new Date(b._createdAt) ? 1 : -1))
         .map(
           (h: CMSHappening): SearchItem => ({
             title: h.title,
