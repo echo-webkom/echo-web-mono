@@ -1,4 +1,4 @@
-import { CloudOff, Facebook, Instagram, Linkedin, Mail } from "lucide-react";
+import { CloudOff, Mail } from "lucide-react";
 import { type Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,6 +7,9 @@ import { cache } from "react";
 
 import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
+import { Facebook } from "@/components/icons/facebook";
+import { Instagram } from "@/components/icons/instagram";
+import { Linkedin } from "@/components/icons/linkedin";
 import { Markdown } from "@/components/markdown";
 import { Callout } from "@/components/typography/callout";
 import { Heading } from "@/components/typography/heading";

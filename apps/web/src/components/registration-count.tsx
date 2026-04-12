@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 "use client";
 
-import { Infinity } from "lucide-react";
+import { Infinity as InfinityIcon } from "lucide-react";
 
 type RegistrationCountProps = {
   registeredCount: number;
@@ -13,7 +13,7 @@ export const RegistrationCount = ({ maxCapacity, registeredCount }: Registration
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-1">
         {Math.min(registeredCount, maxCapacity || Number.POSITIVE_INFINITY)} /{" "}
-        {maxCapacity || <Infinity className="h-5 w-5" />}
+        {maxCapacity || <InfinityIcon className="h-5 w-5" />}
       </div>
     </div>
   );
