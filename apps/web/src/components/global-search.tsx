@@ -207,7 +207,7 @@ export const GlobalSearch = () => {
       />
       <div
         className={cn(
-          "fixed top-[18%] left-1/2 z-50 flex w-full max-w-3xl -translate-x-1/2 flex-col gap-2",
+          "fixed top-[18%] left-1/2 z-50 flex w-full max-w-3xl px-4 -translate-x-1/2 flex-col gap-2",
           "animate-in fade-in-0 zoom-in-95 duration-150",
         )}
       >
