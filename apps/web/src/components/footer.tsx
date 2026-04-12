@@ -34,7 +34,7 @@ export const Footer = ({ className }: FooterProps) => {
         <CommitLabel />
         <UsefulLinks />
 
-        <div className="mx-auto flex w-full max-w-7xl">
+        <div className="mx-auto flex w-full max-w-7xl pb-20">
           <div className="flex w-full flex-wrap justify-between gap-10 sm:gap-20">
             {footerRoutes.map((section) => {
               return (

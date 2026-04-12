@@ -10,7 +10,7 @@ export function Bybanen() {
         className="absolute z-20 h-[80px] w-full"
       >
         <g>
-          <g className={"animate-tram-go-small repeat-infinite direction-alternate duration-[10s]"}>
+          <g className={"animate-tram-go-small repeat-infinite direction-alternate duration-[30s]"}>
             <path d="M114.695 6.54867H14.5364V15.2212H114.695V6.54867Z" fill="#2C2C2C" />
             <path d="M236.305 6.54867H336.464V15.2212H236.305V6.54867Z" fill="#2C2C2C" />
             <path d="M114.695 15.2212H14.5364V60H114.695V15.2212Z" fill="#2C2C2C" />
@@ -66,6 +66,33 @@ export function Bybanen() {
             />
             <path d="M114.695 0H125.332V60H114.695V0Z" fill="#767676" />
             <path d="M225.668 0H236.305V60H225.668V0Z" fill="#767676" />
+          </g>
+
+          <g>
+            {/* Platform */}
+            <rect x="-5" y="45" width="150" height="15" fill="#2C2C2C" />
+            {/* Platform top */}
+            <rect x="-5" y="45" width="150" height="2" fill="#EA6664" />
+            {/* Pole right */}
+            <rect x="85" y="-35" width="4" height="80" fill="#666" />
+            {/* Pole left */}
+            <rect x="50" y="-35" width="4" height="80" fill="#666" />
+            {/* Sign top */}
+            <rect x="52" y="0" width="35" height="3" fill="#EA6664" />
+            {/* Sign */}
+            <rect x="52" y="2" width="35" height="15" fill="#2C2C2C" />
+
+            <text
+              x="70"
+              y="14"
+              fill="#EA6664"
+              fontSize="9"
+              fontFamily="monospace"
+              fontWeight="bold"
+              textAnchor="middle"
+            >
+              Florida
+            </text>
           </g>
         </g>
       </svg>
