@@ -166,13 +166,20 @@ export const Calendar = ({ events, type }: CalendarProps) => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex w-full items-center gap-2 border-b px-4 py-2">
-        <Button variant="outline" size="icon" asChild>
-          <Link href="/for-studenter/arrangementer">
-            <CalendarIcon className="size-4" />
-          </Link>
-        </Button>
-        <span className="flex-1 pl-2 text-sm font-semibold capitalize">{topText}</span>
+      <div className="flex w-full items-center justify-between border-b px-4 py-3">
+        <div className="flex gap-6">
+          <div className="flex items-center justify-center">
+            <Button variant="outline" size="icon" asChild>
+              <Link href="/for-studenter/arrangementer">
+                <CalendarIcon className="size-4" />
+              </Link>
+            </Button>
+            <span className="flex-1 pl-2 text-sm font-semibold capitalize">{topText}</span>
+          </div>
+          <div className="border border-y-0 border-l-0 p-1"></div>
+
+          <Legend activeTypes={activeTypes} onToggle={toggleType} />
+        </div>
         <CalendarControl
           prev={handlePrevStep}
           next={handleNextStep}
@@ -184,9 +191,6 @@ export const Calendar = ({ events, type }: CalendarProps) => {
       ) : (
         <MonthCalendar events={filteredEvents} steps={steps} setMonthText={setTopText} />
       )}
-      <div className="hidden border-t px-4 py-2 sm:block">
-        <Legend activeTypes={activeTypes} onToggle={toggleType} />
-      </div>
     </div>
   );
 };

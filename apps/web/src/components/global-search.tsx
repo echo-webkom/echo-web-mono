@@ -3,7 +3,7 @@
 import { happeningTypeToPath } from "@echo-webkom/lib";
 import { SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { CMSHappening } from "@/api/uno/client";
 import { useUnoClient } from "@/providers/uno";
@@ -94,7 +94,7 @@ export const GlobalSearch = () => {
     try {
       const happenings = await unoClient.sanity.happenings.all();
       const items = happenings
-        .sort((a, b) => (new Date(a._createdAt) > new Date(b._createdAt) ? 1 : -1))
+        .sort((a, b) => (new Date(a._createdAt) < new Date(b._createdAt) ? 1 : -1))
         .map(
           (h: CMSHappening): SearchItem => ({
             title: h.title,
@@ -111,7 +111,7 @@ export const GlobalSearch = () => {
     } catch {
       // keep static pages only
     }
-  }, [unoClient]);
+  }, [unoClient, staticPages]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -135,14 +135,16 @@ export const GlobalSearch = () => {
     }
   }, [isOpen]);
 
-  const results = query.trim()
-    ? allItems
-        .map((item) => ({ item, score: fuzzyScore(query, item.title) }))
-        .filter(({ score }) => score > 0)
-        .sort((a, b) => b.score - a.score)
-        .slice(0, MAX_RESULTS)
-        .map(({ item }) => item)
-    : [];
+  const results = useMemo(() => {
+    return query.trim()
+      ? allItems
+          .map((item) => ({ item, score: fuzzyScore(query, item.title) }))
+          .filter(({ score }) => score > 0)
+          .sort((a, b) => b.score - a.score)
+          .slice(0, MAX_RESULTS)
+          .map(({ item }) => item)
+      : [];
+  }, [query, allItems]);
 
   const clampedIndex = Math.min(selectedIndex, results.length - 1);
 
@@ -171,7 +173,7 @@ export const GlobalSearch = () => {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isOpen, results, clampedIndex, router]);
+  }, [isOpen, clampedIndex, router, results]);
 
   if (!isOpen) return null;
 
