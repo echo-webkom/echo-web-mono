@@ -156,18 +156,40 @@ export const GlobalSearch = () => {
     if (!isOpen) return;
 
     const onKeyDown = (e: KeyboardEvent) => {
+      // Escape -> close
       if (e.key === "Escape") {
         setIsOpen(false);
-      } else if (e.key === "ArrowDown") {
+      }
+
+      // ArrowDown -> scroll down
+      if (e.key === "ArrowDown") {
         e.preventDefault();
         setSelectedIndex((i) => Math.min(i + 1, results.length - 1));
-      } else if (e.key === "ArrowUp") {
+      }
+
+      // ArrowUp -> scroll up
+      if (e.key === "ArrowUp") {
         e.preventDefault();
         setSelectedIndex((i) => Math.max(i - 1, 0));
-      } else if (e.key === "Enter" && results.length > 0) {
+      }
+
+      // Enter -> navigate to selected
+      if (e.key === "Enter" && results.length > 0) {
         e.preventDefault();
         router.push(results[clampedIndex]?.href ?? "");
         setIsOpen(false);
+      }
+
+      // Ctrl-j -> scroll down
+      if (e.key === "j" && e.ctrlKey) {
+        e.preventDefault();
+        setSelectedIndex((i) => Math.min(i + 1, results.length - 1));
+      }
+
+      // Ctrl-k -> scroll up
+      if (e.key === "k" && e.ctrlKey) {
+        e.preventDefault();
+        setSelectedIndex((i) => Math.max(i - 1, 0));
       }
     };
 
@@ -185,7 +207,7 @@ export const GlobalSearch = () => {
       />
       <div
         className={cn(
-          "fixed top-[18%] left-1/2 z-50 flex w-full max-w-3xl -translate-x-1/2 flex-col gap-2",
+          "fixed top-[18%] left-1/2 z-50 flex w-full max-w-3xl px-4 -translate-x-1/2 flex-col gap-2",
           "animate-in fade-in-0 zoom-in-95 duration-150",
         )}
       >
