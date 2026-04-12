@@ -954,6 +954,11 @@ const docTemplate = `{
         },
         "/feedbacks/{id}/seen": {
             "put": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -2393,6 +2398,11 @@ const docTemplate = `{
         },
         "/reactions/{key}": {
             "get": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -2443,6 +2453,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -2906,6 +2921,11 @@ const docTemplate = `{
         },
         "/sanity/revalidate": {
             "post": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -3053,6 +3073,11 @@ const docTemplate = `{
         },
         "/sanity/webhook": {
             "get": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],

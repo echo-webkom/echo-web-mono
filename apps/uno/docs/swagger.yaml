@@ -1929,6 +1929,8 @@ paths:
           description: Not Found
           schema:
             type: string
+      security:
+      - AdminAPIKey: []
       summary: Update site feedback
       tags:
       - feedbacks
@@ -2856,6 +2858,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - AdminAPIKey: []
       summary: Get reactions for a given key
       tags:
       - reactions
@@ -2895,6 +2899,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - AdminAPIKey: []
       summary: Toggle a reaction for a given key and user
       tags:
       - reactions
@@ -3182,6 +3188,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - AdminAPIKey: []
       summary: Revalidate CMS cache
       tags:
       - sanity
@@ -3277,6 +3285,8 @@ paths:
           description: Internal Server Error
           schema:
             type: string
+      security:
+      - AdminAPIKey: []
       summary: Process Sanity webhook
       tags:
       - sanity

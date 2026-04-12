@@ -947,6 +947,11 @@
         },
         "/feedbacks/{id}/seen": {
             "put": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -2386,6 +2391,11 @@
         },
         "/reactions/{key}": {
             "get": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -2436,6 +2446,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -2899,6 +2914,11 @@
         },
         "/sanity/revalidate": {
             "post": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -3046,6 +3066,11 @@
         },
         "/sanity/webhook": {
             "get": {
+                "security": [
+                    {
+                        "AdminAPIKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
