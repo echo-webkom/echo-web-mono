@@ -61,6 +61,9 @@ func Logger(portLogger port.Logger) func(http.Handler) http.Handler {
 				portLogger.Error(ctx.Context(), "request failed", attrs...)
 			} else {
 				portLogger.Info(ctx.Context(), "request completed", attrs...)
+				if time.Since(start) > 1*time.Second {
+					portLogger.Warn(ctx.Context(), "slow request", attrs...)
+				}
 			}
 
 			return err

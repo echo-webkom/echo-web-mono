@@ -431,6 +431,12 @@ func (h *happenings) deregisterFromHappening(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 
+	h.logger.Info(ctx.Context(), "deregistration",
+		"userID", req.UserID,
+		"happeningID", happeningID,
+		"previousStatus", string(reg.Status),
+	)
+
 	return ctx.Ok()
 }
 

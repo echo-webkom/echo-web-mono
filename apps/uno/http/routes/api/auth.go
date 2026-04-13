@@ -149,6 +149,8 @@ func (h *auth) signOut(ctx *handler.Context) error {
 		// fail silently, since we still want to clear the cookie even if the session deletion fails
 	}
 
+	h.logger.Info(ctx.Context(), "user signed out", "user_id", session.UserID)
+
 	return ctx.Ok()
 }
 
