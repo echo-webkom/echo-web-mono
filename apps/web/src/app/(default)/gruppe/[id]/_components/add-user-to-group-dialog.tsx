@@ -11,7 +11,7 @@ import { type z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogBodyOverflow,
+  DialogBody,
   DialogClose,
   DialogContent,
   DialogFooter,
@@ -81,7 +81,7 @@ export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
                 Legg til bruker i {group.name}
               </DialogTitle>
             </DialogHeader>
-            <DialogBodyOverflow>
+            <DialogBody>
               <FormField
                 name="userId"
                 control={form.control}
@@ -110,7 +110,7 @@ export const AddUserToGroupDialog = ({ group }: AddUserToGroupDialogProps) => {
                   </FormItem>
                 )}
               />
-            </DialogBodyOverflow>
+            </DialogBody>
             <DialogFooter>
               <Button
                 size="sm"

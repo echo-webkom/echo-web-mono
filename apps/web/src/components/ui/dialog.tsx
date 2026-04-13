@@ -54,7 +54,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 w-full max-w-[min(90vw,32rem)] max-h-[90vh] translate-x-[-50%] translate-y-[-50%] overflow-y-auto border shadow-lg duration-200 rounded-md",
+          "bg-background overflow-hidden data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 w-full max-w-[min(90vw,32rem)] translate-x-[-50%] translate-y-[-50%] border shadow-lg duration-200 rounded-md",
           className,
         )}
         {...props}
@@ -62,7 +62,7 @@ function DialogContent({
         {children}
         {showCloseButton && (
           <DialogPrimitive.Close data-slot="dialog-close" asChild>
-            <Button variant="ghost" className="absolute top-2 right-2" size="icon-sm">
+            <Button variant="ghost" className="absolute top-4 right-2 z-30" size="icon">
               <XIcon />
               <span className="sr-only">Close</span>
             </Button>
@@ -98,7 +98,7 @@ function DialogFooter({
     <div
       data-slot="dialog-footer"
       className={cn(
-        "sticky bottom-0 flex flex-col-reverse p-3 sm:flex-row sm:justify-end sm:space-x-2",
+        "flex flex-col-reverse border-t p-3 sm:flex-row sm:justify-end sm:space-x-2",
         className,
       )}
       {...props}
@@ -142,18 +142,13 @@ function DialogDescription({
 function DialogBody({ className, children, ...props }: React.ComponentProps<"div">) {
   return (
     <div {...props}>
-      <div className={cn("px-6 py-3", className)}>{children}</div>
+      <div className={cn("px-6 py-3 max-h-[min(60vh,800px)] overflow-y-auto", className)}>
+        {children}
+      </div>
     </div>
   );
 }
 
-function DialogBodyOverflow({ className, children, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div {...props}>
-      <div className={cn("px-6 py-3", className)}>{children}</div>
-    </div>
-  );
-}
 export {
   Dialog,
   DialogPortal,
@@ -166,5 +161,4 @@ export {
   DialogTitle,
   DialogDescription,
   DialogBody,
-  DialogBodyOverflow,
 };
