@@ -366,8 +366,8 @@ func (h *happenings) registerForHappening(ctx *handler.Context) error {
 	}
 
 	h.logger.Info(ctx.Context(), "registration attempt",
-		"userID", req.UserID,
-		"happeningID", happeningID,
+		"user_id", req.UserID,
+		"happening_id", happeningID,
 		"success", result.Success,
 		"waitlisted", result.IsWaitlisted,
 		"message", result.Message,
@@ -432,9 +432,9 @@ func (h *happenings) deregisterFromHappening(ctx *handler.Context) error {
 	}
 
 	h.logger.Info(ctx.Context(), "deregistration",
-		"userID", req.UserID,
-		"happeningID", happeningID,
-		"previousStatus", string(reg.Status),
+		"user_id", req.UserID,
+		"happening_id", happeningID,
+		"previous_status", string(reg.Status),
 	)
 
 	return ctx.Ok()

@@ -208,7 +208,7 @@ func (q *QuoteRepo) RemoveReaction(ctx context.Context, quoteID string, userID s
 // GetQuoteByID fetches a quote with its reactions from the database by its ID.
 // If the quote is not found, it returns nil without an error.
 func (q *QuoteRepo) GetQuoteByID(ctx context.Context, quoteID string) (*model.Quote, error) {
-	q.logger.Info(ctx, "fetching quote by ID", "quote_id", quoteID)
+	q.logger.Info(ctx, "fetching quote", "quote_id", quoteID)
 
 	query := `--sql
 		SELECT q.id, q.text, q.context, q.person, q.submitted_at,
@@ -220,7 +220,7 @@ func (q *QuoteRepo) GetQuoteByID(ctx context.Context, quoteID string) (*model.Qu
 
 	rows, err := q.db.QueryContext(ctx, query, quoteID)
 	if err != nil {
-		q.logger.Error(ctx, "failed to fetch quote by ID", "error", err)
+		q.logger.Error(ctx, "failed to fetch quote", "error", err)
 		return nil, err
 	}
 	defer func() {

@@ -24,9 +24,7 @@ const (
 	profilePictureSizeMedium = 300
 )
 
-var (
-	ErrProfilePictureBucketNotFound = fmt.Errorf("profile picture bucket not found")
-)
+var ErrProfilePictureBucketNotFound = fmt.Errorf("profile picture bucket not found")
 
 type ProfilePictureRepo struct {
 	minio      *FileStorage
@@ -49,7 +47,7 @@ func NewProfilePictureStore(ctx context.Context, fileStorage *FileStorage, bucke
 
 // DeleteProfilePicture deletes all size variants of a profile picture for a given user ID.
 func (p *ProfilePictureRepo) DeleteProfilePicture(ctx context.Context, userID string) error {
-	p.logger.Info(ctx, "deleting profile picture", "userID", userID)
+	p.logger.Info(ctx, "deleting profile picture", "user_id", userID)
 
 	// Delete all variants of the profile picture
 	keys := []string{userID, userID + profilePictureSuffixThumb, userID + profilePictureSuffixMedium}
@@ -74,7 +72,7 @@ func (p *ProfilePictureRepo) GetProfilePicture(ctx context.Context, userID strin
 	}
 
 	// Retrive the profile picture of requested size
-	p.logger.Info(ctx, "retrieving profile picture", "userID", userID, "size", size)
+	p.logger.Info(ctx, "retrieving profile picture", "user_id", userID, "size", size)
 	object, err := p.minio.GetObject(ctx, p.bucketName, key, minio.GetObjectOptions{})
 	if err != nil {
 		p.logger.Error(ctx, "failed to retrieve profile picture", "key", key, "error", err)
@@ -105,21 +103,21 @@ func (p *ProfilePictureRepo) GetProfilePicture(ctx context.Context, userID strin
 // It stores the original and resized variants. It also checks that the
 // dimensions of the uploaded image are valid so that we don't fill up memory with huge images.
 func (p *ProfilePictureRepo) UploadProfilePicture(ctx context.Context, userID string, picture *model.ProfilePictureUpload) error {
-	p.logger.Info(ctx, "uploading profile picture", "userID", userID)
+	p.logger.Info(ctx, "uploading profile picture", "user_id", userID)
 
 	data := picture.Bytes()
 	_, err := p.minio.PutObject(ctx, p.bucketName, userID, bytes.NewReader(data), int64(len(data)), minio.PutObjectOptions{
 		ContentType: string(picture.ImageType),
 	})
 	if err != nil {
-		p.logger.Error(ctx, "failed to upload original profile picture", "userID", userID, "error", err)
+		p.logger.Error(ctx, "failed to upload original profile picture", "user_id", userID, "error", err)
 		return err
 	}
 
 	// Decode the image so that we can create resized variants
 	img, _, err := image.Decode(picture.Reader())
 	if err != nil {
-		p.logger.Error(ctx, "failed to decode image for resizing, skipping variants", "userID", userID, "error", err)
+		p.logger.Error(ctx, "failed to decode image for resizing, skipping variants", "user_id", userID, "error", err)
 		return nil
 	}
 
@@ -133,7 +131,7 @@ func (p *ProfilePictureRepo) UploadProfilePicture(ctx context.Context, userID st
 	}
 	for _, variant := range variants {
 		if err := p.uploadResized(ctx, userID+variant.suffix, img, variant.maxSize); err != nil {
-			p.logger.Error(ctx, "failed to upload resized profile picture", "userID", userID, "variant", variant.suffix, "error", err)
+			p.logger.Error(ctx, "failed to upload resized profile picture", "user_id", userID, "variant", variant.suffix, "error", err)
 			return err
 		}
 	}

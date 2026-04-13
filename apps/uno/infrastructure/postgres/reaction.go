@@ -19,7 +19,7 @@ func NewReactionRepo(db *Database, logger port.Logger) port.ReactionRepo {
 	}
 }
 
-// AddReactions adds a reaction to the database
+// AddReaction adds a reaction to the database
 func (r *ReactionRepo) AddReaction(ctx context.Context, reaction model.Reaction) error {
 	r.logger.Info(ctx, "adding reactiong",
 		"react_to_key", reaction.ReactToKey,
@@ -44,9 +44,9 @@ func (r *ReactionRepo) AddReaction(ctx context.Context, reaction model.Reaction)
 	return nil
 }
 
-// GetReactionsByID
+// GetReactionsByID gets reactions by reactToKey
 func (r *ReactionRepo) GetReactionsByID(ctx context.Context, reactToKey string) ([]model.Reaction, error) {
-	r.logger.Info(ctx, "getting reactions by reactToKey", "react_to_key", reactToKey)
+	r.logger.Info(ctx, "getting reactions", "react_to_key", reactToKey)
 
 	query := `--sql
 	SELECT react_to_key, emoji_id, user_id, created_at
@@ -76,7 +76,7 @@ func (r *ReactionRepo) GetReactionsByID(ctx context.Context, reactToKey string) 
 
 // GetReactionsByIDAndUserID get reactions by reactToKey and userID
 func (r *ReactionRepo) GetReactionsByIDAndUserID(ctx context.Context, reactToKey string, userID string) ([]model.Reaction, error) {
-	r.logger.Info(ctx, "getting reactions by reactToKey and userID", "react_to_key", reactToKey, "user_id", userID)
+	r.logger.Info(ctx, "getting reactions", "react_to_key", reactToKey, "user_id", userID)
 
 	query := `--sql
 	SELECT react_to_key, emoji_id, user_id, created_at
@@ -85,7 +85,7 @@ func (r *ReactionRepo) GetReactionsByIDAndUserID(ctx context.Context, reactToKey
 	`
 	rows, err := r.db.QueryxContext(ctx, query, reactToKey, userID)
 	if err != nil {
-		r.logger.Error(ctx, "failed to get reactions by reactToKey and userID", "error", err)
+		r.logger.Error(ctx, "failed to get reactions", "error", err)
 		return nil, err
 	}
 	defer func() {

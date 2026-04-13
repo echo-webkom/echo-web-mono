@@ -213,7 +213,7 @@ func (u *users) uploadUserImage(ctx *handler.Context) error {
 		if errors.Is(err, sql.ErrNoRows) {
 			return ctx.NotFound(errors.New("user not found"))
 		}
-		u.logger.Error(ctx.Context(), "failed to upload profile picture", "userID", userID, "error", err)
+		u.logger.Error(ctx.Context(), "failed to upload profile picture", "user_id", userID, "error", err)
 		return ctx.Error(ErrInternalServer, http.StatusInternalServerError)
 	}
 
