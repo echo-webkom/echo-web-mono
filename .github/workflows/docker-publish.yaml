@@ -362,11 +362,14 @@ jobs:
             }
 
   auto-deploy:
-    if: github.event_name == 'push' && github.ref_name == 'main'
-    needs: [build-and-push-web]
     name: 🚗 Auto deploy web
+    if: github.event_name == 'push' && github.ref_name == 'main'
+    needs: [build-and-push-web, build-and-push-uno]
     runs-on: ubuntu-latest
 
     steps:
       - name: 🚗 Auto deploy web
-        run: curl ${{secrets.DEPLOY_WEB_URL}}
+        run: curl ${{ secrets.DEPLOY_WEB_URL }}
+
+      - name: 🚗 Auto deploy uno
+        run: curl ${{ secrets.DEPLOY_UNO_URL }}
