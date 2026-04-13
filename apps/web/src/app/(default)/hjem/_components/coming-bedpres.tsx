@@ -1,7 +1,6 @@
-import { type HappeningType } from "@echo-webkom/lib";
 import { Clock10 } from "lucide-react";
 
-import { unoWithAdmin } from "@/api/server";
+import { type CMSHomeHappening, type RegistrationCount } from "@/api/uno/client";
 
 import { BentoBox } from "./bento-box";
 import { HappeningPreview } from "./happening-preview";
@@ -9,23 +8,18 @@ import { HappeningPreview } from "./happening-preview";
 type ComingHappeningsProps = {
   title: string;
   href: string;
-  types: Array<HappeningType>;
-  n: number;
+  happenings: Array<CMSHomeHappening>;
+  registrationCounts: Array<RegistrationCount>;
   className?: string;
 };
 
-export const ComingHappenings = async ({
+export const ComingHappenings = ({
   title,
   href,
-  types,
-  n,
+  happenings,
+  registrationCounts,
   className,
 }: ComingHappeningsProps) => {
-  const happenings = await unoWithAdmin.sanity.happenings.home({ types, n }).catch(() => []);
-  const registrationCounts = await unoWithAdmin.happenings.registrationCount(
-    happenings.map((happening) => happening._id),
-  );
-
   return (
     <BentoBox title={title} href={href} className={className}>
       {happenings.length > 0 ? (

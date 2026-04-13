@@ -2,13 +2,11 @@ import { isPast } from "date-fns/isPast";
 import Image from "next/image";
 import Link from "next/link";
 
-import { unoWithAdmin } from "@/api/server";
+import { type CMSMovie } from "@/api/uno/client";
 import { urlFor } from "@/lib/sanity";
 import { shortDateNoTimeNoYear, shortDateNoYear } from "@/utils/date";
 
-export const MovieClubCard = async () => {
-  const movies = await unoWithAdmin.sanity.movies.upcoming(3).catch(() => []);
-
+export const MovieClubCard = ({ movies }: { movies: Array<CMSMovie> }) => {
   const thisWeekMovie = movies[0];
   const nextWeekMovie = movies[1];
   const nextNextWeekMovie = movies[2];
