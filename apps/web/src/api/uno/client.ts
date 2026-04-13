@@ -742,10 +742,10 @@ class CommentsApi {
   }
 
   async like(commentId: string, userId: string) {
-    await this.client.requestJson("POST", `/comments/${commentId}/reaction`, {
-      commentId,
-      userId,
+    const response = await this.client.request("POST", `/comments/${commentId}/reaction`, {
+      body: JSON.stringify({ type: "like", userId }),
     });
+    return response.status === 200;
   }
 
   async delete(commentId: string) {
