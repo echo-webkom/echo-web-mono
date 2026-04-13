@@ -19,9 +19,10 @@ export default async function HomePage() {
     redirectTo: "/hjem",
   });
 
-  const [bedpresses, events] = await Promise.all([
+  const [bedpresses, events, banner] = await Promise.all([
     unoWithAdmin.sanity.happenings.home({ types: ["bedpres"], n: 4 }).catch(() => []),
     unoWithAdmin.sanity.happenings.home({ types: ["event", "external"], n: 4 }).catch(() => []),
+    unoWithAdmin.sanity.banner().catch(() => null),
   ]);
 
   const studieretninger: Record<string, Record<string, string>> = {
@@ -49,7 +50,7 @@ export default async function HomePage() {
   return (
     <>
       <div className="z-10">
-        <Banner />
+        <Banner banner={banner} />
       </div>
 
       {/* Prevents scrolling on the body when the blur logo is outside the viewport // No idea why

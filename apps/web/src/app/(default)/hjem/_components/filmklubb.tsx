@@ -1,11 +1,15 @@
-import { unoWithAdmin } from "@/api/server";
+import { type CMSMovie } from "@/api/uno/client";
 import { MovieClubCard } from "@/components/movie-club-card";
 
 import { BentoBox } from "./bento-box";
 
-export const FilmklubbMovies = async ({ className }: { className?: string }) => {
-  const movies = await unoWithAdmin.sanity.movies.upcoming(3).catch(() => []);
-
+export const FilmklubbMovies = ({
+  movies,
+  className,
+}: {
+  movies: Array<CMSMovie>;
+  className?: string;
+}) => {
   // Hide the entire section if there are no movies at all
   if (movies.length === 0) {
     return null;
@@ -13,7 +17,7 @@ export const FilmklubbMovies = async ({ className }: { className?: string }) => 
 
   return (
     <BentoBox title="Mandagens Visning" className={className}>
-      <MovieClubCard />
+      <MovieClubCard movies={movies} />
     </BentoBox>
   );
 };

@@ -1,11 +1,9 @@
 import { isPast } from "date-fns";
 import Link from "next/link";
 
-import { unoWithAdmin } from "@/api/server";
+import { type CMSBanner } from "@/api/uno/client";
 
-export const Banner = async () => {
-  const banner = await unoWithAdmin.sanity.banner();
-
+export const Banner = ({ banner }: { banner: CMSBanner | null }) => {
   if (!banner?.text) {
     return null;
   }

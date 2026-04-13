@@ -1,4 +1,6 @@
+import { unoWithAdmin } from "@/api/server";
 import { Container } from "@/components/container";
+import { getCalendarEvents } from "@/lib/calendar-events";
 import { ensureUser } from "@/lib/ensure";
 
 import { Banner } from "./_components/banner";
@@ -16,16 +18,31 @@ import { Posts } from "./_components/posts";
 export default async function Home() {
   await ensureUser();
 
+  const [banner, calendarEvents, events, bedpres, posts, jobAds, movies, shoppingItems] =
+    await Promise.all([
+      unoWithAdmin.sanity.banner().catch(() => null),
+      getCalendarEvents(),
+      unoWithAdmin.sanity.happenings.home({ types: ["external", "event"], n: 11 }).catch(() => []),
+      unoWithAdmin.sanity.happenings.home({ types: ["bedpres"], n: 3 }).catch(() => []),
+      unoWithAdmin.sanity.posts.all({ n: 2 }).catch(() => []),
+      unoWithAdmin.sanity.jobAds.all({ n: 4 }).catch(() => []),
+      unoWithAdmin.sanity.movies.upcoming(3).catch(() => []),
+      unoWithAdmin.shopping.items().catch(() => []),
+    ]);
+
+  const allHappeningIds = [...events, ...bedpres].map((h) => h._id);
+  const registrationCounts = await unoWithAdmin.happenings.registrationCount(allHappeningIds);
+
   return (
     <>
       <Cookies />
-      <Banner />
+      <Banner banner={banner} />
       <BirthdayBanner />
       <EchoBirthdayBanner />
 
       <div className="space-y-8 py-10">
         <Container layout="larger">
-          <FPCalendar />
+          <FPCalendar calendarEvents={calendarEvents} />
         </Container>
 
         {/* <Container layout="larger">
@@ -39,30 +56,30 @@ export default async function Home() {
           <ComingHappenings
             title="Arrangementer"
             href="/for-studenter/arrangementer?type=event"
-            types={["external", "event"]}
-            n={11}
+            happenings={events}
+            registrationCounts={registrationCounts}
             className="col-span-1 row-span-2"
           />
           <ComingHappenings
             title="Bedriftpresentasjoner"
             href="/for-studenter/arrangementer?type=bedpres"
-            types={["bedpres"]}
-            n={3}
+            happenings={bedpres}
+            registrationCounts={registrationCounts}
             className="col-span-2 row-span-1"
           />
-          <Posts className="col-span-2 row-span-1" />
+          <Posts posts={posts} className="col-span-2 row-span-1" />
         </Container>
 
         <Container layout="larger">
-          <JobAds />
+          <JobAds jobAds={jobAds} />
         </Container>
 
         <Container
           layout="larger"
           className="space-y-8 md:grid md:grid-cols-3 md:gap-8 md:space-y-0"
         >
-          <FilmklubbMovies className="col-span-1" />
-          <HyggkomList className="col-span-2" />
+          <FilmklubbMovies movies={movies} className="col-span-1" />
+          <HyggkomList items={shoppingItems} className="col-span-2" />
         </Container>
       </div>
     </>

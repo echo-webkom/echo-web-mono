@@ -1,11 +1,17 @@
+import { type ShoppingListItem } from "@/api/uno/client";
 import { auth } from "@/auth/session";
 import { HyggkomShoppingList } from "@/components/hyggkom-shopping-list";
 
-import { unoWithAdmin } from "../../../../api/server";
 import { BentoBox } from "./bento-box";
 
-export const HyggkomList = async ({ className }: { className?: string }) => {
-  const [user, items] = await Promise.all([auth(), unoWithAdmin.shopping.items()]);
+export const HyggkomList = async ({
+  items,
+  className,
+}: {
+  items: Array<ShoppingListItem>;
+  className?: string;
+}) => {
+  const user = await auth();
 
   if (!items.length) {
     return null;

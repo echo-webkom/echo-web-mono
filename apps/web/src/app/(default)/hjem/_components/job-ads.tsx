@@ -1,12 +1,11 @@
 import { unoWithAdmin } from "@/api/server";
+import { type CMSJobAd } from "@/api/uno/client";
 import { JobAdPreview } from "@/components/job-ad-preview";
 
 import { BentoBox } from "./bento-box";
 import { JobAdCarousel } from "./job-ads-client";
 
-export const JobAds = async ({ className }: { className?: string }) => {
-  const jobAds = await unoWithAdmin.sanity.jobAds.all({ n: 4 }).catch(() => []);
-
+export const JobAds = ({ jobAds, className }: { jobAds: Array<CMSJobAd>; className?: string }) => {
   if (!jobAds.length) {
     return null;
   }
