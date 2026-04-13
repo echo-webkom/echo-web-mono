@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 import { Container } from "@/components/container";
@@ -12,6 +14,10 @@ import { SubmitQuoteModal } from "./_components/submit-quote-modal";
 export default async function Quotes() {
   const [quotes, user] = await Promise.all([unoWithAdmin.quotes.all(), auth()]);
   const canDelete = !!user && isWebkom(user);
+
+  if (!user) {
+    redirect("/auth/logg-inn");
+  }
 
   return (
     <Container className="py-16">
