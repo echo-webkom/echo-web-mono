@@ -10,6 +10,7 @@ import {
   useTransition,
 } from "react";
 
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useUnoClient } from "@/providers/uno";
 import { cn } from "@/utils/cn";
 
@@ -45,7 +46,6 @@ export const UserSearchSelect = ({
   renderOptionAction,
 }: UserSearchSelectProps) => {
   const unoClient = useUnoClient();
-  const ref = useRef<HTMLDivElement | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
@@ -87,18 +87,6 @@ export const UserSearchSelect = ({
     setHighlightedIndex(0);
   }, [users.length]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!ref.current?.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (!isOpen && (event.key === "ArrowDown" || event.key === "ArrowUp")) {
       setIsOpen(true);
@@ -134,33 +122,33 @@ export const UserSearchSelect = ({
   };
 
   return (
-    <div ref={ref} className="relative">
-      <div className="group border-border bg-input ring-offset-background focus-within:ring-ring relative flex h-10 w-full rounded-md border text-sm font-semibold focus-within:ring-2 focus-within:ring-offset-2 focus-within:outline-hidden disabled:cursor-not-allowed disabled:opacity-50">
-        <input
-          aria-label="user"
-          autoComplete="off"
-          placeholder={placeholder}
-          value={value}
-          onChange={(event) => {
-            onInputChangeAction(event.target.value);
-            setIsOpen(true);
-          }}
-          onFocus={() => setIsOpen(true)}
-          onKeyDown={onKeyDown}
-          className="placeholder:text-muted-foreground h-full w-full border-0 bg-transparent px-3 py-2 ring-0 outline-0 placeholder:text-sm focus:ring-0 focus:outline-hidden"
-        />
-        <button
-          aria-label="Vis brukere"
-          type="button"
-          onClick={() => setIsOpen((previous) => !previous)}
-          className="text-muted-foreground absolute inset-y-0 right-0 flex items-center px-2"
-        >
-          <ChevronDown className="h-4 w-4" />
-        </button>
-      </div>
-
-      {isOpen && (
-        <ul className="border-border bg-input text-foreground absolute z-50 mt-1 flex max-h-96 w-full flex-col overflow-y-auto rounded-md border px-3 py-2">
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <div className="group border-border bg-input ring-offset-background focus-within:ring-ring relative flex h-10 w-full rounded-md border text-sm font-semibold focus-within:ring-2 focus-within:ring-offset-2 focus-within:outline-hidden disabled:cursor-not-allowed disabled:opacity-50">
+          <input
+            aria-label="user"
+            autoComplete="off"
+            placeholder={placeholder}
+            value={value}
+            onChange={(event) => {
+              onInputChangeAction(event.target.value);
+              setIsOpen(true);
+            }}
+            onKeyDown={onKeyDown}
+            className="placeholder:text-muted-foreground h-full w-full border-0 bg-transparent px-3 py-2 ring-0 outline-0 placeholder:text-sm focus:ring-0 focus:outline-hidden"
+          />
+          <span className="text-muted-foreground absolute inset-y-0 right-0 flex items-center px-2">
+            <ChevronDown className="h-4 w-4" />
+          </span>
+        </div>
+      </PopoverTrigger>
+      <PopoverContent
+        align="start"
+        onOpenAutoFocus={(event) => event.preventDefault()}
+        style={{ width: "var(--radix-popover-trigger-width)" }}
+        className="bg-input text-foreground flex max-h-96 flex-col overflow-y-auto p-0 px-3 py-2 shadow-none"
+      >
+        <ul>
           {query.length < MIN_SEARCH_LENGTH ? (
             <li className="text-muted-foreground px-2 py-2 text-sm">
               {minCharsText ?? `Skriv minst ${MIN_SEARCH_LENGTH} bokstaver for å søke`}
@@ -197,7 +185,7 @@ export const UserSearchSelect = ({
             ))
           )}
         </ul>
-      )}
-    </div>
+      </PopoverContent>
+    </Popover>
   );
 };
