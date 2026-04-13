@@ -104,7 +104,7 @@ func (p *DotRepo) DeleteDotsByUserID(ctx context.Context, userID string) error {
 
 func (p *DotRepo) DeleteDotByIDAndUserID(ctx context.Context, id int, userID string) error {
 	p.logger.Info(ctx, "deleting dot by id and user id",
-		"id", id,
+		"dot_id", id,
 		"user_id", userID,
 	)
 
@@ -116,7 +116,7 @@ func (p *DotRepo) DeleteDotByIDAndUserID(ctx context.Context, id int, userID str
 	if _, err := p.db.ExecContext(ctx, query, id, userID); err != nil {
 		p.logger.Error(ctx, "failed to delete dot by id and user id",
 			"error", err,
-			"id", id,
+			"dot_id", id,
 			"user_id", userID,
 		)
 		return err

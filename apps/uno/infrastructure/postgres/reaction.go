@@ -21,7 +21,7 @@ func NewReactionRepo(db *Database, logger port.Logger) port.ReactionRepo {
 
 // AddReaction adds a reaction to the database
 func (r *ReactionRepo) AddReaction(ctx context.Context, reaction model.Reaction) error {
-	r.logger.Info(ctx, "adding reactiong",
+	r.logger.Info(ctx, "adding reaction",
 		"react_to_key", reaction.ReactToKey,
 		"emoji_id", reaction.EmojiID,
 		"user_id", reaction.UserID,

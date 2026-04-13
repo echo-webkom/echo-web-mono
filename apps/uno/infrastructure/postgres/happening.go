@@ -41,7 +41,7 @@ func (h *HappeningRepo) GetAllHappenings(ctx context.Context) ([]model.Happening
 
 func (h *HappeningRepo) GetHappeningById(ctx context.Context, id string) (model.Happening, error) {
 	h.logger.Info(ctx, "getting happening by ID",
-		"id", id,
+		"happening_id", id,
 	)
 
 	query := `--sql
@@ -55,7 +55,7 @@ func (h *HappeningRepo) GetHappeningById(ctx context.Context, id string) (model.
 	if err := h.db.GetContext(ctx, &dbHap, query, id); err != nil {
 		h.logger.Error(ctx, "failed to get happening by ID",
 			"error", err,
-			"id", id,
+			"happening_id", id,
 		)
 		return model.Happening{}, err
 	}
@@ -300,7 +300,7 @@ func (h *HappeningRepo) GetFullHappeningBySlug(ctx context.Context, slug string)
 
 func (h *HappeningRepo) UpsertHappening(ctx context.Context, happening model.Happening) error {
 	h.logger.Info(ctx, "upserting happening",
-		"id", happening.ID,
+		"happening_id", happening.ID,
 		"slug", happening.Slug,
 	)
 
@@ -331,7 +331,7 @@ func (h *HappeningRepo) UpsertHappening(ctx context.Context, happening model.Hap
 	if err != nil {
 		h.logger.Error(ctx, "failed to upsert happening",
 			"error", err,
-			"id", happening.ID,
+			"happening_id", happening.ID,
 		)
 		return err
 	}
@@ -341,7 +341,7 @@ func (h *HappeningRepo) UpsertHappening(ctx context.Context, happening model.Hap
 
 func (h *HappeningRepo) DeleteHappening(ctx context.Context, id string) error {
 	h.logger.Info(ctx, "deleting happening",
-		"id", id,
+		"happening_id", id,
 	)
 
 	query := `--sql
@@ -351,7 +351,7 @@ func (h *HappeningRepo) DeleteHappening(ctx context.Context, id string) error {
 	if err != nil {
 		h.logger.Error(ctx, "failed to delete happening",
 			"error", err,
-			"id", id,
+			"happening_id", id,
 		)
 		return err
 	}

@@ -49,7 +49,7 @@ func (g *GroupRepo) GetAllGroups(ctx context.Context) ([]model.Group, error) {
 // GetGroupByID retrieves a group by its ID from the database.
 func (g *GroupRepo) GetGroupByID(ctx context.Context, id string) (model.Group, error) {
 	g.logger.Info(ctx, "fetching group by ID",
-		"id", id,
+		"group_id", id,
 	)
 
 	query := `--sql
@@ -62,7 +62,7 @@ func (g *GroupRepo) GetGroupByID(ctx context.Context, id string) (model.Group, e
 	if err != nil {
 		g.logger.Error(ctx, "failed to fetch group by ID",
 			"error", err,
-			"id", id,
+			"group_id", id,
 		)
 		return model.Group{}, err
 	}
@@ -149,7 +149,7 @@ func (g *GroupRepo) CreateGroup(ctx context.Context, group model.NewGroup) (mode
 // DeleteGroup deletes a group by its ID from the database.
 func (g *GroupRepo) DeleteGroup(ctx context.Context, id string) error {
 	g.logger.Info(ctx, "deleting group",
-		"id", id,
+		"group_id", id,
 	)
 
 	query := `--sql
@@ -159,7 +159,7 @@ func (g *GroupRepo) DeleteGroup(ctx context.Context, id string) error {
 	if _, err := g.db.ExecContext(ctx, query, id); err != nil {
 		g.logger.Error(ctx, "failed to delete group",
 			"error", err,
-			"id", id,
+			"group_id", id,
 		)
 		return err
 	}
@@ -169,7 +169,7 @@ func (g *GroupRepo) DeleteGroup(ctx context.Context, id string) error {
 // UpdateGroup updates an existing group in the database.
 func (g *GroupRepo) UpdateGroup(ctx context.Context, group model.Group) (model.Group, error) {
 	g.logger.Info(ctx, "updating group",
-		"id", group.ID,
+		"group_id", group.ID,
 		"name", group.Name,
 	)
 
@@ -184,7 +184,7 @@ func (g *GroupRepo) UpdateGroup(ctx context.Context, group model.Group) (model.G
 	if err != nil {
 		g.logger.Error(ctx, "failed to update group",
 			"error", err,
-			"id", group.ID,
+			"group_id", group.ID,
 			"name", group.Name,
 		)
 		return model.Group{}, err

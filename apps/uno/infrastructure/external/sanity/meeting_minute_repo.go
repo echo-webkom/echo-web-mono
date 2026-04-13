@@ -64,11 +64,11 @@ func (r *MeetingMinuteRepo) GetMeetingMinuteById(ctx context.Context, id string)
 
 	for i := range minutes {
 		if minutes[i].ID == id {
-			r.logger.Info(ctx, "found meeting minute by id in all meeting minutes cache", "id", id)
+			r.logger.Info(ctx, "found meeting minute by id in all meeting minutes cache", "minute_id", id)
 			return &minutes[i], nil
 		}
 	}
 
-	r.logger.Info(ctx, "meeting minute by id not found in all meeting minutes cache", "id", id)
+	r.logger.Info(ctx, "meeting minute by id not found in all meeting minutes cache", "minute_id", id)
 	return nil, nil
 }

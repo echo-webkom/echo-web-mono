@@ -36,7 +36,7 @@ func (p *DegreeRepo) GetAllDegrees(ctx context.Context) ([]model.Degree, error) 
 
 func (p *DegreeRepo) CreateDegree(ctx context.Context, degree model.Degree) (model.Degree, error) {
 	p.logger.Info(ctx, "creating degree",
-		"id", degree.ID,
+		"degree_id", degree.ID,
 		"name", degree.Name,
 	)
 
@@ -50,7 +50,7 @@ func (p *DegreeRepo) CreateDegree(ctx context.Context, degree model.Degree) (mod
 	if err != nil {
 		p.logger.Error(ctx, "failed to create degree",
 			"error", err,
-			"id", degree.ID,
+			"degree_id", degree.ID,
 			"name", degree.Name,
 		)
 		return model.Degree{}, err
@@ -60,7 +60,7 @@ func (p *DegreeRepo) CreateDegree(ctx context.Context, degree model.Degree) (mod
 
 func (p *DegreeRepo) UpdateDegree(ctx context.Context, degree model.Degree) (model.Degree, error) {
 	p.logger.Info(ctx, "updating degree",
-		"id", degree.ID,
+		"degree_id", degree.ID,
 		"name", degree.Name,
 	)
 
@@ -75,7 +75,7 @@ func (p *DegreeRepo) UpdateDegree(ctx context.Context, degree model.Degree) (mod
 	if err != nil {
 		p.logger.Error(ctx, "failed to update degree",
 			"error", err,
-			"id", degree.ID,
+			"degree_id", degree.ID,
 			"name", degree.Name,
 		)
 		return model.Degree{}, err
@@ -85,7 +85,7 @@ func (p *DegreeRepo) UpdateDegree(ctx context.Context, degree model.Degree) (mod
 
 func (p *DegreeRepo) DeleteDegree(ctx context.Context, id string) error {
 	p.logger.Info(ctx, "deleting degree",
-		"id", id,
+		"degree_id", id,
 	)
 
 	query := `--sql
@@ -95,7 +95,7 @@ func (p *DegreeRepo) DeleteDegree(ctx context.Context, id string) error {
 	if _, err := p.db.ExecContext(ctx, query, id); err != nil {
 		p.logger.Error(ctx, "failed to delete degree",
 			"error", err,
-			"id", id,
+			"degree_id", id,
 		)
 		return err
 	}

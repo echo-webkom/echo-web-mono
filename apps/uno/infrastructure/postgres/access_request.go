@@ -60,7 +60,7 @@ func (a *AccessRequestRepo) GetAccessRequests(ctx context.Context) (ars []model.
 
 func (a *AccessRequestRepo) GetAccessRequestByID(ctx context.Context, id string) (model.AccessRequest, error) {
 	a.logger.Info(ctx, "getting access request by id",
-		"id", id,
+		"access_request_id", id,
 	)
 
 	query := `--sql
@@ -73,7 +73,7 @@ func (a *AccessRequestRepo) GetAccessRequestByID(ctx context.Context, id string)
 	if err := a.db.GetContext(ctx, &dbModel, query, id); err != nil {
 		a.logger.Error(ctx, "failed to get access request by id",
 			"error", err,
-			"id", id,
+			"access_request_id", id,
 		)
 		return model.AccessRequest{}, err
 	}
@@ -83,7 +83,7 @@ func (a *AccessRequestRepo) GetAccessRequestByID(ctx context.Context, id string)
 
 func (a *AccessRequestRepo) DeleteAccessRequestByID(ctx context.Context, id string) error {
 	a.logger.Info(ctx, "deleting access request by id",
-		"id", id,
+		"access_request_id", id,
 	)
 
 	query := `--sql
@@ -94,7 +94,7 @@ func (a *AccessRequestRepo) DeleteAccessRequestByID(ctx context.Context, id stri
 	if _, err := a.db.ExecContext(ctx, query, id); err != nil {
 		a.logger.Error(ctx, "failed to delete access request by id",
 			"error", err,
-			"id", id,
+			"access_request_id", id,
 		)
 		return err
 	}
