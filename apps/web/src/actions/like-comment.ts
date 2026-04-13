@@ -10,9 +10,9 @@ export const likeComment = async (commentId: string) => {
     return { success: false };
   }
 
-  await unoWithAdmin.comments.like(commentId, user.id);
+  const ok = await unoWithAdmin.comments.like(commentId, user.id);
 
   return {
-    success: true,
+    success: ok,
   };
 };

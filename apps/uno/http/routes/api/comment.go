@@ -22,7 +22,7 @@ func NewCommentMux(logger port.Logger, commentService *service.CommentService, a
 	// Admin
 	mux.POST("/", c.createComment, admin)
 	mux.GET("/{id}", c.getCommentsByID, admin)
-	mux.GET("/{id}/reaction", c.reactToComment, admin)
+	mux.POST("/{id}/reaction", c.reactToComment, admin)
 	mux.DELETE("/{id}", c.deleteComment, admin)
 
 	return mux
