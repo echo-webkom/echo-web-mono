@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
 	"uno/domain/model"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
@@ -208,10 +209,10 @@ func TestReactToCommentHandler(t *testing.T) {
 
 			var r *http.Request
 			if tt.name == "invalid json" {
-				r = httptest.NewRequest(http.MethodGet, "/"+tt.commentID+"/reaction", nil)
+				r = httptest.NewRequest(http.MethodPost, "/"+tt.commentID+"/reaction", nil)
 			} else {
 				body, _ := json.Marshal(tt.requestBody)
-				r = httptest.NewRequest(http.MethodGet, "/"+tt.commentID+"/reaction", bytes.NewReader(body))
+				r = httptest.NewRequest(http.MethodPost, "/"+tt.commentID+"/reaction", bytes.NewReader(body))
 			}
 			r.SetPathValue("id", tt.commentID)
 			w := httptest.NewRecorder()
