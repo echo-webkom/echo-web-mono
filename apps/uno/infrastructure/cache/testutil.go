@@ -7,6 +7,8 @@ import (
 
 	"github.com/redis/go-redis/v9"
 	redistc "github.com/testcontainers/testcontainers-go/modules/redis"
+
+	"github.com/testcontainers/testcontainers-go"
 )
 
 func SetupTestRedis(t *testing.T) *redis.Client {
@@ -16,11 +18,12 @@ func SetupTestRedis(t *testing.T) *redis.Client {
 	_ = os.Setenv("TESTCONTAINERS_RYUK_DISABLED", "true")
 
 	ctx := context.Background()
-	container, err := redistc.Run(ctx, "redis:7-alpine")
+	container, err := redistc.Run(ctx, "redis:7-alpine",
+		testcontainers.WithReuseByName("uno-redis-test"),
+	)
 	if err != nil {
 		t.Fatalf("failed to start redis container: %v", err)
 	}
-	t.Cleanup(func() { _ = container.Terminate(ctx) })
 
 	connStr, err := container.ConnectionString(ctx)
 	if err != nil {
@@ -32,5 +35,11 @@ func SetupTestRedis(t *testing.T) *redis.Client {
 		t.Fatalf("failed to parse redis url: %v", err)
 	}
 
-	return redis.NewClient(opt)
+	client := redis.NewClient(opt)
+	t.Cleanup(func() {
+		_ = client.FlushAll(ctx)
+		_ = client.Close()
+	})
+
+	return client
 }

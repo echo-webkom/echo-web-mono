@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -14,7 +15,10 @@ import (
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
+var dbCounter atomic.Int64
+
 func SetupTestDB(t *testing.T) *Database {
+	t.Helper()
 	ctx := context.Background()
 
 	// Disable ryuk for Colima compatibility
@@ -22,9 +26,10 @@ func SetupTestDB(t *testing.T) *Database {
 
 	container, err := postgres.Run(ctx,
 		"postgres:17",
-		postgres.WithDatabase("uno_test"),
+		postgres.WithDatabase("postgres"),
 		postgres.WithUsername("test"),
 		postgres.WithPassword("test"),
+		testcontainers.WithReuseByName("uno-postgres-test"),
 		testcontainers.WithWaitStrategy(
 			wait.ForLog("database system is ready to accept connections").
 				WithOccurrence(2).
@@ -35,25 +40,27 @@ func SetupTestDB(t *testing.T) *Database {
 		t.Fatalf("failed to start postgres container: %v", err)
 	}
 
-	t.Cleanup(func() {
-		if err := container.Terminate(ctx); err != nil {
-			t.Logf("failed to terminate container: %v", err)
-		}
-	})
-
-	host, err := container.Host(ctx)
-	if err != nil {
-		t.Fatalf("failed to get container host: %v", err)
-	}
-
 	port, err := container.MappedPort(ctx, "5432")
 	if err != nil {
 		t.Fatalf("failed to get mapped port: %v", err)
 	}
 
-	connStr := fmt.Sprintf("postgres://test:test@127.0.0.1:%s/uno_test?sslmode=disable", port.Port())
+	// Unique DB name per test, safe across parallel package runs
+	dbName := fmt.Sprintf("uno_test_%d_%d", os.Getpid(), dbCounter.Add(1))
+	adminConnStr := fmt.Sprintf("postgres://test:test@127.0.0.1:%s/postgres?sslmode=disable", port.Port())
 
-	// Connect to database with retry logic
+	adminDB, err := New(adminConnStr)
+	if err != nil {
+		t.Fatalf("failed to connect to admin database: %v", err)
+	}
+	if _, err = adminDB.ExecContext(ctx, fmt.Sprintf(`CREATE DATABASE %q`, dbName)); err != nil {
+		_ = adminDB.Close()
+		t.Fatalf("failed to create test database %s: %v", dbName, err)
+	}
+	_ = adminDB.Close()
+
+	connStr := fmt.Sprintf("postgres://test:test@127.0.0.1:%s/%s?sslmode=disable", port.Port(), dbName)
+
 	var db *Database
 	maxRetries := 10
 	for i := range maxRetries {
@@ -66,12 +73,21 @@ func SetupTestDB(t *testing.T) *Database {
 		}
 	}
 	if err != nil {
-		t.Fatalf("failed to connect to database after %d retries (host: %s, port: %s): %v", maxRetries, host, port.Port(), err)
+		t.Fatalf("failed to connect to test database after %d retries: %v", maxRetries, err)
 	}
 
 	if err := runMigrations(ctx, db); err != nil {
 		t.Fatalf("failed to run migrations: %v", err)
 	}
+
+	t.Cleanup(func() {
+		_ = db.Close()
+		adminDB, err := New(adminConnStr)
+		if err == nil {
+			_, _ = adminDB.ExecContext(context.Background(), fmt.Sprintf(`DROP DATABASE %q WITH (FORCE)`, dbName))
+			_ = adminDB.Close()
+		}
+	})
 
 	return db
 }
