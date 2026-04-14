@@ -290,7 +290,7 @@ func (as *AuthService) SignInWithFeide(ctx context.Context, code string) (string
 	normalizedEmail := strings.ToLower(userInfo.Email)
 
 	if existingAccount.UserID != "" {
-		if _, err := as.accountRepo.UpdateAccount(ctx, providers.FeideProviderName, userInfo.Sub, model.UpdateAccount{
+		if _, err = as.accountRepo.UpdateAccount(ctx, providers.FeideProviderName, userInfo.Sub, model.UpdateAccount{
 			AccessToken:  &tokens.AccessToken,
 			RefreshToken: ptr.Of(tokens.RefreshToken),
 			ExpiresAt:    ptr.Of(tokens.ExpiresIn),
@@ -305,7 +305,7 @@ func (as *AuthService) SignInWithFeide(ctx context.Context, code string) (string
 
 	existingUser, err := as.userRepo.GetUserByEmail(ctx, normalizedEmail)
 	if err == nil && existingUser.ID != "" {
-		if _, err := as.accountRepo.CreateAccount(ctx, model.NewAccount{
+		if _, err = as.accountRepo.CreateAccount(ctx, model.NewAccount{
 			UserID:            existingUser.ID,
 			Type:              "oauth",
 			Provider:          providers.FeideProviderName,
@@ -332,17 +332,17 @@ func (as *AuthService) SignInWithFeide(ctx context.Context, code string) (string
 		Name:         &userInfo.Name,
 		Email:        normalizedEmail,
 		Type:         model.UserTypeStudent,
-		LastSignInAt: ptr.Of(time.Now()),
+		LastSignInAt: new(time.Now()),
 	}, model.NewAccount{
 		UserID:            id,
 		Type:              "oauth",
 		Provider:          providers.FeideProviderName,
 		ProviderAccountID: userInfo.Sub,
 		AccessToken:       &tokens.AccessToken,
-		RefreshToken:      ptr.Of(tokens.RefreshToken),
-		ExpiresAt:         ptr.Of(tokens.ExpiresIn),
+		RefreshToken:      new(tokens.RefreshToken),
+		ExpiresAt:         new(tokens.ExpiresIn),
 		TokenType:         &tokens.TokenType,
-		Scope:             ptr.Of("openid email profile groups"),
+		Scope:             new("openid email profile groups"),
 		IDToken:           &tokens.IDToken,
 	})
 	if err != nil {

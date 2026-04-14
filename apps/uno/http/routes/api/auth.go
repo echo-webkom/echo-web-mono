@@ -223,7 +223,6 @@ func (h *auth) verifyMagicLink(ctx *handler.Context) error {
 	return ctx.Redirect(callbackURL)
 }
 
-
 func (h *auth) redirectWithError(ctx *handler.Context, errCode string) error {
 	return ctx.Redirect(h.config.WebBaseURL + "/auth/logg-inn?error=" + errCode)
 }
