@@ -239,6 +239,13 @@ definitions:
       userName:
         type: string
     type: object
+  uno_domain_service.SignInAttempt:
+    properties:
+      email:
+        type: string
+      error:
+        type: string
+    type: object
   uno_http_dto.AccessRequestResponse:
     properties:
       createdAt:
@@ -1513,6 +1520,28 @@ paths:
       security:
       - BearerAuth: []
       summary: Get current user
+      tags:
+      - auth
+  /auth/sign-in-attempt/{id}:
+    get:
+      parameters:
+      - description: Attempt ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_domain_service.SignInAttempt'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Get sign-in attempt
       tags:
       - auth
   /auth/sign-out:

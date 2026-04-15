@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 
+import { unoWithAdmin } from "@/api/server";
 import { Heading } from "@/components/typography/heading";
 import { Text } from "@/components/typography/text";
-import { signInAttempt } from "@/data/kv/namespaces";
 
 import { RequestAccessForm } from "./_components/request-access-form";
 
@@ -17,7 +17,7 @@ export default async function Access(props: Props) {
 
   const { id } = params;
 
-  const attempt = await signInAttempt.get(id);
+  const attempt = await unoWithAdmin.auth.getSignInAttempt(id);
 
   if (!attempt) {
     return notFound();
