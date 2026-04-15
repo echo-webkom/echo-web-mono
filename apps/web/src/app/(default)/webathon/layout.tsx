@@ -17,6 +17,10 @@ export const metadata: Metadata = {
 
 const competitions = [
   {
+    href: "/webathon/2026",
+    label: "Webathon 2026",
+  },
+  {
     href: "/webathon/2025",
     label: "Webathon 2025",
   },
