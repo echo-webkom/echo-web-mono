@@ -102,6 +102,7 @@ func RunApi() {
 		WhitelistRepo:         whitelistRepo,
 		AccountRepo:           accountRepo,
 		VerificationTokenRepo: verificationTokenRepo,
+		SignInAttemptCache:    cache.NewCache[service.SignInAttempt](redisClient, "sign-in-attempt"),
 	})
 	happeningService := service.NewHappeningService(happeningRepo, userRepo, registrationRepo, banInfoRepo, groupRepo)
 	degreeService := service.NewDegreeService(degreeRepo)

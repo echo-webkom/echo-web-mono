@@ -1,10 +1,11 @@
+import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 import { Callout } from "@/components/typography/callout";
 import { Text } from "@/components/typography/text";
-import { signInAttempt } from "@/data/kv/namespaces";
 
 import { SignInButtons } from "./_components/sign-in-buttons";
 
@@ -42,34 +43,44 @@ export default async function SignInPage(props: Props) {
   }
 
   const { attemptId, error } = await props.searchParams;
-  const attempt = attemptId && (await signInAttempt.get(attemptId));
+  const attempt = attemptId ? await unoWithAdmin.auth.getSignInAttempt(attemptId) : null;
 
   const errorMessage = getErrorMessage(error);
 
   return (
     <div className="mx-4 my-14 flex flex-col gap-4">
-      {errorMessage && (
-        <Callout className="mx-auto max-w-2xl" type="warning">
+      {errorMessage && !attempt && (
+        <Callout className="mx-auto max-w-95" type="warning">
           <Text size="sm">{errorMessage}</Text>
         </Callout>
       )}
 
       {Boolean(attempt) && (
-        <Callout className="mx-auto max-w-2xl" type="warning">
+        <Callout className="mx-auto max-w-95" type="warning">
           <Text size="sm">
             Noe gikk galt. Dette kan være grunnet til at vi ikke automatisk får til å finne ut om du
             er medlem.{" "}
             <span className="font-bold">
               Om du mener dette er feil vennligst{" "}
-              <Link href={`/auth/tilgang/${attemptId}`} className="underline hover:no-underline">
-                be om tilgang her.
+              <Link
+                href={`/auth/tilgang/${attemptId}`}
+                className="flex gap-2 underline hover:no-underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                be om tilgang her. <ExternalLink className="inline size-4" />
               </Link>
             </span>
           </Text>
           <Text size="sm">
             Du kan også sjekke om du har tilgang ved å logge inn på{" "}
-            <Link className="underline hover:no-underline" href="https://innsyn.feide.no">
-              Feide Innsyn
+            <Link
+              className="underline hover:no-underline"
+              href="https://innsyn.feide.no"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Feide Innsyn <ExternalLink className="inline size-4" />
             </Link>
             , og se om du har gruppetilhørighet til studieprogammene på informatikk.
           </Text>

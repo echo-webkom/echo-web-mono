@@ -53,6 +53,9 @@ func NewAuthMux(
 	mux.GET("/feide", h.loginWithFeide)
 	mux.GET("/callback/feide", h.handleFeideCallback)
 
+	// Sign-in attempt lookup
+	mux.GET("/sign-in-attempt/{id}", h.getSignInAttempt)
+
 	return mux
 }
 
@@ -109,10 +112,14 @@ func (h *auth) handleFeideCallback(ctx *handler.Context) error {
 
 	ctx.ClearCookie("feide_oauth_state", "/", "")
 
-	userID, err := h.authService.SignInWithFeide(ctx.Context(), code)
+	userID, email, err := h.authService.SignInWithFeide(ctx.Context(), code)
 	if errors.Is(err, service.ErrNotAllowed) {
-		h.logger.Info(ctx.Context(), "user not allowed to sign in via Feide")
-		return h.redirectWithError(ctx, authErrNotAllowed)
+		attemptID, regErr := h.authService.RegisterSignInAttempt(email, authErrNotAllowed)
+		if regErr != nil {
+			h.logger.Error(ctx.Context(), "failed to register sign-in attempt", "error", regErr)
+			return h.redirectWithError(ctx, authErrNotAllowed)
+		}
+		return ctx.Redirect(h.config.WebBaseURL + "/auth/logg-inn?error=" + authErrNotAllowed + "&attemptId=" + url.QueryEscape(attemptID))
 	}
 	if err != nil {
 		h.logger.Error(ctx.Context(), "failed to sign in with Feide", "error", err)
@@ -223,6 +230,27 @@ func (h *auth) verifyMagicLink(ctx *handler.Context) error {
 	return ctx.Redirect(callbackURL)
 }
 
+// getSignInAttempt returns sign-in attempt data stored in Redis, used by the frontend dispute flow.
+// @Summary      Get sign-in attempt
+// @Tags         auth
+// @Param        id   path  string  true  "Attempt ID"
+// @Produce      json
+// @Success      200  {object}  service.SignInAttempt  "OK"
+// @Failure      404  {string}  string                "Not Found"
+// @Router       /auth/sign-in-attempt/{id} [get]
+func (h *auth) getSignInAttempt(ctx *handler.Context) error {
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.NotFound(errors.New("not found"))
+	}
+
+	attempt, found := h.authService.GetSignInAttempt(id)
+	if !found {
+		return ctx.NotFound(errors.New("not found"))
+	}
+
+	return ctx.JSON(attempt)
+}
 
 func (h *auth) redirectWithError(ctx *handler.Context, errCode string) error {
 	return ctx.Redirect(h.config.WebBaseURL + "/auth/logg-inn?error=" + errCode)

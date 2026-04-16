@@ -337,6 +337,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/sign-in-attempt/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Get sign-in attempt",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Attempt ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_domain_service.SignInAttempt"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/sign-out": {
             "post": {
                 "security": [
@@ -4494,6 +4528,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "uno_domain_service.SignInAttempt": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "error": {
                     "type": "string"
                 }
             }

@@ -1526,4 +1526,10 @@ class AuthApi {
     const query = new URLSearchParams({ token, email });
     return await this.client.request("GET", `auth/magic-link/verify?${query.toString()}`);
   }
+
+  async getSignInAttempt(id: string) {
+    const response = await this.client.request("GET", `auth/sign-in-attempt/${id}`);
+    if (!response.ok) return null;
+    return await response.json<{ email: string; error: string }>();
+  }
 }

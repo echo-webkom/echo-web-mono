@@ -24,6 +24,11 @@ const (
 	SessionExpiryDays = 30 * 24 * time.Hour // 30 days in hours
 )
 
+type SignInAttempt struct {
+	Email string `json:"email"`
+	Error string `json:"error"`
+}
+
 type AuthService struct {
 	sessionRepo           port.SessionRepo
 	userRepo              port.UserRepo
@@ -32,6 +37,7 @@ type AuthService struct {
 	whitelistRepo         port.WhitelistRepo
 	accountRepo           port.AccountRepo
 	verificationTokenRepo port.VerificationTokenRepo
+	signInAttemptCache    port.Cache[SignInAttempt]
 }
 
 type AuthServiceConfig struct {
@@ -42,6 +48,7 @@ type AuthServiceConfig struct {
 	WhitelistRepo         port.WhitelistRepo
 	AccountRepo           port.AccountRepo
 	VerificationTokenRepo port.VerificationTokenRepo
+	SignInAttemptCache    port.Cache[SignInAttempt]
 }
 
 func NewAuthService(config AuthServiceConfig) *AuthService {
@@ -53,7 +60,23 @@ func NewAuthService(config AuthServiceConfig) *AuthService {
 		whitelistRepo:         config.WhitelistRepo,
 		accountRepo:           config.AccountRepo,
 		verificationTokenRepo: config.VerificationTokenRepo,
+		signInAttemptCache:    config.SignInAttemptCache,
 	}
+}
+
+// RegisterSignInAttempt stores a failed sign-in attempt in the cache and returns the attempt ID.
+func (as *AuthService) RegisterSignInAttempt(email, errCode string) (string, error) {
+	attemptID, err := randid.Generate(32)
+	if err != nil {
+		return "", fmt.Errorf("failed to generate attempt ID: %w", err)
+	}
+	as.signInAttemptCache.Set(attemptID, SignInAttempt{Email: email, Error: errCode}, 24*time.Hour)
+	return attemptID, nil
+}
+
+// GetSignInAttempt retrieves a sign-in attempt from the cache by ID.
+func (as *AuthService) GetSignInAttempt(id string) (SignInAttempt, bool) {
+	return as.signInAttemptCache.Get(id)
 }
 
 type JWTBody struct {
@@ -263,34 +286,35 @@ func (as *AuthService) IsAllowedToSignIn(ctx context.Context, userInfo *provider
 // SignInWithFeide exchanges a Feide authorization code, validates the user, and upserts
 // the user and account records. Returns the user ID to use for session creation.
 // Returns ErrNotAllowed if the user is not permitted to sign in.
-func (as *AuthService) SignInWithFeide(ctx context.Context, code string) (string, error) {
+// On ErrNotAllowed the second return value contains the user's email.
+func (as *AuthService) SignInWithFeide(ctx context.Context, code string) (userID, email string, err error) {
 	tokens, err := as.feideProvider.ExchangeCode(ctx, code)
 	if err != nil {
-		return "", fmt.Errorf("failed to exchange Feide code: %w", err)
+		return "", "", fmt.Errorf("failed to exchange Feide code: %w", err)
 	}
 
 	userInfo, err := as.feideProvider.GetUserInfo(ctx, tokens.AccessToken)
 	if err != nil {
-		return "", fmt.Errorf("failed to get Feide user info: %w", err)
+		return "", "", fmt.Errorf("failed to get Feide user info: %w", err)
 	}
 
 	allowed, err := as.IsAllowedToSignIn(ctx, userInfo, tokens.AccessToken)
 	if err != nil {
-		return "", fmt.Errorf("failed to check sign-in permission: %w", err)
+		return "", "", fmt.Errorf("failed to check sign-in permission: %w", err)
 	}
 	if !allowed {
-		return "", ErrNotAllowed
+		return "", userInfo.Email, ErrNotAllowed
 	}
 
 	existingAccount, err := as.accountRepo.GetAccountByProvider(ctx, providers.FeideProviderName, userInfo.Sub)
 	if err != nil {
-		return "", fmt.Errorf("failed to look up existing account: %w", err)
+		return "", "", fmt.Errorf("failed to look up existing account: %w", err)
 	}
 
 	normalizedEmail := strings.ToLower(userInfo.Email)
 
 	if existingAccount.UserID != "" {
-		if _, err := as.accountRepo.UpdateAccount(ctx, providers.FeideProviderName, userInfo.Sub, model.UpdateAccount{
+		if _, err = as.accountRepo.UpdateAccount(ctx, providers.FeideProviderName, userInfo.Sub, model.UpdateAccount{
 			AccessToken:  &tokens.AccessToken,
 			RefreshToken: ptr.Of(tokens.RefreshToken),
 			ExpiresAt:    ptr.Of(tokens.ExpiresIn),
@@ -300,12 +324,12 @@ func (as *AuthService) SignInWithFeide(ctx context.Context, code string) (string
 			// not critical — proceed with sign-in
 			_ = err
 		}
-		return existingAccount.UserID, nil
+		return existingAccount.UserID, "", nil
 	}
 
 	existingUser, err := as.userRepo.GetUserByEmail(ctx, normalizedEmail)
 	if err == nil && existingUser.ID != "" {
-		if _, err := as.accountRepo.CreateAccount(ctx, model.NewAccount{
+		if _, err = as.accountRepo.CreateAccount(ctx, model.NewAccount{
 			UserID:            existingUser.ID,
 			Type:              "oauth",
 			Provider:          providers.FeideProviderName,
@@ -317,14 +341,14 @@ func (as *AuthService) SignInWithFeide(ctx context.Context, code string) (string
 			Scope:             ptr.Of("openid email profile groups"),
 			IDToken:           &tokens.IDToken,
 		}); err != nil {
-			return "", fmt.Errorf("failed to link Feide account to existing user: %w", err)
+			return "", "", fmt.Errorf("failed to link Feide account to existing user: %w", err)
 		}
-		return existingUser.ID, nil
+		return existingUser.ID, "", nil
 	}
 
 	id, err := randid.Generate(24)
 	if err != nil {
-		return "", fmt.Errorf("failed to generate user ID: %w", err)
+		return "", "", fmt.Errorf("failed to generate user ID: %w", err)
 	}
 
 	createdUser, err := as.userRepo.CreateUserAndAccount(ctx, model.User{
@@ -332,22 +356,22 @@ func (as *AuthService) SignInWithFeide(ctx context.Context, code string) (string
 		Name:         &userInfo.Name,
 		Email:        normalizedEmail,
 		Type:         model.UserTypeStudent,
-		LastSignInAt: ptr.Of(time.Now()),
+		LastSignInAt: new(time.Now()),
 	}, model.NewAccount{
 		UserID:            id,
 		Type:              "oauth",
 		Provider:          providers.FeideProviderName,
 		ProviderAccountID: userInfo.Sub,
 		AccessToken:       &tokens.AccessToken,
-		RefreshToken:      ptr.Of(tokens.RefreshToken),
-		ExpiresAt:         ptr.Of(tokens.ExpiresIn),
+		RefreshToken:      new(tokens.RefreshToken),
+		ExpiresAt:         new(tokens.ExpiresIn),
 		TokenType:         &tokens.TokenType,
-		Scope:             ptr.Of("openid email profile groups"),
+		Scope:             new("openid email profile groups"),
 		IDToken:           &tokens.IDToken,
 	})
 	if err != nil {
-		return "", fmt.Errorf("failed to create user and account: %w", err)
+		return "", "", fmt.Errorf("failed to create user and account: %w", err)
 	}
 
-	return createdUser.ID, nil
+	return createdUser.ID, "", nil
 }
