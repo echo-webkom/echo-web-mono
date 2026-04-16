@@ -468,6 +468,10 @@ func (h *HappeningRepo) SyncQuestions(ctx context.Context, happeningID string, i
 	// Delete questions that are in existing but not in incoming
 	for _, q := range existing {
 		if !incomingIDs[q.ID] {
+			h.logger.Info(ctx, "deleting out of sync question",
+				"question_id", q.ID,
+				"happening_id", happeningID,
+			)
 			_, err := h.db.ExecContext(ctx, `--sql
 				DELETE FROM question WHERE id = $1 AND happening_id = $2`,
 				q.ID, happeningID,
@@ -486,6 +490,10 @@ func (h *HappeningRepo) SyncQuestions(ctx context.Context, happeningID string, i
 	for _, q := range incoming {
 		if existingIDs[q.ID] {
 			// Update
+			h.logger.Info(ctx, "updating existing question",
+				"question_id", q.ID,
+				"happening_id", happeningID,
+			)
 			_, err := h.db.ExecContext(ctx, `--sql
 				UPDATE question SET title = $1, required = $2, type = $3, is_sensitive = $4, options = $5 WHERE id = $6 AND happening_id = $7`,
 				q.Title, q.Required, q.Type, q.IsSensitive, q.Options, q.ID, happeningID,
@@ -499,6 +507,10 @@ func (h *HappeningRepo) SyncQuestions(ctx context.Context, happeningID string, i
 			}
 		} else {
 			// Insert
+			h.logger.Info(ctx, "inserting new question",
+				"question_id", q.ID,
+				"happening_id", happeningID,
+			)
 			_, err := h.db.ExecContext(ctx, `--sql
 				INSERT INTO question (id, happening_id, title, required, type, is_sensitive, options) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
 				q.ID, happeningID, q.Title, q.Required, q.Type, q.IsSensitive, q.Options,
