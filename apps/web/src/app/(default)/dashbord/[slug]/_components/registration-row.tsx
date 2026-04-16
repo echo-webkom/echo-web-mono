@@ -189,26 +189,23 @@ export const RegistrationRow = ({
               <>
                 <hr className="my-4" />
 
-                <p>
-                  <span className="text-muted-foreground font-semibold">Spørsmål:</span>
-                  {registration.answers?.map((answer) => {
-                    const ans = Array.isArray(answer.answer?.answer)
-                      ? answer.answer.answer.join(", ")
-                      : typeof answer.answer === "string"
-                        ? answer.answer
-                        : null;
+                <div>
+                  <p className="text-muted-foreground mb-2 font-semibold">Spørsmål:</p>
+                  {registration.answers?.map(({ question, answer }) => {
+                    const ans = Array.isArray(answer?.answer)
+                      ? answer.answer.join(", ")
+                      : (answer?.answer ?? "N/A");
 
                     return (
-                      <span key={answer.questionId}>
-                        <br />
+                      <div key={answer.questionId}>
                         <span className="text-muted-foreground font-semibold">
-                          {answer.question.title}:
+                          {question.title}:
                         </span>{" "}
                         <span className="text-muted-foreground">{ans}</span>
-                      </span>
+                      </div>
                     );
                   })}
-                </p>
+                </div>
               </>
             )}
             {registration.unregisterReason && (

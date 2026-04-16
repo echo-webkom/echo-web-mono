@@ -1284,7 +1284,7 @@ export interface FullRegistrationAnswerWithQuestion {
   questionId: string;
   answer: {
     questionId: string;
-    answer: unknown;
+    answer: string | Array<string> | null;
   };
   question: Question;
 }
