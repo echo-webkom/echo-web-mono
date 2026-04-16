@@ -1053,6 +1053,74 @@ func TestIsAvailableSpot(t *testing.T) {
 	}
 }
 
+func TestHappeningService_SyncHappening_QuestionsField(t *testing.T) {
+	happeningID := "happening-123"
+	baseData := service.SanityHappeningData{
+		ID:            happeningID,
+		Title:         "Test Happening",
+		Slug:          "test-happening",
+		Date:          "2026-06-01T12:00:00Z",
+		HappeningType: "event",
+	}
+
+	tests := []struct {
+		name                    string
+		questions               *[]service.SanityQuestion
+		expectSyncQuestionsCall bool
+	}{
+		{
+			name:                    "QuestionsFieldAbsent_SkipsSync",
+			questions:               nil,
+			expectSyncQuestionsCall: false,
+		},
+		{
+			name:                    "QuestionsFieldEmptySlice_CallsSync",
+			questions:               &[]service.SanityQuestion{},
+			expectSyncQuestionsCall: true,
+		},
+		{
+			name: "QuestionsFieldWithData_CallsSync",
+			questions: &[]service.SanityQuestion{
+				{ID: "q1", Title: "Liker du RBK?", Required: true, Type: "text"},
+			},
+			expectSyncQuestionsCall: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockHappeningRepo := mocks.NewHappeningRepo(t)
+			mockUserRepo := mocks.NewUserRepo(t)
+			mockRegistrationRepo := mocks.NewRegistrationRepo(t)
+			mockBanInfoRepo := mocks.NewBanInfoRepo(t)
+			mockGroupRepo := mocks.NewGroupRepo(t)
+
+			mockHappeningRepo.EXPECT().UpsertHappening(mock.Anything, mock.Anything).Return(nil).Once()
+			mockGroupRepo.EXPECT().GetAllGroups(mock.Anything).Return([]model.Group{}, nil).Once()
+			mockHappeningRepo.EXPECT().ReplaceHappeningGroups(mock.Anything, happeningID, mock.Anything).Return(nil).Once()
+			mockHappeningRepo.EXPECT().ReplaceSpotRanges(mock.Anything, happeningID, mock.Anything).Return(nil).Once()
+
+			if tt.expectSyncQuestionsCall {
+				mockHappeningRepo.EXPECT().SyncQuestions(mock.Anything, happeningID, mock.Anything).Return(nil).Once()
+			}
+
+			svc := service.NewHappeningService(
+				mockHappeningRepo,
+				mockUserRepo,
+				mockRegistrationRepo,
+				mockBanInfoRepo,
+				mockGroupRepo,
+			)
+
+			data := baseData
+			data.Questions = tt.questions
+			err := svc.SyncHappening(t.Context(), data)
+
+			assert.NoError(t, err)
+		})
+	}
+}
+
 func degreeYearPtr(i int) *model.DegreeYear {
 	y, _ := model.NewDegreeYear(i)
 	return y

@@ -467,7 +467,7 @@ func (h *HappeningRepo) SyncQuestions(ctx context.Context, happeningID string, i
 
 	// Delete questions that are in existing but not in incoming
 	for _, q := range existing {
-		if !incomingIDs[q.ID] {
+		if !incomingIDs[q.ID] && q.ID != "" {
 			h.logger.Info(ctx, "deleting out of sync question",
 				"question_id", q.ID,
 				"happening_id", happeningID,

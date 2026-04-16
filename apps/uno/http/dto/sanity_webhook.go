@@ -28,8 +28,8 @@ type SanityHappeningData struct {
 	RegistrationStart       *string           `json:"registrationStart"`
 	RegistrationEnd         *string           `json:"registrationEnd"`
 	Groups                  []string          `json:"groups"`
-	SpotRanges              []SanitySpotRange `json:"spotRanges"`
-	Questions               []SanityQuestion  `json:"questions"`
+	SpotRanges              []SanitySpotRange  `json:"spotRanges"`
+	Questions               *[]SanityQuestion  `json:"questions"`
 }
 
 type SanitySpotRange struct {
@@ -57,16 +57,20 @@ func (d *SanityHappeningData) ToServiceData() service.SanityHappeningData {
 		}
 	}
 
-	questions := make([]service.SanityQuestion, len(d.Questions))
-	for i, q := range d.Questions {
-		questions[i] = service.SanityQuestion{
-			ID:          q.ID,
-			Title:       q.Title,
-			Required:    q.Required,
-			Type:        q.Type,
-			IsSensitive: q.IsSensitive,
-			Options:     q.Options,
+	var questions *[]service.SanityQuestion
+	if d.Questions != nil {
+		qs := make([]service.SanityQuestion, len(*d.Questions))
+		for i, q := range *d.Questions {
+			qs[i] = service.SanityQuestion{
+				ID:          q.ID,
+				Title:       q.Title,
+				Required:    q.Required,
+				Type:        q.Type,
+				IsSensitive: q.IsSensitive,
+				Options:     q.Options,
+			}
 		}
+		questions = &qs
 	}
 
 	return service.SanityHappeningData{

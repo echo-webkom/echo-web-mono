@@ -354,7 +354,7 @@ type SanityHappeningData struct {
 	RegistrationEnd         *string
 	Groups                  []string
 	SpotRanges              []SanitySpotRange
-	Questions               []SanityQuestion
+	Questions               *[]SanityQuestion
 }
 
 type SanitySpotRange struct {
@@ -406,32 +406,34 @@ func (hs *HappeningService) SyncHappening(ctx context.Context, data SanityHappen
 		return fmt.Errorf("failed to replace spot ranges: %w", err)
 	}
 
-	questions := make([]model.Question, len(data.Questions))
-	for i, q := range data.Questions {
-		var options *json.RawMessage
-		if len(q.Options) > 0 {
-			mapped := make([]map[string]string, len(q.Options))
-			for j, o := range q.Options {
-				mapped[j] = map[string]string{"id": o, "value": o}
+	if data.Questions != nil {
+		questions := make([]model.Question, len(*data.Questions))
+		for i, q := range *data.Questions {
+			var options *json.RawMessage
+			if len(q.Options) > 0 {
+				mapped := make([]map[string]string, len(q.Options))
+				for j, o := range q.Options {
+					mapped[j] = map[string]string{"id": o, "value": o}
+				}
+				raw, _ := json.Marshal(mapped)
+				rawMsg := json.RawMessage(raw)
+				options = &rawMsg
 			}
-			raw, _ := json.Marshal(mapped)
-			rawMsg := json.RawMessage(raw)
-			options = &rawMsg
+
+			questions[i] = model.Question{
+				ID:          q.ID,
+				HappeningID: happening.ID,
+				Title:       q.Title,
+				Required:    q.Required,
+				Type:        q.Type,
+				IsSensitive: q.IsSensitive,
+				Options:     options,
+			}
 		}
 
-		questions[i] = model.Question{
-			ID:          q.ID,
-			HappeningID: happening.ID,
-			Title:       q.Title,
-			Required:    q.Required,
-			Type:        q.Type,
-			IsSensitive: q.IsSensitive,
-			Options:     options,
+		if err := hs.happeningRepo.SyncQuestions(ctx, happening.ID, questions); err != nil {
+			return fmt.Errorf("failed to sync questions: %w", err)
 		}
-	}
-
-	if err := hs.happeningRepo.SyncQuestions(ctx, happening.ID, questions); err != nil {
-		return fmt.Errorf("failed to sync questions: %w", err)
 	}
 
 	return nil
