@@ -27,6 +27,7 @@ require (
 	github.com/testcontainers/testcontainers-go/modules/redis v0.41.0
 	github.com/vektra/mockery/v3 v3.6.3
 	golang.org/x/image v0.38.0
+	golang.org/x/oauth2 v0.36.0
 )
 
 require (
@@ -167,7 +168,6 @@ require (
 	golang.org/x/exp v0.0.0-20260112195511-716be5621a96 // indirect
 	golang.org/x/mod v0.34.0 // indirect
 	golang.org/x/net v0.52.0 // indirect
-	golang.org/x/oauth2 v0.36.0 // indirect
 	golang.org/x/sync v0.20.0 // indirect
 	golang.org/x/sys v0.42.0 // indirect
 	golang.org/x/term v0.41.0 // indirect
