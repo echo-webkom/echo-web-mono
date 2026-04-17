@@ -39,6 +39,7 @@ export const baseMessages: Array<MessageItem> = [
   { text: "Vibe-coder litt bare", link: "https://chatgpt.com/" },
   { text: "0xDEADBEEF" },
   { text: "0xCAFEBABE" },
+  { text: "chucknorris", link: "https://medium.com/better-programming/did-you-know-html-thinks-chuck-norris-is-a-color-9f67edf4c34"},
   { text: "Fist of Gnist", link: "https://echo.uib.no/for-studenter/gruppe/gnist" },
   { text: "Foobar" },
   { text: "Progbar > Ad fontes", link: "https://programmer.bar" },
