@@ -11,6 +11,7 @@ import {
   MobileNavigationViewport,
 } from "./mobile-navigation";
 import { ThemeSwitchButton } from "./theme-switch-button";
+import { ActionChip } from "./action-chip";
 import { Chip } from "./typography/chip";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
@@ -43,7 +44,9 @@ export const SiteHeader = async () => {
           <NavigationRoot>
             <header className="bg-card mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
               <div className="absolute -bottom-3 flex space-x-2">
-                {randomMessage.link ? (
+                {randomMessage.action ? (
+                  <ActionChip action={randomMessage.action}>{randomMessage.text}</ActionChip>
+                ) : randomMessage.link ? (
                   <Link className="z-50" href={randomMessage.link}>
                     <Chip className="underline">{randomMessage.text}</Chip>
                   </Link>

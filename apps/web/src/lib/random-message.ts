@@ -3,6 +3,7 @@ import { getDate, getHours, getMonth, getWeek, isFriday, isMonday, isThursday } 
 interface MessageItem {
   text: string;
   link?: string;
+  action?: string;
   when?: (date: Date) => boolean;
 }
 
@@ -73,6 +74,7 @@ export const baseMessages: Array<MessageItem> = [
   { text: "Godt nyttår! ✨", when: (date) => getMonth(date) === 0 && getDate(date) === 1 }, // New Year's Day
   { text: "New week, new me?", when: (date) => isMonday(date) },
   { text: "Norge skal til VM 🇳🇴", when: (date) => date <= new Date(2026, 5, 20) },
+  { text: "🫲67🫱", action: "sixty-seven" },
   { text: "Natürlich" },
   { text: "Canva-kriger" },
   { text: "Bouvet!" },
