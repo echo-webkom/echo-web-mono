@@ -6,5 +6,18 @@
   "trailingComma": "all",
   "sortImports": {},
   "sortTailwindcss": {},
-  "ignorePatterns": ["node_modules", ".next", ".sanity", ".astro", "dist", "build", "out", "playwright-report", "test-results", "apps/uno/docs", "apps/cms/sanity.types.ts", "apps/uno/.air.toml"]
+  "ignorePatterns": [
+    "**/node_modules",
+    "**/.next",
+    "**/.sanity",
+    "**/.astro",
+    "**/dist",
+    "**/build",
+    "**/out",
+    "**/playwright-report",
+    "**/test-results",
+    "apps/uno/docs",
+    "apps/cms/sanity.types.ts",
+    "apps/uno/.air.toml"
+  ]
 }
