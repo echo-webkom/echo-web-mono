@@ -4,6 +4,7 @@ import { auth } from "@/auth/session";
 import { getRandomMessage } from "@/lib/random-message";
 
 import { ENVIRONMENT } from "../config";
+import { ActionChip } from "./action-chip";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import {
   MobileNavigation,
@@ -11,7 +12,6 @@ import {
   MobileNavigationViewport,
 } from "./mobile-navigation";
 import { ThemeSwitchButton } from "./theme-switch-button";
-import { ActionChip } from "./action-chip";
 import { Chip } from "./typography/chip";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
@@ -37,6 +37,7 @@ export const SiteHeader = async () => {
   return (
     <div className="sticky top-0 z-20">
       <ConstitutionDay />
+      <PrideMonthBanner />
       <EnvironmentWarning />
 
       <div className="bg-card border-b">
@@ -125,6 +126,35 @@ function ConstitutionDay() {
   return (
     <div className="flex h-4 w-[110%] overflow-hidden">
       {NORWAY_COLORS.map((color) => (
+        <div
+          key={color}
+          className="h-full flex-1"
+          style={{ backgroundColor: color, transform: "skewX(-15deg)" }}
+        />
+      ))}
+    </div>
+  );
+}
+
+const PRIDE_COLORS = [
+  "#e40303", // Red
+  "#ff8c00", // Orange
+  "#ffed00", // Yellow
+  "#008026", // Green
+  "#004dff", // Blue
+  "#750787", // Purple
+];
+
+function PrideMonthBanner() {
+  const isPrideMonth = new Date().getMonth() === 5; // June
+
+  if (!isPrideMonth) {
+    return null;
+  }
+
+  return (
+    <div className="flex h-2 overflow-hidden">
+      {PRIDE_COLORS.map((color) => (
         <div
           key={color}
           className="h-full flex-1"
