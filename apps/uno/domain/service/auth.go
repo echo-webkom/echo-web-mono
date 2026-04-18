@@ -375,3 +375,7 @@ func (as *AuthService) SignInWithFeide(ctx context.Context, code string) (userID
 
 	return createdUser.ID, "", nil
 }
+
+func (as *AuthService) GetSessionByToken(ctx context.Context, sessionID string) (model.Session, error) {
+	return as.sessionRepo.GetSessionByToken(ctx, sessionID)
+}

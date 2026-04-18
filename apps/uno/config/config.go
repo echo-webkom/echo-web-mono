@@ -25,6 +25,7 @@ type Config struct {
 	// URL configuration
 	UnoBaseURL string
 	WebBaseURL string
+	CatBaseURL string
 
 	// Authentication configuration
 	AdminAPIKey string
@@ -87,6 +88,7 @@ func Load() *Config {
 
 		UnoBaseURL: getEnvOrDefault("NEXT_PUBLIC_API_URL", "http://localhost:8000"),
 		WebBaseURL: getEnvOrDefault("NEXT_PUBLIC_WEB_BASE_URL", "http://localhost:3000"),
+		CatBaseURL: getEnvOrDefault("PUBLIC_CAT_BASE_URL", "http://localhost:5173"),
 
 		AdminAPIKey: os.Getenv("ADMIN_KEY"),
 		AuthSecret:  os.Getenv("AUTH_SECRET"),

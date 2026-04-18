@@ -37,6 +37,14 @@ required = false
 default = "http://localhost:8000"
 kind = "Url"
 
+# Used to construct links and make Uno and the cat app work together in production.
+# Used by: uno
+[[entries]]
+key = "PUBLIC_CAT_BASE_URL"
+required = false
+default = "http://localhost:5173"
+kind = "Url"
+
 # The URL that the web application should be served from. Used to construct links and
 # make Uno and the web app work together in production.
 # Used by: web, uno

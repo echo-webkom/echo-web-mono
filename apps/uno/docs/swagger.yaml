@@ -1113,6 +1113,15 @@ definitions:
       userId:
         type: string
     type: object
+  uno_http_dto.SessionResponse:
+    properties:
+      expiresAt:
+        type: string
+      sessionToken:
+        type: string
+      userId:
+        type: string
+    type: object
   uno_http_dto.SiteFeedbackResponse:
     properties:
       category:
@@ -1520,6 +1529,34 @@ paths:
       security:
       - BearerAuth: []
       summary: Get current user
+      tags:
+      - auth
+  /auth/sessions/{id}:
+    get:
+      parameters:
+      - description: Session ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.SessionResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      security:
+      - AdminAPIKey: []
+      summary: Get session by ID
       tags:
       - auth
   /auth/sign-in-attempt/{id}:
