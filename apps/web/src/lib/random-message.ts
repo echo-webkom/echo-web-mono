@@ -82,6 +82,7 @@ export const baseMessages: Array<MessageItem> = [
   { text: "Spaghettikode" },
   { text: "Feature not a bug" },
   { text: "sudo reboot" },
+  { text: "Happy pride month! 🏳️‍🌈", when: (date) => getMonth(date) === 5 }, // June
   // ISO
   { text: "ISO 8601", link: "https://en.wikipedia.org/wiki/ISO_8601" },
   // JS
