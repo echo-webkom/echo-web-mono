@@ -4,6 +4,7 @@ import { auth } from "@/auth/session";
 import { getRandomMessage } from "@/lib/random-message";
 
 import { ENVIRONMENT } from "../config";
+import { ActionChip } from "./action-chip";
 import { DesktopNavigation, NavigationRoot, NavigationViewport } from "./desktop-navigation";
 import {
   MobileNavigation,
@@ -11,7 +12,6 @@ import {
   MobileNavigationViewport,
 } from "./mobile-navigation";
 import { ThemeSwitchButton } from "./theme-switch-button";
-import { ActionChip } from "./action-chip";
 import { Chip } from "./typography/chip";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";

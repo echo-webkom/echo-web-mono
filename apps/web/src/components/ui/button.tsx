@@ -18,15 +18,15 @@ export const buttonVariants = cva(
         secondary:
           "bg-secondary border-secondary-dark text-secondary-foreground hover:bg-secondary-hover",
         ghost: "hover:bg-accent border-transparent hover:text-accent-foreground",
-        link: "underline-offset-4 hover:underline text-primary",
+        link: "underline-offset-4 hover:underline border-transparent text-primary",
       },
       size: {
         default: "h-10 py-2 px-5",
-        sm: "h-9 px-4",
-        lg: "h-11 px-9",
-        icon: "h-9 w-9",
-        "icon-lg": "h-12 w-12",
-        "icon-sm": "h-6 w-6",
+        sm: "h-9 px-4 text-xs",
+        lg: "h-11 px-9 text-xl",
+        icon: "h-9 w-9 text-xs",
+        "icon-lg": "h-12 w-12 ",
+        "icon-sm": "h-6 w-6 text-xs",
       },
       fullWidth: {
         true: "w-full",
