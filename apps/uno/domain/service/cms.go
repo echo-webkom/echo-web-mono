@@ -299,14 +299,32 @@ func (s *CMSService) UnpinHappeningsAfterRegistrationEnd(ctx context.Context) er
 	IDs := []string{}
 	now := time.Now()
 	for _, h := range happenings {
+
 		if h.RegistrationEnd == nil {
 			continue
 		}
+		
 		regEnd, err := time.Parse(time.RFC3339, *h.RegistrationEnd)
 		if err != nil {
 			continue
 		}
 		if now.After(regEnd) {
+			IDs = append(IDs, h.ID)
+		}
+	}
+
+	for _, h := range happenings {
+		
+		if h.Date  == nil {
+			continue
+		}
+
+		date, err := time.Parse(time.RFC3339, *h.Date)
+		if err != nil {
+			continue
+		}
+
+		if now.After(date) {
 			IDs = append(IDs, h.ID)
 		}
 	}
