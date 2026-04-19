@@ -361,7 +361,7 @@ jobs:
               });
             }
 
-  auto-deploy:
+  auto-deploy-web-uno:
     name: 🚗 Auto deploy web
     if: github.event_name == 'push' && github.ref_name == 'main'
     needs: [build-and-push-web, build-and-push-uno]
@@ -373,3 +373,13 @@ jobs:
 
       - name: 🚗 Auto deploy uno
         run: curl ${{ secrets.DEPLOY_UNO_URL }}
+
+  auto-deploy-cron:
+    name: 🚗 Auto deploy cron
+    if: github.event_name == 'push' && github.ref_name == 'main'
+    needs: [build-and-push-uno-cron]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚗 Auto deploy cron
+        run: curl ${{ secrets.DEPLOY_CRON_URL }}
