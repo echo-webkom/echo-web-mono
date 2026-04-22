@@ -30,7 +30,6 @@ const LEGEND_ITEMS: Array<{
 }> = [
   { type: "bedpres", label: "Bedpres", bgClass: "bg-primary", borderClass: "border-primary" },
   { type: "event", label: "Arrangement", bgClass: "bg-secondary", borderClass: "border-secondary" },
-  { type: "movie", label: "Film", bgClass: "bg-pink-400", borderClass: "border-pink-400" },
   {
     type: "boardgame",
     label: "Brettspill",
