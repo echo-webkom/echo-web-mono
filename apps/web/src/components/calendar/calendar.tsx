@@ -55,10 +55,18 @@ export const Calendar = ({ events, type }: CalendarProps) => {
   const [topText, setTopText] = useState("Kalender");
   const [steps, setSteps] = useState(() => parseStepParam(searchParams));
   const [activeTypes, setActiveTypes] = useState<Set<CalendarEventType>>(new Set(ALL_TYPES));
-  const [showLongEvents, setLongEvents] = useState(false);
+  const [showLongEvents, setLongEvents] = useState(
+    localStorage.getItem("showLongEvents") === "true",
+  );
   const [showOptionsModal, setOptionsModal] = useState(false);
 
-  const toggleLongEvents = () => setLongEvents((b) => !b);
+  const toggleLongEvents = () => {
+    setLongEvents((b) => {
+      localStorage.setItem("showLongEvents", !b ? "true" : "false");
+      return !b;
+    });
+  };
+
   const toggleOptionsModal = () => setOptionsModal((b) => !b);
 
   const options = [
