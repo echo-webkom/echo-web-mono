@@ -315,9 +315,9 @@ func (h *auth) getRedirectBaseURL(ctx *handler.Context) string {
 		if storedSite.Value == "cat" {
 			redirectBaseURL = h.config.CatBaseURL
 		}
-		// if storedSite.Value == "verv" {
-		// 	// ODO
-		// }
+		if storedSite.Value == "verv" {
+			redirectBaseURL = h.config.VervBaseURL
+		}
 	}
 	return redirectBaseURL
 }

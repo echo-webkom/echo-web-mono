@@ -23,9 +23,10 @@ type Config struct {
 	ApiPort     string
 
 	// URL configuration
-	UnoBaseURL string
-	WebBaseURL string
-	CatBaseURL string
+	UnoBaseURL  string
+	WebBaseURL  string
+	CatBaseURL  string
+	VervBaseURL string
 
 	// Authentication configuration
 	AdminAPIKey string
@@ -86,9 +87,10 @@ func Load() *Config {
 		Environment: parseEnvironment(os.Getenv("ENVIRONMENT")),
 		ApiPort:     toGoPort(getEnvOrDefault("UNO_API_PORT", "8000")),
 
-		UnoBaseURL: getEnvOrDefault("NEXT_PUBLIC_API_URL", "http://localhost:8000"),
-		WebBaseURL: getEnvOrDefault("NEXT_PUBLIC_WEB_BASE_URL", "http://localhost:3000"),
-		CatBaseURL: getEnvOrDefault("PUBLIC_CAT_BASE_URL", "http://localhost:5173"),
+		UnoBaseURL:  getEnvOrDefault("NEXT_PUBLIC_API_URL", "http://localhost:8000"),
+		WebBaseURL:  getEnvOrDefault("NEXT_PUBLIC_WEB_BASE_URL", "http://localhost:3000"),
+		CatBaseURL:  getEnvOrDefault("PUBLIC_CAT_BASE_URL", "http://localhost:5173"),
+		VervBaseURL: getEnvOrDefault("PUBLIC_VERV_BASE_URL", "http://localhost:3001"),
 
 		AdminAPIKey: os.Getenv("ADMIN_KEY"),
 		AuthSecret:  os.Getenv("AUTH_SECRET"),

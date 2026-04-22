@@ -46,12 +46,21 @@ default = "http://localhost:5173"
 kind = "Url"
 
 # The URL that the web application should be served from. Used to construct links and
-# make Uno and the web app work together in production.
+# make Uno and the web app work together in production. Like auth.
 # Used by: web, uno
 [[entries]]
 key = "NEXT_PUBLIC_WEB_BASE_URL"
 required = true
 default = "http://localhost:3000"
+kind = "Url"
+
+# The URL that the verv application should be served from. Used to construct links and
+# make Uno and the verv app work together in production. Like auth.
+# Used by: uno
+[[entries]]
+key = "PUBLIC_VERV_BASE_URL"
+required = true
+default = "http://localhost:3001"
 kind = "Url"
 
 # The URL of the Umami analytics instance
