@@ -86,6 +86,7 @@ export const baseMessages: Array<MessageItem> = [
   { text: "Feature not a bug" },
   { text: "sudo reboot" },
   { text: "Happy pride month! 🏳️‍🌈", when: (date) => getMonth(date) === 5 }, // June
+  { text: "OverBekkEtterVann" },
   // ISO
   { text: "ISO 8601", link: "https://en.wikipedia.org/wiki/ISO_8601" },
   // JS
