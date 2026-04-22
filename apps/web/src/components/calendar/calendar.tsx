@@ -282,7 +282,7 @@ const OptionsModal = ({ items, close, isOpen }: OptionsModalProps) => {
     <>
       <div
         className={cn(
-          "bg-accent absolute top-0 z-1 flex h-full flex-col gap-4 items-start rounded border border-y-0 border-r-0 p-3 px-4 shadow transition-all sm:w-auto w-full",
+          "bg-accent absolute top-0 z-1 flex h-full flex-col gap-4 items-start rounded border border-y-0 border-r-0 p-3 px-4 shadow transition-all sm:w-sm w-full",
           isOpen ? "right-0" : "-right-[100vw]",
         )}
       >
@@ -306,20 +306,22 @@ type ToggleWithTextProps = {
 
 const ToggleWithText = ({ active, toggle, text }: ToggleWithTextProps) => {
   return (
-    <div className="flex items-center justify-center gap-2">
-      <button
-        onClick={toggle}
-        className={`relative h-6 w-12 rounded-full transition-colors duration-200 ${
-          active ? "bg-primary" : "bg-muted-dark"
-        }`}
-      >
-        <span
-          className={`absolute top-1 left-1 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200 ${
-            active ? "translate-x-6" : "translate-x-0"
+    <div className="grid w-full grid-cols-2 items-center">
+      <p className="text-muted-foreground text-sm text-wrap">{text}</p>
+      <div className="flex w-full justify-end">
+        <button
+          onClick={toggle}
+          className={`relative h-6 w-12 rounded-full transition-colors duration-200 ${
+            active ? "bg-primary" : "bg-muted-dark"
           }`}
-        />
-      </button>
-      <p className="text-muted-foreground text-sm">{text}</p>
+        >
+          <span
+            className={`absolute top-1 left-1 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200 ${
+              active ? "translate-x-6" : "translate-x-0"
+            }`}
+          />
+        </button>
+      </div>
     </div>
   );
 };
