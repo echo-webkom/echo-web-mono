@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar as CalendarIcon, Download } from "lucide-react";
+import { Calendar as CalendarIcon, Download, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useEffectEvent, useMemo, useState } from "react";
@@ -55,6 +55,23 @@ export const Calendar = ({ events, type }: CalendarProps) => {
   const [topText, setTopText] = useState("Kalender");
   const [steps, setSteps] = useState(() => parseStepParam(searchParams));
   const [activeTypes, setActiveTypes] = useState<Set<CalendarEventType>>(new Set(ALL_TYPES));
+  const [showLongEvents, setLongEvents] = useState(false);
+  const [showOptionsModal, setOptionsModal] = useState(false);
+
+  const toggleLongEvents = () => setLongEvents((b) => !b);
+  const toggleOptionsModal = () => setOptionsModal((b) => !b);
+
+  const options = [
+    // Show/hide events spanning multiple days. Always shows the first one.
+    <ToggleWithText
+      key={0}
+      active={showLongEvents}
+      toggle={toggleLongEvents}
+      text="Vis arrangementer over flere dager"
+    />,
+    // Export calendar to ics
+    <ExportCalendarButton key={1} />,
+  ];
 
   const toggleType = (type: CalendarEventType) => {
     setActiveTypes((prev) => {
@@ -122,7 +139,8 @@ export const Calendar = ({ events, type }: CalendarProps) => {
 
   if (type === "multi") {
     return (
-      <div className="bg-card overflow-hidden rounded-md border shadow-sm">
+      <div className="bg-card relative overflow-hidden rounded-md border shadow-sm">
+        <OptionsModal items={options} close={toggleOptionsModal} isOpen={showOptionsModal} />
         <Tabs value={currenetTab} className="w-full" onValueChange={handleViewChange}>
           <div className="flex w-full items-center gap-3 border-b px-4 py-2">
             <TabsList>
@@ -134,29 +152,24 @@ export const Calendar = ({ events, type }: CalendarProps) => {
               prev={handlePrevStep}
               next={handleNextStep}
               reset={steps !== 0 ? handleReset : undefined}
+              toggleOptions={toggleOptionsModal}
             />
           </div>
 
           <TabsContent value="week">
-            <DaysCalendar events={filteredEvents} steps={steps} isWeek setWeekText={setTopText} />
+            <DaysCalendar
+              events={filteredEvents}
+              steps={steps}
+              isWeek
+              setWeekText={setTopText}
+              showLongEvents={showLongEvents}
+            />
           </TabsContent>
           <TabsContent value="month">
             <MonthCalendar events={filteredEvents} steps={steps} setMonthText={setTopText} />
           </TabsContent>
 
           <div className="flex items-center gap-4 border-t px-4 py-3">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-2">
-                  <Download className="size-4" />
-                  <Text size="sm">Last ned kalender</Text>
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogTitle className="sr-only">Last ned kalender</DialogTitle>
-                <CalendarExport />
-              </DialogContent>
-            </Dialog>
             <Legend activeTypes={activeTypes} onToggle={toggleType} />
           </div>
         </Tabs>
@@ -165,7 +178,8 @@ export const Calendar = ({ events, type }: CalendarProps) => {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="relative flex flex-col">
+      <OptionsModal items={options} close={toggleOptionsModal} isOpen={showOptionsModal} />
       <div className="flex w-full items-center justify-between border-b px-4 py-3">
         <div className="flex gap-6">
           <div className="flex items-center justify-center">
@@ -183,10 +197,17 @@ export const Calendar = ({ events, type }: CalendarProps) => {
           prev={handlePrevStep}
           next={handleNextStep}
           reset={steps !== 0 ? handleReset : undefined}
+          toggleOptions={toggleOptionsModal}
         />
       </div>
       {type === "week" ? (
-        <DaysCalendar events={filteredEvents} steps={steps} isWeek setWeekText={setTopText} />
+        <DaysCalendar
+          events={filteredEvents}
+          steps={steps}
+          isWeek
+          setWeekText={setTopText}
+          showLongEvents={showLongEvents}
+        />
       ) : (
         <MonthCalendar events={filteredEvents} steps={steps} setMonthText={setTopText} />
       )}
@@ -240,5 +261,75 @@ const Legend = ({ activeTypes, onToggle }: LegendProps) => {
         );
       })}
     </div>
+  );
+};
+
+type OptionsModalProps = {
+  items: Array<React.ReactNode>;
+  isOpen: boolean;
+  close: () => void;
+};
+
+const OptionsModal = ({ items, close, isOpen }: OptionsModalProps) => {
+  return (
+    <>
+      <div
+        className={cn(
+          "bg-accent absolute top-0 z-1 flex h-full flex-col gap-4 items-start rounded border border-y-0 border-r-0 p-3 px-4 shadow transition-all sm:w-auto w-full",
+          isOpen ? "right-0" : "-right-[100vw]",
+        )}
+      >
+        <div className="flex w-full items-center justify-between border-b pb-4">
+          <p className="">Kalenderinstillinger</p>
+          <Button variant="outline" size="icon" onClick={close}>
+            <X className="size-4" />
+          </Button>
+        </div>
+        {items.map((item, _) => item)}
+      </div>
+    </>
+  );
+};
+
+type ToggleWithTextProps = {
+  active: boolean;
+  toggle: () => void;
+  text: string;
+};
+
+const ToggleWithText = ({ active, toggle, text }: ToggleWithTextProps) => {
+  return (
+    <div className="flex items-center justify-center gap-2">
+      <button
+        onClick={toggle}
+        className={`relative h-6 w-12 rounded-full transition-colors duration-200 ${
+          active ? "bg-primary" : "bg-muted-dark"
+        }`}
+      >
+        <span
+          className={`absolute top-1 left-1 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200 ${
+            active ? "translate-x-6" : "translate-x-0"
+          }`}
+        />
+      </button>
+      <p className="text-muted-foreground text-sm">{text}</p>
+    </div>
+  );
+};
+
+const ExportCalendarButton = () => {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline" size="sm" className="gap-2">
+          <Download className="size-4" />
+          <Text size="sm">Last ned kalender</Text>
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogTitle className="sr-only">Last ned kalender</DialogTitle>
+        <CalendarExport />
+      </DialogContent>
+    </Dialog>
   );
 };
