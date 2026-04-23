@@ -113,12 +113,12 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="space-y-8">
+      <form onSubmit={onSubmit} className="space-y-8 flex flex-col items-center">
         <FormField
           control={form.control}
           name="alternativeEmail"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full">
               <FormLabel htmlFor="alternativeEmail">
                 Alternativ e-post
                 {user.alternativeEmail && isAlternativeEmailVerified ? (
@@ -155,11 +155,12 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
           )}
         />
 
+        <div className="w-full grid grid-cols-2 gap-2">
         <FormField
           control={form.control}
           name="degree"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full">
               <FormLabel htmlFor="degree">Studieretning</FormLabel>
               <FormControl>
                 <Select id="degree" {...field}>
@@ -196,12 +197,13 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
             </FormItem>
           )}
         />
+        </div>
 
         <FormField
           control={form.control}
           name="birthday"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full">
               <FormLabel>Bursdag</FormLabel>
               <FormControl>
                 <Input
@@ -224,17 +226,18 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
           )}
         />
 
+<div className="w-full flex flex-col gap-4 items-start">
+
         <FormField
           control={form.control}
           name="hasReadTerms"
           render={({ field }) => (
-            <FormItem className="flex flex-col items-start space-y-2">
-              <div className="flex space-x-3">
+            <FormItem className="flex justify-center gap-4">
                 <FormControl>
                   <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>
+                  <FormLabel className="leading-relaxed">
                     Jeg bekrefter at jeg har lest{" "}
                     <Link
                       className="font-medium underline transition-colors duration-200 after:content-['_↗'] hover:text-blue-500"
@@ -245,7 +248,6 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                     .
                   </FormLabel>
                 </div>
-              </div>
             </FormItem>
           )}
         />
@@ -254,8 +256,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
           control={form.control}
           name="isPublic"
           render={({ field }) => (
-            <FormItem className="flex flex-col items-start space-y-2">
-              <div className="flex space-x-3">
+            <FormItem className="flex justify-center gap-4">
                 <FormControl>
                   <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
@@ -270,10 +271,10 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                     </span>
                   </FormLabel>
                 </div>
-              </div>
             </FormItem>
           )}
         />
+</div>
 
         <div>
           <Button type="submit">{isLoading ? "Lagrer..." : "Lagre"}</Button>

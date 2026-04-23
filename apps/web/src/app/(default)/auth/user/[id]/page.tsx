@@ -122,39 +122,29 @@ export default async function ProfilePage({ params }: Props) {
     );
   } else if (isProfileOwner) {
     return (
-      <div className="max-w-2xl space-y-4">
+      <div className="max-w-2xl space-y-4 relative p-4">
+        <div className="w-full h-32 bg-table-background-alt absolute top-0 left-0 rounded"></div>
+        <div className="pb-10"></div>
         <WhitelistNotification />
-        <Heading level={2}>{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-6 md:flex-row">
+        <div className="flex flex-col gap-4 items-center">
+          <div className="flex flex-col items-center">
             <UploadProfilePicture
               userId={profileOwner.id}
               name={profileOwner.name ?? "Bo Bakseter"}
               hasImage={profileOwner.hasImage}
             />
-            <div>
-              <div>
-                <Label>Navn</Label>
-                <Text>{profileOwner.name}</Text>
-              </div>
-              <div>
-                <Label>E-post</Label>
-                <Text>{profileOwner.email}</Text>
-              </div>
-            </div>
+            <Text className="text-xl font-bold mt-2 py-0">{profileOwner.name}</Text>
+            <Text className="py-0 text-muted-dark">{profileOwner.email}</Text>
           </div>
-
+        </div>
+        <div className="w-full flex justify-center">
           {memberships.length > 0 && (
             <div>
-              <Text size="sm" className="mb-2 font-semibold">
-                Grupper:
-              </Text>
-
-              <ul className="flex flex-wrap gap-1">
+              <ul className="flex flex-wrap gap-2">
                 {memberships.map(({ group }) => (
                   <li key={group.id}>
                     <Link href={`/gruppe/${group.id}`}>
-                      <Chip key={group.id} variant="secondary" className="hover:underline">
+                      <Chip key={group.id} variant="outlined" className="hover:underline">
                         {group.name}
                       </Chip>
                     </Link>
