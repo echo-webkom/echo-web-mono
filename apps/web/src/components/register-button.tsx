@@ -121,7 +121,11 @@ export const RegisterButton = ({
 
   if (questions?.length === 0) {
     return (
-      <Button onClick={handleOneClickRegister} fullWidth>
+      <Button
+        onClick={handleOneClickRegister}
+        fullWidth
+        disabled={!canSubmit || isLoading || timeLeft > 0}
+      >
         {isLoading ? (
           <>
             <span>
