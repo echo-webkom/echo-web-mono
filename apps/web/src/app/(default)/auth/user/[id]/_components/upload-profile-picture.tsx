@@ -85,7 +85,7 @@ export const UploadProfilePicture = ({
   };
 
   return (
-    <div className="space-y-2 flex flex-col items-center">
+    <div className="flex flex-col items-center space-y-2">
       <Avatar size="xl">
         <AvatarImage src={createProfilePictureUrl(userId, 2, imageVersion)} />
         <AvatarFallback className="text-2xl">{initials(name)}</AvatarFallback>

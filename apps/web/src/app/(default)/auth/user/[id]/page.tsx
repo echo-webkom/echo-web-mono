@@ -122,22 +122,22 @@ export default async function ProfilePage({ params }: Props) {
     );
   } else if (isProfileOwner) {
     return (
-      <div className="max-w-2xl space-y-4 relative p-4">
-        <div className="w-full h-32 bg-table-background-alt absolute top-0 left-0 rounded"></div>
+      <div className="relative max-w-2xl space-y-4 p-4">
+        <div className="bg-table-background-alt absolute top-0 left-0 h-32 w-full rounded"></div>
         <div className="pb-10"></div>
         <WhitelistNotification />
-        <div className="flex flex-col gap-4 items-center">
+        <div className="flex flex-col items-center gap-4">
           <div className="flex flex-col items-center">
             <UploadProfilePicture
               userId={profileOwner.id}
               name={profileOwner.name ?? "Bo Bakseter"}
               hasImage={profileOwner.hasImage}
             />
-            <Text className="text-xl font-bold mt-2 py-0">{profileOwner.name}</Text>
-            <Text className="py-0 text-muted-dark">{profileOwner.email}</Text>
+            <Text className="mt-2 py-0 text-xl font-bold">{profileOwner.name}</Text>
+            <Text className="text-muted-dark py-0">{profileOwner.email}</Text>
           </div>
         </div>
-        <div className="w-full flex justify-center">
+        <div className="flex w-full justify-center">
           {memberships.length > 0 && (
             <div>
               <ul className="flex flex-wrap gap-2">
