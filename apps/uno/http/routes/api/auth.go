@@ -35,6 +35,7 @@ func NewAuthMux(
 	authService *service.AuthService,
 	userService *service.UserService,
 	sessionMiddleware handler.Middleware,
+	admin handler.Middleware,
 ) *router.Mux {
 	mux := router.NewMux()
 
@@ -55,6 +56,8 @@ func NewAuthMux(
 
 	// Sign-in attempt lookup
 	mux.GET("/sign-in-attempt/{id}", h.getSignInAttempt)
+
+	mux.GET("/sessions/{id}", h.getSessionByID, admin)
 
 	return mux
 }
@@ -88,6 +91,19 @@ func (h *auth) loginWithFeide(ctx *handler.Context) error {
 		SameSite: http.SameSiteLaxMode,
 	})
 
+	site, ok := ctx.QueryParam("site")
+	if ok && site != "" {
+		ctx.SetCookie(&http.Cookie{
+			Name:     "site_redirect",
+			Value:    site,
+			Path:     "/",
+			MaxAge:   600,
+			HttpOnly: true,
+			Secure:   ctx.R.TLS != nil,
+			SameSite: http.SameSiteLaxMode,
+		})
+	}
+
 	return ctx.Redirect(authURL)
 }
 
@@ -99,42 +115,44 @@ func (h *auth) loginWithFeide(ctx *handler.Context) error {
 // @Success      302    {string}  string  "Redirect on success or error"
 // @Router       /auth/callback/feide [get]
 func (h *auth) handleFeideCallback(ctx *handler.Context) error {
+	redirectBaseURL := h.getRedirectBaseURL(ctx)
 	code, _ := ctx.QueryParam("code")
 	state, _ := ctx.QueryParam("state")
 	if code == "" || state == "" {
-		return h.redirectWithError(ctx, authErrUnknown)
+		return h.redirectWithError(ctx, authErrUnknown, redirectBaseURL)
 	}
 
 	storedState, err := ctx.R.Cookie("feide_oauth_state")
 	if err != nil || storedState == nil || storedState.Value != state {
-		return h.redirectWithError(ctx, authErrUnknown)
+		return h.redirectWithError(ctx, authErrUnknown, redirectBaseURL)
 	}
 
 	ctx.ClearCookie("feide_oauth_state", "/", "")
+	ctx.ClearCookie("site_redirect", "/", "")
 
 	userID, email, err := h.authService.SignInWithFeide(ctx.Context(), code)
 	if errors.Is(err, service.ErrNotAllowed) {
 		attemptID, regErr := h.authService.RegisterSignInAttempt(email, authErrNotAllowed)
 		if regErr != nil {
 			h.logger.Error(ctx.Context(), "failed to register sign-in attempt", "error", regErr)
-			return h.redirectWithError(ctx, authErrNotAllowed)
+			return h.redirectWithError(ctx, authErrNotAllowed, redirectBaseURL)
 		}
-		return ctx.Redirect(h.config.WebBaseURL + "/auth/logg-inn?error=" + authErrNotAllowed + "&attemptId=" + url.QueryEscape(attemptID))
+		return ctx.Redirect(redirectBaseURL + "/auth/logg-inn?error=" + authErrNotAllowed + "&attemptId=" + url.QueryEscape(attemptID))
 	}
 	if err != nil {
 		h.logger.Error(ctx.Context(), "failed to sign in with Feide", "error", err)
-		return h.redirectWithError(ctx, authErrUnknown)
+		return h.redirectWithError(ctx, authErrUnknown, redirectBaseURL)
 	}
 
 	_, jwt, err := h.authService.CreateSession(ctx.Context(), userID, service.SessionExpiryDays)
 	if err != nil {
 		h.logger.Error(ctx.Context(), "failed to create session", "error", err)
-		return h.redirectWithError(ctx, authErrUnknown)
+		return h.redirectWithError(ctx, authErrUnknown, redirectBaseURL)
 	}
 
 	h.logger.Info(ctx.Context(), "user signed in via Feide", "user_id", userID)
 
-	callbackURL := h.config.WebBaseURL + "/api/auth/callback?token=" + url.QueryEscape(jwt)
+	callbackURL := redirectBaseURL + "/api/auth/callback?token=" + url.QueryEscape(jwt)
 	return ctx.Redirect(callbackURL)
 }
 
@@ -194,6 +212,8 @@ func (h *auth) getCurrentUser(ctx *handler.Context) error {
 // @Failure      400    {string}  string  "Bad Request"
 // @Router       /auth/magic-link/verify [get]
 func (h *auth) verifyMagicLink(ctx *handler.Context) error {
+	redirectBaseURL := h.getRedirectBaseURL(ctx)
+
 	token, _ := ctx.QueryParam("token")
 	email, _ := ctx.QueryParam("email")
 
@@ -207,21 +227,21 @@ func (h *auth) verifyMagicLink(ctx *handler.Context) error {
 	verificationToken, err := h.authService.GetAndMarkTokenAsUsed(ctx.Context(), email, token)
 	if err != nil || verificationToken.Token == "" {
 		if errors.Is(err, service.ErrExpiredToken) {
-			return h.redirectWithError(ctx, authErrExpiredToken)
+			return h.redirectWithError(ctx, authErrExpiredToken, redirectBaseURL)
 		}
 		h.logger.Error(ctx.Context(), "failed to get and mark verification token", "error", err)
-		return h.redirectWithError(ctx, authErrInvalidToken)
+		return h.redirectWithError(ctx, authErrInvalidToken, redirectBaseURL)
 	}
 
 	user, err := h.authService.GetUserByEmail(ctx.Context(), email)
 	if err != nil {
-		return h.redirectWithError(ctx, authErrUserNotFound)
+		return h.redirectWithError(ctx, authErrUserNotFound, redirectBaseURL)
 	}
 
 	_, jwt, err := h.authService.CreateSession(ctx.Context(), user.ID, service.SessionExpiryDays)
 	if err != nil {
 		h.logger.Error(ctx.Context(), "failed to create session", "error", err)
-		return h.redirectWithError(ctx, authErrUnknown)
+		return h.redirectWithError(ctx, authErrUnknown, redirectBaseURL)
 	}
 
 	h.logger.Info(ctx.Context(), "user signed in via magic link", "user_id", user.ID)
@@ -252,6 +272,52 @@ func (h *auth) getSignInAttempt(ctx *handler.Context) error {
 	return ctx.JSON(attempt)
 }
 
-func (h *auth) redirectWithError(ctx *handler.Context, errCode string) error {
-	return ctx.Redirect(h.config.WebBaseURL + "/auth/logg-inn?error=" + errCode)
+// getSessionByID returns session data for a given session ID
+// @Summary      Get session by ID
+// @Tags         auth
+// @Param        id   path  string  true  "Session ID"
+// @Produce      json
+// @Success      200  {object}  dto.SessionResponse  "OK"
+// @Failure      401  {string}  string                "Unauthorized"
+// @Failure      404  {string}  string                "Not Found"
+// @Router       /auth/sessions/{id} [get]
+// @Security     AdminAPIKey
+func (h *auth) getSessionByID(ctx *handler.Context) error {
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.NotFound(errors.New("not found"))
+	}
+
+	session, err := h.authService.GetSessionByToken(ctx.Context(), id)
+	if err != nil {
+		return ctx.NotFound(errors.New("not found"))
+	}
+
+	response := dto.SessionResponse{
+		SessionToken: session.SessionToken,
+		UserID:       session.UserID,
+		ExpiresAt:    dto.FormatISO8601(session.Expires),
+	}
+	return ctx.JSON(response)
+}
+
+func (h *auth) redirectWithError(ctx *handler.Context, baseURL string, errCode string) error {
+	return ctx.Redirect(baseURL + "/auth/logg-inn?error=" + errCode)
+}
+
+func (h *auth) getRedirectBaseURL(ctx *handler.Context) string {
+	redirectBaseURL := h.config.WebBaseURL
+	storedSite, err := ctx.R.Cookie("site_redirect")
+	if err == nil && storedSite != nil {
+		if storedSite.Value == "web" {
+			redirectBaseURL = h.config.WebBaseURL
+		}
+		if storedSite.Value == "cat" {
+			redirectBaseURL = h.config.CatBaseURL
+		}
+		if storedSite.Value == "verv" {
+			redirectBaseURL = h.config.VervBaseURL
+		}
+	}
+	return redirectBaseURL
 }

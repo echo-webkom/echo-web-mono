@@ -75,6 +75,7 @@ func RunServer(deps ServerDeps) {
 		deps.AuthService,
 		deps.UserService,
 		session,
+		admin,
 	))
 
 	// Happening routes
