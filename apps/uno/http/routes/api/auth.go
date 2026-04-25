@@ -7,6 +7,7 @@ import (
 	"strings"
 	"uno/config"
 	"uno/domain/port"
+	"uno/domain/rule"
 	"uno/domain/service"
 	"uno/http/dto"
 	"uno/http/handler"
@@ -308,15 +309,10 @@ func (h *auth) redirectWithError(ctx *handler.Context, baseURL string, errCode s
 func (h *auth) getRedirectBaseURL(ctx *handler.Context) string {
 	redirectBaseURL := h.config.WebBaseURL
 	storedSite, err := ctx.R.Cookie("site_redirect")
+
 	if err == nil && storedSite != nil {
-		if storedSite.Value == "web" {
-			redirectBaseURL = h.config.WebBaseURL
-		}
-		if storedSite.Value == "cat" {
-			redirectBaseURL = h.config.CatBaseURL
-		}
-		if storedSite.Value == "verv" {
-			redirectBaseURL = h.config.VervBaseURL
+		if baseUrl, ok := rule.GetWhitelistedBaseURL(storedSite.Value); ok {
+			redirectBaseURL = baseUrl
 		}
 	}
 	return redirectBaseURL
