@@ -313,7 +313,14 @@ func (h *auth) getRedirectBaseURL(ctx *handler.Context) string {
 	if err == nil && storedSite != nil {
 		if baseUrl, ok := rule.GetWhitelistedBaseURL(storedSite.Value); ok {
 			redirectBaseURL = baseUrl
+		} else {
+			h.logger.Warn(
+				ctx.Context(),
+				"site is either not whitelisted or base url is missing",
+				"fallback", redirectBaseURL,
+			)
 		}
 	}
+
 	return redirectBaseURL
 }
