@@ -113,12 +113,12 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="space-y-8">
+      <form onSubmit={onSubmit} className="flex flex-col items-center space-y-8">
         <FormField
           control={form.control}
           name="alternativeEmail"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full">
               <FormLabel htmlFor="alternativeEmail">
                 Alternativ e-post
                 {user.alternativeEmail && isAlternativeEmailVerified ? (
@@ -155,53 +155,55 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="degree"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="degree">Studieretning</FormLabel>
-              <FormControl>
-                <Select id="degree" {...field}>
-                  <option hidden>Velg studieretning</option>
-                  {degrees.map((degree) => (
-                    <option key={degree.id} value={degree.id}>
-                      {degree.name}
-                    </option>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid w-full grid-cols-2 gap-2">
+          <FormField
+            control={form.control}
+            name="degree"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel htmlFor="degree">Studieretning</FormLabel>
+                <FormControl>
+                  <Select id="degree" {...field}>
+                    <option hidden>Velg studieretning</option>
+                    {degrees.map((degree) => (
+                      <option key={degree.id} value={degree.id}>
+                        {degree.name}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="year"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor="year">Årstrinn</FormLabel>
-              <FormControl>
-                <Select id="year" {...field}>
-                  <option hidden>Velg årstrinn</option>
-                  {Array.from({ length: 6 }, (_, i) => i + 1).map((year) => (
-                    <option key={year} value={year}>
-                      {year === 6 ? "5+." : year + "."} trinn
-                    </option>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="year"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="year">Årstrinn</FormLabel>
+                <FormControl>
+                  <Select id="year" {...field}>
+                    <option hidden>Velg årstrinn</option>
+                    {Array.from({ length: 6 }, (_, i) => i + 1).map((year) => (
+                      <option key={year} value={year}>
+                        {year === 6 ? "5+." : year + "."} trinn
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}
           name="birthday"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full">
               <FormLabel>Bursdag</FormLabel>
               <FormControl>
                 <Input
@@ -224,17 +226,17 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="hasReadTerms"
-          render={({ field }) => (
-            <FormItem className="flex flex-col items-start space-y-2">
-              <div className="flex space-x-3">
+        <div className="flex w-full flex-col items-start gap-4">
+          <FormField
+            control={form.control}
+            name="hasReadTerms"
+            render={({ field }) => (
+              <FormItem className="flex justify-center gap-4">
                 <FormControl>
                   <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>
+                  <FormLabel className="leading-relaxed">
                     Jeg bekrefter at jeg har lest{" "}
                     <Link
                       className="font-medium underline transition-colors duration-200 after:content-['_↗'] hover:text-blue-500"
@@ -245,17 +247,15 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                     .
                   </FormLabel>
                 </div>
-              </div>
-            </FormItem>
-          )}
-        />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="isPublic"
-          render={({ field }) => (
-            <FormItem className="flex flex-col items-start space-y-2">
-              <div className="flex space-x-3">
+          <FormField
+            control={form.control}
+            name="isPublic"
+            render={({ field }) => (
+              <FormItem className="flex justify-center gap-4">
                 <FormControl>
                   <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
@@ -270,10 +270,10 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                     </span>
                   </FormLabel>
                 </div>
-              </div>
-            </FormItem>
-          )}
-        />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <div>
           <Button type="submit">{isLoading ? "Lagrer..." : "Lagre"}</Button>

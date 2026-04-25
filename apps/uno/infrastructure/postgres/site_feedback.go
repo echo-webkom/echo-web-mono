@@ -28,7 +28,6 @@ func (p *SiteFeedbackRepo) GetSiteFeedbackByID(ctx context.Context, feedbackID s
 	`
 	var dbModel record.SiteFeedback
 	err := p.db.GetContext(ctx, &dbModel, query, feedbackID)
-
 	if err != nil {
 		p.logger.Error(ctx, "failed to get site feedback by ID",
 			"error", err,
@@ -64,6 +63,7 @@ func (p *SiteFeedbackRepo) GetAllSiteFeedbacks(ctx context.Context) ([]model.Sit
 	query := `--sql
 		SELECT id, name, email, message, category, created_at, is_read
 		FROM site_feedback
+		ORDER BY created_at DESC
 	`
 	rows, err := p.db.QueryContext(ctx, query)
 	if err != nil {

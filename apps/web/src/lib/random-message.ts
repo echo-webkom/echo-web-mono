@@ -40,7 +40,10 @@ export const baseMessages: Array<MessageItem> = [
   { text: "Vibe-coder litt bare", link: "https://chatgpt.com/" },
   { text: "0xDEADBEEF" },
   { text: "0xCAFEBABE" },
-  { text: "chucknorris", link: "https://medium.com/better-programming/did-you-know-html-thinks-chuck-norris-is-a-color-9f67edf4c34"},
+  {
+    text: "chucknorris",
+    link: "https://medium.com/better-programming/did-you-know-html-thinks-chuck-norris-is-a-color-9f67edf4c34",
+  },
   { text: "Fist of Gnist", link: "https://echo.uib.no/for-studenter/gruppe/gnist" },
   { text: "Foobar" },
   { text: "Progbar > Ad fontes", link: "https://programmer.bar" },
@@ -82,6 +85,8 @@ export const baseMessages: Array<MessageItem> = [
   { text: "Spaghettikode" },
   { text: "Feature not a bug" },
   { text: "sudo reboot" },
+  { text: "Happy pride month! 🏳️‍🌈", when: (date) => getMonth(date) === 5 }, // June
+  { text: "OverBekkEtterVann" },
   // ISO
   { text: "ISO 8601", link: "https://en.wikipedia.org/wiki/ISO_8601" },
   // JS

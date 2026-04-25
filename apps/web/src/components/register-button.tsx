@@ -121,7 +121,11 @@ export const RegisterButton = ({
 
   if (questions?.length === 0) {
     return (
-      <Button onClick={handleOneClickRegister} fullWidth>
+      <Button
+        onClick={handleOneClickRegister}
+        fullWidth
+        disabled={!canSubmit || isLoading || timeLeft > 0}
+      >
         {isLoading ? (
           <>
             <span>
@@ -130,12 +134,12 @@ export const RegisterButton = ({
             <span className="ml-2">Vroom...</span>
           </>
         ) : (
-          <DialogFooter>
+          <>
             <Activity mode={canSubmit ? "visible" : "hidden"}>One-click påmelding</Activity>
             <Activity mode={canSubmit ? "hidden" : "visible"}>
               <Countdown toDate={userRegistrationStart} />
             </Activity>
-          </DialogFooter>
+          </>
         )}
       </Button>
     );

@@ -10,6 +10,7 @@ const chipVariants = cva("inline-block rounded-full border px-3 py-1 text-xs fon
       secondary: "border-secondary-dark bg-secondary text-secondary-foreground",
       destructive: "border-destructive-dark bg-destructive text-destructive-foreground",
       stealth: "bg-gray-200 text-gray-700",
+      outlined: "bg-none text-primary-foreground border border-secondary",
     },
   },
   defaultVariants: {

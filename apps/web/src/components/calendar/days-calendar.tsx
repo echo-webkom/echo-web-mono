@@ -16,6 +16,7 @@ type Props = {
   steps: number;
   setWeekText?: (topText: string) => void;
   isWeek?: boolean;
+  showLongEvents: boolean;
 };
 
 const BIRTHDAY = new Date(2025, 10, 7);
@@ -36,7 +37,7 @@ const calculateStartDate = (steps: number, interval: number) => {
   return startOfWeek(contextDate, { weekStartsOn: 1 });
 };
 
-export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
+export const DaysCalendar = ({ events, isWeek, steps, setWeekText, showLongEvents }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [calendarWidth, setCalendarWidth] = useState(1024);
   const interval = useMemo(() => getInterval(calendarWidth, isWeek), [calendarWidth, isWeek]);
@@ -93,7 +94,8 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText }: Props) => {
             const eventsThisDay = events
               .filter((event) => {
                 return event.endDate
-                  ? isSameDay(event.date, day) || dateIsBetween(day, event.date, event.endDate)
+                  ? isSameDay(event.date, day) ||
+                      (dateIsBetween(day, event.date, event.endDate) && showLongEvents)
                   : isSameDay(event.date, day);
               })
               .sort((a, b) => {

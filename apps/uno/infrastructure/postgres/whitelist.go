@@ -26,7 +26,7 @@ func (p *WhitelistRepo) GetWhitelist(ctx context.Context) (whitelist []model.Whi
 		SELECT email, expires_at, reason
 		FROM whitelist
 		WHERE expires_at > NOW()
-		ORDER BY expires_at DESC
+		ORDER BY expires_at ASC
 	`
 	err = p.db.SelectContext(ctx, &dbModels, query)
 	if err != nil {

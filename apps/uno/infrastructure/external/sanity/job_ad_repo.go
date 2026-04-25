@@ -71,7 +71,7 @@ func (r *JobAdRepo) GetAllJobAds(ctx context.Context) ([]model.CMSJobAd, error) 
 		return nil, err
 	}
 
-	r.jobAdsCache.Set("all", result, cmsCacheTTL)
+	r.jobAdsCache.Set("all", result, sixHoursTTL)
 	return result, nil
 }
 
