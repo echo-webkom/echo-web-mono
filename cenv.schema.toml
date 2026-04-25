@@ -59,7 +59,7 @@ kind = "Url"
 # Used by: uno
 [[entries]]
 key = "PUBLIC_VERV_BASE_URL"
-required = true
+required = false
 default = "http://localhost:3001"
 kind = "Url"
 
