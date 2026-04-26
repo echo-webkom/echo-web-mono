@@ -34,7 +34,7 @@ func NewMeetingMinuteRepo(client *sanity.Client, logger port.Logger, redisClient
 	return &MeetingMinuteRepo{
 		client:              client,
 		logger:              logger,
-		meetingMinutesCache: cache.NewCache[[]model.CMSMeetingMinute](redisClient, CMSMeetingMinuteNamespaceMeetingMinutes),
+		meetingMinutesCache: cache.NewCache[[]model.CMSMeetingMinute](redisClient, CMSMeetingMinuteNamespaceMeetingMinutes, logger),
 	}
 }
 

@@ -54,7 +54,7 @@ func NewStudentGroupRepo(client *sanity.Client, logger port.Logger, redisClient 
 	return &StudentGroupRepo{
 		client:             client,
 		logger:             logger,
-		studentGroupsCache: cache.NewCache[[]model.CMSStudentGroup](redisClient, CMSStudentGroupNamespaceStudentGroups),
+		studentGroupsCache: cache.NewCache[[]model.CMSStudentGroup](redisClient, CMSStudentGroupNamespaceStudentGroups, logger),
 	}
 }
 

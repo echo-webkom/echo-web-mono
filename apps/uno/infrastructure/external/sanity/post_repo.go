@@ -41,7 +41,7 @@ func NewPostRepo(client *sanity.Client, logger port.Logger, redisClient *redis.C
 	return &PostRepo{
 		client:     client,
 		logger:     logger,
-		postsCache: cache.NewCache[[]model.CMSPost](redisClient, CMSPostNamespacePosts),
+		postsCache: cache.NewCache[[]model.CMSPost](redisClient, CMSPostNamespacePosts, logger),
 	}
 }
 

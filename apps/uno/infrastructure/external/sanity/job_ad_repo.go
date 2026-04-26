@@ -54,7 +54,7 @@ func NewJobAdRepo(client *sanity.Client, logger port.Logger, redisClient *redis.
 	return &JobAdRepo{
 		client:      client,
 		logger:      logger,
-		jobAdsCache: cache.NewCache[[]model.CMSJobAd](redisClient, CMSJobAdNamespaceJobAds),
+		jobAdsCache: cache.NewCache[[]model.CMSJobAd](redisClient, CMSJobAdNamespaceJobAds, logger),
 	}
 }
 

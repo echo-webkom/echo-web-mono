@@ -6,7 +6,7 @@ import (
 )
 
 func TestInMemoryCache(t *testing.T) {
-	cache := NewInMemoryCache[string]()
+	cache := NewInMemoryCache[string](nil)
 
 	// ttl <= 0 means no expiration
 	cache.Set("key1", "value1", 0)

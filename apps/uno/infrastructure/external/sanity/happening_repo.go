@@ -144,9 +144,9 @@ func NewHappeningRepo(client *sanity.Client, logger port.Logger, redisClient *re
 	return &HappeningRepo{
 		client:              client,
 		logger:              logger,
-		happeningsCache:     cache.NewCache[[]model.CMSHappening](redisClient, CMSHappeningNamespaceHappenings),
-		homeHappeningsCache: cache.NewCache[[]model.CMSHomeHappening](redisClient, CMSHappeningNamespaceHomeHappenings),
-		contactsBySlugCache: cache.NewCache[[]model.CMSContact](redisClient, CMSHappeningNamespaceContactsBySlug),
+		happeningsCache:     cache.NewCache[[]model.CMSHappening](redisClient, CMSHappeningNamespaceHappenings, logger),
+		homeHappeningsCache: cache.NewCache[[]model.CMSHomeHappening](redisClient, CMSHappeningNamespaceHomeHappenings, logger),
+		contactsBySlugCache: cache.NewCache[[]model.CMSContact](redisClient, CMSHappeningNamespaceContactsBySlug, logger),
 	}
 }
 

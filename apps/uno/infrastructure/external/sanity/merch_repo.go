@@ -37,7 +37,7 @@ func NewMerchRepo(client *sanity.Client, logger port.Logger, redisClient *redis.
 	return &MerchRepo{
 		client:     client,
 		logger:     logger,
-		merchCache: cache.NewCache[[]model.CMSMerch](redisClient, CMSMerchNamespaceMerch),
+		merchCache: cache.NewCache[[]model.CMSMerch](redisClient, CMSMerchNamespaceMerch, logger),
 	}
 }
 

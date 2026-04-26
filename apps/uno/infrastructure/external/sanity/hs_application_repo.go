@@ -33,7 +33,7 @@ func NewHSApplicationRepo(client *sanity.Client, logger port.Logger, redisClient
 	return &HSApplicationRepo{
 		client:              client,
 		logger:              logger,
-		hsApplicationsCache: cache.NewCache[[]model.CMSHSApplication](redisClient, CMSHSApplicationNamespaceHSApplications),
+		hsApplicationsCache: cache.NewCache[[]model.CMSHSApplication](redisClient, CMSHSApplicationNamespaceHSApplications, logger),
 	}
 }
 

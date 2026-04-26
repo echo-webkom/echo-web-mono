@@ -13,19 +13,20 @@ import (
 type RedisCache[T any] struct {
 	client    *redis.Client
 	namespace string
+	logger    port.Logger
 }
 
-func NewRedisCache[T any](client *redis.Client, namespace string) *RedisCache[T] {
-	return &RedisCache[T]{client: client, namespace: namespace}
+func NewRedisCache[T any](client *redis.Client, namespace string, logger port.Logger) *RedisCache[T] {
+	return &RedisCache[T]{client: client, namespace: namespace, logger: logger}
 }
 
 // NewCache returns a RedisCache if client is non-nil, otherwise an InMemoryCache.
 // The namespace is used to prefix all Redis keys to prevent collisions between cache instances.
-func NewCache[T any](client *redis.Client, namespace string) port.Cache[T] {
+func NewCache[T any](client *redis.Client, namespace string, logger port.Logger) port.Cache[T] {
 	if client != nil {
-		return NewRedisCache[T](client, namespace)
+		return NewRedisCache[T](client, namespace, logger)
 	}
-	return NewInMemoryCache[T]()
+	return NewInMemoryCache[T](logger)
 }
 
 func (c *RedisCache[T]) key(k string) string {
@@ -55,6 +56,7 @@ func (c *RedisCache[T]) Get(key string) (T, bool) {
 func (c *RedisCache[T]) Set(key string, value T, ttl time.Duration) {
 	data, err := json.Marshal(value)
 	if err != nil {
+		c.logger.Error(context.Background(), "failed to marshal value for redis set", "key", c.key(key), "error", err)
 		return
 	}
 

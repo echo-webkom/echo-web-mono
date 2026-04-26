@@ -8,7 +8,7 @@ import (
 
 func TestRedisCache(t *testing.T) {
 	client := SetupTestRedis(t)
-	cache := NewRedisCache[string](client, "test")
+	cache := NewRedisCache[string](client, "test", nil)
 
 	// ttl <= 0 means no expiration
 	cache.Set("key1", "value1", 0)
@@ -56,8 +56,8 @@ func TestRedisCache(t *testing.T) {
 
 func TestRedisCacheNamespaceIsolation(t *testing.T) {
 	client := SetupTestRedis(t)
-	cacheA := NewRedisCache[string](client, "ns-a")
-	cacheB := NewRedisCache[string](client, "ns-b")
+	cacheA := NewRedisCache[string](client, "ns-a", nil)
+	cacheB := NewRedisCache[string](client, "ns-b", nil)
 
 	cacheA.Set("key", "value-a", 0)
 	cacheB.Set("key", "value-b", 0)
@@ -75,7 +75,7 @@ func TestRedisCacheNamespaceIsolation(t *testing.T) {
 
 func TestRedisInvalidator(t *testing.T) {
 	client := SetupTestRedis(t)
-	cache := NewRedisCache[string](client, "inv-test")
+	cache := NewRedisCache[string](client, "inv-test", nil)
 	invalidator := NewRedisInvalidator(nil, client)
 
 	cache.Set("key1", "value1", 0)

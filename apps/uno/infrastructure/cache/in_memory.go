@@ -3,6 +3,7 @@ package cache
 import (
 	"sync"
 	"time"
+	"uno/domain/port"
 )
 
 type CacheEntry[T any] struct {
@@ -32,7 +33,7 @@ type InMemoryCache[T any] struct {
 }
 
 // NewInMemoryCache creates a new instance of InMemoryCache.
-func NewInMemoryCache[T any]() *InMemoryCache[T] {
+func NewInMemoryCache[T any](_ port.Logger) *InMemoryCache[T] {
 	return &InMemoryCache[T]{
 		entries: map[string]CacheEntry[T]{},
 	}

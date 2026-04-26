@@ -32,7 +32,7 @@ func NewBannerRepo(client *sanity.Client, logger port.Logger, redisClient *redis
 	return &BannerRepo{
 		client:      client,
 		logger:      logger,
-		bannerCache: cache.NewCache[*model.CMSBanner](redisClient, CMSBannerNamespaceBanner),
+		bannerCache: cache.NewCache[*model.CMSBanner](redisClient, CMSBannerNamespaceBanner, logger),
 	}
 }
 

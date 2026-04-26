@@ -27,7 +27,7 @@ func NewYrRepo(logger port.Logger, redisClient *redis.Client) port.WeatherRepo {
 	return &YrRepo{
 		logger:       logger,
 		yrClient:     yrClient,
-		weatherCache: cache.NewCache[model.Weather](redisClient, "weather"),
+		weatherCache: cache.NewCache[model.Weather](redisClient, "weather", logger),
 	}
 }
 

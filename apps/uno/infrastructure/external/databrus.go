@@ -37,8 +37,8 @@ type DatabrusRepo struct {
 func NewDatabrusRepo(logger port.Logger, redisClient *redis.Client) port.DatabrusRepo {
 	return &DatabrusRepo{
 		logger:       logger,
-		matchesCache: cache.NewCache[[]model.Match](redisClient, "databrus:matches"),
-		tableCache:   cache.NewCache[model.Table](redisClient, "databrus:table"),
+		matchesCache: cache.NewCache[[]model.Match](redisClient, "databrus:matches", logger),
+		tableCache:   cache.NewCache[model.Table](redisClient, "databrus:table", logger),
 	}
 }
 

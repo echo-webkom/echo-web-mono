@@ -39,8 +39,9 @@ type Config struct {
 }
 
 type Client struct {
-	baseURL string
-	token   string
+	baseURL     string
+	token       string
+	perspective string
 }
 
 type QueryResponse[T any] struct {
@@ -69,9 +70,15 @@ func New(config Config) (*Client, error) {
 		host = fmt.Sprintf("%s.apicdn.sanity.io", config.ProjectID)
 	}
 
+	perspective := config.Perspective
+	if perspective == "" {
+		perspective = "published"
+	}
+
 	return &Client{
-		baseURL: fmt.Sprintf("https://%s/%s/data/query/%s", host, apiVersion, config.Dataset),
-		token:   config.Token,
+		baseURL:     fmt.Sprintf("https://%s/%s/data/query/%s", host, apiVersion, config.Dataset),
+		token:       config.Token,
+		perspective: perspective,
 	}, nil
 }
 
@@ -84,6 +91,7 @@ func Query[T any](ctx context.Context, client *Client, query string, params map[
 
 	values := endpoint.Query()
 	values.Set("query", query)
+	values.Set("perspective", client.perspective)
 
 	for key, value := range params {
 		b, marshalErr := json.Marshal(value)

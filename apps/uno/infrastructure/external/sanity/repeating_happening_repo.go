@@ -71,7 +71,7 @@ func NewRepeatingHappeningRepo(client *sanity.Client, logger port.Logger, redisC
 	return &RepeatingHappeningRepo{
 		client:                   client,
 		logger:                   logger,
-		repeatingHappeningsCache: cache.NewCache[[]model.CMSRepeatingHappening](redisClient, CMSRepeatingHappeningNamespaceRepeatingHappenings),
+		repeatingHappeningsCache: cache.NewCache[[]model.CMSRepeatingHappening](redisClient, CMSRepeatingHappeningNamespaceRepeatingHappenings, logger),
 	}
 }
 

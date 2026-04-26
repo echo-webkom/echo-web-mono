@@ -33,7 +33,7 @@ func NewStaticInfoRepo(client *sanity.Client, logger port.Logger, redisClient *r
 	return &StaticInfoRepo{
 		client:          client,
 		logger:          logger,
-		staticInfoCache: cache.NewCache[[]model.CMSStaticInfo](redisClient, CMSStaticInfoNamespaceStaticInfo),
+		staticInfoCache: cache.NewCache[[]model.CMSStaticInfo](redisClient, CMSStaticInfoNamespaceStaticInfo, logger),
 	}
 }
 

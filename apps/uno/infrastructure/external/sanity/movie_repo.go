@@ -35,7 +35,7 @@ func NewMovieRepo(client *sanity.Client, logger port.Logger, redisClient *redis.
 	return &MovieRepo{
 		client:      client,
 		logger:      logger,
-		moviesCache: cache.NewCache[[]model.CMSMovie](redisClient, CMSMovieNamespaceMovies),
+		moviesCache: cache.NewCache[[]model.CMSMovie](redisClient, CMSMovieNamespaceMovies, logger),
 	}
 }
 

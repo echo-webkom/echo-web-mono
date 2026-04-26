@@ -26,7 +26,7 @@ func NewAdventOfCodeClient(aoc *adventofcode.Client, logger port.Logger, redisCl
 	return &AdventOfCodeClient{
 		aoc:              aoc,
 		logger:           logger,
-		leaderboardCache: cache.NewCache[model.AdventOfCodeLeaderboard](redisClient, "aoc:leaderboard"),
+		leaderboardCache: cache.NewCache[model.AdventOfCodeLeaderboard](redisClient, "aoc:leaderboard", logger),
 	}
 }
 
