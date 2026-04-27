@@ -31,12 +31,18 @@ export default function WebathonEntryList({
 }) {
   return (
     <Container className="py-10">
-      <Container className="flex w-full items-center justify-center p-20">
-        <Image src={winner.img} alt="" width={600} height={0}></Image>
-        <div className="flex flex-col items-center justify-center gap-2 p-10">
-          <p className="text-xl opacity-50">Vinner av Webathon {year}</p>
+      <Container className="flex w-full items-center justify-center sm:p-20">
+        <Image
+          src={winner.img}
+          alt=""
+          width={1200}
+          height={0}
+          className="w-full sm:w-[80%]"
+        ></Image>
+        <div className="flex flex-col items-center justify-center gap-2 py-10 sm:px-10">
+          <p className="text-center text-xl opacity-50">Vinner av Webathon {year}</p>
           <p className="text-center text-4xl font-bold">{winner.name}</p>
-          <p>{winner.description}</p>
+          <p className="text-center">{winner.description}</p>
           <a href={winner.github} className="text-gray-400 hover:underline">
             GitHub
           </a>
