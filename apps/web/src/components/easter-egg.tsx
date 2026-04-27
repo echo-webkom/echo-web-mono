@@ -60,6 +60,45 @@ export const EasterEgg = () => {
   }, [keys]);
 
   useEffect(() => {
+    const webkomAscii = `
+  ███████╗ ██████╗██╗  ██╗ ██████╗
+  ██╔════╝██╔════╝██║  ██║██╔═══██╗
+  █████╗  ██║     ███████║██║   ██║
+  ██╔══╝  ██║     ██╔══██║██║   ██║
+  ███████╗╚██████╗██║  ██║╚██████╔╝
+  ╚══════╝ ╚═════╝╚═╝  ╚═╝ ╚═════╝
+  ██╗    ██╗███████╗██████╗██╗  ██╗ ██████╗ ███╗   ███╗
+  ██║    ██║██╔════╝██╔══██╗██║ ██╔╝██╔═══██╗████╗ ████║
+  ██║ █╗ ██║█████╗  ██████╔╝█████╔╝ ██║   ██║██╔████╔██║
+  ██║███╗██║██╔══╝  ██╔══██╗██╔═██╗ ██║   ██║██║╚██╔╝██║
+  ╚███╔███╔╝███████╗██████╔╝██║  ██╗╚██████╔╝██║ ╚═╝ ██║
+   ╚══╝╚══╝ ╚══════╝╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝`;
+
+    const helloThere = `
+Hei der! 👋
+
+Ønsker du å vite mer om hvordan nettsiden vår funker?
+Sjekk ut koden på GitHub:
+👉 https://github.com/echo-webkom/echo-web-mono
+
+Om du ønsker å lære enda mer kan du bli med i echo Webkom!
+Vi tar vanligvis inn nye medlemmer hver høst.
+Søk neste gang! 🚀
+`;
+
+    // oxlint-disable-next-line no-console
+    console.log(
+      `%c${webkomAscii}`,
+      "color: #3b82f6; font-family: monospace; font-size: 10px; line-height: 1.2;",
+    );
+    // oxlint-disable-next-line no-console
+    console.log(
+      `%c${helloThere}`,
+      "color: #6366f1; font-family: monospace; font-size: 13px; line-height: 1.6;",
+    );
+  }, []);
+
+  useEffect(() => {
     if (!show67) return;
 
     document.body.classList.add("sixty-seven-twist");
