@@ -59,7 +59,7 @@ export const Calendar = ({ events, type }: CalendarProps) => {
   const [steps, setSteps] = useState(() => parseStepParam(searchParams));
   const [activeTypes, setActiveTypes] = useState<Set<CalendarEventType>>(new Set(ALL_TYPES));
   const [showLongEvents, setLongEvents] = useState(
-    isMounted ? localStorage.getItem(SHOW_LONG_EVENTS_KEY) === "true" : false,
+    isMounted ? localStorage.getItem(SHOW_LONG_EVENTS_KEY) === "false" : true,
   );
   const [showOptionsModal, setOptionsModal] = useState(false);
 
