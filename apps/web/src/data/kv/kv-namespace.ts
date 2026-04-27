@@ -4,9 +4,9 @@ import { type KVAdapter } from "./kv-adapter";
 import { type KVKey } from "./kv-types";
 import { createKey, isExpired } from "./utils";
 
-export type AnySchema = z.ZodType;
+type AnySchema = z.ZodType;
 
-export type KVNamespaceOptions<TSchema extends AnySchema> = {
+type KVNamespaceOptions<TSchema extends AnySchema> = {
   schema?: TSchema;
 };
 

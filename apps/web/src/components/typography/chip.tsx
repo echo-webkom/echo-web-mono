@@ -18,7 +18,7 @@ const chipVariants = cva("inline-block rounded-full border px-3 py-1 text-xs fon
   },
 });
 
-export type ChipProps = React.HTMLAttributes<HTMLSpanElement> & VariantProps<typeof chipVariants>;
+type ChipProps = React.HTMLAttributes<HTMLSpanElement> & VariantProps<typeof chipVariants>;
 
 export const Chip = ({ variant, className, children }: ChipProps) => {
   return <span className={cn(chipVariants({ variant, className }))}>{children}</span>;

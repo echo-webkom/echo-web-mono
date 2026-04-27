@@ -9,7 +9,7 @@ import { BASE_URL, DEV } from "@/config";
 
 const TOKEN_EXPIRY_HOURS = 24;
 
-export async function generateVerificationToken(email: string): Promise<string> {
+async function generateVerificationToken(email: string): Promise<string> {
   const token = nanoid();
   const expires = addHours(new Date(), TOKEN_EXPIRY_HOURS);
   // Generate code, but it is not used.
@@ -26,7 +26,7 @@ export async function generateVerificationToken(email: string): Promise<string> 
   return token;
 }
 
-export function createVerificationUrl(token: string): string {
+function createVerificationUrl(token: string): string {
   return `${BASE_URL}/auth/bekreft-epost?token=${token}`;
 }
 

@@ -2,7 +2,7 @@ import { type DashboardQuestion } from "./types";
 
 type HeaderType = "name" | "email" | "alternativeEmail" | "degreeId" | "year" | "status";
 
-export const formatHeaders: Record<HeaderType, string> = {
+const formatHeaders: Record<HeaderType, string> = {
   name: "Navn",
   email: "Epost",
   alternativeEmail: "Alternativ Epost",

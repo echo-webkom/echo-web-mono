@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { cn } from "@/utils/cn";
 
-export type SearchInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type SearchInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   onClear?: () => void;
 };
 

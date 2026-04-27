@@ -3,7 +3,7 @@ import ky, { type KyInstance, type Options } from "ky";
 
 const DEFAULT_BASE_URL = "https://uno.echo-webkom.no";
 
-export type UnoClientOptions = {
+type UnoClientOptions = {
   baseUrl?: string;
   adminToken?: string;
   token?: string;
@@ -33,23 +33,17 @@ export type UnoReturnType = {
   [NS in keyof UnoClientType]: AwaitedMethods<UnoClientType[NS]>;
 };
 
-export interface CMSAsset {
+interface CMSAsset {
   _type: string;
   _ref: string;
 }
 
-export interface CMSImage {
+interface CMSImage {
   _type: string;
   asset: CMSAsset;
 }
 
-export interface CMSReference {
-  _key: string;
-  _ref: string;
-  reference: string;
-}
-
-export interface CMSHsl {
+interface CMSHsl {
   _type: string;
   a: number;
   h: number;
@@ -57,7 +51,7 @@ export interface CMSHsl {
   s: number;
 }
 
-export interface CMSHsv {
+interface CMSHsv {
   _type: string;
   a: number;
   h: number;
@@ -65,7 +59,7 @@ export interface CMSHsv {
   v: number;
 }
 
-export interface CMSRgb {
+interface CMSRgb {
   _type: string;
   a: number;
   r: number;
@@ -73,7 +67,7 @@ export interface CMSRgb {
   b: number;
 }
 
-export interface CMSColor {
+interface CMSColor {
   _type: string;
   alpha: number;
   hex: string;
@@ -82,25 +76,25 @@ export interface CMSColor {
   rgb: CMSRgb;
 }
 
-export interface CMSLocation {
+interface CMSLocation {
   name: string;
   link: string;
 }
 
-export interface CMSCompany {
+interface CMSCompany {
   _id: string;
   name: string;
   website: string;
   image: CMSImage;
 }
 
-export interface CMSSpotRange {
+interface CMSSpotRange {
   spots: number;
   minYear: number;
   maxYear: number;
 }
 
-export interface CMSAdditionalQuestion {
+interface CMSAdditionalQuestion {
   id: string;
   title: string;
   required: boolean;
@@ -108,18 +102,18 @@ export interface CMSAdditionalQuestion {
   options: Array<string>;
 }
 
-export interface CMSOrganizerRef {
+interface CMSOrganizerRef {
   _id: string;
   name: string;
   slug: string;
 }
 
-export interface CMSContactProfile {
+interface CMSContactProfile {
   _id: string;
   name: string;
 }
 
-export interface CMSContact {
+interface CMSContact {
   email: string;
   profile: CMSContactProfile;
 }
@@ -184,7 +178,7 @@ export interface CMSRepeatingHappening {
   body: string | null;
 }
 
-export interface CMSAuthor {
+interface CMSAuthor {
   _id: string;
   name: string;
   image: CMSImage | null;
@@ -201,33 +195,33 @@ export interface CMSPost {
   body: string;
 }
 
-export interface CMSProfileSocials {
+interface CMSProfileSocials {
   facebook: string | null;
   instagram: string | null;
   linkedin: string | null;
   email: string | null;
 }
 
-export interface CMSMemberProfile {
+interface CMSMemberProfile {
   _id: string;
   name: string;
   image: CMSImage | null;
   socials: CMSProfileSocials | null;
 }
 
-export interface CMSMember {
+interface CMSMember {
   role: string;
   profile: CMSMemberProfile;
 }
 
-export interface CMSStudentGroupSocials {
+interface CMSStudentGroupSocials {
   facebook: string | null;
   instagram: string | null;
   linkedin: string | null;
   email: string | null;
 }
 
-export interface CMSStudentGroup {
+interface CMSStudentGroup {
   _id: string;
   _createdAt: Date;
   _updatedAt: Date;
@@ -241,7 +235,7 @@ export interface CMSStudentGroup {
   socials: CMSStudentGroupSocials | null;
 }
 
-export interface CMSJobLocation {
+interface CMSJobLocation {
   _id: string;
   name: string;
 }
@@ -278,14 +272,14 @@ export interface CMSBanner {
   linkTo: string | null;
 }
 
-export interface CMSStaticInfo {
+interface CMSStaticInfo {
   title: string;
   slug: string;
   pageType: PageType;
   body: string | null;
 }
 
-export interface CMSMerch {
+interface CMSMerch {
   _id: string;
   _createdAt: string;
   _updatedAt: string;
@@ -296,7 +290,7 @@ export interface CMSMerch {
   body: string | null;
 }
 
-export interface CMSMeetingMinute {
+interface CMSMeetingMinute {
   _id: string;
   isAllMeeting: boolean | null;
   date: string;
@@ -312,13 +306,13 @@ export interface CMSMovie {
   image: CMSImage;
 }
 
-export interface CMSHSApplicationProfile {
+interface CMSHSApplicationProfile {
   _id: string;
   name: string;
   image: CMSImage | null;
 }
 
-export interface CMSHSApplication {
+interface CMSHSApplication {
   profile: CMSHSApplicationProfile;
   poster: string;
 }
@@ -556,7 +550,7 @@ class SanityHSApplicationsApi {
   }
 }
 
-export class SanityApi {
+class SanityApi {
   happenings: SanityHappeningsApi;
   posts: SanityPostsApi;
   studentGroups: SanityStudentGroupsApi;
@@ -685,20 +679,20 @@ export class UnoClient {
   }
 }
 
-export interface CommentAuthor {
+interface CommentAuthor {
   id: string;
   name: string;
   hasImage: boolean;
 }
 
-export interface CommentReaction {
+interface CommentReaction {
   commentId: string;
   userId: string;
   type: "like";
   createdAt: Date;
 }
 
-export interface Comment {
+interface Comment {
   id: string;
   postId: string;
   parentCommentId: string | null;
@@ -708,7 +702,7 @@ export interface Comment {
   content: string;
 }
 
-export interface CommentWithReactions extends Comment {
+interface CommentWithReactions extends Comment {
   user: CommentAuthor | null;
   reactions: Array<CommentReaction>;
 }
@@ -754,19 +748,19 @@ class CommentsApi {
   }
 }
 
-export interface Answer {
+interface Answer {
   questionId: string;
   answer?: string | Array<string> | undefined;
 }
 
-export type QuestionType = "text" | "textarea" | "radio" | "checkbox";
+type QuestionType = "text" | "textarea" | "radio" | "checkbox";
 
-export interface Option {
+interface Option {
   id: string;
   value: string;
 }
 
-export interface Question {
+interface Question {
   options: Array<Option> | null;
   id: string;
   title: string;
@@ -778,7 +772,7 @@ export interface Question {
 
 export type RegistrationStatus = "registered" | "unregistered" | "removed" | "waiting" | "pending";
 
-export interface Registration {
+interface Registration {
   userId: string;
   userName: string | null;
   userHasImage: boolean;
@@ -916,7 +910,7 @@ class HappeningApi {
   }
 }
 
-export interface AccessRequest {
+interface AccessRequest {
   id: string;
   email: string;
   reason: string;
@@ -949,13 +943,13 @@ export interface Degree {
   name: string;
 }
 
-export interface UserGroup {
+interface UserGroup {
   id: string;
   name: string;
   isLeader: boolean;
 }
 
-export interface DegreeInsert {
+interface DegreeInsert {
   id?: string;
   name: string;
 }
@@ -1017,9 +1011,9 @@ class ShoppingApi {
   }
 }
 
-export type SiteFeedbackCategory = "bug" | "feature" | "login" | "other";
+type SiteFeedbackCategory = "bug" | "feature" | "login" | "other";
 
-export interface SiteFeedback {
+interface SiteFeedback {
   id: string;
   name: string | null;
   email: string | null;
@@ -1029,7 +1023,7 @@ export interface SiteFeedback {
   createdAt: Date;
 }
 
-export interface SiteFeedbackInsert {
+interface SiteFeedbackInsert {
   name?: string | null;
   email?: string | null;
   message: string;
@@ -1060,7 +1054,7 @@ class SiteFeedbackApi {
   }
 }
 
-export interface WhitelistEntry {
+interface WhitelistEntry {
   email: string;
   expiresAt: Date;
   reason: string;
@@ -1095,13 +1089,13 @@ class WhitelistApi {
   }
 }
 
-export interface AdventOfCodeDay {
+interface AdventOfCodeDay {
   stars: 0 | 1 | 2;
   star1Ts?: number;
   star2Ts?: number;
 }
 
-export interface AdventOfCodeRow {
+interface AdventOfCodeRow {
   id: number;
   name: string;
   localScore: number;
@@ -1200,14 +1194,14 @@ class GroupsApi {
   }
 }
 
-export interface Reaction {
+interface Reaction {
   createdAt: Date;
   userId: string;
   reactToKey: string;
   emojiId: number;
 }
 
-export interface ReactionInsert {
+interface ReactionInsert {
   userId: string;
   emojiId: number;
 }
@@ -1250,7 +1244,7 @@ export interface User {
   groups: Array<UserGroup>;
 }
 
-export interface Happening {
+interface Happening {
   date: Date | null;
   id: string;
   type: "bedpres" | "event" | "external";
@@ -1262,12 +1256,12 @@ export interface Happening {
   registrationEnd: Date | null;
 }
 
-export interface RegistrationAnswer {
+interface RegistrationAnswer {
   questionId: string;
   answer: string | Array<string> | null;
 }
 
-export interface FullHappeningRegistration extends Registration {
+interface FullHappeningRegistration extends Registration {
   userEmail: string | null;
   userYear: number | null;
   userDegreeId: string | null;
@@ -1280,7 +1274,7 @@ export interface FullHappening extends Happening {
   groups: Array<string>;
 }
 
-export interface FullRegistrationAnswerWithQuestion {
+interface FullRegistrationAnswerWithQuestion {
   questionId: string;
   answer: {
     questionId: string;
@@ -1303,7 +1297,7 @@ export interface FullRegistrationRow {
   answers: Array<FullRegistrationAnswerWithQuestion>;
 }
 
-export interface UserRegistration {
+interface UserRegistration {
   userId: string;
   happeningId: string;
   status: RegistrationStatus;
@@ -1311,7 +1305,7 @@ export interface UserRegistration {
   happening: Happening;
 }
 
-export interface Dot {
+interface Dot {
   id: number;
   reason: string;
   createdAt: Date;
@@ -1324,7 +1318,7 @@ export interface Dot {
   };
 }
 
-export interface BanInfo {
+interface BanInfo {
   id: number;
   reason: string;
   createdAt: Date;
@@ -1461,7 +1455,7 @@ export interface QuoteReaction {
   reaction_type: "like" | "dislike";
 }
 
-export interface Quote {
+interface Quote {
   id: string;
   text: string;
   person: string;

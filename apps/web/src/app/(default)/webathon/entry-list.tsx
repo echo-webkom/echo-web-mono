@@ -2,7 +2,7 @@ import Image, { type StaticImageData } from "next/image";
 
 import { Container } from "../../../components/container";
 
-export type WebathonEntry = {
+type WebathonEntry = {
   name: string;
   group: string;
   img: StaticImageData;

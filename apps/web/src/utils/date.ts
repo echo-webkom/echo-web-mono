@@ -12,7 +12,7 @@ import { nb } from "date-fns/locale/nb";
 
 import { capitalize } from "./string";
 
-export type Dateish = Date | string | number;
+type Dateish = Date | string | number;
 
 /**
  * Converts a date to a norwegian date string.
@@ -246,11 +246,6 @@ export const dayStr = (date: Date | string) => {
       locale: nb,
     }),
   );
-};
-
-export const hoursBetween = (startDate: Date | null, endDate: Date | null): number => {
-  if (!startDate || !endDate) return 0;
-  return Math.abs(endDate.getTime() - startDate.getTime()) / 36e5;
 };
 
 export const _differenceInHours = (dateLeft: Date | null, dateRight: Date | null) => {

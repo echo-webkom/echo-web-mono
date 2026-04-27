@@ -14,7 +14,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useUnoClient } from "@/providers/uno";
 import { cn } from "@/utils/cn";
 
-export type UserSearchResult = {
+type UserSearchResult = {
   id: string;
   name: string;
 };

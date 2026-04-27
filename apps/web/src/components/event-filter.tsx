@@ -41,7 +41,7 @@ type UpdateType = {
   condition?: boolean;
   search?: string;
 };
-export const updateFilter = (
+const updateFilter = (
   updates: Array<UpdateType> | UpdateType | FilterType,
   router: AppRouterInstance,
   pathname: string,

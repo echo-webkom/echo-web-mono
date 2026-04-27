@@ -9,7 +9,7 @@ export type RegistrationFilter = {
   groupFilter: string;
 };
 
-export const defaultFilters: RegistrationFilter = {
+const defaultFilters: RegistrationFilter = {
   searchTerm: "",
   yearFilter: "",
   statusFilter: "",

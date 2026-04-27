@@ -17,7 +17,7 @@ import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
 import { UserMenu } from "./user-menu";
 
-export const getProgrammerbarStatus = async () => {
+const getProgrammerbarStatus = async () => {
   try {
     return (await fetch("https://programmer.bar/api/status").then((res) => res.json())) as {
       message: string;

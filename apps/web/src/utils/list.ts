@@ -28,7 +28,7 @@ export const makeListUnique = <T>(list: Array<T>): Array<T> => {
  * @param b list b
  * @returns the elements that are in both lists
  */
-export const intersection = <T>(a: Array<T>, b: Array<T>): Array<T> => {
+const intersection = <T>(a: Array<T>, b: Array<T>): Array<T> => {
   return a.filter((value) => b.includes(value));
 };
 
@@ -41,20 +41,6 @@ export const intersection = <T>(a: Array<T>, b: Array<T>): Array<T> => {
  */
 export const doesIntersect = <T>(a: Array<T>, b: Array<T>): boolean => {
   return intersection(a, b).length > 0;
-};
-
-/**
- * Splits a list into two lists based on a condition.
- *
- * @param a the list to split
- * @param condition the condition to split on
- * @returns a tuple with two lists, one with elements that satisfy the condition and one with elements that do not
- */
-export const split = <T>(a: Array<T>, condition: (item: T) => boolean): [Array<T>, Array<T>] => {
-  const trueArray = a.filter(condition);
-  const falseArray = a.filter((item) => !condition(item));
-
-  return [trueArray, falseArray];
 };
 
 /**

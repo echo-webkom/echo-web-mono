@@ -7,7 +7,7 @@ import { type ComponentPropsWithoutRef } from "react";
 import EchoLogo from "@/assets/images/echo-logo.png";
 import { cn } from "@/utils/cn";
 
-export type BlurLogoProps = ComponentPropsWithoutRef<typeof motion.div> & {
+type BlurLogoProps = ComponentPropsWithoutRef<typeof motion.div> & {
   width: number;
   height: number;
 };

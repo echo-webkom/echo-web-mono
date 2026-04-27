@@ -63,13 +63,7 @@ type AnimatedIconProps = {
   iconSrc: string;
 };
 
-export const AnimatedIcon = ({
-  xOffset,
-  yOffset,
-  delay,
-  repeatDelay,
-  iconSrc,
-}: AnimatedIconProps) => (
+const AnimatedIcon = ({ xOffset, yOffset, delay, repeatDelay, iconSrc }: AnimatedIconProps) => (
   <motion.div
     style={{
       position: "absolute",
@@ -144,7 +138,7 @@ type AnimatedSnowFlakeProps = {
   speed: number;
 };
 
-export const AnimatedSnowFlake = ({
+const AnimatedSnowFlake = ({
   offset,
   delay,
   repeatDelay,

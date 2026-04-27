@@ -10,16 +10,11 @@ import { Callout } from "./typography/callout";
 /**
  * This is a type definition for the query that is sent to Sanity.
  */
-export type FilteredHappeningQuery = {
+type FilteredHappeningQuery = {
   search?: string;
   type: "all" | "event" | "bedpres";
   open: boolean;
   past: boolean;
-};
-
-export type DateInterval = {
-  start?: Date;
-  end?: Date;
 };
 
 export type SearchParams = {
