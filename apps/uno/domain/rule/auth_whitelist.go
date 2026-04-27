@@ -21,6 +21,8 @@ func GetWhitelistedBaseURL(site string) (baseUrl string, ok bool) {
 		return getEnv("PUBLIC_VERV_BASE_URL")
 	case "cat":
 		return getEnv("PUBLIC_CAT_BASE_URL")
+	case "dashboard":
+		return getEnv("PUBLIC_DASHBOARD_BASE_URL")
 	}
 
 	return "", false
