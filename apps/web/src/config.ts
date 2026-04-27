@@ -1,12 +1,12 @@
-export const PRODUCTION_DOMAIN = process.env.NEXT_PUBLIC_PRODUCTION_DOMAIN ?? "echo.uib.no";
+const PRODUCTION_DOMAIN = process.env.NEXT_PUBLIC_PRODUCTION_DOMAIN ?? "echo.uib.no";
 
 export const ENVIRONMENT = (process.env.ENVIRONMENT ?? "").toLowerCase();
 
 export const DEV = ENVIRONMENT === "development";
 
-export const HTTP = DEV ? "http" : "https";
+const HTTP = DEV ? "http" : "https";
 
-export const PORT = process.env.PORT ?? 3000;
+const PORT = process.env.PORT ?? 3000;
 
 export const BASE_URL = DEV
   ? `http://localhost:${process.env.PORT ?? 3000}`

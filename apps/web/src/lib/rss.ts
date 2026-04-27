@@ -9,7 +9,7 @@ export type RSSItem = {
   category?: string;
 };
 
-export type RSSFeed = {
+type RSSFeed = {
   title: string;
   link: string;
   description: string;
@@ -18,7 +18,7 @@ export type RSSFeed = {
   items: Array<RSSItem>;
 };
 
-export const createRSSItem = (item: RSSItem) => {
+const createRSSItem = (item: RSSItem) => {
   return `<item>
     <title><![CDATA[${item.title}]]></title>
     <link>${item.link}</link>

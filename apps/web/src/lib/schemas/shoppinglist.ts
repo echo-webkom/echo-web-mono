@@ -11,4 +11,4 @@ export const hyggkomListSchema = z.object({
     }),
 });
 
-export type HyggkomListForm = z.infer<typeof hyggkomListSchema>;
+type HyggkomListForm = z.infer<typeof hyggkomListSchema>;

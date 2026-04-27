@@ -5,7 +5,7 @@ import React from "react";
 import { cn } from "@/utils/cn";
 import { generateId } from "@/utils/generate-id";
 
-export type HeadingProps = {
+type HeadingProps = {
   level?: 1 | 2 | 3;
   copyable?: boolean;
   className?: string;

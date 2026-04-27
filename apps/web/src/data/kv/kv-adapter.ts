@@ -31,7 +31,7 @@ export interface KVAdapter {
   del: (key: string) => Promise<void>;
 }
 
-export class KVDrizzleAdapter implements KVAdapter {
+class KVDrizzleAdapter implements KVAdapter {
   private db: Database;
 
   constructor(db: Database) {

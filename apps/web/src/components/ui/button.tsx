@@ -6,7 +6,7 @@ import * as React from "react";
 
 import { cn } from "@/utils/cn";
 
-export const buttonVariants = cva(
+const buttonVariants = cva(
   "inline-flex items-center font-semibold justify-center rounded-full border transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background duration-300",
   {
     variants: {

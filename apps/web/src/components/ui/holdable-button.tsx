@@ -2,7 +2,7 @@ import { useState, type MouseEventHandler } from "react";
 
 import { Button, type ButtonProps } from "./button";
 
-export type HoldableButtonProps = ButtonProps & {
+type HoldableButtonProps = ButtonProps & {
   holdDelay?: number;
   onHold?: MouseEventHandler<HTMLButtonElement>;
 };

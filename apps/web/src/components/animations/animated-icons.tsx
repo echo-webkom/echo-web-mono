@@ -63,7 +63,7 @@ type AnimatedIconProps = {
   iconSrc: string;
 };
 
-export const AnimatedIcon = ({
+const AnimatedIcon = ({
   xOffset,
   yOffset,
   delay,
@@ -144,7 +144,7 @@ type AnimatedSnowFlakeProps = {
   speed: number;
 };
 
-export const AnimatedSnowFlake = ({
+const AnimatedSnowFlake = ({
   offset,
   delay,
   repeatDelay,

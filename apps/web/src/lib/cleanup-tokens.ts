@@ -30,7 +30,7 @@ export async function cleanupExpiredTokens(): Promise<number> {
  * @param hoursOld - Delete tokens older than this many hours (default: 24)
  * @returns The number of tokens deleted
  */
-export async function cleanupOldTokens(hoursOld = 24): Promise<number> {
+async function cleanupOldTokens(hoursOld = 24): Promise<number> {
   try {
     const cutoffTime = new Date(Date.now() - hoursOld * 60 * 60 * 1000);
 

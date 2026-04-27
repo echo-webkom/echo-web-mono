@@ -27,4 +27,4 @@ export const feedbackSchema = z.object({
     }),
 });
 
-export type FeedbackForm = z.infer<typeof feedbackSchema>;
+type FeedbackForm = z.infer<typeof feedbackSchema>;

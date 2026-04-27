@@ -9,7 +9,7 @@ import { UNO_BASE_URL } from "../config";
 
 const DATABRUS_FC = "Databrus FC";
 
-export type MatchType = "upcoming" | "previous";
+type MatchType = "upcoming" | "previous";
 
 export interface Match {
   type: MatchType;

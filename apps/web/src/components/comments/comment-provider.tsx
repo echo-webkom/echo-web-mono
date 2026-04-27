@@ -8,7 +8,7 @@ type FixedCommentReaction = {
   type: "like" | "dislike";
 };
 
-export type CommentContextProps = {
+type CommentContextProps = {
   commentId: string;
   postId: string;
   userId: string | null;
@@ -20,7 +20,7 @@ export type CommentContextProps = {
   reactions: Array<FixedCommentReaction>;
 };
 
-export const CommentContext = createContext<CommentContextProps | undefined>(undefined);
+const CommentContext = createContext<CommentContextProps | undefined>(undefined);
 
 export const useComment = () => {
   const comment = useContext(CommentContext);
@@ -32,7 +32,7 @@ export const useComment = () => {
   return comment;
 };
 
-export type CommentProviderProps = {
+type CommentProviderProps = {
   commentId: string;
   postId: string;
   userId: string | null;

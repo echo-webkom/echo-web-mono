@@ -87,14 +87,14 @@ export async function checkRateLimit(config: RateLimitConfig): Promise<RateLimit
 /**
  * Reset a rate limit for a specific key
  */
-export async function resetRateLimit(key: string): Promise<void> {
+async function resetRateLimit(key: string): Promise<void> {
   await db.delete(kv).where(eq(kv.key, key));
 }
 
 /**
  * Get current rate limit status without incrementing
  */
-export async function getRateLimitStatus(
+async function getRateLimitStatus(
   config: Pick<RateLimitConfig, "key" | "maxAttempts">,
 ): Promise<Omit<RateLimitResult, "success">> {
   const { key, maxAttempts } = config;
