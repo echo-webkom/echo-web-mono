@@ -45,6 +45,14 @@ required = false
 default = "http://localhost:5173"
 kind = "Url"
 
+# Allow webkom dashboard to use Uno for authentication.
+# Used by: uno
+[[entries]]
+key = "PUBLIC_DASHBOARD_BASE_URL"
+required = false
+default = "http://localhost:8080"
+kind = "Url"
+
 # The URL that the web application should be served from. Used to construct links and
 # make Uno and the web app work together in production. Like auth.
 # Used by: web, uno
