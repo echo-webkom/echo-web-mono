@@ -151,8 +151,6 @@ function DialogBody({ className, children, ...props }: React.ComponentProps<"div
 
 export {
   Dialog,
-  
-  
   DialogClose,
   DialogTrigger,
   DialogContent,

@@ -17,11 +17,6 @@ type FilteredHappeningQuery = {
   past: boolean;
 };
 
-type DateInterval = {
-  start?: Date;
-  end?: Date;
-};
-
 export type SearchParams = {
   type?: string;
   order?: string;

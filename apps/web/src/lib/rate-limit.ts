@@ -83,38 +83,3 @@ export async function checkRateLimit(config: RateLimitConfig): Promise<RateLimit
     resetAt: existing.ttl ?? ttl,
   };
 }
-
-/**
- * Reset a rate limit for a specific key
- */
-async function resetRateLimit(key: string): Promise<void> {
-  await db.delete(kv).where(eq(kv.key, key));
-}
-
-/**
- * Get current rate limit status without incrementing
- */
-async function getRateLimitStatus(
-  config: Pick<RateLimitConfig, "key" | "maxAttempts">,
-): Promise<Omit<RateLimitResult, "success">> {
-  const { key, maxAttempts } = config;
-
-  const existing = await db.query.kv.findFirst({
-    where: eq(kv.key, key),
-  });
-
-  if (!existing) {
-    return {
-      remaining: maxAttempts,
-      resetAt: new Date(),
-    };
-  }
-
-  const data = existing.value as { count: number; firstAttempt: string };
-  const count = data.count ?? 0;
-
-  return {
-    remaining: Math.max(0, maxAttempts - count),
-    resetAt: existing.ttl ?? new Date(),
-  };
-}

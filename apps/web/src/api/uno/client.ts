@@ -43,12 +43,6 @@ interface CMSImage {
   asset: CMSAsset;
 }
 
-interface CMSReference {
-  _key: string;
-  _ref: string;
-  reference: string;
-}
-
 interface CMSHsl {
   _type: string;
   a: number;

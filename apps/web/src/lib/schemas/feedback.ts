@@ -26,5 +26,3 @@ export const feedbackSchema = z.object({
       error: "Tilbakemeldingen kan ikke være mer enn 500 bokstaver.",
     }),
 });
-
-type FeedbackForm = z.infer<typeof feedbackSchema>;

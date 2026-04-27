@@ -44,20 +44,6 @@ export const doesIntersect = <T>(a: Array<T>, b: Array<T>): boolean => {
 };
 
 /**
- * Splits a list into two lists based on a condition.
- *
- * @param a the list to split
- * @param condition the condition to split on
- * @returns a tuple with two lists, one with elements that satisfy the condition and one with elements that do not
- */
-const split = <T>(a: Array<T>, condition: (item: T) => boolean): [Array<T>, Array<T>] => {
-  const trueArray = a.filter(condition);
-  const falseArray = a.filter((item) => !condition(item));
-
-  return [trueArray, falseArray];
-};
-
-/**
  * Shuffels the list in a random order.
  *
  * @param list the list to shuffle

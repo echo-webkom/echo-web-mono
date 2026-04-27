@@ -136,10 +136,3 @@ export const getRandomMessage = (): MessageItem => {
   const randomIndex = Math.floor(Math.random() * filteredMessages.length);
   return filteredMessages[randomIndex] ?? { text: "No message available" };
 };
-
-const getAllMessages = (): Array<MessageItem> => {
-  return baseMessages.map((message) => ({
-    text: message.text,
-    link: message.link,
-  }));
-};

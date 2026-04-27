@@ -63,13 +63,7 @@ type AnimatedIconProps = {
   iconSrc: string;
 };
 
-const AnimatedIcon = ({
-  xOffset,
-  yOffset,
-  delay,
-  repeatDelay,
-  iconSrc,
-}: AnimatedIconProps) => (
+const AnimatedIcon = ({ xOffset, yOffset, delay, repeatDelay, iconSrc }: AnimatedIconProps) => (
   <motion.div
     style={{
       position: "absolute",

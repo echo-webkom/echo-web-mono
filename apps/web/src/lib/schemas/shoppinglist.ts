@@ -10,5 +10,3 @@ export const hyggkomListSchema = z.object({
       error: "Tilbakemeldingen kan ikke være mer enn 80 bokstaver.",
     }),
 });
-
-type HyggkomListForm = z.infer<typeof hyggkomListSchema>;
