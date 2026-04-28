@@ -24,7 +24,7 @@ func TestShoppingListService_GetShoppingList(t *testing.T) {
 				Name:      "Ost",
 				CreatedAt: time,
 			},
-			UserName: strPtr("Bob"),
+			UserName: new("Bob"),
 		},
 		{
 			ShoppingListItem: model.ShoppingListItem{
@@ -33,7 +33,7 @@ func TestShoppingListService_GetShoppingList(t *testing.T) {
 				Name:      "Mjölk",
 				CreatedAt: time,
 			},
-			UserName: strPtr("Alice"),
+			UserName: new("Alice"),
 		},
 		{
 			ShoppingListItem: model.ShoppingListItem{
@@ -87,7 +87,7 @@ func TestShoppingListService_GetShoppingList(t *testing.T) {
 			ID:        "1",
 			Name:      "Ost",
 			UserID:    "1",
-			UserName:  strPtr("Bob"),
+			UserName:  new("Bob"),
 			CreatedAt: time,
 			Likes:     []string{"2", "3"},
 		},
@@ -95,7 +95,7 @@ func TestShoppingListService_GetShoppingList(t *testing.T) {
 			ID:        "2",
 			Name:      "Mjölk",
 			UserID:    "2",
-			UserName:  strPtr("Alice"),
+			UserName:  new("Alice"),
 			CreatedAt: time,
 			Likes:     []string{"1"},
 		},
@@ -177,9 +177,4 @@ func TestShoppingListService_DeleteShoppingListItem(t *testing.T) {
 
 	err := shoppingListService.DeleteShoppingListItem(t.Context(), itemID)
 	assert.NoError(t, err)
-}
-
-// Helper function to create a string pointer
-func strPtr(s string) *string {
-	return &s
 }

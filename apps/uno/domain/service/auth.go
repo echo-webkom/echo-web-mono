@@ -9,7 +9,6 @@ import (
 	"uno/domain/model"
 	"uno/domain/port"
 	"uno/domain/service/providers"
-	"uno/pkg/ptr"
 	"uno/pkg/randid"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -316,8 +315,8 @@ func (as *AuthService) SignInWithFeide(ctx context.Context, code string) (userID
 	if existingAccount.UserID != "" {
 		if _, err = as.accountRepo.UpdateAccount(ctx, providers.FeideProviderName, userInfo.Sub, model.UpdateAccount{
 			AccessToken:  &tokens.AccessToken,
-			RefreshToken: ptr.Of(tokens.RefreshToken),
-			ExpiresAt:    ptr.Of(tokens.ExpiresIn),
+			RefreshToken: new(tokens.RefreshToken),
+			ExpiresAt:    new(tokens.ExpiresIn),
 			TokenType:    &tokens.TokenType,
 			IDToken:      &tokens.IDToken,
 		}); err != nil {
@@ -335,10 +334,10 @@ func (as *AuthService) SignInWithFeide(ctx context.Context, code string) (userID
 			Provider:          providers.FeideProviderName,
 			ProviderAccountID: userInfo.Sub,
 			AccessToken:       &tokens.AccessToken,
-			RefreshToken:      ptr.Of(tokens.RefreshToken),
-			ExpiresAt:         ptr.Of(tokens.ExpiresIn),
+			RefreshToken:      new(tokens.RefreshToken),
+			ExpiresAt:         new(tokens.ExpiresIn),
 			TokenType:         &tokens.TokenType,
-			Scope:             ptr.Of("openid email profile groups"),
+			Scope:             new("openid email profile groups"),
 			IDToken:           &tokens.IDToken,
 		}); err != nil {
 			return "", "", fmt.Errorf("failed to link Feide account to existing user: %w", err)

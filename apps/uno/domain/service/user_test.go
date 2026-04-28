@@ -129,7 +129,7 @@ func TestUserService_UpdateUser(t *testing.T) {
 		{
 			name: "invalid email",
 			params: port.UpdateUserParams{
-				AlternativeEmail: option.New(strPtr("not-an-email")),
+				AlternativeEmail: option.New(new("not-an-email")),
 			},
 			setupMocks:  func(*mocks.UserRepo, *mocks.DegreeRepo) {},
 			expectedErr: service.ErrInvalidEmail,
@@ -182,7 +182,7 @@ func TestUserService_UpdateUser(t *testing.T) {
 		{
 			name: "degree not in list",
 			params: port.UpdateUserParams{
-				DegreeID: option.New(strPtr("unknown-degree")),
+				DegreeID: option.New(new("unknown-degree")),
 			},
 			setupMocks: func(_ *mocks.UserRepo, degreeRepo *mocks.DegreeRepo) {
 				degreeRepo.EXPECT().
@@ -195,7 +195,7 @@ func TestUserService_UpdateUser(t *testing.T) {
 		{
 			name: "nil degreeRepo skips degree validation",
 			params: port.UpdateUserParams{
-				DegreeID: option.New(strPtr("any-id")),
+				DegreeID: option.New(new("any-id")),
 			},
 			nilDegreeRepo: true,
 			setupMocks: func(userRepo *mocks.UserRepo, _ *mocks.DegreeRepo) {
