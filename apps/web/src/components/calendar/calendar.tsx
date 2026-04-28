@@ -9,7 +9,7 @@ import { Text } from "@/components/typography/text";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useIsMounted } from "@/hooks/use-is-mounted";
+import { useLocalStorage } from "@/hooks/use-local-storage";
 import { type CalendarEvent, type CalendarEventType } from "@/lib/calendar-event-helpers";
 import { cn } from "@/utils/cn";
 
@@ -53,21 +53,14 @@ export const Calendar = ({ events, type }: CalendarProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const isMounted = useIsMounted();
-
   const [topText, setTopText] = useState("Kalender");
   const [steps, setSteps] = useState(() => parseStepParam(searchParams));
   const [activeTypes, setActiveTypes] = useState<Set<CalendarEventType>>(new Set(ALL_TYPES));
-  const [showLongEvents, setLongEvents] = useState(
-    isMounted ? localStorage.getItem(SHOW_LONG_EVENTS_KEY) === "false" : true,
-  );
+  const [showLongEvents, setLongEvents] = useLocalStorage(SHOW_LONG_EVENTS_KEY, true);
   const [showOptionsModal, setOptionsModal] = useState(false);
 
   const toggleLongEvents = () => {
-    setLongEvents((b) => {
-      localStorage.setItem(SHOW_LONG_EVENTS_KEY, !b ? "true" : "false");
-      return !b;
-    });
+    setLongEvents((b) => !b);
   };
 
   const toggleOptionsModal = () => setOptionsModal((b) => !b);
