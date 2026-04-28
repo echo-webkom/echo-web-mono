@@ -4,7 +4,17 @@ import (
 	"context"
 	"time"
 	"uno/domain/model"
+	"uno/pkg/option"
 )
+
+type UpdateUserParams struct {
+	AlternativeEmail option.Option[*string]
+	DegreeID         option.Option[*string]
+	Year             option.Option[*int]
+	HasReadTerms     option.Option[*bool]
+	Birthday         option.Option[*time.Time]
+	IsPublic         option.Option[*bool]
+}
 
 type UserRepo interface {
 	GetAllUsers(ctx context.Context) ([]model.User, error)
@@ -17,6 +27,7 @@ type UserRepo interface {
 	GetUserWithStrikeDetailsByID(ctx context.Context, userID string) (*model.UserWithStrikeDetails, error)
 	GetUserMemberships(ctx context.Context, userID string) ([]string, error)
 	CreateUser(ctx context.Context, user model.User) (model.User, error)
+	UpdateUser(ctx context.Context, userID string, params UpdateUserParams) (model.User, error)
 	UpdateUserImage(ctx context.Context, userID string, hasImage bool) error
 	SearchUsersByName(ctx context.Context, query string, limit int) ([]model.User, error)
 	GetUserByEmail(ctx context.Context, email string) (model.User, error)

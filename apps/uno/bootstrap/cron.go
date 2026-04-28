@@ -102,7 +102,7 @@ func RunCron(job string) {
 	}
 	questionService := service.NewQuestionService(questionRepo)
 	strikeService := service.NewStrikeService(dotRepo, banInfoRepo, userRepo)
-	userService := service.NewUserService(userRepo, profilePictureRepo)
+	userService := service.NewUserService(userRepo, profilePictureRepo, nil, nil)
 
 	// Job to clean up sensitive questions and strikes every 6 months.
 	runner.AddSchedule(cronrunner.Schedule{

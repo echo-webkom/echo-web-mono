@@ -290,3 +290,24 @@ func (g *GroupRepo) RemoveUserFromGroup(ctx context.Context, groupID string, use
 
 	return nil
 }
+
+func (g *GroupRepo) RemoveAllUserMemberships(ctx context.Context, userID string) error {
+	g.logger.Info(ctx, "removing all user memberships",
+		"user_id", userID,
+	)
+
+	query := `--sql
+		DELETE FROM users_to_groups
+		WHERE user_id = $1
+	`
+
+	if _, err := g.db.ExecContext(ctx, query, userID); err != nil {
+		g.logger.Error(ctx, "failed to remove all user memberships",
+			"error", err,
+			"user_id", userID,
+		)
+		return err
+	}
+
+	return nil
+}

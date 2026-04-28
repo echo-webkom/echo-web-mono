@@ -1330,6 +1330,15 @@ interface BanInfo {
   };
 }
 
+export interface UserUpdatePayload {
+  alternativeEmail?: string | null;
+  degreeId?: string | null;
+  year?: number | null;
+  hasReadTerms?: boolean | null;
+  birthday?: Date | null;
+  isPublic?: boolean | null;
+}
+
 class UsersApi {
   private client: UnoClient;
 
@@ -1358,6 +1367,14 @@ class UsersApi {
     return await this.client.requestJson<Array<UserRegistration>>(
       "GET",
       `users/${userId}/registrations`,
+    );
+  }
+
+  async update(userId: string, payload: UserUpdatePayload) {
+    return await this.client.requestJson<{ success: boolean; message: string }>(
+      "PATCH",
+      `users/${userId}`,
+      payload,
     );
   }
 

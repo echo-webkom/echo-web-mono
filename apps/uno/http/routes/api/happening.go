@@ -419,7 +419,7 @@ func (h *happenings) deregisterFromHappening(ctx *handler.Context) error {
 		req.UserID,
 		happeningID,
 		model.RegistrationStatusUnregistered,
-		stringPtr(string(reg.Status)),
+		new(string(reg.Status)),
 		nil,
 		&now,
 		&req.Reason,
@@ -499,7 +499,7 @@ func (h *happenings) updateRegistrationStatus(ctx *handler.Context) error {
 		userID,
 		happeningID,
 		status,
-		stringPtr(string(reg.Status)),
+		new(string(reg.Status)),
 		&changedBy,
 		&now,
 		&req.Reason,
@@ -531,8 +531,4 @@ func (h *happenings) deleteAllRegistrations(ctx *handler.Context) error {
 	}
 
 	return ctx.Ok()
-}
-
-func stringPtr(s string) *string {
-	return &s
 }

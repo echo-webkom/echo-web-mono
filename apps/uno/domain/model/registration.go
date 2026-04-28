@@ -72,7 +72,7 @@ func (r *Registration) CanUnregister() bool {
 
 // Unregister marks the registration as unregistered with a reason.
 func (r *Registration) Unregister(reason string, changedBy string, now time.Time) {
-	r.PrevStatus = stringPtr(string(r.Status))
+	r.PrevStatus = new(string(r.Status))
 	r.Status = RegistrationStatusUnregistered
 	r.UnregisterReason = &reason
 	r.ChangedAt = &now
@@ -81,7 +81,7 @@ func (r *Registration) Unregister(reason string, changedBy string, now time.Time
 
 // Remove marks the registration as removed by an admin.
 func (r *Registration) Remove(changedBy string, now time.Time) {
-	r.PrevStatus = stringPtr(string(r.Status))
+	r.PrevStatus = new(string(r.Status))
 	r.Status = RegistrationStatusRemoved
 	r.ChangedAt = &now
 	r.ChangedBy = &changedBy
@@ -89,7 +89,7 @@ func (r *Registration) Remove(changedBy string, now time.Time) {
 
 // ChangeStatus updates the registration status with audit information.
 func (r *Registration) ChangeStatus(newStatus RegistrationStatus, changedBy string, now time.Time) {
-	r.PrevStatus = stringPtr(string(r.Status))
+	r.PrevStatus = new(string(r.Status))
 	r.Status = newStatus
 	r.ChangedAt = &now
 	r.ChangedBy = &changedBy
@@ -104,9 +104,4 @@ func (r *Registration) HasStatusChanged() bool {
 type RegistrationWithHappening struct {
 	Registration
 	Happening Happening
-}
-
-// Helper function to create a string pointer
-func stringPtr(s string) *string {
-	return &s
 }

@@ -3559,6 +3559,73 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Updates a user by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "User update payload",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.UpdateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.UpdateUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "User Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         },
         "/users/{id}/ban": {
@@ -6032,6 +6099,40 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.UpdateUserRequest": {
+            "type": "object",
+            "properties": {
+                "alternativeEmail": {
+                    "$ref": "#/definitions/uno_pkg_option.Option-string"
+                },
+                "birthday": {
+                    "$ref": "#/definitions/uno_pkg_option.Option-time_Time"
+                },
+                "degreeId": {
+                    "$ref": "#/definitions/uno_pkg_option.Option-string"
+                },
+                "hasReadTerms": {
+                    "$ref": "#/definitions/uno_pkg_option.Option-bool"
+                },
+                "isPublic": {
+                    "$ref": "#/definitions/uno_pkg_option.Option-bool"
+                },
+                "year": {
+                    "$ref": "#/definitions/uno_pkg_option.Option-int"
+                }
+            }
+        },
+        "uno_http_dto.UpdateUserResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
         "uno_http_dto.UserGroupResponse": {
             "type": "object",
             "properties": {
@@ -6232,6 +6333,18 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "uno_pkg_option.Option-bool": {
+            "type": "object"
+        },
+        "uno_pkg_option.Option-int": {
+            "type": "object"
+        },
+        "uno_pkg_option.Option-string": {
+            "type": "object"
+        },
+        "uno_pkg_option.Option-time_Time": {
+            "type": "object"
         }
     },
     "securityDefinitions": {

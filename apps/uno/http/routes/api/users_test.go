@@ -2,17 +2,20 @@ package api_test
 
 import (
 	"bytes"
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 	"uno/domain/model"
+	"uno/domain/port"
 	"uno/domain/port/mocks"
 	"uno/domain/service"
 	"uno/http/handler"
 	"uno/http/router"
 	"uno/http/routes/api"
+	"uno/pkg/option"
 	"uno/testutil"
 
 	"github.com/stretchr/testify/assert"
@@ -22,6 +25,11 @@ import (
 func newUsersTestMux(t *testing.T, strikeService *service.StrikeService) *router.Mux {
 	t.Helper()
 	return api.NewUsersMux(testutil.NewTestLogger(), nil, nil, strikeService, handler.NoMiddleware, handler.NoMiddleware)
+}
+
+func newUpdateUserTestMux(t *testing.T, userService *service.UserService) *router.Mux {
+	t.Helper()
+	return api.NewUsersMux(testutil.NewTestLogger(), userService, nil, nil, handler.NoMiddleware, handler.NoMiddleware)
 }
 
 func TestGetUsersWithStrikeDetails(t *testing.T) {
@@ -236,6 +244,163 @@ func TestRemoveStrikeHandler(t *testing.T) {
 			r.SetPathValue("strikeId", tt.strikeID)
 			w := httptest.NewRecorder()
 
+			mux.ServeHTTP(w, r)
+
+			assert.Equal(t, tt.expectedStatus, w.Code)
+		})
+	}
+}
+
+func TestUpdateUserHandler(t *testing.T) {
+	const userID = "user-1"
+	currentUser := testutil.NewFakeStruct(func(u *model.User) { u.ID = userID })
+
+	validBody := port.UpdateUserParams{
+		Year: option.New(func() *int { v := 3; return &v }()),
+	}
+
+	marshalBody := func(v any) *bytes.Buffer {
+		b, _ := json.Marshal(v)
+		return bytes.NewBuffer(b)
+	}
+
+	tests := []struct {
+		name           string
+		pathID         string
+		body           *bytes.Buffer
+		injectUser     bool
+		setupMocks     func(*mocks.UserRepo)
+		expectedStatus int
+	}{
+		{
+			name:       "success",
+			pathID:     userID,
+			body:       marshalBody(validBody),
+			injectUser: true,
+			setupMocks: func(userRepo *mocks.UserRepo) {
+				userRepo.EXPECT().
+					UpdateUser(mock.Anything, userID, mock.Anything).
+					Return(testutil.NewFakeStruct[model.User](), nil).
+					Once()
+			},
+			expectedStatus: http.StatusOK,
+		},
+		{
+			name:           "unauthorized — no user in context",
+			pathID:         userID,
+			body:           marshalBody(validBody),
+			injectUser:     false,
+			setupMocks:     func(*mocks.UserRepo) {},
+			expectedStatus: http.StatusUnauthorized,
+		},
+		{
+			name:           "forbidden — updating another user",
+			pathID:         "other-user",
+			body:           marshalBody(validBody),
+			injectUser:     true,
+			setupMocks:     func(*mocks.UserRepo) {},
+			expectedStatus: http.StatusForbidden,
+		},
+		{
+			name:           "bad request — no fields provided",
+			pathID:         userID,
+			body:           bytes.NewBufferString("{}"),
+			injectUser:     true,
+			setupMocks:     func(*mocks.UserRepo) {},
+			expectedStatus: http.StatusBadRequest,
+		},
+		{
+			name:           "bad request — invalid JSON",
+			pathID:         userID,
+			body:           bytes.NewBufferString("not-json"),
+			injectUser:     true,
+			setupMocks:     func(*mocks.UserRepo) {},
+			expectedStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "bad request — invalid email from service",
+			pathID:     userID,
+			body:       marshalBody(validBody),
+			injectUser: true,
+			setupMocks: func(userRepo *mocks.UserRepo) {
+				userRepo.EXPECT().
+					UpdateUser(mock.Anything, userID, mock.Anything).
+					Return(model.User{}, service.ErrInvalidEmail).
+					Once()
+			},
+			expectedStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "bad request — invalid year from service",
+			pathID:     userID,
+			body:       marshalBody(validBody),
+			injectUser: true,
+			setupMocks: func(userRepo *mocks.UserRepo) {
+				userRepo.EXPECT().
+					UpdateUser(mock.Anything, userID, mock.Anything).
+					Return(model.User{}, service.ErrInvalidYear).
+					Once()
+			},
+			expectedStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "bad request — degree not found from service",
+			pathID:     userID,
+			body:       marshalBody(validBody),
+			injectUser: true,
+			setupMocks: func(userRepo *mocks.UserRepo) {
+				userRepo.EXPECT().
+					UpdateUser(mock.Anything, userID, mock.Anything).
+					Return(model.User{}, service.ErrDegreeNotFound).
+					Once()
+			},
+			expectedStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "not found — user does not exist",
+			pathID:     userID,
+			body:       marshalBody(validBody),
+			injectUser: true,
+			setupMocks: func(userRepo *mocks.UserRepo) {
+				userRepo.EXPECT().
+					UpdateUser(mock.Anything, userID, mock.Anything).
+					Return(model.User{}, sql.ErrNoRows).
+					Once()
+			},
+			expectedStatus: http.StatusNotFound,
+		},
+		{
+			name:       "internal server error",
+			pathID:     userID,
+			body:       marshalBody(validBody),
+			injectUser: true,
+			setupMocks: func(userRepo *mocks.UserRepo) {
+				userRepo.EXPECT().
+					UpdateUser(mock.Anything, userID, mock.Anything).
+					Return(model.User{}, errors.New("unexpected db error")).
+					Once()
+			},
+			expectedStatus: http.StatusInternalServerError,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			mockUserRepo := mocks.NewUserRepo(t)
+			tt.setupMocks(mockUserRepo)
+
+			userService := service.NewUserService(mockUserRepo, nil, nil, nil)
+			mux := newUpdateUserTestMux(t, userService)
+
+			r := httptest.NewRequest(http.MethodPatch, "/"+tt.pathID, tt.body)
+			r.Header.Set("Content-Type", "application/json")
+			r.SetPathValue("id", tt.pathID)
+
+			if tt.injectUser {
+				r = r.WithContext(handler.WithUser(r.Context(), currentUser))
+			}
+
+			w := httptest.NewRecorder()
 			mux.ServeHTTP(w, r)
 
 			assert.Equal(t, tt.expectedStatus, w.Code)

@@ -16,4 +16,5 @@ type GroupRepo interface {
 	SetGroupMemberLeader(ctx context.Context, groupID string, userID string, isLeader bool) error
 	AddUserToGroup(ctx context.Context, groupID string, userID string) error
 	RemoveUserFromGroup(ctx context.Context, groupID string, userID string) error
+	RemoveAllUserMemberships(ctx context.Context, userID string) error
 }

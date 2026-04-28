@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { type z } from "zod";
 
-import { updateUser } from "@/actions/user";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -31,6 +30,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
+import { useUnoClient } from "@/providers/uno";
 
 import { type AllUsers } from "./page";
 import { userFormSchema } from "./schemas";
@@ -42,6 +42,7 @@ type UserFormProps = {
 
 export const UserForm = ({ user, groups }: UserFormProps) => {
   const router = useRouter();
+  const unoClient = useUnoClient();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof userFormSchema>>({
@@ -54,17 +55,31 @@ export const UserForm = ({ user, groups }: UserFormProps) => {
   const onSubmit = form.handleSubmit(async (data) => {
     setIsLoading(true);
 
-    const { success, message } = await updateUser(user.id, data);
+    try {
+      const currentMembershipIds = new Set(user.groups.map((g) => g.id));
+      const newMembershipIds = new Set(data.memberships);
 
-    setIsLoading(false);
+      // Add user to new groups
+      for (const groupId of data.memberships) {
+        if (!currentMembershipIds.has(groupId)) {
+          await unoClient.groups.addUser(groupId, user.id);
+        }
+      }
 
-    if (success) {
-      toast.success(message);
-    } else {
-      toast.error(message);
+      // Remove user from removed groups
+      for (const groupId of user.groups.map((g) => g.id)) {
+        if (!newMembershipIds.has(groupId)) {
+          await unoClient.groups.removeUser(groupId, user.id);
+        }
+      }
+
+      toast.success("Brukeren ble oppdatert");
+    } catch {
+      toast.error("Kunne ikke oppdatere brukeren");
+    } finally {
+      setIsLoading(false);
+      router.refresh();
     }
-
-    router.refresh();
   });
 
   return (

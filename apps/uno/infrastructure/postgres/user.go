@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strings"
 	"time"
 	"uno/domain/model"
 	"uno/domain/port"
@@ -605,6 +606,107 @@ func (u *UserRepo) CreateUser(ctx context.Context, user model.User) (model.User,
 		return model.User{}, err
 	}
 	return result, nil
+}
+
+func (u *UserRepo) UpdateUser(ctx context.Context, userID string, params port.UpdateUserParams) (model.User, error) {
+	u.logger.Info(ctx, "updating user",
+		"user_id", userID,
+	)
+
+	// Build dynamic update query based on provided params
+	setClauses := []string{}
+	args := []any{}
+	argIndex := 1
+
+	// Add alternative_email field
+	if params.AlternativeEmail.IsSome() {
+		setClauses = append(setClauses, fmt.Sprintf("alternative_email = $%d", argIndex))
+		args = append(args, params.AlternativeEmail.Value())
+		argIndex++
+		// Reset verified timestamp when email changes
+		setClauses = append(setClauses, fmt.Sprintf("alternative_email_verified_at = $%d", argIndex))
+		args = append(args, nil)
+		argIndex++
+	}
+
+	// Add degree_id field
+	if params.DegreeID.IsSome() {
+		setClauses = append(setClauses, fmt.Sprintf("degree_id = $%d", argIndex))
+		args = append(args, params.DegreeID.Value())
+		argIndex++
+	}
+
+	// Add year field
+	if params.Year.IsSome() {
+		setClauses = append(setClauses, fmt.Sprintf("year = $%d", argIndex))
+		args = append(args, params.Year.Value())
+		argIndex++
+	}
+
+	// Add has_read_terms field
+	if params.HasReadTerms.IsSome() {
+		setClauses = append(setClauses, fmt.Sprintf("has_read_terms = $%d", argIndex))
+		args = append(args, params.HasReadTerms.Value())
+		argIndex++
+	}
+
+	// Add birthday field
+	if params.Birthday.IsSome() {
+		setClauses = append(setClauses, fmt.Sprintf("birthday = $%d", argIndex))
+		args = append(args, params.Birthday.Value())
+		argIndex++
+	}
+
+	// Add is_public field
+	if params.IsPublic.IsSome() {
+		setClauses = append(setClauses, fmt.Sprintf("is_public = $%d", argIndex))
+		args = append(args, params.IsPublic.Value())
+		argIndex++
+	}
+
+	if len(setClauses) == 0 {
+		// No fields to update, just return the current user
+		return u.GetUserByID(ctx, userID)
+	}
+
+	// Add updated_at
+	setClauses = append(setClauses, "updated_at = NOW()")
+
+	sets := strings.Join(setClauses, ", ")
+	query := fmt.Sprintf(`--sql
+		UPDATE "user"
+		SET %s
+		WHERE id = $%d
+		RETURNING id, name, email, image, alternative_email, alternative_email_verified_at, degree_id, year, type, last_sign_in_at, updated_at, created_at, has_read_terms, birthday, is_public
+	`, sets, argIndex)
+
+	args = append(args, userID)
+
+	var resultDB record.UserDB
+	if err := u.db.GetContext(ctx, &resultDB, query, args...); err != nil {
+		u.logger.Error(ctx, "failed to update user",
+			"error", err,
+			"user_id", userID,
+		)
+		return model.User{}, err
+	}
+
+	// Fetch groups for the user
+	groupsQuery := `--sql
+		SELECT g.id, g.name, utg.is_leader
+		FROM users_to_groups utg
+		JOIN "group" g ON utg.group_id = g.id
+		WHERE utg.user_id = $1
+	`
+	if err := u.db.SelectContext(ctx, &resultDB.Groups, groupsQuery, userID); err != nil {
+		u.logger.Error(ctx, "failed to get user groups",
+			"error", err,
+			"user_id", userID,
+		)
+		return model.User{}, err
+	}
+
+	return resultDB.ToDomain()
 }
 
 func (u *UserRepo) SearchUsersByName(ctx context.Context, query string, limit int) ([]model.User, error) {
