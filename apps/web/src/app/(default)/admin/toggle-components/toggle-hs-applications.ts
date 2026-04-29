@@ -10,6 +10,5 @@ export default async function toggleHsApplications(newValue: boolean) {
 
   const check = await featureFlags.get("HS-Application");
   console.info("Changed to", check);
-  revalidatePath("/admin");
   revalidatePath("/hjem");
 }
