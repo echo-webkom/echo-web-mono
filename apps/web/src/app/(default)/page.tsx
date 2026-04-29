@@ -157,7 +157,7 @@ export default async function HomePage() {
               <Reveal translateX={-200}>
                 <p className="mb-4 text-2xl font-semibold">For bedrifter</p>
 
-                <p className="mb-8">
+                <p>
                   Vi tilbyr også muligheten for bedrifter til å presentere seg for
                   informatikkstudentene ved Universitetet i Bergen. Dette kan gjøres gjennom
                   bedriftspresentasjoner, workshops, kurs og andre arrangementer. Vi tilbyr også
