@@ -1479,6 +1479,22 @@ paths:
       summary: Get Advent of Code leaderboard
       tags:
       - advent_of_code
+  /auth:
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Check session
+      tags:
+      - auth
   /auth/callback/feide:
     get:
       parameters:
