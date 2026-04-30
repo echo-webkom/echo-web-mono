@@ -47,6 +47,8 @@ func NewAuthMux(
 		userService: userService,
 	}
 
+	mux.GET("/", h.check, sessionMiddleware)
+
 	mux.GET("/me", h.getCurrentUser, sessionMiddleware)
 	mux.POST("/sign-out", h.signOut, sessionMiddleware)
 	mux.GET("/magic-link/verify", h.verifyMagicLink)
@@ -61,6 +63,17 @@ func NewAuthMux(
 	mux.GET("/sessions/{id}", h.getSessionByID, admin)
 
 	return mux
+}
+
+// check simply returns status 200, allowing external apps to validate session tokens.
+// @Summary      Check session
+// @Tags         auth
+// @Security     BearerAuth
+// @Success      200  {string}  string  "OK"
+// @Failure      401  {string}  string  "Unauthorized"
+// @Router       /auth [get]
+func (h *auth) check(ctx *handler.Context) error {
+	return ctx.Ok()
 }
 
 // loginWithFeide redirects the user to the Feide login page
