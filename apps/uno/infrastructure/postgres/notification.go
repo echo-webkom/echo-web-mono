@@ -26,24 +26,15 @@ func (r *NotificationRepo) GetByUserID(ctx context.Context, userID string) ([]mo
 		ORDER BY created_at DESC;
 	`
 
-	rows, err := r.db.QueryContext(ctx, query, userID)
-	if err != nil {
+	var rows []record.NotificationDB
+	if err := r.db.SelectContext(ctx, &rows, query, userID); err != nil {
 		r.logger.Error(ctx, "failed to get notifications", "error", err, "user_id", userID)
 		return nil, err
 	}
-	defer func() { _ = rows.Close() }()
 
-	var notifications []model.Notification
-	for rows.Next() {
-		var n record.NotificationDB
-		if err := rows.Scan(&n.ID, &n.UserID, &n.Type, &n.Title, &n.Content, &n.Link, &n.SeenAt, &n.ArchivedAt, &n.CreatedAt); err != nil {
-			return nil, err
-		}
-		notifications = append(notifications, *n.ToDomain())
-	}
-
-	if notifications == nil {
-		return []model.Notification{}, nil
+	notifications := make([]model.Notification, len(rows))
+	for i, n := range rows {
+		notifications[i] = n.ToDomain()
 	}
 
 	return notifications, nil

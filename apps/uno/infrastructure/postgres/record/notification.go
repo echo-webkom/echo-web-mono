@@ -17,8 +17,8 @@ type NotificationDB struct {
 	CreatedAt  time.Time  `db:"created_at"`
 }
 
-func (db *NotificationDB) ToDomain() *model.Notification {
-	return &model.Notification{
+func (db NotificationDB) ToDomain() model.Notification {
+	return model.Notification{
 		ID:         db.ID,
 		UserID:     db.UserID,
 		Type:       db.Type,
