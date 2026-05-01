@@ -20,18 +20,32 @@ import { UserMenu } from "./user-menu";
 const getProgrammerbarStatus = async () => {
   try {
     return (await fetch("https://programmer.bar/api/status").then((res) => res.json())) as {
+      status: number;
       message: string;
     };
   } catch {
     return {
+      status: null,
       message: "",
     };
   }
 };
 
+const getVaffelStatus = async () => {
+  try {
+    return await fetch("https://vaffel.echo-webkom.no/687650156262195217/status").then((res) =>
+      res.text(),
+    );
+  } catch {
+    return "closed";
+  }
+};
+
 export const SiteHeader = async () => {
   const user = await auth();
-  const { message: progbarStatus } = await getProgrammerbarStatus();
+  const { status: progBarStatus, message: progbarMessage } = await getProgrammerbarStatus();
+
+  const vaffelStatus: string = await getVaffelStatus();
   const randomMessage = getRandomMessage();
 
   return (
@@ -54,7 +68,10 @@ export const SiteHeader = async () => {
                 ) : (
                   <Chip className="z-50">{randomMessage.text}</Chip>
                 )}
-                {progbarStatus !== "" && <Chip className="z-50">{progbarStatus}</Chip>}
+                {progBarStatus !== 0 && <Chip className="z-50">{progbarMessage}</Chip>}
+                {!vaffelStatus.includes("closed") && (
+                  <Chip className="z-50">{"Vaffel-botten er åpen 🧇"}</Chip>
+                )}
               </div>
 
               <div className="flex items-center">
