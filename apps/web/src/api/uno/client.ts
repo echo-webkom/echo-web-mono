@@ -656,10 +656,19 @@ export class UnoClient {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async requestJson<T>(method: HttpMethod, path: string, body?: any): Promise<T> {
-    return await this.api(this.normalizePath(path), {
-      method,
-      json: body,
-    }).json<T>();
+    try {
+      return await this.api(this.normalizePath(path), {
+        method,
+        json: body,
+      }).json<T>();
+    } catch (error) {
+      // Rethrow with more context
+      if (error instanceof Error) {
+        throw new Error(`Request failed: ${method} ${path} - ${error.message}`);
+      } else {
+        throw new Error(`Request failed: ${method} ${path} - ${String(error)}`);
+      }
+    }
   }
 
   async requestFormData(method: HttpMethod, path: string, formData: FormData) {
