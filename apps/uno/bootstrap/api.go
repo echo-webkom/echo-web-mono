@@ -62,6 +62,7 @@ func RunApi() {
 	groupRepo := postgres.NewGroupRepo(db, logger)
 	reactionRepo := postgres.NewReactionRepo(db, logger)
 	quoteRepo := postgres.NewQuoteRepo(db, logger)
+	notificationRepo := postgres.NewNotificationRepo(db, logger)
 	accountRepo := postgres.NewAccountRepo(db, logger)
 	verificationTokenRepo := postgres.NewVerificationTokenRepo(db, logger)
 
@@ -119,6 +120,7 @@ func RunApi() {
 	groupService := service.NewGroupService(groupRepo)
 	reactionService := service.NewReactionService(reactionRepo)
 	quoteService := service.NewQuoteService(quoteRepo)
+	notificationService := service.NewNotificationService(notificationRepo)
 	cmsService := service.NewCMSService(
 		cmsHappeningRepo,
 		cmsRepeatingHappeningRepo,
@@ -159,6 +161,7 @@ func RunApi() {
 		ReactionService:      reactionService,
 		QuoteService:         quoteService,
 		CMSService:           cmsService,
+		NotificationService:  notificationService,
 	})
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)

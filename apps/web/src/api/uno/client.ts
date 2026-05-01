@@ -616,6 +616,7 @@ export class UnoClient {
   quotes: QuotesApi;
   sanity: SanityApi;
   auth: AuthApi;
+  notifications: NotificationsApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -646,6 +647,7 @@ export class UnoClient {
     this.quotes = new QuotesApi(this);
     this.sanity = new SanityApi(this);
     this.auth = new AuthApi(this);
+    this.notifications = new NotificationsApi(this);
   }
 
   normalizePath(path: string) {
@@ -1542,5 +1544,39 @@ class AuthApi {
     const response = await this.client.request("GET", `auth/sign-in-attempt/${id}`);
     if (!response.ok) return null;
     return await response.json<{ email: string; error: string }>();
+  }
+}
+
+interface Notification {
+  id: number;
+  type: string;
+  title: string;
+  content: string | null;
+  link: string | null;
+  userId: string;
+  createdAt: Date;
+  seenAt: Date | null;
+  archivedAt: Date | null;
+}
+
+class NotificationsApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all() {
+    return await this.client.requestJson<Array<Notification>>("GET", "notifications");
+  }
+
+  async seen(id: number) {
+    const response = await this.client.request("PATCH", `notifications/${id}/seen`);
+    return response.status === 200;
+  }
+
+  async archive(id: number) {
+    const response = await this.client.request("PATCH", `notifications/${id}/archive`);
+    return response.status === 200;
   }
 }

@@ -56,6 +56,7 @@ type ServerDeps struct {
 	ReactionService      *service.ReactionService
 	QuoteService         *service.QuoteService
 	CMSService           *service.CMSService
+	NotificationService  *service.NotificationService
 }
 
 func RunServer(deps ServerDeps) {
@@ -122,6 +123,9 @@ func RunServer(deps ServerDeps) {
 
 	// Quote routes
 	r.Mount("/quotes", api.NewQuoteMux(deps.Logger, deps.QuoteService, sessionOrAdmin, session, admin))
+
+	// Notification routes
+	r.Mount("/notifications", api.NewNotificationMux(deps.NotificationService, session))
 
 	// Sanity routes
 	r.Mount("/sanity", api.NewSanityMux(deps.Logger, deps.HappeningService, admin, deps.CMSService))
