@@ -11,6 +11,7 @@ export * from "./enums";
 export * from "./groups";
 export * from "./happenings-to-groups";
 export * from "./happenings";
+export * from "./notifications";
 export * from "./kv";
 export * from "./questions";
 export * from "./quotes";
