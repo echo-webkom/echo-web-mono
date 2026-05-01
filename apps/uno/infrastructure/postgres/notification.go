@@ -40,6 +40,22 @@ func (r *NotificationRepo) GetByUserID(ctx context.Context, userID string) ([]mo
 	return notifications, nil
 }
 
+func (r *NotificationRepo) Create(ctx context.Context, userID, notifType, title string, content, link *string) error {
+	r.logger.Info(ctx, "creating notification", "user_id", userID, "type", notifType)
+
+	query := `--sql
+		INSERT INTO notification (user_id, type, title, content, link, created_at)
+		VALUES ($1, $2, $3, $4, $5, NOW());
+	`
+
+	if _, err := r.db.ExecContext(ctx, query, userID, notifType, title, content, link); err != nil {
+		r.logger.Error(ctx, "failed to create notification", "error", err, "user_id", userID)
+		return err
+	}
+
+	return nil
+}
+
 func (r *NotificationRepo) Archive(ctx context.Context, id int, userID string) error {
 	r.logger.Info(ctx, "archiving notification", "id", id, "user_id", userID)
 

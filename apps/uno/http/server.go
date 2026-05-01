@@ -101,7 +101,7 @@ func RunServer(deps ServerDeps) {
 	r.Mount("/whitelist", api.NewWhitelistMux(deps.Logger, deps.WhitelistService, admin))
 
 	// Comment routes
-	r.Mount("/comments", api.NewCommentMux(deps.Logger, deps.CommentService, admin))
+	r.Mount("/comments", api.NewCommentMux(deps.Logger, deps.CommentService, deps.NotificationService, admin))
 
 	// Weather routes
 	r.Mount("/weather", api.NewWeatherMux(deps.Logger, deps.WeatherService))

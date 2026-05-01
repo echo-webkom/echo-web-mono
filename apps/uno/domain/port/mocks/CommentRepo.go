@@ -296,6 +296,74 @@ func (_c *CommentRepo_DeleteReactionFromComment_Call) RunAndReturn(run func(ctx 
 	return _c
 }
 
+// GetAncestorUserIDs provides a mock function for the type CommentRepo
+func (_mock *CommentRepo) GetAncestorUserIDs(ctx context.Context, commentID string) ([]string, error) {
+	ret := _mock.Called(ctx, commentID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetAncestorUserIDs")
+	}
+
+	var r0 []string
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) ([]string, error)); ok {
+		return returnFunc(ctx, commentID)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) []string); ok {
+		r0 = returnFunc(ctx, commentID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]string)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, commentID)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// CommentRepo_GetAncestorUserIDs_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetAncestorUserIDs'
+type CommentRepo_GetAncestorUserIDs_Call struct {
+	*mock.Call
+}
+
+// GetAncestorUserIDs is a helper method to define mock.On call
+//   - ctx context.Context
+//   - commentID string
+func (_e *CommentRepo_Expecter) GetAncestorUserIDs(ctx interface{}, commentID interface{}) *CommentRepo_GetAncestorUserIDs_Call {
+	return &CommentRepo_GetAncestorUserIDs_Call{Call: _e.mock.On("GetAncestorUserIDs", ctx, commentID)}
+}
+
+func (_c *CommentRepo_GetAncestorUserIDs_Call) Run(run func(ctx context.Context, commentID string)) *CommentRepo_GetAncestorUserIDs_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *CommentRepo_GetAncestorUserIDs_Call) Return(strings []string, err error) *CommentRepo_GetAncestorUserIDs_Call {
+	_c.Call.Return(strings, err)
+	return _c
+}
+
+func (_c *CommentRepo_GetAncestorUserIDs_Call) RunAndReturn(run func(ctx context.Context, commentID string) ([]string, error)) *CommentRepo_GetAncestorUserIDs_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetCommentsByID provides a mock function for the type CommentRepo
 func (_mock *CommentRepo) GetCommentsByID(ctx context.Context, id string) ([]model.CommentAggregate, error) {
 	ret := _mock.Called(ctx, id)

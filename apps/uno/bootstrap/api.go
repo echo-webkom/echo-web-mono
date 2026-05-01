@@ -120,7 +120,7 @@ func RunApi() {
 	groupService := service.NewGroupService(groupRepo)
 	reactionService := service.NewReactionService(reactionRepo)
 	quoteService := service.NewQuoteService(quoteRepo)
-	notificationService := service.NewNotificationService(notificationRepo)
+	notificationService := service.NewNotificationService(notificationRepo, commentRepo, happeningRepo)
 	cmsService := service.NewCMSService(
 		cmsHappeningRepo,
 		cmsRepeatingHappeningRepo,
