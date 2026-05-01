@@ -12,7 +12,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-// Middleware logging requests and their outcome.
+// Logger logging requests and their outcome.
 func Logger(portLogger port.Logger) func(http.Handler) http.Handler {
 	return func(h http.Handler) http.Handler {
 		return handler.Handler(func(ctx *handler.Context) error {
