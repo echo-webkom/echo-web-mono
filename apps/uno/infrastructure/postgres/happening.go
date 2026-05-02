@@ -196,6 +196,24 @@ func (h *HappeningRepo) CreateHappening(ctx context.Context, happening model.Hap
 	return result.ToDomain(), nil
 }
 
+func (h *HappeningRepo) GetHappeningBySlug(ctx context.Context, slug string) (model.Happening, error) {
+	h.logger.Info(ctx, "getting happening by slug", "slug", slug)
+
+	var dbHap record.Happening
+	query := `--sql
+		SELECT id, slug, title, type, date, registration_groups,
+		       registration_start_groups, registration_start, registration_end
+		FROM happening
+		WHERE slug = $1
+	`
+	if err := h.db.GetContext(ctx, &dbHap, query, slug); err != nil {
+		h.logger.Error(ctx, "failed to get happening by slug", "error", err, "slug", slug)
+		return model.Happening{}, err
+	}
+
+	return dbHap.ToDomain(), nil
+}
+
 func (h *HappeningRepo) GetFullHappeningBySlug(ctx context.Context, slug string) (model.FullHappening, error) {
 	h.logger.Info(ctx, "getting full happening by slug",
 		"slug", slug,

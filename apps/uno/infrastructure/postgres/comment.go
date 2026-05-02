@@ -266,3 +266,29 @@ func (c *CommentRepo) DeleteComment(ctx context.Context, id string) error {
 
 	return tx.Commit()
 }
+
+func (c *CommentRepo) GetAncestorUserIDs(ctx context.Context, commentID string) ([]string, error) {
+	c.logger.Info(ctx, "getting ancestor user ids for comment", "comment_id", commentID)
+
+	// Walk up the parent chain and collect distinct non-null user IDs.
+	query := `--sql
+		WITH RECURSIVE ancestors AS (
+			SELECT id, user_id, parent_comment_id
+			FROM comment
+			WHERE id = $1
+			UNION ALL
+			SELECT c.id, c.user_id, c.parent_comment_id
+			FROM comment c
+			JOIN ancestors a ON c.id = a.parent_comment_id
+		)
+		SELECT DISTINCT user_id FROM ancestors WHERE user_id IS NOT NULL;
+	`
+
+	var userIDs []string
+	if err := c.db.SelectContext(ctx, &userIDs, query, commentID); err != nil {
+		c.logger.Error(ctx, "failed to get ancestor user ids", "error", err, "comment_id", commentID)
+		return nil, err
+	}
+
+	return userIDs, nil
+}

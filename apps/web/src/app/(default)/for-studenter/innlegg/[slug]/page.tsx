@@ -53,7 +53,7 @@ export default async function PostPage(props: Props) {
       <Authors authors={post.authors} />
       <Markdown content={post.body} />
       <Suspense fallback={null}>
-        <CommentSection id={`post_${post._id}`} />
+        <CommentSection id={`post_${post.slug}`} />
       </Suspense>
     </Container>
   );

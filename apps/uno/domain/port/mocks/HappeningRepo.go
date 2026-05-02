@@ -355,6 +355,72 @@ func (_c *HappeningRepo_GetHappeningById_Call) RunAndReturn(run func(ctx context
 	return _c
 }
 
+// GetHappeningBySlug provides a mock function for the type HappeningRepo
+func (_mock *HappeningRepo) GetHappeningBySlug(ctx context.Context, slug string) (model.Happening, error) {
+	ret := _mock.Called(ctx, slug)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetHappeningBySlug")
+	}
+
+	var r0 model.Happening
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (model.Happening, error)); ok {
+		return returnFunc(ctx, slug)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) model.Happening); ok {
+		r0 = returnFunc(ctx, slug)
+	} else {
+		r0 = ret.Get(0).(model.Happening)
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, slug)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// HappeningRepo_GetHappeningBySlug_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetHappeningBySlug'
+type HappeningRepo_GetHappeningBySlug_Call struct {
+	*mock.Call
+}
+
+// GetHappeningBySlug is a helper method to define mock.On call
+//   - ctx context.Context
+//   - slug string
+func (_e *HappeningRepo_Expecter) GetHappeningBySlug(ctx interface{}, slug interface{}) *HappeningRepo_GetHappeningBySlug_Call {
+	return &HappeningRepo_GetHappeningBySlug_Call{Call: _e.mock.On("GetHappeningBySlug", ctx, slug)}
+}
+
+func (_c *HappeningRepo_GetHappeningBySlug_Call) Run(run func(ctx context.Context, slug string)) *HappeningRepo_GetHappeningBySlug_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *HappeningRepo_GetHappeningBySlug_Call) Return(happening model.Happening, err error) *HappeningRepo_GetHappeningBySlug_Call {
+	_c.Call.Return(happening, err)
+	return _c
+}
+
+func (_c *HappeningRepo_GetHappeningBySlug_Call) RunAndReturn(run func(ctx context.Context, slug string) (model.Happening, error)) *HappeningRepo_GetHappeningBySlug_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetHappeningHostGroups provides a mock function for the type HappeningRepo
 func (_mock *HappeningRepo) GetHappeningHostGroups(ctx context.Context, happeningID string) ([]string, error) {
 	ret := _mock.Called(ctx, happeningID)

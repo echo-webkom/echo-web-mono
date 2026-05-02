@@ -25,6 +25,8 @@ export const EventPage = ({ event }: EventPageProps) => {
         event.title.toLowerCase().includes(keyword) || event.body?.toLowerCase().includes(keyword),
     ) && event.happeningType === "event";
 
+  const commentSectionId = `event_${event.slug}`;
+
   return (
     <div>
       {isCompanyLeague && (
@@ -63,7 +65,7 @@ export const EventPage = ({ event }: EventPageProps) => {
           </article>
 
           <Suspense fallback={null}>
-            <CommentSection className="mt-10" id={`event_${event._id}`} />
+            <CommentSection className="mt-10" id={commentSectionId} />
           </Suspense>
         </div>
       </Container>

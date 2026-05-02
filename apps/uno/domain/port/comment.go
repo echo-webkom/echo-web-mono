@@ -14,4 +14,5 @@ type CommentRepo interface {
 	DeleteReactionFromComment(ctx context.Context, commentID string, userID string) error
 	IsReactedByUser(ctx context.Context, commentID string, userID string) (bool, error)
 	DeleteComment(ctx context.Context, id string) error
+	GetAncestorUserIDs(ctx context.Context, commentID string) ([]string, error)
 }

@@ -11,6 +11,7 @@ import {
   MobileNavigationRoot,
   MobileNavigationViewport,
 } from "./mobile-navigation";
+import { NotificationBell } from "./notification-bell";
 import { ThemeSwitchButton } from "./theme-switch-button";
 import { Chip } from "./typography/chip";
 import { Button } from "./ui/button";
@@ -80,6 +81,7 @@ export const SiteHeader = async () => {
               </div>
               <div className="flex items-center space-x-2">
                 <ThemeSwitchButton />
+                {user && <NotificationBell />}
                 {user ? (
                   <UserMenu user={user} />
                 ) : (

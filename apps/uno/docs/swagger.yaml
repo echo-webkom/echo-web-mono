@@ -965,6 +965,27 @@ definitions:
       status:
         type: string
     type: object
+  uno_http_dto.NotificationResponse:
+    properties:
+      archivedAt:
+        type: string
+      content:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      seenAt:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+      userId:
+        type: string
+    type: object
   uno_http_dto.QuestionAnswerDTO:
     properties:
       answer:
@@ -1674,10 +1695,6 @@ paths:
       responses:
         "200":
           description: OK
-          schema:
-            additionalProperties:
-              type: boolean
-            type: object
         "400":
           description: Bad Request
           schema:
@@ -1708,10 +1725,6 @@ paths:
       responses:
         "200":
           description: OK
-          schema:
-            additionalProperties:
-              type: boolean
-            type: object
         "400":
           description: Bad Request
           schema:
@@ -1783,10 +1796,6 @@ paths:
       responses:
         "200":
           description: OK
-          schema:
-            additionalProperties:
-              type: boolean
-            type: object
         "400":
           description: Bad Request
           schema:
@@ -2776,6 +2785,94 @@ paths:
       summary: Get happenings registrations count
       tags:
       - happenings
+  /notifications:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.NotificationResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get notifications
+      tags:
+      - notifications
+  /notifications/{id}/archive:
+    patch:
+      parameters:
+      - description: Notification ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Archive notification
+      tags:
+      - notifications
+  /notifications/{id}/seen:
+    patch:
+      parameters:
+      - description: Notification ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Mark notification as seen
+      tags:
+      - notifications
   /quotes/:
     get:
       consumes:

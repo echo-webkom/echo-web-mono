@@ -11,12 +11,13 @@ import (
 )
 
 type comments struct {
-	logger         port.Logger
-	commentService *service.CommentService
+	logger              port.Logger
+	commentService      *service.CommentService
+	notificationService *service.NotificationService
 }
 
-func NewCommentMux(logger port.Logger, commentService *service.CommentService, admin handler.Middleware) *router.Mux {
-	c := comments{logger, commentService}
+func NewCommentMux(logger port.Logger, commentService *service.CommentService, notificationService *service.NotificationService, admin handler.Middleware) *router.Mux {
+	c := comments{logger, commentService, notificationService}
 	mux := router.NewMux()
 
 	// Admin
@@ -60,7 +61,7 @@ func (c *comments) getCommentsByID(ctx *handler.Context) error {
 // @Accept       json
 // @Produce      json
 // @Param        comment  body  dto.CreateCommentRequest  true  "Comment to create"
-// @Success      200      {object}  map[string]bool             "OK"
+// @Success      200      "OK"
 // @Failure      400      {string}  string                      "Bad Request"
 // @Failure      401      {string}  string                      "Unauthorized"
 // @Failure      500      {string}  string                      "Internal Server Error"
@@ -72,13 +73,17 @@ func (c *comments) createComment(ctx *handler.Context) error {
 		return ctx.BadRequest(ErrFailedToReadJSON)
 	}
 
-	err := c.commentService.CreateComment(ctx.Context(), req.Content, req.PostID, req.UserID, req.ParentCommentID)
-	if err != nil {
+	if err := c.commentService.CreateComment(ctx.Context(), req.Content, req.PostID, req.UserID, req.ParentCommentID); err != nil {
 		return ctx.InternalServerError()
 	}
 
-	response := map[string]bool{"success": true}
-	return ctx.JSON(response)
+	if req.ParentCommentID != nil {
+		if err := c.notificationService.CreateReplyNotifications(ctx.Context(), *req.ParentCommentID, req.UserID, req.PostID); err != nil {
+			c.logger.Error(ctx.Context(), "failed to create reply notifications", "error", err)
+		}
+	}
+
+	return ctx.Ok()
 }
 
 // reactToComment adds or removes a reaction to a comment
@@ -88,7 +93,7 @@ func (c *comments) createComment(ctx *handler.Context) error {
 // @Produce      json
 // @Param        id        path      string                 true  "Comment ID"
 // @Param        reaction  body      dto.ReactToCommentRequest  true  "Reaction to add or remove"
-// @Success      200       {object}  map[string]bool              "OK"
+// @Success      200       "OK"
 // @Failure      400       {string}  string                       "Bad Request"
 // @Failure      401       {string}  string                       "Unauthorized"
 // @Failure      500       {string}  string                       "Internal Server Error"
@@ -110,7 +115,7 @@ func (c *comments) reactToComment(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 
-	return ctx.JSON(map[string]bool{"success": true})
+	return ctx.Ok()
 }
 
 // deleteComment deletes a comment by id
@@ -118,7 +123,7 @@ func (c *comments) reactToComment(ctx *handler.Context) error {
 // @Tags         comments
 // @Produce      json
 // @Param        id   path      string  true  "Comment ID"
-// @Success      200  {object}  map[string]bool  "OK"
+// @Success      200  "OK"
 // @Failure      400  {string}  string           "Bad Request"
 // @Failure      401  {string}  string           "Unauthorized"
 // @Failure      500  {string}  string           "Internal Server Error"
@@ -134,5 +139,5 @@ func (c *comments) deleteComment(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 
-	return ctx.JSON(map[string]bool{"success": true})
+	return ctx.Ok()
 }
