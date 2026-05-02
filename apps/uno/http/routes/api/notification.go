@@ -80,7 +80,7 @@ func (n *notifications) archiveNotification(ctx *handler.Context) error {
 // @Tags         notifications
 // @Produce      json
 // @Param        id   path      int  true  "Notification ID"
-// @Success      200  {object}  map[string]bool  "OK"
+// @Success      200  "OK"
 // @Failure      400  {string}  string           "Bad Request"
 // @Failure      401  {string}  string           "Unauthorized"
 // @Failure      500  {string}  string           "Internal Server Error"

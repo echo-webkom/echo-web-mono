@@ -61,7 +61,7 @@ func (c *comments) getCommentsByID(ctx *handler.Context) error {
 // @Accept       json
 // @Produce      json
 // @Param        comment  body  dto.CreateCommentRequest  true  "Comment to create"
-// @Success      200      {object}  map[string]bool             "OK"
+// @Success      200      "OK"
 // @Failure      400      {string}  string                      "Bad Request"
 // @Failure      401      {string}  string                      "Unauthorized"
 // @Failure      500      {string}  string                      "Internal Server Error"
@@ -83,7 +83,7 @@ func (c *comments) createComment(ctx *handler.Context) error {
 		}
 	}
 
-	return ctx.JSON(map[string]bool{"success": true})
+	return ctx.Ok()
 }
 
 // reactToComment adds or removes a reaction to a comment
@@ -93,7 +93,7 @@ func (c *comments) createComment(ctx *handler.Context) error {
 // @Produce      json
 // @Param        id        path      string                 true  "Comment ID"
 // @Param        reaction  body      dto.ReactToCommentRequest  true  "Reaction to add or remove"
-// @Success      200       {object}  map[string]bool              "OK"
+// @Success      200       "OK"
 // @Failure      400       {string}  string                       "Bad Request"
 // @Failure      401       {string}  string                       "Unauthorized"
 // @Failure      500       {string}  string                       "Internal Server Error"
@@ -115,7 +115,7 @@ func (c *comments) reactToComment(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 
-	return ctx.JSON(map[string]bool{"success": true})
+	return ctx.Ok()
 }
 
 // deleteComment deletes a comment by id
@@ -123,7 +123,7 @@ func (c *comments) reactToComment(ctx *handler.Context) error {
 // @Tags         comments
 // @Produce      json
 // @Param        id   path      string  true  "Comment ID"
-// @Success      200  {object}  map[string]bool  "OK"
+// @Success      200  "OK"
 // @Failure      400  {string}  string           "Bad Request"
 // @Failure      401  {string}  string           "Unauthorized"
 // @Failure      500  {string}  string           "Internal Server Error"
@@ -139,5 +139,5 @@ func (c *comments) deleteComment(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 
-	return ctx.JSON(map[string]bool{"success": true})
+	return ctx.Ok()
 }
