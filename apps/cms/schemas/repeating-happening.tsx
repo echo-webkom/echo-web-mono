@@ -40,7 +40,19 @@ export default defineType({
       name: "slug",
       title: "Slug",
       type: "slug",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.required().custom(async (value, context) => {
+          if (!value?.current) {
+            return true;
+          }
+
+          const query = 'count(*[_type == "happening" && slug.current == $slug]{_id})';
+          const params = { slug: value.current };
+          const { getClient } = context;
+          const count: number = await getClient({ apiVersion: "2021-04-10" }).fetch(query, params);
+
+          return count > 0 ? "Slug er allerede brukt av et vanlig arrangement." : true;
+        }),
       options: {
         source: "title",
         slugify: async (input: string, _schemaType: SlugSchemaType, context: SlugSourceContext) => {
