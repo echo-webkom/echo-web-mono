@@ -32,8 +32,8 @@ func TestHappeningService_GetAllHappenings(t *testing.T) {
 		mockRegistrationRepo,
 		mockBanInfoRepo,
 		mockGroupRepo,
-	nil,
-	nil,
+		nil,
+		nil,
 	)
 
 	happenings, err := happeningService.GetAllHappenings(t.Context())
@@ -272,8 +272,8 @@ func TestHappeningService_Register_ErrorCases(t *testing.T) {
 				mockRegistrationRepo,
 				mockBanInfoRepo,
 				mockGroupRepo,
-			nil,
-			nil,
+				nil,
+				nil,
 			)
 
 			questions := []model.QuestionAnswer{}
@@ -363,8 +363,8 @@ func TestHappeningService_Register_RegistrationWindow(t *testing.T) {
 				mockRegistrationRepo,
 				mockBanInfoRepo,
 				mockGroupRepo,
-			nil,
-			nil,
+				nil,
+				nil,
 			)
 
 			questions := []model.QuestionAnswer{}
@@ -487,8 +487,8 @@ func TestHappeningService_Register_QuestionValidation(t *testing.T) {
 				mockRegistrationRepo,
 				mockBanInfoRepo,
 				mockGroupRepo,
-			nil,
-			nil,
+				nil,
+				nil,
 			)
 
 			questions := []model.QuestionAnswer{}
@@ -657,8 +657,8 @@ func TestHappeningService_Register_Success(t *testing.T) {
 				mockRegistrationRepo,
 				mockBanInfoRepo,
 				mockGroupRepo,
-			nil,
-			nil,
+				nil,
+				nil,
 			)
 
 			questions := []model.QuestionAnswer{}
@@ -1120,6 +1120,8 @@ func TestHappeningService_SyncHappening_QuestionsField(t *testing.T) {
 				mockRegistrationRepo,
 				mockBanInfoRepo,
 				mockGroupRepo,
+				nil,
+				nil,
 			)
 
 			data := baseData
@@ -1226,8 +1228,8 @@ func TestHappeningService_Register_HostCanSkipSpotRangeCheck(t *testing.T) {
 		mockRegistrationRepo,
 		mockBanInfoRepo,
 		mockGroupRepo,
-	nil,
-	nil,
+		nil,
+		nil,
 	)
 
 	questions := []model.QuestionAnswer{}
