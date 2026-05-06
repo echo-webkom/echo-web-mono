@@ -48,6 +48,7 @@ type CalendarProps = {
 };
 
 const SHOW_LONG_EVENTS_KEY = "showLongEvents";
+const WEEK_STARTS_TODAY_KEY = "weekStartsToday";
 
 export const Calendar = ({ events, type }: CalendarProps) => {
   const searchParams = useSearchParams();
@@ -57,11 +58,8 @@ export const Calendar = ({ events, type }: CalendarProps) => {
   const [steps, setSteps] = useState(() => parseStepParam(searchParams));
   const [activeTypes, setActiveTypes] = useState<Set<CalendarEventType>>(new Set(ALL_TYPES));
   const [showLongEvents, setLongEvents] = useLocalStorage(SHOW_LONG_EVENTS_KEY, true);
+  const [weekStartsToday, setWeekStartsToday] = useLocalStorage(WEEK_STARTS_TODAY_KEY, false);
   const [showOptionsModal, setOptionsModal] = useState(false);
-
-  const toggleLongEvents = () => {
-    setLongEvents((b) => !b);
-  };
 
   const toggleOptionsModal = () => setOptionsModal((b) => !b);
 
@@ -70,11 +68,18 @@ export const Calendar = ({ events, type }: CalendarProps) => {
     <ToggleWithText
       key={0}
       active={showLongEvents}
-      toggle={toggleLongEvents}
+      toggle={() => setLongEvents((b) => !b)}
       text="Vis arrangementer over flere dager"
     />,
+    // Should the week start on the current day? (default is false; monday)
+    <ToggleWithText
+      key={1}
+      active={weekStartsToday}
+      toggle={() => setWeekStartsToday((b) => !b)}
+      text="Uken starter i dag"
+    />,
     // Export calendar to ics
-    <ExportCalendarButton key={1} />,
+    <ExportCalendarButton key={2} />,
   ];
 
   const toggleType = (type: CalendarEventType) => {
@@ -167,6 +172,7 @@ export const Calendar = ({ events, type }: CalendarProps) => {
               isWeek
               setWeekText={setTopText}
               showLongEvents={showLongEvents}
+              weekStartsToday={weekStartsToday}
             />
           </TabsContent>
           <TabsContent value="month">
@@ -211,6 +217,7 @@ export const Calendar = ({ events, type }: CalendarProps) => {
           isWeek
           setWeekText={setTopText}
           showLongEvents={showLongEvents}
+          weekStartsToday={weekStartsToday}
         />
       ) : (
         <MonthCalendar events={filteredEvents} steps={steps} setMonthText={setTopText} />
