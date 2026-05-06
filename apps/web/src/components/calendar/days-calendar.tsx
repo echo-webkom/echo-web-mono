@@ -47,28 +47,36 @@ const calculateStartDate = (steps: number, interval: number, weekStartsOn: Day) 
  * @param setWeekText Function to set calendar title (Uke x)
  * @param showLongEvents Boolean to toggle viewing events that span more than one day or not. Always shows the first day.
  */
-export const DaysCalendar = ({ events, isWeek, steps, setWeekText, showLongEvents, weekStartsToday }: Props) => {
+export const DaysCalendar = ({
+  events,
+  isWeek,
+  steps,
+  setWeekText,
+  showLongEvents,
+  weekStartsToday,
+}: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [calendarWidth, setCalendarWidth] = useState(1024);
   const interval = useMemo(() => getInterval(calendarWidth, isWeek), [calendarWidth, isWeek]);
 
   // Calculate which days to show based on which day it is and when the week starts (today or monday).
-  const weekStartsOn = weekStartsToday ? new Date().getDay() as Day : 1;
-  const startDate = useMemo(() => calculateStartDate(steps, interval, weekStartsOn), [steps, interval, weekStartsToday]);
+  const weekStartsOn = weekStartsToday ? (new Date().getDay() as Day) : 1;
+  const startDate = useMemo(
+    () => calculateStartDate(steps, interval, weekStartsOn),
+    [steps, interval, weekStartsOn],
+  );
   const days = Array.from({ length: interval }, (_, i) => addDays(startDate, i));
 
   // Calculate week number to show (eg. Uke 1-2)
   const week = useCallback(() => {
     const firstWeek = getWeek(days[0]!, { weekStartsOn });
-    if (days.length === 1)
-      return firstWeek;
+    if (days.length === 1) return firstWeek;
 
     const lastWeek = getWeek(days[days.length - 1]!, { weekStartsOn });
-    if (firstWeek === lastWeek)
-      return firstWeek;
+    if (firstWeek === lastWeek) return firstWeek;
 
     return `${firstWeek} - ${lastWeek}`;
-  }, [days]);
+  }, [days, weekStartsOn]);
 
   useEffect(() => {
     const onResize = () => {
