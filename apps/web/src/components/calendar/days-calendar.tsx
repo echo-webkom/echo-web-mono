@@ -69,10 +69,10 @@ export const DaysCalendar = ({
 
   // Calculate week number to show (eg. Uke 1-2)
   const week = useCallback(() => {
-    const firstWeek = getWeek(days[0]!, { weekStartsOn });
+    const firstWeek = getWeek(days[0]!, { weekStartsOn: 1 });
     if (days.length === 1) return firstWeek;
 
-    const lastWeek = getWeek(days[days.length - 1]!, { weekStartsOn });
+    const lastWeek = getWeek(days[days.length - 1]!, { weekStartsOn: 1 });
     if (firstWeek === lastWeek) return firstWeek;
 
     return `${firstWeek} - ${lastWeek}`;
