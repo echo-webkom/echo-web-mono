@@ -46,6 +46,7 @@ const calculateStartDate = (steps: number, interval: number, weekStartsOn: Day) 
  * @param steps How many steps ahead/behind you are (calendar arrow buttons). For days calendar this means amount of weeks as interval is always 7.
  * @param setWeekText Function to set calendar title (Uke x)
  * @param showLongEvents Boolean to toggle viewing events that span more than one day or not. Always shows the first day.
+ * @param weekStartsToday Boolean to toggle having today or monday as the first day in the calendar
  */
 export const DaysCalendar = ({
   events,
@@ -60,7 +61,7 @@ export const DaysCalendar = ({
   const interval = useMemo(() => getInterval(calendarWidth, isWeek), [calendarWidth, isWeek]);
 
   // Calculate which days to show based on which day it is and when the week starts (today or monday).
-  const weekStartsOn = weekStartsToday ? (new Date().getDay() as Day) : 1;
+  const weekStartsOn = weekStartsToday && steps === 0 ? (new Date().getDay() as Day) : 1;
   const startDate = useMemo(
     () => calculateStartDate(steps, interval, weekStartsOn),
     [steps, interval, weekStartsOn],
