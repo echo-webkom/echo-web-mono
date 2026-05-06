@@ -1,6 +1,6 @@
 "use client";
 
-import { addDays, getWeek, isSameDay, startOfWeek } from "date-fns";
+import { addDays, getWeek, isSameDay, startOfWeek, type Day } from "date-fns";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -17,6 +17,7 @@ type Props = {
   setWeekText?: (topText: string) => void;
   isWeek?: boolean;
   showLongEvents: boolean;
+  weekStartsToday: boolean;
 };
 
 const BIRTHDAY = new Date(2025, 10, 7);
@@ -29,34 +30,54 @@ const getInterval = (width: number, isWeek?: boolean) => {
   return 5;
 };
 
-const calculateStartDate = (steps: number, interval: number) => {
+const calculateStartDate = (steps: number, interval: number, weekStartsOn: Day) => {
   const contextDate = addDays(new Date(), interval * steps);
   if (interval !== 7) {
     return contextDate;
   }
-  return startOfWeek(contextDate, { weekStartsOn: 1 });
+  return startOfWeek(contextDate, { weekStartsOn });
 };
 
-export const DaysCalendar = ({ events, isWeek, steps, setWeekText, showLongEvents }: Props) => {
+/**
+ * The normal week calendar (not the month one).
+ *
+ * @param events Calendar events to show
+ * @param isWeek Determines number of days to show (7)
+ * @param steps How many steps ahead/behind you are (calendar arrow buttons). For days calendar this means amount of weeks as interval is always 7.
+ * @param setWeekText Function to set calendar title (Uke x)
+ * @param showLongEvents Boolean to toggle viewing events that span more than one day or not. Always shows the first day.
+ * @param weekStartsToday Boolean to toggle having today or monday as the first day in the calendar
+ */
+export const DaysCalendar = ({
+  events,
+  isWeek,
+  steps,
+  setWeekText,
+  showLongEvents,
+  weekStartsToday,
+}: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [calendarWidth, setCalendarWidth] = useState(1024);
   const interval = useMemo(() => getInterval(calendarWidth, isWeek), [calendarWidth, isWeek]);
 
-  const startDate = useMemo(() => calculateStartDate(steps, interval), [steps, interval]);
-
+  // Calculate which days to show based on which day it is and when the week starts (today or monday).
+  const weekStartsOn = weekStartsToday && steps === 0 ? (new Date().getDay() as Day) : 1;
+  const startDate = useMemo(
+    () => calculateStartDate(steps, interval, weekStartsOn),
+    [steps, interval, weekStartsOn],
+  );
   const days = Array.from({ length: interval }, (_, i) => addDays(startDate, i));
 
+  // Calculate week number to show (eg. Uke 1-2)
   const week = useCallback(() => {
     const firstWeek = getWeek(days[0]!, { weekStartsOn: 1 });
-
     if (days.length === 1) return firstWeek;
 
     const lastWeek = getWeek(days[days.length - 1]!, { weekStartsOn: 1 });
-
     if (firstWeek === lastWeek) return firstWeek;
 
     return `${firstWeek} - ${lastWeek}`;
-  }, [days]);
+  }, [days, weekStartsOn]);
 
   useEffect(() => {
     const onResize = () => {
@@ -65,9 +86,7 @@ export const DaysCalendar = ({ events, isWeek, steps, setWeekText, showLongEvent
     };
 
     onResize();
-
     window.addEventListener("resize", onResize);
-
     return () => {
       window.removeEventListener("resize", onResize);
     };
