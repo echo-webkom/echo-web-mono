@@ -28,7 +28,6 @@ Sørg for at du har installert Node.js først. Vi anbefaler å laste ned Node.js
 
 ```bash
 corepack enable
-corepack prepare pnpm@latest --activate
 ```
 
 ### Verifier installasjon
