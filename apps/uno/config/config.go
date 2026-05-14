@@ -46,6 +46,9 @@ type Config struct {
 	SanityAPIToken   string
 	SanityAPIVersion string
 
+	// Email service configuration
+	EmailBaseURL string
+
 	// Storage configuration
 	DatabaseURL string
 	RedisURL    string
@@ -103,6 +106,8 @@ func Load() *Config {
 		SanityDataset:    getEnvOrDefault("NEXT_PUBLIC_SANITY_DATASET", "production"),
 		SanityAPIVersion: getEnvOrDefault("SANITY_API_VERSION", "2023-05-03"),
 		SanityAPIToken:   os.Getenv("SANITY_API_TOKEN"),
+
+		EmailBaseURL: getEnvOrDefault("EMAIL_BASE_URL", "http://localhost:3001"),
 
 		DatabaseURL: os.Getenv("DATABASE_URL"),
 		RedisURL:    os.Getenv("REDIS_URL"),

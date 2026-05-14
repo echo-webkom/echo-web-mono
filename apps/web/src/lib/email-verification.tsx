@@ -1,11 +1,10 @@
 import { verificationTokens } from "@echo-webkom/db/schemas";
 import { db } from "@echo-webkom/db/serverless";
-import { EmailVerificationEmail } from "@echo-webkom/email";
-import { emailClient } from "@echo-webkom/email/client";
 import { addHours } from "date-fns";
 import { nanoid } from "nanoid";
 
 import { BASE_URL, DEV } from "@/config";
+import { emailClient } from "@/lib/email-client";
 
 const TOKEN_EXPIRY_HOURS = 24;
 
@@ -45,9 +44,10 @@ export async function sendVerificationEmail(email: string, firstName?: string): 
     console.log("================================");
   }
 
-  await emailClient.sendEmail(
+  await emailClient.sendEmailVerification(
     [email],
     "Bekreft e-postadressen din - echo",
-    EmailVerificationEmail({ verificationUrl, firstName }),
+    verificationUrl,
+    firstName,
   );
 }

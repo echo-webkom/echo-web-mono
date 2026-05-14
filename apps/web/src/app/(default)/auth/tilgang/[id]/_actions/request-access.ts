@@ -1,8 +1,6 @@
 "use server";
 
 import { isPostgresIshError } from "@echo-webkom/db/error";
-import { AccessRequestNotificationEmail } from "@echo-webkom/email";
-import { emailClient } from "@echo-webkom/email/client";
 import { z } from "zod";
 
 import { unoWithAdmin } from "@/api/server";
@@ -31,15 +29,6 @@ export const requestAccess = async (data: IRequestAccessForm): Promise<RequestAc
     });
 
     await sendSlackNotification(email, reason);
-
-    await emailClient.sendEmail(
-      ["echo@uib.no"],
-      "Forespørsel om tilgang til echo.uib.no",
-      AccessRequestNotificationEmail({
-        email,
-        reason,
-      }),
-    );
 
     return {
       success: true,
