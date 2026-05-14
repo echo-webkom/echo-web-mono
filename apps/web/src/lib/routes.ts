@@ -18,6 +18,7 @@ import {
   ShoppingCart,
   Users,
   Wallet,
+  Grid3X3,
 } from "lucide-react";
 
 import { mailTo } from "@/utils/prefixes";
@@ -152,6 +153,12 @@ export const headerRoutes: Array<Route> = [
         href: "/for-studenter/speak-up",
         description: "Opplevd noe kjipt? Speak Up!",
         icon: Heart,
+      },
+      {
+        label: "Dagens ord",
+        href: "/for-studenter/dagens-ord",
+        description: "Prøv å finne dagen ord",
+        icon: Grid3X3,
       },
     ],
   },
