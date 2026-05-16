@@ -12,3 +12,9 @@ export const signInAttempt = new KVNamespace(adapter, "sign-in-attempt", {
     error: z.string(),
   }),
 });
+
+export const featureFlags = new KVNamespace(adapter, "feature-flags", {
+  schema: z.object({
+    showHSApplications: z.boolean(),
+  }),
+});
