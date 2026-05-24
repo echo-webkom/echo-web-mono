@@ -32,6 +32,8 @@ export const baseMessages: Array<MessageItem> = [
   { text: "Bedpresolini", link: "https://echo.uib.no/for-studenter/arrangementer?type=bedpres" },
   { text: "Divine intellect" },
   { text: "Skrevet i Holy C" },
+  { text: "Backend boys"},
+  { text: "Merge daddy!"},
   { text: "We stan Bjarne", link: "https://www.stroustrup.com/" },
   { text: "Rust or bust", link: "https://echo.uib.no/for-studenter/gruppe/echo-rust" },
   { text: "CRUD-kriger" },
