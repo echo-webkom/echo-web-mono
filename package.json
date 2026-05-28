@@ -40,7 +40,7 @@
     "tools:install": "pnpm --filter=uno tools:install"
   },
   "dependencies": {
-    "turbo": "2.8.12",
+    "turbo": "2.9.14",
     "typescript": "5.9.3"
   },
   "devDependencies": {
