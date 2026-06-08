@@ -2,7 +2,7 @@ FROM node:24.13.0-alpine AS base
 
 RUN apk update && apk add --no-cache libc6-compat
 ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
+ENV PATH="$PNPM_HOME:$PNPM_HOME/bin:$PATH"
 RUN corepack enable
 RUN pnpm add -g turbo@2.8.12
 
