@@ -111,6 +111,7 @@ export const baseMessages: Array<MessageItem> = [
   { text: "( ͡° ͜ʖ ͡°)" },
   { text: "༼ つ ◕_◕ ༽つ" },
   { text: "Søk med '/' 🔍" },
+  { text: "Small web", link: "https://kagi.com/smallweb" },
 ];
 
 export const getRandomMessage = (): MessageItem => {
