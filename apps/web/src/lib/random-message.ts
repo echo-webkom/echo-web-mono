@@ -35,6 +35,7 @@ export const baseMessages: Array<MessageItem> = [
   { text: "Backend boys" },
   { text: "Merge daddy!" },
   { text: "We stan Bjarne", link: "https://www.stroustrup.com/" },
+  { text: "We stan Eirik <3" },
   { text: "Rust or bust", link: "https://echo.uib.no/for-studenter/gruppe/echo-rust" },
   { text: "CRUD-kriger" },
   { text: "Liten e!!!", link: "/liten-e" },
