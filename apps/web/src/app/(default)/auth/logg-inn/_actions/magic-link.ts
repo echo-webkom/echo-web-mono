@@ -49,10 +49,12 @@ export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
     });
 
     if (!existingUser) {
+      // If the user does not exist, we still return a success. This is to prevent enumeration
+      // attacks where bad actors can check if an email exists in our system or not based on the
+      // of the sign in.
       return {
-        success: false,
-        error:
-          "Ingen bruker funnet med denne e-postadressen. Du må være medlem av echo for å logge inn.",
+        success: true,
+        message: `Magic link sendt til ${normalizedEmail}. Sjekk innboksen din for å logge inn.`,
       };
     }
 
@@ -118,7 +120,7 @@ export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
 
     return {
       success: true,
-      message: `Magic link sendt til ${targetEmail}. Sjekk innboksen din for å logge inn.`,
+      message: `Magic link sendt til ${normalizedEmail}. Sjekk innboksen din for å logge inn.`,
     };
   } catch {
     return {
