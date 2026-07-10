@@ -64,7 +64,7 @@ type GroupRepo_AddUserToGroup_Call struct {
 //   - ctx context.Context
 //   - groupID string
 //   - userID string
-func (_e *GroupRepo_Expecter) AddUserToGroup(ctx interface{}, groupID interface{}, userID interface{}) *GroupRepo_AddUserToGroup_Call {
+func (_e *GroupRepo_Expecter) AddUserToGroup(ctx any, groupID any, userID any) *GroupRepo_AddUserToGroup_Call {
 	return &GroupRepo_AddUserToGroup_Call{Call: _e.mock.On("AddUserToGroup", ctx, groupID, userID)}
 }
 
@@ -135,7 +135,7 @@ type GroupRepo_CreateGroup_Call struct {
 // CreateGroup is a helper method to define mock.On call
 //   - ctx context.Context
 //   - group model.NewGroup
-func (_e *GroupRepo_Expecter) CreateGroup(ctx interface{}, group interface{}) *GroupRepo_CreateGroup_Call {
+func (_e *GroupRepo_Expecter) CreateGroup(ctx any, group any) *GroupRepo_CreateGroup_Call {
 	return &GroupRepo_CreateGroup_Call{Call: _e.mock.On("CreateGroup", ctx, group)}
 }
 
@@ -192,7 +192,7 @@ type GroupRepo_DeleteGroup_Call struct {
 // DeleteGroup is a helper method to define mock.On call
 //   - ctx context.Context
 //   - id string
-func (_e *GroupRepo_Expecter) DeleteGroup(ctx interface{}, id interface{}) *GroupRepo_DeleteGroup_Call {
+func (_e *GroupRepo_Expecter) DeleteGroup(ctx any, id any) *GroupRepo_DeleteGroup_Call {
 	return &GroupRepo_DeleteGroup_Call{Call: _e.mock.On("DeleteGroup", ctx, id)}
 }
 
@@ -259,7 +259,7 @@ type GroupRepo_GetAllGroups_Call struct {
 
 // GetAllGroups is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *GroupRepo_Expecter) GetAllGroups(ctx interface{}) *GroupRepo_GetAllGroups_Call {
+func (_e *GroupRepo_Expecter) GetAllGroups(ctx any) *GroupRepo_GetAllGroups_Call {
 	return &GroupRepo_GetAllGroups_Call{Call: _e.mock.On("GetAllGroups", ctx)}
 }
 
@@ -320,7 +320,7 @@ type GroupRepo_GetGroupByID_Call struct {
 // GetGroupByID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - id string
-func (_e *GroupRepo_Expecter) GetGroupByID(ctx interface{}, id interface{}) *GroupRepo_GetGroupByID_Call {
+func (_e *GroupRepo_Expecter) GetGroupByID(ctx any, id any) *GroupRepo_GetGroupByID_Call {
 	return &GroupRepo_GetGroupByID_Call{Call: _e.mock.On("GetGroupByID", ctx, id)}
 }
 
@@ -388,7 +388,7 @@ type GroupRepo_GetGroupMembers_Call struct {
 // GetGroupMembers is a helper method to define mock.On call
 //   - ctx context.Context
 //   - groupID string
-func (_e *GroupRepo_Expecter) GetGroupMembers(ctx interface{}, groupID interface{}) *GroupRepo_GetGroupMembers_Call {
+func (_e *GroupRepo_Expecter) GetGroupMembers(ctx any, groupID any) *GroupRepo_GetGroupMembers_Call {
 	return &GroupRepo_GetGroupMembers_Call{Call: _e.mock.On("GetGroupMembers", ctx, groupID)}
 }
 
@@ -457,7 +457,7 @@ type GroupRepo_GetUserGroupMembership_Call struct {
 //   - ctx context.Context
 //   - groupID string
 //   - userID string
-func (_e *GroupRepo_Expecter) GetUserGroupMembership(ctx interface{}, groupID interface{}, userID interface{}) *GroupRepo_GetUserGroupMembership_Call {
+func (_e *GroupRepo_Expecter) GetUserGroupMembership(ctx any, groupID any, userID any) *GroupRepo_GetUserGroupMembership_Call {
 	return &GroupRepo_GetUserGroupMembership_Call{Call: _e.mock.On("GetUserGroupMembership", ctx, groupID, userID)}
 }
 
@@ -519,7 +519,7 @@ type GroupRepo_RemoveAllUserMemberships_Call struct {
 // RemoveAllUserMemberships is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-func (_e *GroupRepo_Expecter) RemoveAllUserMemberships(ctx interface{}, userID interface{}) *GroupRepo_RemoveAllUserMemberships_Call {
+func (_e *GroupRepo_Expecter) RemoveAllUserMemberships(ctx any, userID any) *GroupRepo_RemoveAllUserMemberships_Call {
 	return &GroupRepo_RemoveAllUserMemberships_Call{Call: _e.mock.On("RemoveAllUserMemberships", ctx, userID)}
 }
 
@@ -577,7 +577,7 @@ type GroupRepo_RemoveUserFromGroup_Call struct {
 //   - ctx context.Context
 //   - groupID string
 //   - userID string
-func (_e *GroupRepo_Expecter) RemoveUserFromGroup(ctx interface{}, groupID interface{}, userID interface{}) *GroupRepo_RemoveUserFromGroup_Call {
+func (_e *GroupRepo_Expecter) RemoveUserFromGroup(ctx any, groupID any, userID any) *GroupRepo_RemoveUserFromGroup_Call {
 	return &GroupRepo_RemoveUserFromGroup_Call{Call: _e.mock.On("RemoveUserFromGroup", ctx, groupID, userID)}
 }
 
@@ -641,7 +641,7 @@ type GroupRepo_SetGroupMemberLeader_Call struct {
 //   - groupID string
 //   - userID string
 //   - isLeader bool
-func (_e *GroupRepo_Expecter) SetGroupMemberLeader(ctx interface{}, groupID interface{}, userID interface{}, isLeader interface{}) *GroupRepo_SetGroupMemberLeader_Call {
+func (_e *GroupRepo_Expecter) SetGroupMemberLeader(ctx any, groupID any, userID any, isLeader any) *GroupRepo_SetGroupMemberLeader_Call {
 	return &GroupRepo_SetGroupMemberLeader_Call{Call: _e.mock.On("SetGroupMemberLeader", ctx, groupID, userID, isLeader)}
 }
 
@@ -717,7 +717,7 @@ type GroupRepo_UpdateGroup_Call struct {
 // UpdateGroup is a helper method to define mock.On call
 //   - ctx context.Context
 //   - group model.Group
-func (_e *GroupRepo_Expecter) UpdateGroup(ctx interface{}, group interface{}) *GroupRepo_UpdateGroup_Call {
+func (_e *GroupRepo_Expecter) UpdateGroup(ctx any, group any) *GroupRepo_UpdateGroup_Call {
 	return &GroupRepo_UpdateGroup_Call{Call: _e.mock.On("UpdateGroup", ctx, group)}
 }
 

@@ -73,7 +73,7 @@ type CMSMovieRepo_GetAllMovies_Call struct {
 
 // GetAllMovies is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *CMSMovieRepo_Expecter) GetAllMovies(ctx interface{}) *CMSMovieRepo_GetAllMovies_Call {
+func (_e *CMSMovieRepo_Expecter) GetAllMovies(ctx any) *CMSMovieRepo_GetAllMovies_Call {
 	return &CMSMovieRepo_GetAllMovies_Call{Call: _e.mock.On("GetAllMovies", ctx)}
 }
 
@@ -136,7 +136,7 @@ type CMSMovieRepo_GetUpcomingMovies_Call struct {
 // GetUpcomingMovies is a helper method to define mock.On call
 //   - ctx context.Context
 //   - n int
-func (_e *CMSMovieRepo_Expecter) GetUpcomingMovies(ctx interface{}, n interface{}) *CMSMovieRepo_GetUpcomingMovies_Call {
+func (_e *CMSMovieRepo_Expecter) GetUpcomingMovies(ctx any, n any) *CMSMovieRepo_GetUpcomingMovies_Call {
 	return &CMSMovieRepo_GetUpcomingMovies_Call{Call: _e.mock.On("GetUpcomingMovies", ctx, n)}
 }
 

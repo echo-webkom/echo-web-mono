@@ -72,7 +72,7 @@ type HappeningRepo_CreateHappening_Call struct {
 // CreateHappening is a helper method to define mock.On call
 //   - ctx context.Context
 //   - happening model.Happening
-func (_e *HappeningRepo_Expecter) CreateHappening(ctx interface{}, happening interface{}) *HappeningRepo_CreateHappening_Call {
+func (_e *HappeningRepo_Expecter) CreateHappening(ctx any, happening any) *HappeningRepo_CreateHappening_Call {
 	return &HappeningRepo_CreateHappening_Call{Call: _e.mock.On("CreateHappening", ctx, happening)}
 }
 
@@ -129,7 +129,7 @@ type HappeningRepo_DeleteHappening_Call struct {
 // DeleteHappening is a helper method to define mock.On call
 //   - ctx context.Context
 //   - id string
-func (_e *HappeningRepo_Expecter) DeleteHappening(ctx interface{}, id interface{}) *HappeningRepo_DeleteHappening_Call {
+func (_e *HappeningRepo_Expecter) DeleteHappening(ctx any, id any) *HappeningRepo_DeleteHappening_Call {
 	return &HappeningRepo_DeleteHappening_Call{Call: _e.mock.On("DeleteHappening", ctx, id)}
 }
 
@@ -196,7 +196,7 @@ type HappeningRepo_GetAllHappenings_Call struct {
 
 // GetAllHappenings is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *HappeningRepo_Expecter) GetAllHappenings(ctx interface{}) *HappeningRepo_GetAllHappenings_Call {
+func (_e *HappeningRepo_Expecter) GetAllHappenings(ctx any) *HappeningRepo_GetAllHappenings_Call {
 	return &HappeningRepo_GetAllHappenings_Call{Call: _e.mock.On("GetAllHappenings", ctx)}
 }
 
@@ -257,7 +257,7 @@ type HappeningRepo_GetFullHappeningBySlug_Call struct {
 // GetFullHappeningBySlug is a helper method to define mock.On call
 //   - ctx context.Context
 //   - slug string
-func (_e *HappeningRepo_Expecter) GetFullHappeningBySlug(ctx interface{}, slug interface{}) *HappeningRepo_GetFullHappeningBySlug_Call {
+func (_e *HappeningRepo_Expecter) GetFullHappeningBySlug(ctx any, slug any) *HappeningRepo_GetFullHappeningBySlug_Call {
 	return &HappeningRepo_GetFullHappeningBySlug_Call{Call: _e.mock.On("GetFullHappeningBySlug", ctx, slug)}
 }
 
@@ -323,7 +323,7 @@ type HappeningRepo_GetHappeningById_Call struct {
 // GetHappeningById is a helper method to define mock.On call
 //   - ctx context.Context
 //   - id string
-func (_e *HappeningRepo_Expecter) GetHappeningById(ctx interface{}, id interface{}) *HappeningRepo_GetHappeningById_Call {
+func (_e *HappeningRepo_Expecter) GetHappeningById(ctx any, id any) *HappeningRepo_GetHappeningById_Call {
 	return &HappeningRepo_GetHappeningById_Call{Call: _e.mock.On("GetHappeningById", ctx, id)}
 }
 
@@ -389,7 +389,7 @@ type HappeningRepo_GetHappeningBySlug_Call struct {
 // GetHappeningBySlug is a helper method to define mock.On call
 //   - ctx context.Context
 //   - slug string
-func (_e *HappeningRepo_Expecter) GetHappeningBySlug(ctx interface{}, slug interface{}) *HappeningRepo_GetHappeningBySlug_Call {
+func (_e *HappeningRepo_Expecter) GetHappeningBySlug(ctx any, slug any) *HappeningRepo_GetHappeningBySlug_Call {
 	return &HappeningRepo_GetHappeningBySlug_Call{Call: _e.mock.On("GetHappeningBySlug", ctx, slug)}
 }
 
@@ -457,7 +457,7 @@ type HappeningRepo_GetHappeningHostGroups_Call struct {
 // GetHappeningHostGroups is a helper method to define mock.On call
 //   - ctx context.Context
 //   - happeningID string
-func (_e *HappeningRepo_Expecter) GetHappeningHostGroups(ctx interface{}, happeningID interface{}) *HappeningRepo_GetHappeningHostGroups_Call {
+func (_e *HappeningRepo_Expecter) GetHappeningHostGroups(ctx any, happeningID any) *HappeningRepo_GetHappeningHostGroups_Call {
 	return &HappeningRepo_GetHappeningHostGroups_Call{Call: _e.mock.On("GetHappeningHostGroups", ctx, happeningID)}
 }
 
@@ -525,7 +525,7 @@ type HappeningRepo_GetHappeningQuestions_Call struct {
 // GetHappeningQuestions is a helper method to define mock.On call
 //   - ctx context.Context
 //   - happeningID string
-func (_e *HappeningRepo_Expecter) GetHappeningQuestions(ctx interface{}, happeningID interface{}) *HappeningRepo_GetHappeningQuestions_Call {
+func (_e *HappeningRepo_Expecter) GetHappeningQuestions(ctx any, happeningID any) *HappeningRepo_GetHappeningQuestions_Call {
 	return &HappeningRepo_GetHappeningQuestions_Call{Call: _e.mock.On("GetHappeningQuestions", ctx, happeningID)}
 }
 
@@ -593,7 +593,7 @@ type HappeningRepo_GetHappeningRegistrationCounts_Call struct {
 // GetHappeningRegistrationCounts is a helper method to define mock.On call
 //   - ctx context.Context
 //   - happeningIDs []string
-func (_e *HappeningRepo_Expecter) GetHappeningRegistrationCounts(ctx interface{}, happeningIDs interface{}) *HappeningRepo_GetHappeningRegistrationCounts_Call {
+func (_e *HappeningRepo_Expecter) GetHappeningRegistrationCounts(ctx any, happeningIDs any) *HappeningRepo_GetHappeningRegistrationCounts_Call {
 	return &HappeningRepo_GetHappeningRegistrationCounts_Call{Call: _e.mock.On("GetHappeningRegistrationCounts", ctx, happeningIDs)}
 }
 
@@ -661,7 +661,7 @@ type HappeningRepo_GetHappeningRegistrations_Call struct {
 // GetHappeningRegistrations is a helper method to define mock.On call
 //   - ctx context.Context
 //   - happeningID string
-func (_e *HappeningRepo_Expecter) GetHappeningRegistrations(ctx interface{}, happeningID interface{}) *HappeningRepo_GetHappeningRegistrations_Call {
+func (_e *HappeningRepo_Expecter) GetHappeningRegistrations(ctx any, happeningID any) *HappeningRepo_GetHappeningRegistrations_Call {
 	return &HappeningRepo_GetHappeningRegistrations_Call{Call: _e.mock.On("GetHappeningRegistrations", ctx, happeningID)}
 }
 
@@ -729,7 +729,7 @@ type HappeningRepo_GetHappeningSpotRanges_Call struct {
 // GetHappeningSpotRanges is a helper method to define mock.On call
 //   - ctx context.Context
 //   - happeningID string
-func (_e *HappeningRepo_Expecter) GetHappeningSpotRanges(ctx interface{}, happeningID interface{}) *HappeningRepo_GetHappeningSpotRanges_Call {
+func (_e *HappeningRepo_Expecter) GetHappeningSpotRanges(ctx any, happeningID any) *HappeningRepo_GetHappeningSpotRanges_Call {
 	return &HappeningRepo_GetHappeningSpotRanges_Call{Call: _e.mock.On("GetHappeningSpotRanges", ctx, happeningID)}
 }
 
@@ -787,7 +787,7 @@ type HappeningRepo_ReplaceHappeningGroups_Call struct {
 //   - ctx context.Context
 //   - happeningID string
 //   - groupIDs []string
-func (_e *HappeningRepo_Expecter) ReplaceHappeningGroups(ctx interface{}, happeningID interface{}, groupIDs interface{}) *HappeningRepo_ReplaceHappeningGroups_Call {
+func (_e *HappeningRepo_Expecter) ReplaceHappeningGroups(ctx any, happeningID any, groupIDs any) *HappeningRepo_ReplaceHappeningGroups_Call {
 	return &HappeningRepo_ReplaceHappeningGroups_Call{Call: _e.mock.On("ReplaceHappeningGroups", ctx, happeningID, groupIDs)}
 }
 
@@ -850,7 +850,7 @@ type HappeningRepo_ReplaceSpotRanges_Call struct {
 //   - ctx context.Context
 //   - happeningID string
 //   - spotRanges []model.SpotRange
-func (_e *HappeningRepo_Expecter) ReplaceSpotRanges(ctx interface{}, happeningID interface{}, spotRanges interface{}) *HappeningRepo_ReplaceSpotRanges_Call {
+func (_e *HappeningRepo_Expecter) ReplaceSpotRanges(ctx any, happeningID any, spotRanges any) *HappeningRepo_ReplaceSpotRanges_Call {
 	return &HappeningRepo_ReplaceSpotRanges_Call{Call: _e.mock.On("ReplaceSpotRanges", ctx, happeningID, spotRanges)}
 }
 
@@ -913,7 +913,7 @@ type HappeningRepo_SyncQuestions_Call struct {
 //   - ctx context.Context
 //   - happeningID string
 //   - questions []model.Question
-func (_e *HappeningRepo_Expecter) SyncQuestions(ctx interface{}, happeningID interface{}, questions interface{}) *HappeningRepo_SyncQuestions_Call {
+func (_e *HappeningRepo_Expecter) SyncQuestions(ctx any, happeningID any, questions any) *HappeningRepo_SyncQuestions_Call {
 	return &HappeningRepo_SyncQuestions_Call{Call: _e.mock.On("SyncQuestions", ctx, happeningID, questions)}
 }
 
@@ -975,7 +975,7 @@ type HappeningRepo_UpsertHappening_Call struct {
 // UpsertHappening is a helper method to define mock.On call
 //   - ctx context.Context
 //   - happening model.Happening
-func (_e *HappeningRepo_Expecter) UpsertHappening(ctx interface{}, happening interface{}) *HappeningRepo_UpsertHappening_Call {
+func (_e *HappeningRepo_Expecter) UpsertHappening(ctx any, happening any) *HappeningRepo_UpsertHappening_Call {
 	return &HappeningRepo_UpsertHappening_Call{Call: _e.mock.On("UpsertHappening", ctx, happening)}
 }
 

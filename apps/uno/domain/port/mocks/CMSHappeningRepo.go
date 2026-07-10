@@ -73,7 +73,7 @@ type CMSHappeningRepo_GetAllHappenings_Call struct {
 
 // GetAllHappenings is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *CMSHappeningRepo_Expecter) GetAllHappenings(ctx interface{}) *CMSHappeningRepo_GetAllHappenings_Call {
+func (_e *CMSHappeningRepo_Expecter) GetAllHappenings(ctx any) *CMSHappeningRepo_GetAllHappenings_Call {
 	return &CMSHappeningRepo_GetAllHappenings_Call{Call: _e.mock.On("GetAllHappenings", ctx)}
 }
 
@@ -135,7 +135,7 @@ type CMSHappeningRepo_GetAllPinnedHappenings_Call struct {
 
 // GetAllPinnedHappenings is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *CMSHappeningRepo_Expecter) GetAllPinnedHappenings(ctx interface{}) *CMSHappeningRepo_GetAllPinnedHappenings_Call {
+func (_e *CMSHappeningRepo_Expecter) GetAllPinnedHappenings(ctx any) *CMSHappeningRepo_GetAllPinnedHappenings_Call {
 	return &CMSHappeningRepo_GetAllPinnedHappenings_Call{Call: _e.mock.On("GetAllPinnedHappenings", ctx)}
 }
 
@@ -198,7 +198,7 @@ type CMSHappeningRepo_GetHappeningBySlug_Call struct {
 // GetHappeningBySlug is a helper method to define mock.On call
 //   - ctx context.Context
 //   - slug string
-func (_e *CMSHappeningRepo_Expecter) GetHappeningBySlug(ctx interface{}, slug interface{}) *CMSHappeningRepo_GetHappeningBySlug_Call {
+func (_e *CMSHappeningRepo_Expecter) GetHappeningBySlug(ctx any, slug any) *CMSHappeningRepo_GetHappeningBySlug_Call {
 	return &CMSHappeningRepo_GetHappeningBySlug_Call{Call: _e.mock.On("GetHappeningBySlug", ctx, slug)}
 }
 
@@ -266,7 +266,7 @@ type CMSHappeningRepo_GetHappeningContactsBySlug_Call struct {
 // GetHappeningContactsBySlug is a helper method to define mock.On call
 //   - ctx context.Context
 //   - slug string
-func (_e *CMSHappeningRepo_Expecter) GetHappeningContactsBySlug(ctx interface{}, slug interface{}) *CMSHappeningRepo_GetHappeningContactsBySlug_Call {
+func (_e *CMSHappeningRepo_Expecter) GetHappeningContactsBySlug(ctx any, slug any) *CMSHappeningRepo_GetHappeningContactsBySlug_Call {
 	return &CMSHappeningRepo_GetHappeningContactsBySlug_Call{Call: _e.mock.On("GetHappeningContactsBySlug", ctx, slug)}
 }
 
@@ -335,7 +335,7 @@ type CMSHappeningRepo_GetHomeHappenings_Call struct {
 //   - ctx context.Context
 //   - types []string
 //   - n int
-func (_e *CMSHappeningRepo_Expecter) GetHomeHappenings(ctx interface{}, types interface{}, n interface{}) *CMSHappeningRepo_GetHomeHappenings_Call {
+func (_e *CMSHappeningRepo_Expecter) GetHomeHappenings(ctx any, types any, n any) *CMSHappeningRepo_GetHomeHappenings_Call {
 	return &CMSHappeningRepo_GetHomeHappenings_Call{Call: _e.mock.On("GetHomeHappenings", ctx, types, n)}
 }
 
@@ -397,7 +397,7 @@ type CMSHappeningRepo_UnpinHappenings_Call struct {
 // UnpinHappenings is a helper method to define mock.On call
 //   - ctx context.Context
 //   - ids []string
-func (_e *CMSHappeningRepo_Expecter) UnpinHappenings(ctx interface{}, ids interface{}) *CMSHappeningRepo_UnpinHappenings_Call {
+func (_e *CMSHappeningRepo_Expecter) UnpinHappenings(ctx any, ids any) *CMSHappeningRepo_UnpinHappenings_Call {
 	return &CMSHappeningRepo_UnpinHappenings_Call{Call: _e.mock.On("UnpinHappenings", ctx, ids)}
 }
 

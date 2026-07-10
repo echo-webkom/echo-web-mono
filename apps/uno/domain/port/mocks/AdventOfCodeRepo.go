@@ -75,7 +75,7 @@ type AdventOfCodeRepo_GetAdventOfCodeLeaderboard_Call struct {
 //   - ctx context.Context
 //   - year int
 //   - leaderboardID string
-func (_e *AdventOfCodeRepo_Expecter) GetAdventOfCodeLeaderboard(ctx interface{}, year interface{}, leaderboardID interface{}) *AdventOfCodeRepo_GetAdventOfCodeLeaderboard_Call {
+func (_e *AdventOfCodeRepo_Expecter) GetAdventOfCodeLeaderboard(ctx any, year any, leaderboardID any) *AdventOfCodeRepo_GetAdventOfCodeLeaderboard_Call {
 	return &AdventOfCodeRepo_GetAdventOfCodeLeaderboard_Call{Call: _e.mock.On("GetAdventOfCodeLeaderboard", ctx, year, leaderboardID)}
 }
 

@@ -70,7 +70,7 @@ type KVRepo_DeleteExpired_Call struct {
 
 // DeleteExpired is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *KVRepo_Expecter) DeleteExpired(ctx interface{}) *KVRepo_DeleteExpired_Call {
+func (_e *KVRepo_Expecter) DeleteExpired(ctx any) *KVRepo_DeleteExpired_Call {
 	return &KVRepo_DeleteExpired_Call{Call: _e.mock.On("DeleteExpired", ctx)}
 }
 

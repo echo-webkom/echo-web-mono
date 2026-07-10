@@ -74,7 +74,7 @@ type CMSStudentGroupRepo_GetStudentGroupBySlug_Call struct {
 // GetStudentGroupBySlug is a helper method to define mock.On call
 //   - ctx context.Context
 //   - slug string
-func (_e *CMSStudentGroupRepo_Expecter) GetStudentGroupBySlug(ctx interface{}, slug interface{}) *CMSStudentGroupRepo_GetStudentGroupBySlug_Call {
+func (_e *CMSStudentGroupRepo_Expecter) GetStudentGroupBySlug(ctx any, slug any) *CMSStudentGroupRepo_GetStudentGroupBySlug_Call {
 	return &CMSStudentGroupRepo_GetStudentGroupBySlug_Call{Call: _e.mock.On("GetStudentGroupBySlug", ctx, slug)}
 }
 
@@ -142,7 +142,7 @@ type CMSStudentGroupRepo_GetStudentGroupsByType_Call struct {
 // GetStudentGroupsByType is a helper method to define mock.On call
 //   - ctx context.Context
 //   - groupType string
-func (_e *CMSStudentGroupRepo_Expecter) GetStudentGroupsByType(ctx interface{}, groupType interface{}) *CMSStudentGroupRepo_GetStudentGroupsByType_Call {
+func (_e *CMSStudentGroupRepo_Expecter) GetStudentGroupsByType(ctx any, groupType any) *CMSStudentGroupRepo_GetStudentGroupsByType_Call {
 	return &CMSStudentGroupRepo_GetStudentGroupsByType_Call{Call: _e.mock.On("GetStudentGroupsByType", ctx, groupType)}
 }
 

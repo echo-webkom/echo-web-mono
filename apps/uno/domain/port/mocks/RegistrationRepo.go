@@ -87,7 +87,7 @@ type RegistrationRepo_CreateRegistration_Call struct {
 //   - hostGroups []string
 //   - canSkipSpotRange bool
 //   - spotAvailable port.SpotAvailabilityFunc
-func (_e *RegistrationRepo_Expecter) CreateRegistration(ctx interface{}, userID interface{}, happeningID interface{}, spotRanges interface{}, hostGroups interface{}, canSkipSpotRange interface{}, spotAvailable interface{}) *RegistrationRepo_CreateRegistration_Call {
+func (_e *RegistrationRepo_Expecter) CreateRegistration(ctx any, userID any, happeningID any, spotRanges any, hostGroups any, canSkipSpotRange any, spotAvailable any) *RegistrationRepo_CreateRegistration_Call {
 	return &RegistrationRepo_CreateRegistration_Call{Call: _e.mock.On("CreateRegistration", ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange, spotAvailable)}
 }
 
@@ -170,7 +170,7 @@ type RegistrationRepo_DeleteAnswersByUserAndHappening_Call struct {
 //   - ctx context.Context
 //   - userID string
 //   - happeningID string
-func (_e *RegistrationRepo_Expecter) DeleteAnswersByUserAndHappening(ctx interface{}, userID interface{}, happeningID interface{}) *RegistrationRepo_DeleteAnswersByUserAndHappening_Call {
+func (_e *RegistrationRepo_Expecter) DeleteAnswersByUserAndHappening(ctx any, userID any, happeningID any) *RegistrationRepo_DeleteAnswersByUserAndHappening_Call {
 	return &RegistrationRepo_DeleteAnswersByUserAndHappening_Call{Call: _e.mock.On("DeleteAnswersByUserAndHappening", ctx, userID, happeningID)}
 }
 
@@ -232,7 +232,7 @@ type RegistrationRepo_DeleteRegistrationsByHappeningID_Call struct {
 // DeleteRegistrationsByHappeningID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - happeningID string
-func (_e *RegistrationRepo_Expecter) DeleteRegistrationsByHappeningID(ctx interface{}, happeningID interface{}) *RegistrationRepo_DeleteRegistrationsByHappeningID_Call {
+func (_e *RegistrationRepo_Expecter) DeleteRegistrationsByHappeningID(ctx any, happeningID any) *RegistrationRepo_DeleteRegistrationsByHappeningID_Call {
 	return &RegistrationRepo_DeleteRegistrationsByHappeningID_Call{Call: _e.mock.On("DeleteRegistrationsByHappeningID", ctx, happeningID)}
 }
 
@@ -301,7 +301,7 @@ type RegistrationRepo_GetByUserAndHappening_Call struct {
 //   - ctx context.Context
 //   - userID string
 //   - happeningID string
-func (_e *RegistrationRepo_Expecter) GetByUserAndHappening(ctx interface{}, userID interface{}, happeningID interface{}) *RegistrationRepo_GetByUserAndHappening_Call {
+func (_e *RegistrationRepo_Expecter) GetByUserAndHappening(ctx any, userID any, happeningID any) *RegistrationRepo_GetByUserAndHappening_Call {
 	return &RegistrationRepo_GetByUserAndHappening_Call{Call: _e.mock.On("GetByUserAndHappening", ctx, userID, happeningID)}
 }
 
@@ -374,7 +374,7 @@ type RegistrationRepo_GetByUserID_Call struct {
 // GetByUserID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-func (_e *RegistrationRepo_Expecter) GetByUserID(ctx interface{}, userID interface{}) *RegistrationRepo_GetByUserID_Call {
+func (_e *RegistrationRepo_Expecter) GetByUserID(ctx any, userID any) *RegistrationRepo_GetByUserID_Call {
 	return &RegistrationRepo_GetByUserID_Call{Call: _e.mock.On("GetByUserID", ctx, userID)}
 }
 
@@ -433,7 +433,7 @@ type RegistrationRepo_InsertAnswers_Call struct {
 //   - userID string
 //   - happeningID string
 //   - questions []model.QuestionAnswer
-func (_e *RegistrationRepo_Expecter) InsertAnswers(ctx interface{}, userID interface{}, happeningID interface{}, questions interface{}) *RegistrationRepo_InsertAnswers_Call {
+func (_e *RegistrationRepo_Expecter) InsertAnswers(ctx any, userID any, happeningID any, questions any) *RegistrationRepo_InsertAnswers_Call {
 	return &RegistrationRepo_InsertAnswers_Call{Call: _e.mock.On("InsertAnswers", ctx, userID, happeningID, questions)}
 }
 
@@ -506,7 +506,7 @@ type RegistrationRepo_UpdateRegistrationStatus_Call struct {
 //   - changedBy *string
 //   - changedAt *time.Time
 //   - unregisterReason *string
-func (_e *RegistrationRepo_Expecter) UpdateRegistrationStatus(ctx interface{}, userID interface{}, happeningID interface{}, status interface{}, prevStatus interface{}, changedBy interface{}, changedAt interface{}, unregisterReason interface{}) *RegistrationRepo_UpdateRegistrationStatus_Call {
+func (_e *RegistrationRepo_Expecter) UpdateRegistrationStatus(ctx any, userID any, happeningID any, status any, prevStatus any, changedBy any, changedAt any, unregisterReason any) *RegistrationRepo_UpdateRegistrationStatus_Call {
 	return &RegistrationRepo_UpdateRegistrationStatus_Call{Call: _e.mock.On("UpdateRegistrationStatus", ctx, userID, happeningID, status, prevStatus, changedBy, changedAt, unregisterReason)}
 }
 

@@ -73,7 +73,7 @@ type CMSJobAdRepo_GetAllJobAds_Call struct {
 
 // GetAllJobAds is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *CMSJobAdRepo_Expecter) GetAllJobAds(ctx interface{}) *CMSJobAdRepo_GetAllJobAds_Call {
+func (_e *CMSJobAdRepo_Expecter) GetAllJobAds(ctx any) *CMSJobAdRepo_GetAllJobAds_Call {
 	return &CMSJobAdRepo_GetAllJobAds_Call{Call: _e.mock.On("GetAllJobAds", ctx)}
 }
 
@@ -136,7 +136,7 @@ type CMSJobAdRepo_GetJobAdBySlug_Call struct {
 // GetJobAdBySlug is a helper method to define mock.On call
 //   - ctx context.Context
 //   - slug string
-func (_e *CMSJobAdRepo_Expecter) GetJobAdBySlug(ctx interface{}, slug interface{}) *CMSJobAdRepo_GetJobAdBySlug_Call {
+func (_e *CMSJobAdRepo_Expecter) GetJobAdBySlug(ctx any, slug any) *CMSJobAdRepo_GetJobAdBySlug_Call {
 	return &CMSJobAdRepo_GetJobAdBySlug_Call{Call: _e.mock.On("GetJobAdBySlug", ctx, slug)}
 }
 

@@ -65,7 +65,7 @@ type QuoteRepo_AddReaction_Call struct {
 //   - quoteID string
 //   - userID string
 //   - reactionType model.QuoteReactionType
-func (_e *QuoteRepo_Expecter) AddReaction(ctx interface{}, quoteID interface{}, userID interface{}, reactionType interface{}) *QuoteRepo_AddReaction_Call {
+func (_e *QuoteRepo_Expecter) AddReaction(ctx any, quoteID any, userID any, reactionType any) *QuoteRepo_AddReaction_Call {
 	return &QuoteRepo_AddReaction_Call{Call: _e.mock.On("AddReaction", ctx, quoteID, userID, reactionType)}
 }
 
@@ -133,7 +133,7 @@ type QuoteRepo_CreateQuote_Call struct {
 //   - ctx context.Context
 //   - quote model.Quote
 //   - submittedBy string
-func (_e *QuoteRepo_Expecter) CreateQuote(ctx interface{}, quote interface{}, submittedBy interface{}) *QuoteRepo_CreateQuote_Call {
+func (_e *QuoteRepo_Expecter) CreateQuote(ctx any, quote any, submittedBy any) *QuoteRepo_CreateQuote_Call {
 	return &QuoteRepo_CreateQuote_Call{Call: _e.mock.On("CreateQuote", ctx, quote, submittedBy)}
 }
 
@@ -195,7 +195,7 @@ type QuoteRepo_DeleteQuote_Call struct {
 // DeleteQuote is a helper method to define mock.On call
 //   - ctx context.Context
 //   - quoteID string
-func (_e *QuoteRepo_Expecter) DeleteQuote(ctx interface{}, quoteID interface{}) *QuoteRepo_DeleteQuote_Call {
+func (_e *QuoteRepo_Expecter) DeleteQuote(ctx any, quoteID any) *QuoteRepo_DeleteQuote_Call {
 	return &QuoteRepo_DeleteQuote_Call{Call: _e.mock.On("DeleteQuote", ctx, quoteID)}
 }
 
@@ -263,7 +263,7 @@ type QuoteRepo_GetQuoteByID_Call struct {
 // GetQuoteByID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - quoteID string
-func (_e *QuoteRepo_Expecter) GetQuoteByID(ctx interface{}, quoteID interface{}) *QuoteRepo_GetQuoteByID_Call {
+func (_e *QuoteRepo_Expecter) GetQuoteByID(ctx any, quoteID any) *QuoteRepo_GetQuoteByID_Call {
 	return &QuoteRepo_GetQuoteByID_Call{Call: _e.mock.On("GetQuoteByID", ctx, quoteID)}
 }
 
@@ -330,7 +330,7 @@ type QuoteRepo_GetQuotes_Call struct {
 
 // GetQuotes is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *QuoteRepo_Expecter) GetQuotes(ctx interface{}) *QuoteRepo_GetQuotes_Call {
+func (_e *QuoteRepo_Expecter) GetQuotes(ctx any) *QuoteRepo_GetQuotes_Call {
 	return &QuoteRepo_GetQuotes_Call{Call: _e.mock.On("GetQuotes", ctx)}
 }
 
@@ -393,7 +393,7 @@ type QuoteRepo_GetReactions_Call struct {
 // GetReactions is a helper method to define mock.On call
 //   - ctx context.Context
 //   - quoteID string
-func (_e *QuoteRepo_Expecter) GetReactions(ctx interface{}, quoteID interface{}) *QuoteRepo_GetReactions_Call {
+func (_e *QuoteRepo_Expecter) GetReactions(ctx any, quoteID any) *QuoteRepo_GetReactions_Call {
 	return &QuoteRepo_GetReactions_Call{Call: _e.mock.On("GetReactions", ctx, quoteID)}
 }
 
@@ -451,7 +451,7 @@ type QuoteRepo_RemoveReaction_Call struct {
 //   - ctx context.Context
 //   - quoteID string
 //   - userID string
-func (_e *QuoteRepo_Expecter) RemoveReaction(ctx interface{}, quoteID interface{}, userID interface{}) *QuoteRepo_RemoveReaction_Call {
+func (_e *QuoteRepo_Expecter) RemoveReaction(ctx any, quoteID any, userID any) *QuoteRepo_RemoveReaction_Call {
 	return &QuoteRepo_RemoveReaction_Call{Call: _e.mock.On("RemoveReaction", ctx, quoteID, userID)}
 }
 

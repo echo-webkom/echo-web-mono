@@ -73,7 +73,7 @@ type CMSHSApplicationRepo_GetAllHSApplications_Call struct {
 
 // GetAllHSApplications is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *CMSHSApplicationRepo_Expecter) GetAllHSApplications(ctx interface{}) *CMSHSApplicationRepo_GetAllHSApplications_Call {
+func (_e *CMSHSApplicationRepo_Expecter) GetAllHSApplications(ctx any) *CMSHSApplicationRepo_GetAllHSApplications_Call {
 	return &CMSHSApplicationRepo_GetAllHSApplications_Call{Call: _e.mock.On("GetAllHSApplications", ctx)}
 }
 

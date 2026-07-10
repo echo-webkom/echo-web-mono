@@ -63,7 +63,7 @@ type ReactionRepo_AddReaction_Call struct {
 // AddReaction is a helper method to define mock.On call
 //   - ctx context.Context
 //   - reaction model.Reaction
-func (_e *ReactionRepo_Expecter) AddReaction(ctx interface{}, reaction interface{}) *ReactionRepo_AddReaction_Call {
+func (_e *ReactionRepo_Expecter) AddReaction(ctx any, reaction any) *ReactionRepo_AddReaction_Call {
 	return &ReactionRepo_AddReaction_Call{Call: _e.mock.On("AddReaction", ctx, reaction)}
 }
 
@@ -131,7 +131,7 @@ type ReactionRepo_GetReactionsByID_Call struct {
 // GetReactionsByID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - reactToKey string
-func (_e *ReactionRepo_Expecter) GetReactionsByID(ctx interface{}, reactToKey interface{}) *ReactionRepo_GetReactionsByID_Call {
+func (_e *ReactionRepo_Expecter) GetReactionsByID(ctx any, reactToKey any) *ReactionRepo_GetReactionsByID_Call {
 	return &ReactionRepo_GetReactionsByID_Call{Call: _e.mock.On("GetReactionsByID", ctx, reactToKey)}
 }
 
@@ -200,7 +200,7 @@ type ReactionRepo_GetReactionsByIDAndUserID_Call struct {
 //   - ctx context.Context
 //   - reactToKey string
 //   - userID string
-func (_e *ReactionRepo_Expecter) GetReactionsByIDAndUserID(ctx interface{}, reactToKey interface{}, userID interface{}) *ReactionRepo_GetReactionsByIDAndUserID_Call {
+func (_e *ReactionRepo_Expecter) GetReactionsByIDAndUserID(ctx any, reactToKey any, userID any) *ReactionRepo_GetReactionsByIDAndUserID_Call {
 	return &ReactionRepo_GetReactionsByIDAndUserID_Call{Call: _e.mock.On("GetReactionsByIDAndUserID", ctx, reactToKey, userID)}
 }
 
@@ -264,7 +264,7 @@ type ReactionRepo_RemoveReaction_Call struct {
 //   - reactToKey string
 //   - emojiID int
 //   - userID string
-func (_e *ReactionRepo_Expecter) RemoveReaction(ctx interface{}, reactToKey interface{}, emojiID interface{}, userID interface{}) *ReactionRepo_RemoveReaction_Call {
+func (_e *ReactionRepo_Expecter) RemoveReaction(ctx any, reactToKey any, emojiID any, userID any) *ReactionRepo_RemoveReaction_Call {
 	return &ReactionRepo_RemoveReaction_Call{Call: _e.mock.On("RemoveReaction", ctx, reactToKey, emojiID, userID)}
 }
 

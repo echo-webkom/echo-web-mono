@@ -50,7 +50,7 @@ type Cache_Delete_Call[T any] struct {
 
 // Delete is a helper method to define mock.On call
 //   - key string
-func (_e *Cache_Expecter[T]) Delete(key interface{}) *Cache_Delete_Call[T] {
+func (_e *Cache_Expecter[T]) Delete(key any) *Cache_Delete_Call[T] {
 	return &Cache_Delete_Call[T]{Call: _e.mock.On("Delete", key)}
 }
 
@@ -112,7 +112,7 @@ type Cache_Get_Call[T any] struct {
 
 // Get is a helper method to define mock.On call
 //   - key string
-func (_e *Cache_Expecter[T]) Get(key interface{}) *Cache_Get_Call[T] {
+func (_e *Cache_Expecter[T]) Get(key any) *Cache_Get_Call[T] {
 	return &Cache_Get_Call[T]{Call: _e.mock.On("Get", key)}
 }
 
@@ -154,7 +154,7 @@ type Cache_Set_Call[T any] struct {
 //   - key string
 //   - value T
 //   - ttl time.Duration
-func (_e *Cache_Expecter[T]) Set(key interface{}, value interface{}, ttl interface{}) *Cache_Set_Call[T] {
+func (_e *Cache_Expecter[T]) Set(key any, value any, ttl any) *Cache_Set_Call[T] {
 	return &Cache_Set_Call[T]{Call: _e.mock.On("Set", key, value, ttl)}
 }
 

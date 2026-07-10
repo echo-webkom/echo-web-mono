@@ -73,7 +73,7 @@ type CMSPostRepo_GetAllPosts_Call struct {
 
 // GetAllPosts is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *CMSPostRepo_Expecter) GetAllPosts(ctx interface{}) *CMSPostRepo_GetAllPosts_Call {
+func (_e *CMSPostRepo_Expecter) GetAllPosts(ctx any) *CMSPostRepo_GetAllPosts_Call {
 	return &CMSPostRepo_GetAllPosts_Call{Call: _e.mock.On("GetAllPosts", ctx)}
 }
 
@@ -136,7 +136,7 @@ type CMSPostRepo_GetPostBySlug_Call struct {
 // GetPostBySlug is a helper method to define mock.On call
 //   - ctx context.Context
 //   - slug string
-func (_e *CMSPostRepo_Expecter) GetPostBySlug(ctx interface{}, slug interface{}) *CMSPostRepo_GetPostBySlug_Call {
+func (_e *CMSPostRepo_Expecter) GetPostBySlug(ctx any, slug any) *CMSPostRepo_GetPostBySlug_Call {
 	return &CMSPostRepo_GetPostBySlug_Call{Call: _e.mock.On("GetPostBySlug", ctx, slug)}
 }
 

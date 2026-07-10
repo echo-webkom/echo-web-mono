@@ -73,7 +73,7 @@ type CMSRepeatingHappeningRepo_GetAllRepeatingHappenings_Call struct {
 
 // GetAllRepeatingHappenings is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *CMSRepeatingHappeningRepo_Expecter) GetAllRepeatingHappenings(ctx interface{}) *CMSRepeatingHappeningRepo_GetAllRepeatingHappenings_Call {
+func (_e *CMSRepeatingHappeningRepo_Expecter) GetAllRepeatingHappenings(ctx any) *CMSRepeatingHappeningRepo_GetAllRepeatingHappenings_Call {
 	return &CMSRepeatingHappeningRepo_GetAllRepeatingHappenings_Call{Call: _e.mock.On("GetAllRepeatingHappenings", ctx)}
 }
 
@@ -136,7 +136,7 @@ type CMSRepeatingHappeningRepo_GetRepeatingHappeningBySlug_Call struct {
 // GetRepeatingHappeningBySlug is a helper method to define mock.On call
 //   - ctx context.Context
 //   - slug string
-func (_e *CMSRepeatingHappeningRepo_Expecter) GetRepeatingHappeningBySlug(ctx interface{}, slug interface{}) *CMSRepeatingHappeningRepo_GetRepeatingHappeningBySlug_Call {
+func (_e *CMSRepeatingHappeningRepo_Expecter) GetRepeatingHappeningBySlug(ctx any, slug any) *CMSRepeatingHappeningRepo_GetRepeatingHappeningBySlug_Call {
 	return &CMSRepeatingHappeningRepo_GetRepeatingHappeningBySlug_Call{Call: _e.mock.On("GetRepeatingHappeningBySlug", ctx, slug)}
 }
 

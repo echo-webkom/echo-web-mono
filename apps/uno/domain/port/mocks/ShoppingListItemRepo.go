@@ -73,7 +73,7 @@ type ShoppingListItemRepo_CreateShoppingListItem_Call struct {
 // CreateShoppingListItem is a helper method to define mock.On call
 //   - ctx context.Context
 //   - item model.NewShoppingListItem
-func (_e *ShoppingListItemRepo_Expecter) CreateShoppingListItem(ctx interface{}, item interface{}) *ShoppingListItemRepo_CreateShoppingListItem_Call {
+func (_e *ShoppingListItemRepo_Expecter) CreateShoppingListItem(ctx any, item any) *ShoppingListItemRepo_CreateShoppingListItem_Call {
 	return &ShoppingListItemRepo_CreateShoppingListItem_Call{Call: _e.mock.On("CreateShoppingListItem", ctx, item)}
 }
 
@@ -130,7 +130,7 @@ type ShoppingListItemRepo_DeleteShoppingListItem_Call struct {
 // DeleteShoppingListItem is a helper method to define mock.On call
 //   - ctx context.Context
 //   - itemID string
-func (_e *ShoppingListItemRepo_Expecter) DeleteShoppingListItem(ctx interface{}, itemID interface{}) *ShoppingListItemRepo_DeleteShoppingListItem_Call {
+func (_e *ShoppingListItemRepo_Expecter) DeleteShoppingListItem(ctx any, itemID any) *ShoppingListItemRepo_DeleteShoppingListItem_Call {
 	return &ShoppingListItemRepo_DeleteShoppingListItem_Call{Call: _e.mock.On("DeleteShoppingListItem", ctx, itemID)}
 }
 
@@ -197,7 +197,7 @@ type ShoppingListItemRepo_GetAllShoppingListItems_Call struct {
 
 // GetAllShoppingListItems is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *ShoppingListItemRepo_Expecter) GetAllShoppingListItems(ctx interface{}) *ShoppingListItemRepo_GetAllShoppingListItems_Call {
+func (_e *ShoppingListItemRepo_Expecter) GetAllShoppingListItems(ctx any) *ShoppingListItemRepo_GetAllShoppingListItems_Call {
 	return &ShoppingListItemRepo_GetAllShoppingListItems_Call{Call: _e.mock.On("GetAllShoppingListItems", ctx)}
 }
 

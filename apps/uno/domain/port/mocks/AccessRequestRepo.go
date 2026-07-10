@@ -72,7 +72,7 @@ type AccessRequestRepo_CreateAccessRequest_Call struct {
 // CreateAccessRequest is a helper method to define mock.On call
 //   - ctx context.Context
 //   - ar model.NewAccessRequest
-func (_e *AccessRequestRepo_Expecter) CreateAccessRequest(ctx interface{}, ar interface{}) *AccessRequestRepo_CreateAccessRequest_Call {
+func (_e *AccessRequestRepo_Expecter) CreateAccessRequest(ctx any, ar any) *AccessRequestRepo_CreateAccessRequest_Call {
 	return &AccessRequestRepo_CreateAccessRequest_Call{Call: _e.mock.On("CreateAccessRequest", ctx, ar)}
 }
 
@@ -129,7 +129,7 @@ type AccessRequestRepo_DeleteAccessRequestByID_Call struct {
 // DeleteAccessRequestByID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - id string
-func (_e *AccessRequestRepo_Expecter) DeleteAccessRequestByID(ctx interface{}, id interface{}) *AccessRequestRepo_DeleteAccessRequestByID_Call {
+func (_e *AccessRequestRepo_Expecter) DeleteAccessRequestByID(ctx any, id any) *AccessRequestRepo_DeleteAccessRequestByID_Call {
 	return &AccessRequestRepo_DeleteAccessRequestByID_Call{Call: _e.mock.On("DeleteAccessRequestByID", ctx, id)}
 }
 
@@ -195,7 +195,7 @@ type AccessRequestRepo_GetAccessRequestByID_Call struct {
 // GetAccessRequestByID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - id string
-func (_e *AccessRequestRepo_Expecter) GetAccessRequestByID(ctx interface{}, id interface{}) *AccessRequestRepo_GetAccessRequestByID_Call {
+func (_e *AccessRequestRepo_Expecter) GetAccessRequestByID(ctx any, id any) *AccessRequestRepo_GetAccessRequestByID_Call {
 	return &AccessRequestRepo_GetAccessRequestByID_Call{Call: _e.mock.On("GetAccessRequestByID", ctx, id)}
 }
 
@@ -262,7 +262,7 @@ type AccessRequestRepo_GetAccessRequests_Call struct {
 
 // GetAccessRequests is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *AccessRequestRepo_Expecter) GetAccessRequests(ctx interface{}) *AccessRequestRepo_GetAccessRequests_Call {
+func (_e *AccessRequestRepo_Expecter) GetAccessRequests(ctx any) *AccessRequestRepo_GetAccessRequests_Call {
 	return &AccessRequestRepo_GetAccessRequests_Call{Call: _e.mock.On("GetAccessRequests", ctx)}
 }
 

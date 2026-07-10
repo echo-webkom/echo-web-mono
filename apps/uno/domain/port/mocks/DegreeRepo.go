@@ -72,7 +72,7 @@ type DegreeRepo_CreateDegree_Call struct {
 // CreateDegree is a helper method to define mock.On call
 //   - ctx context.Context
 //   - degree model.Degree
-func (_e *DegreeRepo_Expecter) CreateDegree(ctx interface{}, degree interface{}) *DegreeRepo_CreateDegree_Call {
+func (_e *DegreeRepo_Expecter) CreateDegree(ctx any, degree any) *DegreeRepo_CreateDegree_Call {
 	return &DegreeRepo_CreateDegree_Call{Call: _e.mock.On("CreateDegree", ctx, degree)}
 }
 
@@ -129,7 +129,7 @@ type DegreeRepo_DeleteDegree_Call struct {
 // DeleteDegree is a helper method to define mock.On call
 //   - ctx context.Context
 //   - id string
-func (_e *DegreeRepo_Expecter) DeleteDegree(ctx interface{}, id interface{}) *DegreeRepo_DeleteDegree_Call {
+func (_e *DegreeRepo_Expecter) DeleteDegree(ctx any, id any) *DegreeRepo_DeleteDegree_Call {
 	return &DegreeRepo_DeleteDegree_Call{Call: _e.mock.On("DeleteDegree", ctx, id)}
 }
 
@@ -196,7 +196,7 @@ type DegreeRepo_GetAllDegrees_Call struct {
 
 // GetAllDegrees is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *DegreeRepo_Expecter) GetAllDegrees(ctx interface{}) *DegreeRepo_GetAllDegrees_Call {
+func (_e *DegreeRepo_Expecter) GetAllDegrees(ctx any) *DegreeRepo_GetAllDegrees_Call {
 	return &DegreeRepo_GetAllDegrees_Call{Call: _e.mock.On("GetAllDegrees", ctx)}
 }
 
@@ -257,7 +257,7 @@ type DegreeRepo_UpdateDegree_Call struct {
 // UpdateDegree is a helper method to define mock.On call
 //   - ctx context.Context
 //   - degree model.Degree
-func (_e *DegreeRepo_Expecter) UpdateDegree(ctx interface{}, degree interface{}) *DegreeRepo_UpdateDegree_Call {
+func (_e *DegreeRepo_Expecter) UpdateDegree(ctx any, degree any) *DegreeRepo_UpdateDegree_Call {
 	return &DegreeRepo_UpdateDegree_Call{Call: _e.mock.On("UpdateDegree", ctx, degree)}
 }
 

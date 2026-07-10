@@ -75,7 +75,7 @@ type DatabrusRepo_GetDatabrusMatches_Call struct {
 //   - ctx context.Context
 //   - url string
 //   - matchType model.MatchType
-func (_e *DatabrusRepo_Expecter) GetDatabrusMatches(ctx interface{}, url interface{}, matchType interface{}) *DatabrusRepo_GetDatabrusMatches_Call {
+func (_e *DatabrusRepo_Expecter) GetDatabrusMatches(ctx any, url any, matchType any) *DatabrusRepo_GetDatabrusMatches_Call {
 	return &DatabrusRepo_GetDatabrusMatches_Call{Call: _e.mock.On("GetDatabrusMatches", ctx, url, matchType)}
 }
 
@@ -148,7 +148,7 @@ type DatabrusRepo_GetDatabrusTable_Call struct {
 // GetDatabrusTable is a helper method to define mock.On call
 //   - ctx context.Context
 //   - url string
-func (_e *DatabrusRepo_Expecter) GetDatabrusTable(ctx interface{}, url interface{}) *DatabrusRepo_GetDatabrusTable_Call {
+func (_e *DatabrusRepo_Expecter) GetDatabrusTable(ctx any, url any) *DatabrusRepo_GetDatabrusTable_Call {
 	return &DatabrusRepo_GetDatabrusTable_Call{Call: _e.mock.On("GetDatabrusTable", ctx, url)}
 }
 

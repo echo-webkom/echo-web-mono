@@ -73,7 +73,7 @@ type CMSStaticInfoRepo_GetAllStaticInfo_Call struct {
 
 // GetAllStaticInfo is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *CMSStaticInfoRepo_Expecter) GetAllStaticInfo(ctx interface{}) *CMSStaticInfoRepo_GetAllStaticInfo_Call {
+func (_e *CMSStaticInfoRepo_Expecter) GetAllStaticInfo(ctx any) *CMSStaticInfoRepo_GetAllStaticInfo_Call {
 	return &CMSStaticInfoRepo_GetAllStaticInfo_Call{Call: _e.mock.On("GetAllStaticInfo", ctx)}
 }
 
@@ -136,7 +136,7 @@ type CMSStaticInfoRepo_GetStaticInfoBySlug_Call struct {
 // GetStaticInfoBySlug is a helper method to define mock.On call
 //   - ctx context.Context
 //   - slug string
-func (_e *CMSStaticInfoRepo_Expecter) GetStaticInfoBySlug(ctx interface{}, slug interface{}) *CMSStaticInfoRepo_GetStaticInfoBySlug_Call {
+func (_e *CMSStaticInfoRepo_Expecter) GetStaticInfoBySlug(ctx any, slug any) *CMSStaticInfoRepo_GetStaticInfoBySlug_Call {
 	return &CMSStaticInfoRepo_GetStaticInfoBySlug_Call{Call: _e.mock.On("GetStaticInfoBySlug", ctx, slug)}
 }
 

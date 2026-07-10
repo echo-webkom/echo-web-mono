@@ -73,7 +73,7 @@ type CMSMeetingMinuteRepo_GetAllMeetingMinutes_Call struct {
 
 // GetAllMeetingMinutes is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *CMSMeetingMinuteRepo_Expecter) GetAllMeetingMinutes(ctx interface{}) *CMSMeetingMinuteRepo_GetAllMeetingMinutes_Call {
+func (_e *CMSMeetingMinuteRepo_Expecter) GetAllMeetingMinutes(ctx any) *CMSMeetingMinuteRepo_GetAllMeetingMinutes_Call {
 	return &CMSMeetingMinuteRepo_GetAllMeetingMinutes_Call{Call: _e.mock.On("GetAllMeetingMinutes", ctx)}
 }
 
@@ -136,7 +136,7 @@ type CMSMeetingMinuteRepo_GetMeetingMinuteById_Call struct {
 // GetMeetingMinuteById is a helper method to define mock.On call
 //   - ctx context.Context
 //   - id string
-func (_e *CMSMeetingMinuteRepo_Expecter) GetMeetingMinuteById(ctx interface{}, id interface{}) *CMSMeetingMinuteRepo_GetMeetingMinuteById_Call {
+func (_e *CMSMeetingMinuteRepo_Expecter) GetMeetingMinuteById(ctx any, id any) *CMSMeetingMinuteRepo_GetMeetingMinuteById_Call {
 	return &CMSMeetingMinuteRepo_GetMeetingMinuteById_Call{Call: _e.mock.On("GetMeetingMinuteById", ctx, id)}
 }
 

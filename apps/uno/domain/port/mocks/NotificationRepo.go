@@ -64,7 +64,7 @@ type NotificationRepo_Archive_Call struct {
 //   - ctx context.Context
 //   - id int
 //   - userID string
-func (_e *NotificationRepo_Expecter) Archive(ctx interface{}, id interface{}, userID interface{}) *NotificationRepo_Archive_Call {
+func (_e *NotificationRepo_Expecter) Archive(ctx any, id any, userID any) *NotificationRepo_Archive_Call {
 	return &NotificationRepo_Archive_Call{Call: _e.mock.On("Archive", ctx, id, userID)}
 }
 
@@ -130,7 +130,7 @@ type NotificationRepo_Create_Call struct {
 //   - title string
 //   - content *string
 //   - link *string
-func (_e *NotificationRepo_Expecter) Create(ctx interface{}, userID interface{}, notifType interface{}, title interface{}, content interface{}, link interface{}) *NotificationRepo_Create_Call {
+func (_e *NotificationRepo_Expecter) Create(ctx any, userID any, notifType any, title any, content any, link any) *NotificationRepo_Create_Call {
 	return &NotificationRepo_Create_Call{Call: _e.mock.On("Create", ctx, userID, notifType, title, content, link)}
 }
 
@@ -218,7 +218,7 @@ type NotificationRepo_GetByUserID_Call struct {
 // GetByUserID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-func (_e *NotificationRepo_Expecter) GetByUserID(ctx interface{}, userID interface{}) *NotificationRepo_GetByUserID_Call {
+func (_e *NotificationRepo_Expecter) GetByUserID(ctx any, userID any) *NotificationRepo_GetByUserID_Call {
 	return &NotificationRepo_GetByUserID_Call{Call: _e.mock.On("GetByUserID", ctx, userID)}
 }
 
@@ -276,7 +276,7 @@ type NotificationRepo_MarkSeen_Call struct {
 //   - ctx context.Context
 //   - id int
 //   - userID string
-func (_e *NotificationRepo_Expecter) MarkSeen(ctx interface{}, id interface{}, userID interface{}) *NotificationRepo_MarkSeen_Call {
+func (_e *NotificationRepo_Expecter) MarkSeen(ctx any, id any, userID any) *NotificationRepo_MarkSeen_Call {
 	return &NotificationRepo_MarkSeen_Call{Call: _e.mock.On("MarkSeen", ctx, id, userID)}
 }
 

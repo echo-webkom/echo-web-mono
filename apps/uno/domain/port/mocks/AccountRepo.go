@@ -72,7 +72,7 @@ type AccountRepo_CreateAccount_Call struct {
 // CreateAccount is a helper method to define mock.On call
 //   - ctx context.Context
 //   - account model.NewAccount
-func (_e *AccountRepo_Expecter) CreateAccount(ctx interface{}, account interface{}) *AccountRepo_CreateAccount_Call {
+func (_e *AccountRepo_Expecter) CreateAccount(ctx any, account any) *AccountRepo_CreateAccount_Call {
 	return &AccountRepo_CreateAccount_Call{Call: _e.mock.On("CreateAccount", ctx, account)}
 }
 
@@ -130,7 +130,7 @@ type AccountRepo_DeleteAccount_Call struct {
 //   - ctx context.Context
 //   - userID string
 //   - provider string
-func (_e *AccountRepo_Expecter) DeleteAccount(ctx interface{}, userID interface{}, provider interface{}) *AccountRepo_DeleteAccount_Call {
+func (_e *AccountRepo_Expecter) DeleteAccount(ctx any, userID any, provider any) *AccountRepo_DeleteAccount_Call {
 	return &AccountRepo_DeleteAccount_Call{Call: _e.mock.On("DeleteAccount", ctx, userID, provider)}
 }
 
@@ -202,7 +202,7 @@ type AccountRepo_GetAccountByProvider_Call struct {
 //   - ctx context.Context
 //   - provider string
 //   - providerAccountID string
-func (_e *AccountRepo_Expecter) GetAccountByProvider(ctx interface{}, provider interface{}, providerAccountID interface{}) *AccountRepo_GetAccountByProvider_Call {
+func (_e *AccountRepo_Expecter) GetAccountByProvider(ctx any, provider any, providerAccountID any) *AccountRepo_GetAccountByProvider_Call {
 	return &AccountRepo_GetAccountByProvider_Call{Call: _e.mock.On("GetAccountByProvider", ctx, provider, providerAccountID)}
 }
 
@@ -275,7 +275,7 @@ type AccountRepo_GetAccountsByUserID_Call struct {
 // GetAccountsByUserID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-func (_e *AccountRepo_Expecter) GetAccountsByUserID(ctx interface{}, userID interface{}) *AccountRepo_GetAccountsByUserID_Call {
+func (_e *AccountRepo_Expecter) GetAccountsByUserID(ctx any, userID any) *AccountRepo_GetAccountsByUserID_Call {
 	return &AccountRepo_GetAccountsByUserID_Call{Call: _e.mock.On("GetAccountsByUserID", ctx, userID)}
 }
 
@@ -343,7 +343,7 @@ type AccountRepo_UpdateAccount_Call struct {
 //   - provider string
 //   - providerAccountID string
 //   - update model.UpdateAccount
-func (_e *AccountRepo_Expecter) UpdateAccount(ctx interface{}, provider interface{}, providerAccountID interface{}, update interface{}) *AccountRepo_UpdateAccount_Call {
+func (_e *AccountRepo_Expecter) UpdateAccount(ctx any, provider any, providerAccountID any, update any) *AccountRepo_UpdateAccount_Call {
 	return &AccountRepo_UpdateAccount_Call{Call: _e.mock.On("UpdateAccount", ctx, provider, providerAccountID, update)}
 }
 

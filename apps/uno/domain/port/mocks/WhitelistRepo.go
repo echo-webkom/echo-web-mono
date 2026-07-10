@@ -72,7 +72,7 @@ type WhitelistRepo_CreateWhitelist_Call struct {
 // CreateWhitelist is a helper method to define mock.On call
 //   - ctx context.Context
 //   - whitelist model.NewWhitelist
-func (_e *WhitelistRepo_Expecter) CreateWhitelist(ctx interface{}, whitelist interface{}) *WhitelistRepo_CreateWhitelist_Call {
+func (_e *WhitelistRepo_Expecter) CreateWhitelist(ctx any, whitelist any) *WhitelistRepo_CreateWhitelist_Call {
 	return &WhitelistRepo_CreateWhitelist_Call{Call: _e.mock.On("CreateWhitelist", ctx, whitelist)}
 }
 
@@ -129,7 +129,7 @@ type WhitelistRepo_DeleteWhitelistByEmail_Call struct {
 // DeleteWhitelistByEmail is a helper method to define mock.On call
 //   - ctx context.Context
 //   - email string
-func (_e *WhitelistRepo_Expecter) DeleteWhitelistByEmail(ctx interface{}, email interface{}) *WhitelistRepo_DeleteWhitelistByEmail_Call {
+func (_e *WhitelistRepo_Expecter) DeleteWhitelistByEmail(ctx any, email any) *WhitelistRepo_DeleteWhitelistByEmail_Call {
 	return &WhitelistRepo_DeleteWhitelistByEmail_Call{Call: _e.mock.On("DeleteWhitelistByEmail", ctx, email)}
 }
 
@@ -196,7 +196,7 @@ type WhitelistRepo_GetWhitelist_Call struct {
 
 // GetWhitelist is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *WhitelistRepo_Expecter) GetWhitelist(ctx interface{}) *WhitelistRepo_GetWhitelist_Call {
+func (_e *WhitelistRepo_Expecter) GetWhitelist(ctx any) *WhitelistRepo_GetWhitelist_Call {
 	return &WhitelistRepo_GetWhitelist_Call{Call: _e.mock.On("GetWhitelist", ctx)}
 }
 
@@ -257,7 +257,7 @@ type WhitelistRepo_GetWhitelistByEmail_Call struct {
 // GetWhitelistByEmail is a helper method to define mock.On call
 //   - ctx context.Context
 //   - email string
-func (_e *WhitelistRepo_Expecter) GetWhitelistByEmail(ctx interface{}, email interface{}) *WhitelistRepo_GetWhitelistByEmail_Call {
+func (_e *WhitelistRepo_Expecter) GetWhitelistByEmail(ctx any, email any) *WhitelistRepo_GetWhitelistByEmail_Call {
 	return &WhitelistRepo_GetWhitelistByEmail_Call{Call: _e.mock.On("GetWhitelistByEmail", ctx, email)}
 }
 
@@ -323,7 +323,7 @@ type WhitelistRepo_IsWhitelisted_Call struct {
 // IsWhitelisted is a helper method to define mock.On call
 //   - ctx context.Context
 //   - email string
-func (_e *WhitelistRepo_Expecter) IsWhitelisted(ctx interface{}, email interface{}) *WhitelistRepo_IsWhitelisted_Call {
+func (_e *WhitelistRepo_Expecter) IsWhitelisted(ctx any, email any) *WhitelistRepo_IsWhitelisted_Call {
 	return &WhitelistRepo_IsWhitelisted_Call{Call: _e.mock.On("IsWhitelisted", ctx, email)}
 }
 
@@ -389,7 +389,7 @@ type WhitelistRepo_UpsertWhitelist_Call struct {
 // UpsertWhitelist is a helper method to define mock.On call
 //   - ctx context.Context
 //   - whitelist model.NewWhitelist
-func (_e *WhitelistRepo_Expecter) UpsertWhitelist(ctx interface{}, whitelist interface{}) *WhitelistRepo_UpsertWhitelist_Call {
+func (_e *WhitelistRepo_Expecter) UpsertWhitelist(ctx any, whitelist any) *WhitelistRepo_UpsertWhitelist_Call {
 	return &WhitelistRepo_UpsertWhitelist_Call{Call: _e.mock.On("UpsertWhitelist", ctx, whitelist)}
 }
 

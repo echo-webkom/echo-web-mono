@@ -71,7 +71,7 @@ type OAuth2Provider_CreateAuthorizationURL_Call struct {
 
 // CreateAuthorizationURL is a helper method to define mock.On call
 //   - state string
-func (_e *OAuth2Provider_Expecter) CreateAuthorizationURL(state interface{}) *OAuth2Provider_CreateAuthorizationURL_Call {
+func (_e *OAuth2Provider_Expecter) CreateAuthorizationURL(state any) *OAuth2Provider_CreateAuthorizationURL_Call {
 	return &OAuth2Provider_CreateAuthorizationURL_Call{Call: _e.mock.On("CreateAuthorizationURL", state)}
 }
 
@@ -134,7 +134,7 @@ type OAuth2Provider_ExchangeCode_Call struct {
 // ExchangeCode is a helper method to define mock.On call
 //   - ctx context.Context
 //   - code string
-func (_e *OAuth2Provider_Expecter) ExchangeCode(ctx interface{}, code interface{}) *OAuth2Provider_ExchangeCode_Call {
+func (_e *OAuth2Provider_Expecter) ExchangeCode(ctx any, code any) *OAuth2Provider_ExchangeCode_Call {
 	return &OAuth2Provider_ExchangeCode_Call{Call: _e.mock.On("ExchangeCode", ctx, code)}
 }
 
@@ -202,7 +202,7 @@ type OAuth2Provider_GetUserInfo_Call struct {
 // GetUserInfo is a helper method to define mock.On call
 //   - ctx context.Context
 //   - accessToken string
-func (_e *OAuth2Provider_Expecter) GetUserInfo(ctx interface{}, accessToken interface{}) *OAuth2Provider_GetUserInfo_Call {
+func (_e *OAuth2Provider_Expecter) GetUserInfo(ctx any, accessToken any) *OAuth2Provider_GetUserInfo_Call {
 	return &OAuth2Provider_GetUserInfo_Call{Call: _e.mock.On("GetUserInfo", ctx, accessToken)}
 }
 

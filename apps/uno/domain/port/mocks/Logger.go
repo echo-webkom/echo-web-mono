@@ -59,9 +59,9 @@ type Logger_Debug_Call struct {
 //   - ctx context.Context
 //   - msg string
 //   - args ...any
-func (_e *Logger_Expecter) Debug(ctx interface{}, msg interface{}, args ...interface{}) *Logger_Debug_Call {
+func (_e *Logger_Expecter) Debug(ctx any, msg any, args ...any) *Logger_Debug_Call {
 	return &Logger_Debug_Call{Call: _e.mock.On("Debug",
-		append([]interface{}{ctx, msg}, args...)...)}
+		append([]any{ctx, msg}, args...)...)}
 }
 
 func (_c *Logger_Debug_Call) Run(run func(ctx context.Context, msg string, args ...any)) *Logger_Debug_Call {
@@ -119,9 +119,9 @@ type Logger_Error_Call struct {
 //   - ctx context.Context
 //   - msg string
 //   - args ...any
-func (_e *Logger_Expecter) Error(ctx interface{}, msg interface{}, args ...interface{}) *Logger_Error_Call {
+func (_e *Logger_Expecter) Error(ctx any, msg any, args ...any) *Logger_Error_Call {
 	return &Logger_Error_Call{Call: _e.mock.On("Error",
-		append([]interface{}{ctx, msg}, args...)...)}
+		append([]any{ctx, msg}, args...)...)}
 }
 
 func (_c *Logger_Error_Call) Run(run func(ctx context.Context, msg string, args ...any)) *Logger_Error_Call {
@@ -179,9 +179,9 @@ type Logger_Info_Call struct {
 //   - ctx context.Context
 //   - msg string
 //   - args ...any
-func (_e *Logger_Expecter) Info(ctx interface{}, msg interface{}, args ...interface{}) *Logger_Info_Call {
+func (_e *Logger_Expecter) Info(ctx any, msg any, args ...any) *Logger_Info_Call {
 	return &Logger_Info_Call{Call: _e.mock.On("Info",
-		append([]interface{}{ctx, msg}, args...)...)}
+		append([]any{ctx, msg}, args...)...)}
 }
 
 func (_c *Logger_Info_Call) Run(run func(ctx context.Context, msg string, args ...any)) *Logger_Info_Call {
@@ -285,9 +285,9 @@ type Logger_Warn_Call struct {
 //   - ctx context.Context
 //   - msg string
 //   - args ...any
-func (_e *Logger_Expecter) Warn(ctx interface{}, msg interface{}, args ...interface{}) *Logger_Warn_Call {
+func (_e *Logger_Expecter) Warn(ctx any, msg any, args ...any) *Logger_Warn_Call {
 	return &Logger_Warn_Call{Call: _e.mock.On("Warn",
-		append([]interface{}{ctx, msg}, args...)...)}
+		append([]any{ctx, msg}, args...)...)}
 }
 
 func (_c *Logger_Warn_Call) Run(run func(ctx context.Context, msg string, args ...any)) *Logger_Warn_Call {
@@ -357,9 +357,9 @@ type Logger_With_Call struct {
 
 // With is a helper method to define mock.On call
 //   - args ...any
-func (_e *Logger_Expecter) With(args ...interface{}) *Logger_With_Call {
+func (_e *Logger_Expecter) With(args ...any) *Logger_With_Call {
 	return &Logger_With_Call{Call: _e.mock.On("With",
-		append([]interface{}{}, args...)...)}
+		append([]any{}, args...)...)}
 }
 
 func (_c *Logger_With_Call) Run(run func(args ...any)) *Logger_With_Call {

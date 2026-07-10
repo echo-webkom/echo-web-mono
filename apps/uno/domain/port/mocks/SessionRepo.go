@@ -72,7 +72,7 @@ type SessionRepo_CreateSession_Call struct {
 // CreateSession is a helper method to define mock.On call
 //   - ctx context.Context
 //   - session model.NewSession
-func (_e *SessionRepo_Expecter) CreateSession(ctx interface{}, session interface{}) *SessionRepo_CreateSession_Call {
+func (_e *SessionRepo_Expecter) CreateSession(ctx any, session any) *SessionRepo_CreateSession_Call {
 	return &SessionRepo_CreateSession_Call{Call: _e.mock.On("CreateSession", ctx, session)}
 }
 
@@ -129,7 +129,7 @@ type SessionRepo_DeleteSession_Call struct {
 // DeleteSession is a helper method to define mock.On call
 //   - ctx context.Context
 //   - token string
-func (_e *SessionRepo_Expecter) DeleteSession(ctx interface{}, token interface{}) *SessionRepo_DeleteSession_Call {
+func (_e *SessionRepo_Expecter) DeleteSession(ctx any, token any) *SessionRepo_DeleteSession_Call {
 	return &SessionRepo_DeleteSession_Call{Call: _e.mock.On("DeleteSession", ctx, token)}
 }
 
@@ -195,7 +195,7 @@ type SessionRepo_GetSessionByToken_Call struct {
 // GetSessionByToken is a helper method to define mock.On call
 //   - ctx context.Context
 //   - token string
-func (_e *SessionRepo_Expecter) GetSessionByToken(ctx interface{}, token interface{}) *SessionRepo_GetSessionByToken_Call {
+func (_e *SessionRepo_Expecter) GetSessionByToken(ctx any, token any) *SessionRepo_GetSessionByToken_Call {
 	return &SessionRepo_GetSessionByToken_Call{Call: _e.mock.On("GetSessionByToken", ctx, token)}
 }
 

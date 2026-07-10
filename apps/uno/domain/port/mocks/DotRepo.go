@@ -71,7 +71,7 @@ type DotRepo_CleanupOldStrikes_Call struct {
 
 // CleanupOldStrikes is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *DotRepo_Expecter) CleanupOldStrikes(ctx interface{}) *DotRepo_CleanupOldStrikes_Call {
+func (_e *DotRepo_Expecter) CleanupOldStrikes(ctx any) *DotRepo_CleanupOldStrikes_Call {
 	return &DotRepo_CleanupOldStrikes_Call{Call: _e.mock.On("CleanupOldStrikes", ctx)}
 }
 
@@ -132,7 +132,7 @@ type DotRepo_CreateDot_Call struct {
 // CreateDot is a helper method to define mock.On call
 //   - ctx context.Context
 //   - dot model.NewDot
-func (_e *DotRepo_Expecter) CreateDot(ctx interface{}, dot interface{}) *DotRepo_CreateDot_Call {
+func (_e *DotRepo_Expecter) CreateDot(ctx any, dot any) *DotRepo_CreateDot_Call {
 	return &DotRepo_CreateDot_Call{Call: _e.mock.On("CreateDot", ctx, dot)}
 }
 
@@ -190,7 +190,7 @@ type DotRepo_DeleteDotByIDAndUserID_Call struct {
 //   - ctx context.Context
 //   - id int
 //   - userID string
-func (_e *DotRepo_Expecter) DeleteDotByIDAndUserID(ctx interface{}, id interface{}, userID interface{}) *DotRepo_DeleteDotByIDAndUserID_Call {
+func (_e *DotRepo_Expecter) DeleteDotByIDAndUserID(ctx any, id any, userID any) *DotRepo_DeleteDotByIDAndUserID_Call {
 	return &DotRepo_DeleteDotByIDAndUserID_Call{Call: _e.mock.On("DeleteDotByIDAndUserID", ctx, id, userID)}
 }
 
@@ -252,7 +252,7 @@ type DotRepo_DeleteDotsByUserID_Call struct {
 // DeleteDotsByUserID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-func (_e *DotRepo_Expecter) DeleteDotsByUserID(ctx interface{}, userID interface{}) *DotRepo_DeleteDotsByUserID_Call {
+func (_e *DotRepo_Expecter) DeleteDotsByUserID(ctx any, userID any) *DotRepo_DeleteDotsByUserID_Call {
 	return &DotRepo_DeleteDotsByUserID_Call{Call: _e.mock.On("DeleteDotsByUserID", ctx, userID)}
 }
 
@@ -308,7 +308,7 @@ type DotRepo_DeleteExpired_Call struct {
 
 // DeleteExpired is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *DotRepo_Expecter) DeleteExpired(ctx interface{}) *DotRepo_DeleteExpired_Call {
+func (_e *DotRepo_Expecter) DeleteExpired(ctx any) *DotRepo_DeleteExpired_Call {
 	return &DotRepo_DeleteExpired_Call{Call: _e.mock.On("DeleteExpired", ctx)}
 }
 

@@ -74,7 +74,7 @@ type UserRepo_CreateUser_Call struct {
 // CreateUser is a helper method to define mock.On call
 //   - ctx context.Context
 //   - user model.User
-func (_e *UserRepo_Expecter) CreateUser(ctx interface{}, user interface{}) *UserRepo_CreateUser_Call {
+func (_e *UserRepo_Expecter) CreateUser(ctx any, user any) *UserRepo_CreateUser_Call {
 	return &UserRepo_CreateUser_Call{Call: _e.mock.On("CreateUser", ctx, user)}
 }
 
@@ -141,7 +141,7 @@ type UserRepo_CreateUserAndAccount_Call struct {
 //   - ctx context.Context
 //   - user model.User
 //   - account model.NewAccount
-func (_e *UserRepo_Expecter) CreateUserAndAccount(ctx interface{}, user interface{}, account interface{}) *UserRepo_CreateUserAndAccount_Call {
+func (_e *UserRepo_Expecter) CreateUserAndAccount(ctx any, user any, account any) *UserRepo_CreateUserAndAccount_Call {
 	return &UserRepo_CreateUserAndAccount_Call{Call: _e.mock.On("CreateUserAndAccount", ctx, user, account)}
 }
 
@@ -213,7 +213,7 @@ type UserRepo_GetAllUsers_Call struct {
 
 // GetAllUsers is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *UserRepo_Expecter) GetAllUsers(ctx interface{}) *UserRepo_GetAllUsers_Call {
+func (_e *UserRepo_Expecter) GetAllUsers(ctx any) *UserRepo_GetAllUsers_Call {
 	return &UserRepo_GetAllUsers_Call{Call: _e.mock.On("GetAllUsers", ctx)}
 }
 
@@ -274,7 +274,7 @@ type UserRepo_GetUserByEmail_Call struct {
 // GetUserByEmail is a helper method to define mock.On call
 //   - ctx context.Context
 //   - email string
-func (_e *UserRepo_Expecter) GetUserByEmail(ctx interface{}, email interface{}) *UserRepo_GetUserByEmail_Call {
+func (_e *UserRepo_Expecter) GetUserByEmail(ctx any, email any) *UserRepo_GetUserByEmail_Call {
 	return &UserRepo_GetUserByEmail_Call{Call: _e.mock.On("GetUserByEmail", ctx, email)}
 }
 
@@ -340,7 +340,7 @@ type UserRepo_GetUserByFeideID_Call struct {
 // GetUserByFeideID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - id string
-func (_e *UserRepo_Expecter) GetUserByFeideID(ctx interface{}, id interface{}) *UserRepo_GetUserByFeideID_Call {
+func (_e *UserRepo_Expecter) GetUserByFeideID(ctx any, id any) *UserRepo_GetUserByFeideID_Call {
 	return &UserRepo_GetUserByFeideID_Call{Call: _e.mock.On("GetUserByFeideID", ctx, id)}
 }
 
@@ -406,7 +406,7 @@ type UserRepo_GetUserByID_Call struct {
 // GetUserByID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - id string
-func (_e *UserRepo_Expecter) GetUserByID(ctx interface{}, id interface{}) *UserRepo_GetUserByID_Call {
+func (_e *UserRepo_Expecter) GetUserByID(ctx any, id any) *UserRepo_GetUserByID_Call {
 	return &UserRepo_GetUserByID_Call{Call: _e.mock.On("GetUserByID", ctx, id)}
 }
 
@@ -474,7 +474,7 @@ type UserRepo_GetUserMemberships_Call struct {
 // GetUserMemberships is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-func (_e *UserRepo_Expecter) GetUserMemberships(ctx interface{}, userID interface{}) *UserRepo_GetUserMemberships_Call {
+func (_e *UserRepo_Expecter) GetUserMemberships(ctx any, userID any) *UserRepo_GetUserMemberships_Call {
 	return &UserRepo_GetUserMemberships_Call{Call: _e.mock.On("GetUserMemberships", ctx, userID)}
 }
 
@@ -542,7 +542,7 @@ type UserRepo_GetUserWithStrikeDetailsByID_Call struct {
 // GetUserWithStrikeDetailsByID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-func (_e *UserRepo_Expecter) GetUserWithStrikeDetailsByID(ctx interface{}, userID interface{}) *UserRepo_GetUserWithStrikeDetailsByID_Call {
+func (_e *UserRepo_Expecter) GetUserWithStrikeDetailsByID(ctx any, userID any) *UserRepo_GetUserWithStrikeDetailsByID_Call {
 	return &UserRepo_GetUserWithStrikeDetailsByID_Call{Call: _e.mock.On("GetUserWithStrikeDetailsByID", ctx, userID)}
 }
 
@@ -610,7 +610,7 @@ type UserRepo_GetUsersByIDs_Call struct {
 // GetUsersByIDs is a helper method to define mock.On call
 //   - ctx context.Context
 //   - ids []string
-func (_e *UserRepo_Expecter) GetUsersByIDs(ctx interface{}, ids interface{}) *UserRepo_GetUsersByIDs_Call {
+func (_e *UserRepo_Expecter) GetUsersByIDs(ctx any, ids any) *UserRepo_GetUsersByIDs_Call {
 	return &UserRepo_GetUsersByIDs_Call{Call: _e.mock.On("GetUsersByIDs", ctx, ids)}
 }
 
@@ -678,7 +678,7 @@ type UserRepo_GetUsersWithBirthday_Call struct {
 // GetUsersWithBirthday is a helper method to define mock.On call
 //   - ctx context.Context
 //   - date time.Time
-func (_e *UserRepo_Expecter) GetUsersWithBirthday(ctx interface{}, date interface{}) *UserRepo_GetUsersWithBirthday_Call {
+func (_e *UserRepo_Expecter) GetUsersWithBirthday(ctx any, date any) *UserRepo_GetUsersWithBirthday_Call {
 	return &UserRepo_GetUsersWithBirthday_Call{Call: _e.mock.On("GetUsersWithBirthday", ctx, date)}
 }
 
@@ -745,7 +745,7 @@ type UserRepo_GetUsersWithStrikeDetails_Call struct {
 
 // GetUsersWithStrikeDetails is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *UserRepo_Expecter) GetUsersWithStrikeDetails(ctx interface{}) *UserRepo_GetUsersWithStrikeDetails_Call {
+func (_e *UserRepo_Expecter) GetUsersWithStrikeDetails(ctx any) *UserRepo_GetUsersWithStrikeDetails_Call {
 	return &UserRepo_GetUsersWithStrikeDetails_Call{Call: _e.mock.On("GetUsersWithStrikeDetails", ctx)}
 }
 
@@ -805,7 +805,7 @@ type UserRepo_ResetUserYears_Call struct {
 
 // ResetUserYears is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *UserRepo_Expecter) ResetUserYears(ctx interface{}) *UserRepo_ResetUserYears_Call {
+func (_e *UserRepo_Expecter) ResetUserYears(ctx any) *UserRepo_ResetUserYears_Call {
 	return &UserRepo_ResetUserYears_Call{Call: _e.mock.On("ResetUserYears", ctx)}
 }
 
@@ -869,7 +869,7 @@ type UserRepo_SearchUsersByName_Call struct {
 //   - ctx context.Context
 //   - query string
 //   - limit int
-func (_e *UserRepo_Expecter) SearchUsersByName(ctx interface{}, query interface{}, limit interface{}) *UserRepo_SearchUsersByName_Call {
+func (_e *UserRepo_Expecter) SearchUsersByName(ctx any, query any, limit any) *UserRepo_SearchUsersByName_Call {
 	return &UserRepo_SearchUsersByName_Call{Call: _e.mock.On("SearchUsersByName", ctx, query, limit)}
 }
 
@@ -941,7 +941,7 @@ type UserRepo_UpdateUser_Call struct {
 //   - ctx context.Context
 //   - userID string
 //   - params port.UpdateUserParams
-func (_e *UserRepo_Expecter) UpdateUser(ctx interface{}, userID interface{}, params interface{}) *UserRepo_UpdateUser_Call {
+func (_e *UserRepo_Expecter) UpdateUser(ctx any, userID any, params any) *UserRepo_UpdateUser_Call {
 	return &UserRepo_UpdateUser_Call{Call: _e.mock.On("UpdateUser", ctx, userID, params)}
 }
 
@@ -1004,7 +1004,7 @@ type UserRepo_UpdateUserImage_Call struct {
 //   - ctx context.Context
 //   - userID string
 //   - hasImage bool
-func (_e *UserRepo_Expecter) UpdateUserImage(ctx interface{}, userID interface{}, hasImage interface{}) *UserRepo_UpdateUserImage_Call {
+func (_e *UserRepo_Expecter) UpdateUserImage(ctx any, userID any, hasImage any) *UserRepo_UpdateUserImage_Call {
 	return &UserRepo_UpdateUserImage_Call{Call: _e.mock.On("UpdateUserImage", ctx, userID, hasImage)}
 }
 
@@ -1066,7 +1066,7 @@ type UserRepo_UpdateUserLastSignIn_Call struct {
 // UpdateUserLastSignIn is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-func (_e *UserRepo_Expecter) UpdateUserLastSignIn(ctx interface{}, userID interface{}) *UserRepo_UpdateUserLastSignIn_Call {
+func (_e *UserRepo_Expecter) UpdateUserLastSignIn(ctx any, userID any) *UserRepo_UpdateUserLastSignIn_Call {
 	return &UserRepo_UpdateUserLastSignIn_Call{Call: _e.mock.On("UpdateUserLastSignIn", ctx, userID)}
 }
 

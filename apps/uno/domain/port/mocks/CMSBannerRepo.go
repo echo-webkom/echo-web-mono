@@ -73,7 +73,7 @@ type CMSBannerRepo_GetBanner_Call struct {
 
 // GetBanner is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *CMSBannerRepo_Expecter) GetBanner(ctx interface{}) *CMSBannerRepo_GetBanner_Call {
+func (_e *CMSBannerRepo_Expecter) GetBanner(ctx any) *CMSBannerRepo_GetBanner_Call {
 	return &CMSBannerRepo_GetBanner_Call{Call: _e.mock.On("GetBanner", ctx)}
 }
 

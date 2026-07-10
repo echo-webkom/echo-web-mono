@@ -51,7 +51,7 @@ type CacheInvalidator_InvalidateNamespace_Call struct {
 // InvalidateNamespace is a helper method to define mock.On call
 //   - ctx context.Context
 //   - namespace string
-func (_e *CacheInvalidator_Expecter) InvalidateNamespace(ctx interface{}, namespace interface{}) *CacheInvalidator_InvalidateNamespace_Call {
+func (_e *CacheInvalidator_Expecter) InvalidateNamespace(ctx any, namespace any) *CacheInvalidator_InvalidateNamespace_Call {
 	return &CacheInvalidator_InvalidateNamespace_Call{Call: _e.mock.On("InvalidateNamespace", ctx, namespace)}
 }
 

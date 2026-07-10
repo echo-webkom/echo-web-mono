@@ -73,7 +73,7 @@ type CMSMerchRepo_GetAllMerch_Call struct {
 
 // GetAllMerch is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *CMSMerchRepo_Expecter) GetAllMerch(ctx interface{}) *CMSMerchRepo_GetAllMerch_Call {
+func (_e *CMSMerchRepo_Expecter) GetAllMerch(ctx any) *CMSMerchRepo_GetAllMerch_Call {
 	return &CMSMerchRepo_GetAllMerch_Call{Call: _e.mock.On("GetAllMerch", ctx)}
 }
 
@@ -136,7 +136,7 @@ type CMSMerchRepo_GetMerchBySlug_Call struct {
 // GetMerchBySlug is a helper method to define mock.On call
 //   - ctx context.Context
 //   - slug string
-func (_e *CMSMerchRepo_Expecter) GetMerchBySlug(ctx interface{}, slug interface{}) *CMSMerchRepo_GetMerchBySlug_Call {
+func (_e *CMSMerchRepo_Expecter) GetMerchBySlug(ctx any, slug any) *CMSMerchRepo_GetMerchBySlug_Call {
 	return &CMSMerchRepo_GetMerchBySlug_Call{Call: _e.mock.On("GetMerchBySlug", ctx, slug)}
 }
 

@@ -70,7 +70,7 @@ type QuestionRepo_CleanupSensitiveQuestions_Call struct {
 
 // CleanupSensitiveQuestions is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *QuestionRepo_Expecter) CleanupSensitiveQuestions(ctx interface{}) *QuestionRepo_CleanupSensitiveQuestions_Call {
+func (_e *QuestionRepo_Expecter) CleanupSensitiveQuestions(ctx any) *QuestionRepo_CleanupSensitiveQuestions_Call {
 	return &QuestionRepo_CleanupSensitiveQuestions_Call{Call: _e.mock.On("CleanupSensitiveQuestions", ctx)}
 }
 
