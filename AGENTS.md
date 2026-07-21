@@ -82,8 +82,7 @@ This is a full-stack monorepo for echo – Linjeforeningen for informatikk (stud
 
 - **db** - Database schemas, migrations, and utilities using Drizzle ORM with PostgreSQL
   - Schemas organized in `/src/schemas/` (users, sessions, happenings, registrations, etc.)
-  - Multiple export paths: `@echo-webkom/db` (default), `@echo-webkom/db/schemas`, `@echo-webkom/db/serverless`, `@echo-webkom/db/create`
-  - Use `@echo-webkom/db/serverless` in Next.js server components and API routes
+  - Multiple export paths: `@echo-webkom/db` (default), `@echo-webkom/db/schemas`, `@echo-webkom/db/create`
 - **sanity** - Shared Sanity queries and utilities
 - **lib** - Common utilities and business logic
 - **email** - Email templates and sending functionality
@@ -123,7 +122,6 @@ This is a full-stack monorepo for echo – Linjeforeningen for informatikk (stud
 
 - Web app and Uno share database schemas from `@echo-webkom/db`
 - Use Drizzle's relational query API: `db.query.<table>.findFirst/findMany`
-- Import from `@echo-webkom/db/serverless` in serverless environments (Next.js, Vercel)
 - Import from `@echo-webkom/db` for standard Node.js environments
 
 ### Content Management

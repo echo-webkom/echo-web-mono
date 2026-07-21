@@ -1,5 +1,5 @@
+import { db } from "@echo-webkom/db";
 import { registrations } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
 import { inArray } from "drizzle-orm";
 
 import { pickRandom } from "../../utils";

@@ -1,5 +1,5 @@
+import { db } from "@echo-webkom/db";
 import { verificationTokens } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
 import { lt } from "drizzle-orm";
 
 /**

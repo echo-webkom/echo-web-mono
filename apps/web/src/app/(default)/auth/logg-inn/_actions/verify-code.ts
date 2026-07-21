@@ -1,7 +1,7 @@
 "use server";
 
+import { db } from "@echo-webkom/db";
 import { sessions, users, verificationTokens } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
 import { addDays } from "date-fns";
 import { and, eq } from "drizzle-orm";
 import { nanoid } from "nanoid";

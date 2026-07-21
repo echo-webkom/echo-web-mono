@@ -1,5 +1,5 @@
+import { db } from "@echo-webkom/db";
 import { sessions } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
 import { eq } from "drizzle-orm";
 import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";

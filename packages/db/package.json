@@ -6,7 +6,6 @@
     "./schemas": "./src/schemas/index.ts",
     "./utils": "./src/utils.ts",
     "./create": "./src/create.ts",
-    "./serverless": "./src/serverless.ts",
     "./error": "./src/error.ts"
   },
   "scripts": {

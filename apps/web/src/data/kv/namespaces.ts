@@ -1,4 +1,4 @@
-import { db } from "@echo-webkom/db/serverless";
+import { db } from "@echo-webkom/db";
 import z from "zod";
 
 import { KVDrizzleAdapter } from "./kv-adapter";

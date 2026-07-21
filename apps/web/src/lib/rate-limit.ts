@@ -1,5 +1,5 @@
+import { db } from "@echo-webkom/db";
 import { kv } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
 import { eq, sql } from "drizzle-orm";
 
 type RateLimitConfig = {

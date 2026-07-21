@@ -1,3 +1,4 @@
+import { db } from "@echo-webkom/db";
 import {
   happenings,
   happeningsToGroups,
@@ -6,7 +7,6 @@ import {
   type HappeningInsert,
   type QuestionInsert,
 } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
 import { isBoard } from "@echo-webkom/lib";
 import { inArray, sql } from "drizzle-orm";
 

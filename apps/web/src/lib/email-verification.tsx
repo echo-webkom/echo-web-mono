@@ -1,5 +1,5 @@
+import { db } from "@echo-webkom/db";
 import { verificationTokens } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
 import { EmailVerificationEmail } from "@echo-webkom/email";
 import { emailClient } from "@echo-webkom/email/client";
 import { addHours } from "date-fns";

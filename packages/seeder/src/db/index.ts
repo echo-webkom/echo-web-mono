@@ -1,5 +1,5 @@
+import { db } from "@echo-webkom/db";
 import { degrees, groups, spotRanges, usersToGroups } from "@echo-webkom/db/schemas";
-import { db } from "@echo-webkom/db/serverless";
 import chalk from "chalk";
 
 import { degrees as defaultDegrees } from "./data/degrees";
