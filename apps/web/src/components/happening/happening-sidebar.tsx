@@ -542,6 +542,12 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
       )}
 
       {/**
+       * Show reaction buttons if:
+       * - User is logged in
+       */}
+      {Boolean(user) && <ReactionButtonGroup reactToKey={event._id} />}
+
+      {/**
        * Show link to admin dashbord if:
        * - User is host
        * - The happening is not external
@@ -551,11 +557,6 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
           <Link href={`/dashbord/${event.slug}`}>Admin dashbord</Link>
         </Button>
       )}
-      {/**
-       * Show reaction buttons if:
-       * - User is logged in
-       */}
-      {Boolean(user) && <ReactionButtonGroup reactToKey={event._id} />}
     </div>
   );
 };
