@@ -4,7 +4,6 @@ import { getCalendarEvents } from "@/lib/calendar-events";
 import { ensureUser } from "@/lib/ensure";
 
 import { Banner } from "./_components/banner";
-import VervBanner from "./_components/verv-banner";
 import BirthdayBanner from "./_components/birthday-banner";
 import { ComingHappenings } from "./_components/coming-bedpres";
 import Cookies from "./_components/cookies-banner";
@@ -15,6 +14,7 @@ import { FPCalendar } from "./_components/fp-calendar";
 import { HyggkomList } from "./_components/hyggkom-list";
 import { JobAds } from "./_components/job-ads";
 import { Posts } from "./_components/posts";
+import VervBanner from "./_components/verv-banner";
 
 export default async function Home() {
   await ensureUser();

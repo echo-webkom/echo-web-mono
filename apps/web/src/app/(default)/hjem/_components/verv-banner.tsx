@@ -34,12 +34,9 @@ export default function VervBanner() {
       href="https://verv.echo-webkom.no"
       target="_blank"
       rel="noopener noreferrer"
-      className="w-full overflow-hidden bg-linear-to-r from-blue-400 to-yellow-300 py-2 shadow-md hover:shadow-lg transition-shadow duration-300 font-medium text-xl text-black flex"
+      className="flex w-full overflow-hidden bg-linear-to-r from-blue-400 to-yellow-300 py-2 text-xl font-medium text-black shadow-md transition-shadow duration-300 hover:shadow-lg"
     >
-      <motion.div
-        style={{ x }}
-        className="flex shrink-0"
-      >
+      <motion.div style={{ x }} className="flex shrink-0">
         {content}
 
         <div className="flex shrink-0 whitespace-nowrap">
