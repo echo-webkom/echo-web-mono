@@ -1602,6 +1602,23 @@ class NotificationsApi {
   }
 }
 
+type CMSTrophyCollection = {
+  _id: string;
+  title: string;
+  slug: string;
+  baseImage: CMSImage;
+  baseDescription: string;
+  trophies: Array<CMSTrophy>;
+};
+
+type CMSTrophy = {
+  _key: string;
+  title: string;
+  description: string;
+  level: string;
+  image: CMSImage;
+};
+
 class TrophiesApi {
   private client: UnoClient;
 
@@ -1610,11 +1627,6 @@ class TrophiesApi {
   }
 
   async all() {
-    const response = await this.client.request("GET", "sanity/trophies");
-    if (!response.ok) {
-      console.log("resp = ", await response.text());
-      return [];
-    }
-    return await response.json();
+    return this.client.requestJson<Array<CMSTrophyCollection>>("GET", "sanity/trophies");
   }
 }

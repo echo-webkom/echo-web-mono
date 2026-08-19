@@ -24,29 +24,30 @@ export default async function TrophyPage() {
       <Text>Her er det mulig å redigere hvem som fortjener alle troféene.</Text>
 
       {trophies.map((trophy) => (
-        <div key={trophy._id}>
-          <h3 className="my-3 text-xl font-semibold">{trophy.title}</h3>
-          <div className="flex">
-            {trophy.trophies && (
-              <div className="flex gap-5">
-                {trophy.trophies.map((t) => (
-                  <div
-                    key={t._key}
-                    className="flex flex-col items-center gap-y-3"
-                  >
-                    <Image
-                      src={urlFor(t.image ?? "").url()}
-                      alt="Empty trophy"
-                      width={150}
-                      height={150}
-                    />
-                    <UserTrophiesModal users={users} />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+        <p key={trophy._id}>{trophy._id}</p>
+        // <div key={trophy.id}>
+        //   <h3 className="my-3 text-xl font-semibold">{trophy.title}</h3>
+        //   <div className="flex">
+        //     {trophy.trophies && (
+        //       <div className="flex gap-5">
+        //         {trophy.trophies.map((t) => (
+        //           <div
+        //             key={t._key}
+        //             className="flex flex-col items-center gap-y-3"
+        //           >
+        //             <Image
+        //               src={urlFor(t.image ?? "").url()}
+        //               alt="Empty trophy"
+        //               width={150}
+        //               height={150}
+        //             />
+        //             <UserTrophiesModal users={users} />
+        //           </div>
+        //         ))}
+        //       </div>
+        //     )}
+        //   </div>
+        // </div>
       ))}
     </Container>
   );

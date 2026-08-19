@@ -10,6 +10,7 @@ type CMSTrophyCollection struct {
 }
 
 type CMSTrophy struct {
+	ID          string `json:"_id"`
 	Key         string `json:"_key"`
 	Title       string `json:"title"`
 	Description string `json:"description"`

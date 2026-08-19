@@ -446,12 +446,6 @@ func (s *sanityCMS) getAllMovies(ctx *handler.Context) error {
 // @Router       /sanity/trophies [get]
 func (s *sanityCMS) getAllTrophies(ctx *handler.Context) error {
 	trophies, err := s.cmsService.GetAllTrophies(ctx.Context())
-	s.logger.Error(ctx.Context(), fmt.Sprintf("error = %s", err.Error()))
-	s.logger.Error(ctx.Context(), fmt.Sprintf("error = %s", err.Error()))
-	s.logger.Error(ctx.Context(), fmt.Sprintf("error = %s", err.Error()))
-	s.logger.Error(ctx.Context(), fmt.Sprintf("error = %s", err.Error()))
-	s.logger.Error(ctx.Context(), fmt.Sprintf("error = %s", err.Error()))
-
 	if err != nil {
 		return ctx.InternalServerError()
 	}
