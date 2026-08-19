@@ -14,6 +14,7 @@ import { FPCalendar } from "./_components/fp-calendar";
 import { HyggkomList } from "./_components/hyggkom-list";
 import { JobAds } from "./_components/job-ads";
 import { Posts } from "./_components/posts";
+import VervBanner from "./_components/verv-banner";
 
 export default async function Home() {
   await ensureUser();
@@ -37,6 +38,7 @@ export default async function Home() {
     <>
       <Cookies />
       <Banner banner={banner} />
+      <VervBanner />
       <BirthdayBanner />
       <EchoBirthdayBanner />
 
