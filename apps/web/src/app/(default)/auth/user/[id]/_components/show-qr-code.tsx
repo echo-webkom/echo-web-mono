@@ -13,11 +13,19 @@ export const ShowQrCode = ({ userId }: props) => {
   const [show, setShow] = useState(false);
 
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <Button className="mb-5" onClick={() => setShow((prev) => !prev)}>
         {show ? "Lukk" : "Vis QR kode"}
       </Button>
-      {show && <QRCode size={250} bgColor="white" fgColor="black" value={userId} />}
+
+      {show && (
+        <QRCode
+          size={250}
+          bgColor="white"
+          fgColor="black"
+          value={userId}
+        />
+      )}
     </div>
   );
 };
