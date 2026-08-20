@@ -49,6 +49,7 @@ export default async function EventDashboard(props: Props) {
           <TabsTrigger value="registrations">Påmeldinger</TabsTrigger>
           <TabsTrigger value="statistics">Statistikk</TabsTrigger>
           <TabsTrigger value="utilities">Verktøy</TabsTrigger>
+          <TabsTrigger value="attendance"></TabsTrigger>
         </TabsList>
         <TabsContent value="registrations">
           <RegistrationsTab
