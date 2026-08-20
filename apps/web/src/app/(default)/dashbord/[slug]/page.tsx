@@ -13,6 +13,7 @@ import { createBackLink } from "./_lib/utils";
 import { RegistrationsTab } from "./_tabs/registrations";
 import { StatisticsTab } from "./_tabs/statistics";
 import { UtilitiesTab } from "./_tabs/utilities";
+import { AttendanceTab } from "./_tabs/attendance";
 
 type Props = {
   params: Promise<{
@@ -45,11 +46,11 @@ export default async function EventDashboard(props: Props) {
       <BackButton link={createBackLink(happening)} />
 
       <Tabs defaultValue="registrations">
-        <TabsList className="grid h-10 w-full grid-cols-3">
+        <TabsList className="grid h-10 w-full grid-cols-4">
           <TabsTrigger value="registrations">Påmeldinger</TabsTrigger>
           <TabsTrigger value="statistics">Statistikk</TabsTrigger>
           <TabsTrigger value="utilities">Verktøy</TabsTrigger>
-          <TabsTrigger value="attendance"></TabsTrigger>
+          <TabsTrigger value="attendance">Ta oppmøte</TabsTrigger>
         </TabsList>
         <TabsContent value="registrations">
           <RegistrationsTab
@@ -63,6 +64,12 @@ export default async function EventDashboard(props: Props) {
         </TabsContent>
         <TabsContent value="utilities">
           <UtilitiesTab happening={happening} registrations={registrations} />
+        </TabsContent>
+        <TabsContent value="attendance">
+          <AttendanceTab happening={happening}
+            registrations={registrations}
+            spotRanges={spotRanges}
+          />
         </TabsContent>
       </Tabs>
     </Container>

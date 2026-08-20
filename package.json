@@ -41,6 +41,7 @@
     "update-all": "pnpm -r update --latest -i"
   },
   "dependencies": {
+    "html5-qrcode": "^2.3.8",
     "react-qr-code": "^2.2.0",
     "turbo": "2.8.12",
     "typescript": "5.9.3"

@@ -2,27 +2,35 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
+import { Any } from "@sanity/client";
 
-import { type FullHappening, type Group } from "@/api/uno/client";
+import { type FullHappening, type SpotRange } from "@/api/uno/client";
+
+import { RegistrationTable } from "../_components/registration-table";
 import { type RegistrationWithUser } from "../_lib/types";
-import { attend } from "../../../../../actions/attend";
-import { RegistrationList } from "./registration-list";
 
 type QrScannerProps = {
-  registrations: Array<RegistrationWithUser>;
   happening: FullHappening;
-  studentGroups: Array<Group>;
+  registrations: Array<RegistrationWithUser>;
+  spotRanges: Array<SpotRange>;
+  groups: Any;
 };
 
 type ScannerState = "idle" | "starting" | "scanning" | "error";
 
-export const QrScanner = ({ registrations, happening, studentGroups }: QrScannerProps) => {
-  const [localRegistrations, setLocalRegistrations] = useState(registrations);
+export const QrScanner = ({
+  happening,
+  registrations,
+  spotRanges,
+  groups,
+}: QrScannerProps) => {
   const [scannerState, setScannerState] = useState<ScannerState>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [scannedContent, setScannedContent] = useState<string | null>(null);
 
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const lastScanRef = useRef<string | null>(null);
+
   const readerId = useId().replace(/:/g, "");
 
   const startScanner = async () => {
@@ -34,24 +42,31 @@ export const QrScanner = ({ registrations, happening, studentGroups }: QrScanner
       scannerRef.current = scanner;
 
       const cameras = await Html5Qrcode.getCameras();
-      const backCamera = cameras.find((c) => /back|rear|environment/i.test(c.label));
 
-      const cameraConstraint = backCamera ? backCamera.id : { facingMode: "user" };
+      const backCamera = cameras.find((camera) =>
+        /back|rear|environment/i.test(camera.label),
+      );
+
+      const cameraConstraint = backCamera
+        ? backCamera.id
+        : { facingMode: "environment" };
 
       await scanner.start(
         cameraConstraint,
-        { fps: 10, qrbox: { width: 250, height: 250 } },
-        async (result) => {
+        {
+          fps: 10,
+          qrbox: {
+            width: 250,
+            height: 250,
+          },
+        },
+        (result) => {
           if (lastScanRef.current === result) return;
+
           lastScanRef.current = result;
 
-          const response = await attend(happening.id, result);
-
-          if (response.success) {
-            setLocalRegistrations((prev) =>
-              prev.map((reg) => (reg.userId === result ? { ...reg, status: "attended" } : reg)),
-            );
-          }
+          console.log("Scanned QR code:", result);
+          setScannedContent(result);
 
           window.setTimeout(() => {
             lastScanRef.current = null;
@@ -66,12 +81,15 @@ export const QrScanner = ({ registrations, happening, studentGroups }: QrScanner
       setScannerState("scanning");
     } catch (err) {
       console.error(err);
+
       setScannerState("error");
+
       setErrorMessage(
         err instanceof Error && err.message.includes("Permission")
           ? "Camera permission denied. Please allow camera access and try again."
           : "Could not start camera. Make sure no other app is using it.",
       );
+
       scannerRef.current = null;
     }
   };
@@ -81,6 +99,7 @@ export const QrScanner = ({ registrations, happening, studentGroups }: QrScanner
       await scannerRef.current.stop().catch(() => {});
       scannerRef.current = null;
     }
+
     setScannerState("idle");
   };
 
@@ -105,6 +124,7 @@ export const QrScanner = ({ registrations, happening, studentGroups }: QrScanner
             {scannerState === "error" ? (
               <>
                 <p className="text-sm text-red-600">{errorMessage}</p>
+
                 <button
                   onClick={startScanner}
                   className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
@@ -115,14 +135,19 @@ export const QrScanner = ({ registrations, happening, studentGroups }: QrScanner
             ) : (
               <>
                 <p className="text-sm text-gray-500">
-                  {scannerState === "starting" ? "Starting camera…" : "Ready to scan"}
+                  {scannerState === "starting"
+                    ? "Starting camera…"
+                    : "Ready to scan"}
                 </p>
+
                 <button
                   onClick={startScanner}
                   disabled={scannerState === "starting"}
                   className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50"
                 >
-                  {scannerState === "starting" ? "Starting…" : "Start scanner"}
+                  {scannerState === "starting"
+                    ? "Starting…"
+                    : "Start scanner"}
                 </button>
               </>
             )}
@@ -137,14 +162,25 @@ export const QrScanner = ({ registrations, happening, studentGroups }: QrScanner
             Stop scanner
           </button>
         )}
+
+        {scannedContent && (
+          <div className="mt-4 rounded-lg border border-gray-300 p-4">
+            <p className="mb-1 text-sm font-medium">Scanned content</p>
+            <p className="break-all text-sm text-gray-600">
+              {scannedContent}
+            </p>
+          </div>
+        )}
       </div>
 
-      <RegistrationList
-        registrations={localRegistrations}
-        studentGroups={studentGroups}
+      <RegistrationTable
+        questions={happening.questions}
+        registrations={registrations}
+        studentGroups={groups}
         slug={happening.slug}
         isBedpres={happening.type === "bedpres"}
         happeningDate={happening.date}
+        spotRanges={spotRanges}
       />
     </>
   );
