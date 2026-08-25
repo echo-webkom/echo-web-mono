@@ -389,3 +389,28 @@ func (r *RegistrationRepo) DeleteRegistrationsByHappeningID(ctx context.Context,
 
 	return nil
 }
+
+func (h *RegistrationRepo) SetAttendance(ctx context.Context, userID string, happeningID string, attended bool) error{
+		h.logger.Info(ctx, "set attendance",
+		"user_id", userID,
+		"happening_id", happeningID,
+		"attendance_status", attended,
+	)
+
+	query := `--sql
+		UPDATE registrations 
+		SET attended = $1 
+		WHERE user_id = $2 AND happening_id = $3
+	`
+
+	if _, err := h.db.ExecContext(ctx, query, attended, userID, happeningID); err != nil {
+		h.logger.Error(ctx, "failed to set attendance",
+			"error", err,
+			"happening_id", happeningID,
+			"attendance_status", attended,
+			"user_id", userID,
+		)
+		return err
+	}
+	return nil
+}

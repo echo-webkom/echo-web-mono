@@ -16,6 +16,7 @@ type RegistrationResponse struct {
 	PrevStatus       *string    `json:"prevStatus,omitempty"`
 	ChangedAt        *time.Time `json:"changedAt,omitempty"`
 	ChangedBy        *string    `json:"changedBy,omitempty"`
+	Attended 		 *bool		`json:"attended,omitempty"`
 }
 
 // FromDomain converts a domain Registration model to a RegistrationResponse DTO.
@@ -174,6 +175,7 @@ type HappeningRegistrationResponse struct {
 	PrevStatus       *string    `json:"prevStatus"`
 	ChangedAt        *time.Time `json:"changedAt"`
 	ChangedBy        *string    `json:"changedBy"`
+	Attended		 *bool		`json:"attended"`
 	UserName         *string    `json:"userName"`
 	UserHasImage     bool       `json:"userHasImage"`
 }
@@ -191,6 +193,7 @@ func HappeningRegistrationListFromPorts(registrations []model.HappeningRegistrat
 			PrevStatus:       reg.PrevStatus,
 			ChangedAt:        reg.ChangedAt,
 			ChangedBy:        reg.ChangedBy,
+			Attended:		  reg.attended,
 			UserName:         reg.UserName,
 			UserHasImage:     reg.UserHasImage,
 		}

@@ -31,6 +31,7 @@ type Registration struct {
 	PrevStatus       *string
 	ChangedAt        *time.Time
 	ChangedBy        *string
+	Attended		 *bool
 }
 
 // IsActive checks if the registration is in an active state

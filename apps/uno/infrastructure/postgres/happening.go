@@ -71,7 +71,7 @@ func (h *HappeningRepo) GetHappeningRegistrations(ctx context.Context, happening
 	var dbRegs []record.HappeningRegistrationDB
 	query := `--sql
 		SELECT
-			r.user_id, r.happening_id, r.status, r.unregister_reason, r.created_at, r.prev_status, r.changed_at, r.changed_by, u.name AS user_name, u.image AS user_image
+			r.user_id, r.happening_id, r.status, r.unregister_reason, r.created_at, r.prev_status, r.changed_at, r.changed_by, r.attended, u.name AS user_name, u.image AS user_image
 		FROM registration r
 		LEFT JOIN "user" u ON r.user_id = u.id
 		WHERE r.happening_id = $1

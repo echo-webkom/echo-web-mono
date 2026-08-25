@@ -25,6 +25,7 @@ func NewHappeningMux(logger port.Logger, happeningService *service.HappeningServ
 	mux.GET("/registrations/count", h.getHappeningRegistrationsCountMany)
 	mux.GET("/{id}/questions", h.getHappeningQuestions)
 	mux.GET("/{id}/spot-ranges", h.getHappeningSpotRanges)
+	mux.PUT("/{id}/registrations/{userId}/attendance/{attended}", h.setAttendance)
 
 	// Admin
 	mux.GET("/{id}/registrations", h.getHappeningRegistrations, admin)
@@ -35,6 +36,7 @@ func NewHappeningMux(logger port.Logger, happeningService *service.HappeningServ
 	mux.POST("/{id}/deregister", h.deregisterFromHappening, admin)
 	mux.PATCH("/{id}/registrations/{userId}", h.updateRegistrationStatus, admin)
 	mux.DELETE("/{id}/registrations", h.deleteAllRegistrations, admin)
+
 
 	return mux
 }
@@ -530,5 +532,41 @@ func (h *happenings) deleteAllRegistrations(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 
+	return ctx.Ok()
+}
+
+// setAttendance sets a registration's attendance for a happening
+// @Summary      Set user attendance
+// @Description  Sets whether a specific user attended a happening.
+// @Tags         happenings
+// @Produce      json
+// @Param        id        path      string  true  "Happening ID"
+// @Param        userId    path      string  true  "User ID"
+// @Param        attended  path      bool    true  "Attendance status"
+// @Success      200       {string}  string  "OK"
+// @Failure      400       {string}  string  "Bad Request"
+// @Failure      500       {string}  string  "Internal Server Error"
+// @Router       /happenings/{id}/registrations/{userId}/attendance/{attended} [put]
+func (h *happenings) setAttendance(ctx *handler.Context) error {
+	happeningID := ctx.PathValue("id")
+	if happeningID == "" {
+		return ctx.BadRequest(errors.New("missing happening ID"))
+	}
+	
+	userID := ctx.PathValue("userId")
+	if userID == "" {
+		return ctx.BadRequest(errors.New("missing user ID"))
+	}
+
+	attended := ctx.PathValue("attended")
+	if attended == "" {
+		return ctx.BadRequest(errors.New("missing attended status"))
+	}
+
+	attendedBool := attended == "true"
+
+	if err := h.happeningService.SetAttendance(ctx.Context(), happeningID, userID, attendedBool); err != nil {
+		return ctx.InternalServerError()
+	}
 	return ctx.Ok()
 }

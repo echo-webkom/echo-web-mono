@@ -17,6 +17,7 @@ type RegistrationDB struct {
 	PrevStatus       *string    `db:"prev_status"`
 	ChangedAt        *time.Time `db:"changed_at"`
 	ChangedBy        *string    `db:"changed_by"`
+	Attended		 *bool		`db:"attended"`
 }
 
 // FromDomain converts a domain Registration model to a database RegistrationDB model.
@@ -30,6 +31,7 @@ func (db *RegistrationDB) FromDomain(r *model.Registration) *RegistrationDB {
 		PrevStatus:       r.PrevStatus,
 		ChangedAt:        r.ChangedAt,
 		ChangedBy:        r.ChangedBy,
+		Attended:		  r.Attended,
 	}
 }
 
@@ -44,6 +46,7 @@ func (db *RegistrationDB) ToDomain() *model.Registration {
 		PrevStatus:       db.PrevStatus,
 		ChangedAt:        db.ChangedAt,
 		ChangedBy:        db.ChangedBy,
+		Attended:		  db.Attended,
 	}
 }
 
@@ -94,6 +97,7 @@ type HappeningRegistrationDB struct {
 	UserYear     *int    `db:"user_year"`
 	UserDegreeID *string `db:"user_degree_id"`
 	UserImage    *string `db:"user_image"`
+	Attended	 *bool 	 `db:"attended"`
 }
 
 func (db *HappeningRegistrationDB) UserHasImage() bool {
@@ -111,6 +115,7 @@ func (db *HappeningRegistrationDB) ToPorts() *model.HappeningRegistration {
 		PrevStatus:       db.PrevStatus,
 		ChangedAt:        db.ChangedAt,
 		ChangedBy:        db.ChangedBy,
+		Attended:         db.Attended,
 		UserName:         db.UserName,
 		UserEmail:        db.UserEmail,
 		UserYear:         db.UserYear,
