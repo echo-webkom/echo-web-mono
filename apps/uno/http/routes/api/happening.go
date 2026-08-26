@@ -563,9 +563,9 @@ func (h *happenings) setAttendance(ctx *handler.Context) error {
 		return ctx.BadRequest(errors.New("missing attended status"))
 	}
 
-	attendedBool := attended == "true"
+	attendedBool := attended == "true" || attended == "1"
 
-	if err := h.happeningService.SetAttendance(ctx.Context(), happeningID, userID, attendedBool); err != nil {
+	if err := h.happeningService.SetAttendance(ctx.Context(), userID, happeningID, attendedBool); err != nil {
 		return ctx.InternalServerError()
 	}
 	return ctx.Ok()

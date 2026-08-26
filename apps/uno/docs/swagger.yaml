@@ -916,6 +916,8 @@ definitions:
     type: object
   uno_http_dto.HappeningRegistrationResponse:
     properties:
+      attended:
+        type: boolean
       changedAt:
         type: string
       changedBy:
@@ -1117,6 +1119,8 @@ definitions:
     type: object
   uno_http_dto.RegistrationResponse:
     properties:
+      attended:
+        type: boolean
       changedAt:
         type: string
       changedBy:
@@ -2659,6 +2663,43 @@ paths:
       security:
       - AdminAPIKey: []
       summary: Update registration status
+      tags:
+      - happenings
+  /happenings/{id}/registrations/{userId}/attendance/{attended}:
+    put:
+      description: Sets whether a specific user attended a happening.
+      parameters:
+      - description: Happening ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: string
+      - description: Attendance status
+        in: path
+        name: attended
+        required: true
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Set user attendance
       tags:
       - happenings
   /happenings/{id}/registrations/full:

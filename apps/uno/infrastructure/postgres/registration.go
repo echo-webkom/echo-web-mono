@@ -398,7 +398,7 @@ func (h *RegistrationRepo) SetAttendance(ctx context.Context, userID string, hap
 	)
 
 	query := `--sql
-		UPDATE registrations 
+		UPDATE registration 
 		SET attended = $1 
 		WHERE user_id = $2 AND happening_id = $3
 	`

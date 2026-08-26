@@ -193,7 +193,7 @@ func HappeningRegistrationListFromPorts(registrations []model.HappeningRegistrat
 			PrevStatus:       reg.PrevStatus,
 			ChangedAt:        reg.ChangedAt,
 			ChangedBy:        reg.ChangedBy,
-			Attended:		  reg.attended,
+			Attended:		  reg.Attended,
 			UserName:         reg.UserName,
 			UserHasImage:     reg.UserHasImage,
 		}
