@@ -38,7 +38,7 @@ export const RegistrationTable = ({
     useRegistrationFilter();
 
   const filteredRegistrations = filterRegistrations(registrations, studentGroups, filters);
-
+  console.log(filteredRegistrations)
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col items-center gap-4 pt-2 pb-2 md:flex-row md:pb-4">
