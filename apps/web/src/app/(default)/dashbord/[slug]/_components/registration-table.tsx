@@ -24,6 +24,7 @@ type RegistrationTableProps = {
   isBedpres: boolean;
   happeningDate: Date | null;
   spotRanges: Array<SpotRange>;
+  showAttendance: boolean;
 };
 
 export const RegistrationTable = ({
@@ -32,6 +33,7 @@ export const RegistrationTable = ({
   isBedpres,
   happeningDate,
   spotRanges,
+  showAttendance,
 }: RegistrationTableProps) => {
   const [showIndex, setShowIndex] = useState(false);
   const { filters, resetFilters, setSearchTerm, setYearFilter, setStatusFilter, setGroupFilter } =
@@ -82,7 +84,7 @@ export const RegistrationTable = ({
                 Info
               </TableHead>
               <TableHead scope="col">Navn</TableHead>
-              <TableHead scope="col">Status</TableHead>
+              {showAttendance ? (<TableHead scope="col">Møtt opp</TableHead>) : (<TableHead scope="col">Status</TableHead>)}
               <TableHead scope="col" className="w-16">
                 Mer
               </TableHead>
@@ -110,6 +112,7 @@ export const RegistrationTable = ({
                 isBedpres={isBedpres}
                 happeningDate={happeningDate}
                 spotRanges={spotRanges}
+                showAttendance={showAttendance}
               />
             ))}
           </TableBody>

@@ -32,6 +32,7 @@ type RegistrationRowProps = {
   isBedpres: boolean;
   happeningDate: Date | null;
   spotRanges: Array<SpotRange>;
+  showAttendance: boolean;
 };
 
 export const RegistrationRow = ({
@@ -41,11 +42,12 @@ export const RegistrationRow = ({
   isBedpres,
   happeningDate,
   spotRanges,
+  showAttendance
 }: RegistrationRowProps) => {
   const [showMore, setShowMore] = useState(false);
   const group = registration.user.memberships
     .map((membership) => " " + membership.group?.name)
-    .join(",");
+    .join(","); 
 
   const userYear = registration.user.year;
   const outsideAllRanges =
@@ -53,8 +55,8 @@ export const RegistrationRow = ({
     spotRanges.length > 0 &&
     (userYear === null ||
       !spotRanges.some((sr) => userYear >= sr.minYear && userYear <= sr.maxYear));
-
-  return (
+    const attended = registration.attended ?? false;
+      return (
     <>
       <TableRow key={registration.user.id}>
         {showIndex && <TableCell>{index + 1}</TableCell>}
@@ -69,9 +71,16 @@ export const RegistrationRow = ({
             {outsideAllRanges && <TriangleAlert className="text-warning-dark h-4 w-4 shrink-0" />}
           </div>
         </TableCell>
-        <TableCell className={cn(statusColor[registration.status])}>
+        {showAttendance ? (
+          <TableCell className={attended ? "text-green-600" : "text-red-600"}>
+            { attended ? "Møtt" : "Ikke møtt"}
+          </TableCell>
+        ) : (
+          <TableCell className={cn(statusColor[registration.status])}>
           {getRegistrationStatus(registration, happeningDate)}
         </TableCell>
+      )
+    }
         <TableCell>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

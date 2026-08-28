@@ -10,6 +10,7 @@ import { RegistrationTable } from "../_components/registration-table";
 import { type RegistrationWithUser } from "../_lib/types";
 import { unoWithAdmin } from "../../../../../api/server";
 import { useUnoClient } from "../../../../../providers/uno";
+import { uno } from "../../../../../api/client";
 
 type QrScannerProps = {
   happening: FullHappening;
@@ -71,7 +72,7 @@ export const QrScanner = ({
           console.log("Scanned QR code:", result);
 
           await unoClient.happenings.setAttendance(happening.id, result, true)
-          
+
           setScannedContent(result);
 
           window.setTimeout(() => {
@@ -187,6 +188,7 @@ export const QrScanner = ({
         isBedpres={happening.type === "bedpres"}
         happeningDate={happening.date}
         spotRanges={spotRanges}
+        showAttendance={true}
       />
     </>
   );

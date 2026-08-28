@@ -21,17 +21,6 @@ export const AttendanceTab = async ({
   return (
     <div>
       <QrScanner registrations={registrations} happening={happening} spotRanges={spotRanges} groups={groups} />
-      
-      {/* <RegistrationTable
-        questions={happening.questions}
-        registrations={registrations}
-        studentGroups={groups}
-        slug={happening.slug}
-        isBedpres={happening.type === "bedpres"}
-        happeningDate={happening.date}
-        spotRanges={spotRanges}
-      /> */}
-      
     </div>
   );
 };
