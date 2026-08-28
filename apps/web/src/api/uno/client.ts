@@ -790,6 +790,7 @@ interface Registration {
   happeningId: string;
   changedAt: Date | null;
   changedBy: string | null;
+  attended: boolean | null;
   createdAt: Date;
   prevStatus: string;
   status: RegistrationStatus;

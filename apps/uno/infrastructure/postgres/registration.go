@@ -55,7 +55,7 @@ func (r *RegistrationRepo) GetByUserAndHappening(ctx context.Context, userID, ha
 	query := `--sql
 		SELECT
 			user_id, happening_id, status, unregister_reason,
-			created_at, prev_status, changed_at, changed_by
+			created_at, prev_status, changed_at, changed_by, attended
 		FROM registration
 		WHERE user_id = $1 AND happening_id = $2
 	`
@@ -390,8 +390,8 @@ func (r *RegistrationRepo) DeleteRegistrationsByHappeningID(ctx context.Context,
 	return nil
 }
 
-func (h *RegistrationRepo) SetAttendance(ctx context.Context, userID string, happeningID string, attended bool) error{
-		h.logger.Info(ctx, "set attendance",
+func (h *RegistrationRepo) SetAttendance(ctx context.Context, userID string, happeningID string, attended bool) error {
+	h.logger.Info(ctx, "set attendance",
 		"user_id", userID,
 		"happening_id", happeningID,
 		"attendance_status", attended,

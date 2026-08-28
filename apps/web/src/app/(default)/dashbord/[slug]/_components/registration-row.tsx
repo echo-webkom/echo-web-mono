@@ -42,12 +42,12 @@ export const RegistrationRow = ({
   isBedpres,
   happeningDate,
   spotRanges,
-  showAttendance
+  showAttendance,
 }: RegistrationRowProps) => {
   const [showMore, setShowMore] = useState(false);
   const group = registration.user.memberships
     .map((membership) => " " + membership.group?.name)
-    .join(","); 
+    .join(",");
 
   const userYear = registration.user.year;
   const outsideAllRanges =
@@ -55,8 +55,9 @@ export const RegistrationRow = ({
     spotRanges.length > 0 &&
     (userYear === null ||
       !spotRanges.some((sr) => userYear >= sr.minYear && userYear <= sr.maxYear));
-    const attended = registration.attended ?? false;
-      return (
+  const attended = registration.attended ?? false;
+
+  return (
     <>
       <TableRow key={registration.user.id}>
         {showIndex && <TableCell>{index + 1}</TableCell>}
@@ -73,14 +74,13 @@ export const RegistrationRow = ({
         </TableCell>
         {showAttendance ? (
           <TableCell className={attended ? "text-green-600" : "text-red-600"}>
-            { attended ? "Møtt" : "Ikke møtt"}
+            {attended ? "Møtt" : "Ikke møtt"}
           </TableCell>
         ) : (
           <TableCell className={cn(statusColor[registration.status])}>
-          {getRegistrationStatus(registration, happeningDate)}
-        </TableCell>
-      )
-    }
+            {getRegistrationStatus(registration, happeningDate)}
+          </TableCell>
+        )}
         <TableCell>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

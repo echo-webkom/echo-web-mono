@@ -158,7 +158,7 @@ type FullRegistrationRowResponse struct {
 	ChangedByUser    *UserResponse                            `json:"changedByUser"`
 	User             UserResponse                             `json:"user"`
 	Answers          []RegistrationAnswerWithQuestionResponse `json:"answers"`
-	Attended		*bool	  								  `json:"attended"`
+	Attended         *bool                                    `json:"attended"`
 }
 
 type RegistrationAnswerWithQuestionResponse struct {
@@ -199,7 +199,7 @@ func FullRegistrationRowsFromDomain(h model.FullHappening, usersByID map[string]
 			ChangedAt:        reg.ChangedAt,
 			ChangedBy:        reg.ChangedBy,
 			Answers:          []RegistrationAnswerWithQuestionResponse{},
-			Attended: 		  reg.Attended,
+			Attended:         reg.Attended,
 		}
 
 		if user, ok := usersByID[reg.UserID]; ok {

@@ -1,22 +1,19 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
-import { Any } from "@sanity/client";
+import { useEffect, useId, useRef, useState } from "react";
 
 import { type FullHappening, type SpotRange } from "@/api/uno/client";
 
 import { RegistrationTable } from "../_components/registration-table";
-import { type RegistrationWithUser } from "../_lib/types";
-import { unoWithAdmin } from "../../../../../api/server";
+import { type DashboardGroup, type RegistrationWithUser } from "../_lib/types";
 import { useUnoClient } from "../../../../../providers/uno";
-import { uno } from "../../../../../api/client";
 
 type QrScannerProps = {
   happening: FullHappening;
   registrations: Array<RegistrationWithUser>;
   spotRanges: Array<SpotRange>;
-  groups: Any;
+  groups: Array<DashboardGroup>;
 };
 
 type ScannerState = "idle" | "starting" | "scanning" | "error";
@@ -31,11 +28,16 @@ export const QrScanner = ({
   const [scannerState, setScannerState] = useState<ScannerState>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [scannedContent, setScannedContent] = useState<string | null>(null);
+  const [tableRegistrations, setTableRegistrations] = useState(registrations);
 
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const lastScanRef = useRef<string | null>(null);
 
   const readerId = useId().replace(/:/g, "");
+
+  useEffect(() => {
+    setTableRegistrations(registrations);
+  }, [registrations]);
 
   const startScanner = async () => {
     setScannerState("starting");
@@ -71,7 +73,21 @@ export const QrScanner = ({
 
           console.log("Scanned QR code:", result);
 
-          await unoClient.happenings.setAttendance(happening.id, result, true)
+          const didUpdateAttendance = await unoClient.happenings.setAttendance(
+            happening.id,
+            result,
+            true,
+          );
+
+          if (didUpdateAttendance) {
+            setTableRegistrations((currentRegistrations) =>
+              currentRegistrations.map((registration) =>
+                registration.userId === result
+                  ? { ...registration, attended: true }
+                  : registration,
+              ),
+            );
+          }
 
           setScannedContent(result);
 
@@ -182,7 +198,7 @@ export const QrScanner = ({
 
       <RegistrationTable
         questions={happening.questions}
-        registrations={registrations}
+        registrations={tableRegistrations}
         studentGroups={groups}
         slug={happening.slug}
         isBedpres={happening.type === "bedpres"}
