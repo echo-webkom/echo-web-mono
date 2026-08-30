@@ -82,39 +82,52 @@ export const RegistrationRow = ({
           </TableCell>
         )}
         <TableCell>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <Ellipsis className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Handlinger</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <EditRegistrationForm id={registration.happeningId} registration={registration} />
-              {isBedpres && (
-                <>
-                  <DropdownMenuSeparator />
-
-                  <Link
-                    target="_blank"
-                    className="hover:cursor-default"
-                    href={`/prikker/${registration.user.id}`}
-                  >
-                    <DropdownMenuItem
-                      onSelect={(e) => {
-                        e.preventDefault();
-                      }}
-                      className="pr-10"
-                    >
-                      Prikker
-                    </DropdownMenuItem>
-                  </Link>
-                </>
+          {showAttendance ? (
+            <Button
+              className={cn(
+                attended
+                  ? "border-destructive-dark bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  : "border-success-dark bg-success text-success-foreground hover:bg-success-hover",
               )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+              size="sm"
+            >
+              {attended ? "Fjern" : "Legg til"}
+            </Button>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <Ellipsis className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Handlinger</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <EditRegistrationForm id={registration.happeningId} registration={registration} />
+                {isBedpres && (
+                  <>
+                    <DropdownMenuSeparator />
+
+                    <Link
+                      target="_blank"
+                      className="hover:cursor-default"
+                      href={`/prikker/${registration.user.id}`}
+                    >
+                      <DropdownMenuItem
+                        onSelect={(e) => {
+                          e.preventDefault();
+                        }}
+                        className="pr-10"
+                      >
+                        Prikker
+                      </DropdownMenuItem>
+                    </Link>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </TableCell>
         <TableCell>
           <button

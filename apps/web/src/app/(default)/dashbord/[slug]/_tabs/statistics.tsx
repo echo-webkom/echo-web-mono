@@ -33,7 +33,7 @@ export const StatisticsTab = async ({ happening, registrations }: StatisticsTabP
     (registration) => registration.status === "unregistered",
   );
   const removed = registrations.filter((registration) => registration.status === "removed");
-  const attended = registrations.filter((registration) => registration.attended === true)
+  const attended = registrations.filter((registration) => registration.attended)
 
   return (
     <div className="mt-8 flex flex-col gap-6">

@@ -106,9 +106,15 @@ export const RegistrationTable = ({
               ) : (
                 <TableHead scope="col">Status</TableHead>
               )}
-              <TableHead scope="col" className="w-16">
+              {showAttendance ? (
+                <TableHead scope="col" className="w-16">
+                  Registrer
+                </TableHead>
+              ) : (
+                <TableHead scope="col" className="w-16">
                 Mer
-              </TableHead>
+              </TableHead>)
+            }
               <TableHead scope="col" className="w-12">
                 {/* Empty */}
               </TableHead>
