@@ -72,6 +72,15 @@ export const QrScanner = ({
           lastScanRef.current = result;
 
           console.log("Scanned QR code:", result);
+          
+          const scannedRegistration = tableRegistrations.find(
+          (registration) => registration.userId === result,
+        );
+
+        if (!scannedRegistration || scannedRegistration.status !== "registered") {
+          setScannedContent("Brukeren " + scannedRegistration?.user.name + " er ikke påmeldt");
+          return;
+        }
 
           const didUpdateAttendance = await unoClient.happenings.setAttendance(
             happening.id,
@@ -89,7 +98,7 @@ export const QrScanner = ({
             );
           }
 
-          setScannedContent(result);
+          setScannedContent(scannedRegistration.user.name + " er registrert møtt opp");
 
           window.setTimeout(() => {
             lastScanRef.current = null;
@@ -188,7 +197,7 @@ export const QrScanner = ({
 
         {scannedContent && (
           <div className="mt-4 rounded-lg border border-gray-300 p-4">
-            <p className="mb-1 text-sm font-medium">Scanned content</p>
+            <p className="mb-1 text-sm font-medium">skannet QR-innhold</p>
             <p className="break-all text-sm text-gray-600">
               {scannedContent}
             </p>

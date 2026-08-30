@@ -27,6 +27,18 @@ type RegistrationTableProps = {
   showAttendance: boolean;
 };
 
+const sortByAttendance = (registrations: Array<RegistrationWithUser>) => {
+  return registrations
+    .map((registration, index) => ({ registration, index }))
+    .sort((a, b) => {
+      const attendanceOrder =
+        Number(a.registration.attended ?? false) - Number(b.registration.attended ?? false);
+
+      return attendanceOrder || a.index - b.index;
+    })
+    .map(({ registration }) => registration);
+};
+
 export const RegistrationTable = ({
   registrations,
   studentGroups,
@@ -40,7 +52,10 @@ export const RegistrationTable = ({
     useRegistrationFilter();
 
   const filteredRegistrations = filterRegistrations(registrations, studentGroups, filters);
-  console.log(filteredRegistrations)
+  const displayedRegistrations = showAttendance
+    ? sortByAttendance(filteredRegistrations)
+    : filteredRegistrations;
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col items-center gap-4 pt-2 pb-2 md:flex-row md:pb-4">
@@ -59,7 +74,9 @@ export const RegistrationTable = ({
 
       <div>
         <div className="flex flex-row justify-between py-2">
-          <p className="text-muted-foreground">Antall resultater: {filteredRegistrations.length}</p>
+          <p className="text-muted-foreground">
+            Antall resultater: {displayedRegistrations.length}
+          </p>
 
           <div className="flex gap-2">
             <Label htmlFor="show-index">Vis nummer</Label>
@@ -84,7 +101,11 @@ export const RegistrationTable = ({
                 Info
               </TableHead>
               <TableHead scope="col">Navn</TableHead>
-              {showAttendance ? (<TableHead scope="col">Møtt opp</TableHead>) : (<TableHead scope="col">Status</TableHead>)}
+              {showAttendance ? (
+                <TableHead scope="col">Møtt opp</TableHead>
+              ) : (
+                <TableHead scope="col">Status</TableHead>
+              )}
               <TableHead scope="col" className="w-16">
                 Mer
               </TableHead>
@@ -94,7 +115,7 @@ export const RegistrationTable = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredRegistrations.length === 0 && (
+            {displayedRegistrations.length === 0 && (
               <TableRow>
                 <td colSpan={showIndex ? 6 : 5}>
                   <p className="text-muted-foreground py-6 text-center text-xl font-medium">
@@ -103,7 +124,7 @@ export const RegistrationTable = ({
                 </td>
               </TableRow>
             )}
-            {filteredRegistrations.map((registration, i) => (
+            {displayedRegistrations.map((registration, i) => (
               <RegistrationRow
                 key={registration.user.id}
                 index={i}
