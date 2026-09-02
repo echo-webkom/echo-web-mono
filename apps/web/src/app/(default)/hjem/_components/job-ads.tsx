@@ -10,6 +10,9 @@ export const JobAds = ({ jobAds, className }: { jobAds: Array<CMSJobAd>; classNa
     return null;
   }
 
+  // Randomize rekkefølge så det er "fair" visning
+  jobAds.sort(() => Math.random() - 0.5);
+
   return (
     <BentoBox
       title="Stillingsannonser"
