@@ -49,6 +49,7 @@ export default defineType({
     }),
     defineField({
       name: "weight",
+      description: "Høyere vekt betyr at annonsen kommer før i listen.",
       title: "Vekting",
       type: "number",
       initialValue: 0,
