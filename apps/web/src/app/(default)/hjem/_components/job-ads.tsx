@@ -10,8 +10,9 @@ export const JobAds = ({ jobAds, className }: { jobAds: Array<CMSJobAd>; classNa
     return null;
   }
 
-  // Randomize rekkefølge så det er "fair" visning
+  // Randomize rekkefølge og så sette prioritert først
   jobAds.sort(() => Math.random() - 0.5);
+  jobAds.sort((a, b) => (a.weight == null ? 1 : b.weight == null ? -1 : b.weight - a.weight));
 
   return (
     <BentoBox
