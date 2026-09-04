@@ -5819,6 +5819,9 @@ const docTemplate = `{
                         "$ref": "#/definitions/uno_http_dto.RegistrationAnswerWithQuestionResponse"
                     }
                 },
+                "attended": {
+                    "type": "boolean"
+                },
                 "changedAt": {
                     "type": "string"
                 },

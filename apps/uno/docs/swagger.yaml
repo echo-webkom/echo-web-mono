@@ -875,6 +875,8 @@ definitions:
         items:
           $ref: '#/definitions/uno_http_dto.RegistrationAnswerWithQuestionResponse'
         type: array
+      attended:
+        type: boolean
       changedAt:
         type: string
       changedBy:
