@@ -1,9 +1,10 @@
 import { unoWithAdmin } from "@/api/server";
 import { type FullHappening, type SpotRange } from "@/api/uno/client";
 
-import { RegistrationTable } from "../_components/registration-table";
 import { type RegistrationWithUser } from "../_lib/types";
 import { QrScanner } from "../_components/qr-scanner";
+import { Chip } from "../../../../../components/typography/chip";
+import { Heading } from "../_components/heading";
 
 type AttendanceTabProps = {
   happening: FullHappening;
@@ -19,8 +20,14 @@ export const AttendanceTab = async ({
   const groups = await unoWithAdmin.groups.all();
 
   return (
-    <div>
-      <QrScanner registrations={registrations} happening={happening} spotRanges={spotRanges} groups={groups} />
-    </div>
+  <div>
+    <div className="mt-8 flex max-w-3xl items-center gap-2">
+      <Heading>Ta oppmøte</Heading>
+      <Chip variant="secondary" className="px-2 py-0.5 text-[px20]">
+        Beta feature
+      </Chip>
+    </div>    
+    <QrScanner registrations={registrations} happening={happening} spotRanges={spotRanges} groups={groups} />
+  </div>
   );
 };
