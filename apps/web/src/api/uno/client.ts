@@ -921,11 +921,13 @@ class HappeningApi {
     return response.status === 200;
   }
 
-    async setAttendance(happeningId: string, userId: string, attended: boolean) {
-    const response = await this.client.request("PUT", `/happenings/${happeningId}/registrations/${userId}/attendance/${attended}`);
+  async setAttendance(happeningId: string, userId: string, attended: boolean) {
+    const response = await this.client.request(
+      "PUT",
+      `/happenings/${happeningId}/registrations/${userId}/attendance/${attended}`,
+    );
     return response.status === 200;
   }
-
 }
 
 interface AccessRequest {

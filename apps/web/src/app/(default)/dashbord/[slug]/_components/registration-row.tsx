@@ -3,9 +3,8 @@
 import { ChevronDown } from "lucide-react";
 import { Ellipsis, TriangleAlert } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
-import { useUnoClient } from "../../../../../providers/uno";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { type SpotRange } from "@/api/uno/client";
 import { EditRegistrationForm } from "@/components/edit-registration-button";
@@ -24,6 +23,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { getRegistrationStatus } from "@/lib/registrations";
 import { cn } from "@/utils/cn";
 
+import { useUnoClient } from "../../../../../providers/uno";
 import { statusColor } from "../_lib/status-color";
 import { type RegistrationWithUser } from "../_lib/types";
 
@@ -94,11 +94,12 @@ export const RegistrationRow = ({
                   registration.userId,
                   !attended,
                 );
-              
+
                 if (ok) {
                   router.refresh();
                 }
-              }}              className={cn(
+              }}
+              className={cn(
                 attended
                   ? "border-destructive-dark bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   : "border-success-dark bg-success text-success-foreground hover:bg-success-hover",

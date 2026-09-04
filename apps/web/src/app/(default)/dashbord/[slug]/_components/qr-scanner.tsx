@@ -5,9 +5,9 @@ import { useEffect, useId, useRef, useState } from "react";
 
 import { type FullHappening, type SpotRange } from "@/api/uno/client";
 
+import { useUnoClient } from "../../../../../providers/uno";
 import { RegistrationTable } from "../_components/registration-table";
 import { type DashboardGroup, type RegistrationWithUser } from "../_lib/types";
-import { useUnoClient } from "../../../../../providers/uno";
 
 type QrScannerProps = {
   happening: FullHappening;
@@ -18,12 +18,7 @@ type QrScannerProps = {
 
 type ScannerState = "idle" | "starting" | "scanning" | "error";
 
-export const QrScanner = ({
-  happening,
-  registrations,
-  spotRanges,
-  groups,
-}: QrScannerProps) => {
+export const QrScanner = ({ happening, registrations, spotRanges, groups }: QrScannerProps) => {
   const unoClient = useUnoClient();
   const [scannerState, setScannerState] = useState<ScannerState>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -49,13 +44,9 @@ export const QrScanner = ({
 
       const cameras = await Html5Qrcode.getCameras();
 
-      const backCamera = cameras.find((camera) =>
-        /back|rear|environment/i.test(camera.label),
-      );
+      const backCamera = cameras.find((camera) => /back|rear|environment/i.test(camera.label));
 
-      const cameraConstraint = backCamera
-        ? backCamera.id
-        : { facingMode: "environment" };
+      const cameraConstraint = backCamera ? backCamera.id : { facingMode: "environment" };
 
       await scanner.start(
         cameraConstraint,
@@ -72,15 +63,15 @@ export const QrScanner = ({
           lastScanRef.current = result;
 
           console.log("Scanned QR code:", result);
-          
-          const scannedRegistration = tableRegistrations.find(
-          (registration) => registration.userId === result,
-        );
 
-        if (!scannedRegistration || scannedRegistration.status !== "registered") {
-          setScannedContent("Brukeren " + scannedRegistration?.user.name + " er ikke påmeldt");
-          return;
-        }
+          const scannedRegistration = tableRegistrations.find(
+            (registration) => registration.userId === result,
+          );
+
+          if (!scannedRegistration || scannedRegistration.status !== "registered") {
+            setScannedContent("Brukeren " + scannedRegistration?.user.name + " er ikke påmeldt");
+            return;
+          }
 
           const didUpdateAttendance = await unoClient.happenings.setAttendance(
             happening.id,
@@ -91,9 +82,7 @@ export const QrScanner = ({
           if (didUpdateAttendance) {
             setTableRegistrations((currentRegistrations) =>
               currentRegistrations.map((registration) =>
-                registration.userId === result
-                  ? { ...registration, attended: true }
-                  : registration,
+                registration.userId === result ? { ...registration, attended: true } : registration,
               ),
             );
           }
@@ -167,9 +156,7 @@ export const QrScanner = ({
             ) : (
               <>
                 <p className="text-sm text-gray-500">
-                  {scannerState === "starting"
-                    ? "Starting camera…"
-                    : "Ready to scan"}
+                  {scannerState === "starting" ? "Starting camera…" : "Ready to scan"}
                 </p>
 
                 <button
@@ -177,9 +164,7 @@ export const QrScanner = ({
                   disabled={scannerState === "starting"}
                   className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50"
                 >
-                  {scannerState === "starting"
-                    ? "Starting…"
-                    : "Start scanner"}
+                  {scannerState === "starting" ? "Starting…" : "Start scanner"}
                 </button>
               </>
             )}
@@ -198,9 +183,7 @@ export const QrScanner = ({
         {scannedContent && (
           <div className="mt-4 rounded-lg border border-gray-300 p-4">
             <p className="mb-1 text-sm font-medium">skannet QR-innhold</p>
-            <p className="break-all text-sm text-gray-600">
-              {scannedContent}
-            </p>
+            <p className="text-sm break-all text-gray-600">{scannedContent}</p>
           </div>
         )}
       </div>

@@ -10,10 +10,10 @@ import { isHost } from "@/lib/memberships";
 
 import { getRegistrations } from "./_lib/get-registrations";
 import { createBackLink } from "./_lib/utils";
+import { AttendanceTab } from "./_tabs/attendance";
 import { RegistrationsTab } from "./_tabs/registrations";
 import { StatisticsTab } from "./_tabs/statistics";
 import { UtilitiesTab } from "./_tabs/utilities";
-import { AttendanceTab } from "./_tabs/attendance";
 
 type Props = {
   params: Promise<{
@@ -66,7 +66,8 @@ export default async function EventDashboard(props: Props) {
           <UtilitiesTab happening={happening} registrations={registrations} />
         </TabsContent>
         <TabsContent value="attendance">
-          <AttendanceTab happening={happening}
+          <AttendanceTab
+            happening={happening}
             registrations={registrations}
             spotRanges={spotRanges}
           />
