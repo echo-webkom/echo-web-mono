@@ -59,10 +59,7 @@ export const QrScanner = ({ happening, registrations, spotRanges, groups }: QrSc
         },
         async (result) => {
           if (lastScanRef.current === result) return;
-
           lastScanRef.current = result;
-
-          console.log("Scanned QR code:", result);
 
           const scannedRegistration = tableRegistrations.find(
             (registration) => registration.userId === result,
