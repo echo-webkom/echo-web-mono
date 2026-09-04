@@ -52,9 +52,12 @@ export const RegistrationTable = ({
     useRegistrationFilter();
 
   const filteredRegistrations = filterRegistrations(registrations, studentGroups, filters);
-  const displayedRegistrations = showAttendance
-    ? sortByAttendance(filteredRegistrations)
+  const attendanceRegistrations = showAttendance
+    ? filteredRegistrations.filter((registration) => registration.status === "registered")
     : filteredRegistrations;
+  const displayedRegistrations = showAttendance
+    ? sortByAttendance(attendanceRegistrations)
+    : attendanceRegistrations;
 
   return (
     <div className="flex flex-col gap-8">
@@ -112,9 +115,9 @@ export const RegistrationTable = ({
                 </TableHead>
               ) : (
                 <TableHead scope="col" className="w-16">
-                Mer
-              </TableHead>)
-            }
+                  Mer
+                </TableHead>
+              )}
               <TableHead scope="col" className="w-12">
                 {/* Empty */}
               </TableHead>

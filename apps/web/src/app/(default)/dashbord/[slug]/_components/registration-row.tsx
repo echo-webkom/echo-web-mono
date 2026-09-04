@@ -4,6 +4,7 @@ import { ChevronDown } from "lucide-react";
 import { Ellipsis, TriangleAlert } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useUnoClient } from "../../../../../providers/uno";
 
 import { type SpotRange } from "@/api/uno/client";
 import { EditRegistrationForm } from "@/components/edit-registration-button";
@@ -44,6 +45,7 @@ export const RegistrationRow = ({
   spotRanges,
   showAttendance,
 }: RegistrationRowProps) => {
+  const unoClient = useUnoClient();
   const [showMore, setShowMore] = useState(false);
   const group = registration.user.memberships
     .map((membership) => " " + membership.group?.name)
@@ -84,6 +86,13 @@ export const RegistrationRow = ({
         <TableCell>
           {showAttendance ? (
             <Button
+            onClick={() =>
+              unoClient.happenings.setAttendance(
+                registration.happeningId,
+                registration.userId,
+                !attended,
+              )
+            }
               className={cn(
                 attended
                   ? "border-destructive-dark bg-destructive text-destructive-foreground hover:bg-destructive/90"
