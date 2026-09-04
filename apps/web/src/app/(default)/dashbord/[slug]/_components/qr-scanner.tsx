@@ -104,8 +104,8 @@ export const QrScanner = ({ happening, registrations, spotRanges, groups }: QrSc
 
       setErrorMessage(
         err instanceof Error && err.message.includes("Permission")
-          ? "Camera permission denied. Please allow camera access and try again."
-          : "Could not start camera. Make sure no other app is using it.",
+          ? "Kameratilgang ble nektet. Tillat tilgang til kameraet og prøv igjen."
+          : "Kunne ikke starte kameraet. Kontroller at ingen andre apper bruker det.",
       );
 
       scannerRef.current = null;
