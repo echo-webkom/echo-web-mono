@@ -48,6 +48,7 @@ const happening = createHappening({
           answer: "no",
         },
       ],
+      attended: null,
     },
   ],
   questions: [

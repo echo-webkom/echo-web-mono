@@ -37,7 +37,6 @@ func NewHappeningMux(logger port.Logger, happeningService *service.HappeningServ
 	mux.PATCH("/{id}/registrations/{userId}", h.updateRegistrationStatus, admin)
 	mux.DELETE("/{id}/registrations", h.deleteAllRegistrations, admin)
 
-
 	return mux
 }
 
@@ -552,7 +551,7 @@ func (h *happenings) setAttendance(ctx *handler.Context) error {
 	if happeningID == "" {
 		return ctx.BadRequest(errors.New("missing happening ID"))
 	}
-	
+
 	userID := ctx.PathValue("userId")
 	if userID == "" {
 		return ctx.BadRequest(errors.New("missing user ID"))

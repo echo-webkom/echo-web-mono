@@ -89,7 +89,7 @@ type HappeningRegistration struct {
 	UserYear         *int
 	UserDegreeID     *string
 	UserHasImage     bool
-	Attended	     *bool
+	Attended         *bool
 }
 
 type FullHappeningRegistration struct {
