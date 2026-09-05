@@ -3,6 +3,7 @@
 import { ChevronDown } from "lucide-react";
 import { Ellipsis, TriangleAlert } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { type SpotRange } from "@/api/uno/client";
@@ -22,6 +23,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { getRegistrationStatus } from "@/lib/registrations";
 import { cn } from "@/utils/cn";
 
+import { useUnoClient } from "../../../../../providers/uno";
 import { statusColor } from "../_lib/status-color";
 import { type RegistrationWithUser } from "../_lib/types";
 
@@ -32,6 +34,7 @@ type RegistrationRowProps = {
   isBedpres: boolean;
   happeningDate: Date | null;
   spotRanges: Array<SpotRange>;
+  showAttendance: boolean;
 };
 
 export const RegistrationRow = ({
@@ -41,7 +44,10 @@ export const RegistrationRow = ({
   isBedpres,
   happeningDate,
   spotRanges,
+  showAttendance,
 }: RegistrationRowProps) => {
+  const unoClient = useUnoClient();
+  const router = useRouter();
   const [showMore, setShowMore] = useState(false);
   const group = registration.user.memberships
     .map((membership) => " " + membership.group?.name)
@@ -53,6 +59,7 @@ export const RegistrationRow = ({
     spotRanges.length > 0 &&
     (userYear === null ||
       !spotRanges.some((sr) => userYear >= sr.minYear && userYear <= sr.maxYear));
+  const attended = registration.attended ?? false;
 
   return (
     <>
@@ -69,43 +76,73 @@ export const RegistrationRow = ({
             {outsideAllRanges && <TriangleAlert className="text-warning-dark h-4 w-4 shrink-0" />}
           </div>
         </TableCell>
-        <TableCell className={cn(statusColor[registration.status])}>
-          {getRegistrationStatus(registration, happeningDate)}
-        </TableCell>
+        {showAttendance ? (
+          <TableCell className={attended ? "text-green-600" : "text-red-600"}>
+            {attended ? "Møtt" : "Ikke møtt"}
+          </TableCell>
+        ) : (
+          <TableCell className={cn(statusColor[registration.status])}>
+            {getRegistrationStatus(registration, happeningDate)}
+          </TableCell>
+        )}
         <TableCell>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <Ellipsis className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Handlinger</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <EditRegistrationForm id={registration.happeningId} registration={registration} />
-              {isBedpres && (
-                <>
-                  <DropdownMenuSeparator />
+          {showAttendance ? (
+            <Button
+              onClick={async () => {
+                const ok = await unoClient.happenings.setAttendance(
+                  registration.happeningId,
+                  registration.userId,
+                  !attended,
+                );
 
-                  <Link
-                    target="_blank"
-                    className="hover:cursor-default"
-                    href={`/prikker/${registration.user.id}`}
-                  >
-                    <DropdownMenuItem
-                      onSelect={(e) => {
-                        e.preventDefault();
-                      }}
-                      className="pr-10"
-                    >
-                      Prikker
-                    </DropdownMenuItem>
-                  </Link>
-                </>
+                if (ok) {
+                  router.refresh();
+                }
+              }}
+              className={cn(
+                attended
+                  ? "border-destructive-dark bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  : "border-success-dark bg-success text-success-foreground hover:bg-success-hover",
               )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+              size="sm"
+            >
+              {attended ? "Fjern" : "Legg til"}
+            </Button>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <Ellipsis className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Handlinger</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <EditRegistrationForm id={registration.happeningId} registration={registration} />
+                {isBedpres && (
+                  <>
+                    <DropdownMenuSeparator />
+
+                    <Link
+                      target="_blank"
+                      className="hover:cursor-default"
+                      href={`/prikker/${registration.user.id}`}
+                    >
+                      <DropdownMenuItem
+                        onSelect={(e) => {
+                          e.preventDefault();
+                        }}
+                        className="pr-10"
+                      >
+                        Prikker
+                      </DropdownMenuItem>
+                    </Link>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </TableCell>
         <TableCell>
           <button

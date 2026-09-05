@@ -475,6 +475,75 @@ func (_c *RegistrationRepo_InsertAnswers_Call) RunAndReturn(run func(ctx context
 	return _c
 }
 
+// SetAttendance provides a mock function for the type RegistrationRepo
+func (_mock *RegistrationRepo) SetAttendance(ctx context.Context, userID string, happeningID string, attended bool) error {
+	ret := _mock.Called(ctx, userID, happeningID, attended)
+
+	if len(ret) == 0 {
+		panic("no return value specified for SetAttendance")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, bool) error); ok {
+		r0 = returnFunc(ctx, userID, happeningID, attended)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// RegistrationRepo_SetAttendance_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SetAttendance'
+type RegistrationRepo_SetAttendance_Call struct {
+	*mock.Call
+}
+
+// SetAttendance is a helper method to define mock.On call
+//   - ctx context.Context
+//   - userID string
+//   - happeningID string
+//   - attended bool
+func (_e *RegistrationRepo_Expecter) SetAttendance(ctx any, userID any, happeningID any, attended any) *RegistrationRepo_SetAttendance_Call {
+	return &RegistrationRepo_SetAttendance_Call{Call: _e.mock.On("SetAttendance", ctx, userID, happeningID, attended)}
+}
+
+func (_c *RegistrationRepo_SetAttendance_Call) Run(run func(ctx context.Context, userID string, happeningID string, attended bool)) *RegistrationRepo_SetAttendance_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 bool
+		if args[3] != nil {
+			arg3 = args[3].(bool)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+		)
+	})
+	return _c
+}
+
+func (_c *RegistrationRepo_SetAttendance_Call) Return(err error) *RegistrationRepo_SetAttendance_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *RegistrationRepo_SetAttendance_Call) RunAndReturn(run func(ctx context.Context, userID string, happeningID string, attended bool) error) *RegistrationRepo_SetAttendance_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // UpdateRegistrationStatus provides a mock function for the type RegistrationRepo
 func (_mock *RegistrationRepo) UpdateRegistrationStatus(ctx context.Context, userID string, happeningID string, status model.RegistrationStatus, prevStatus *string, changedBy *string, changedAt *time.Time, unregisterReason *string) error {
 	ret := _mock.Called(ctx, userID, happeningID, status, prevStatus, changedBy, changedAt, unregisterReason)

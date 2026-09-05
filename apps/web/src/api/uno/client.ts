@@ -790,6 +790,7 @@ interface Registration {
   happeningId: string;
   changedAt: Date | null;
   changedBy: string | null;
+  attended: boolean | null;
   createdAt: Date;
   prevStatus: string;
   status: RegistrationStatus;
@@ -917,6 +918,14 @@ class HappeningApi {
 
   async clearRegistrations(happeningId: string) {
     const response = await this.client.request("DELETE", `happenings/${happeningId}/registrations`);
+    return response.status === 200;
+  }
+
+  async setAttendance(happeningId: string, userId: string, attended: boolean) {
+    const response = await this.client.request(
+      "PUT",
+      `/happenings/${happeningId}/registrations/${userId}/attendance/${attended}`,
+    );
     return response.status === 200;
   }
 }
@@ -1306,6 +1315,7 @@ export interface FullRegistrationRow {
   changedByUser: User | null;
   user: User;
   answers: Array<FullRegistrationAnswerWithQuestion>;
+  attended: boolean | null;
 }
 
 interface UserRegistration {

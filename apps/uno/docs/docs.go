@@ -2133,6 +2133,61 @@ const docTemplate = `{
                 }
             }
         },
+        "/happenings/{id}/registrations/{userId}/attendance/{attended}": {
+            "put": {
+                "description": "Sets whether a specific user attended a happening.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "happenings"
+                ],
+                "summary": "Set user attendance",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Happening ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Attendance status",
+                        "name": "attended",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/happenings/{id}/spot-ranges": {
             "get": {
                 "description": "Retrieves all spot ranges for a specific happening.",
@@ -5764,6 +5819,9 @@ const docTemplate = `{
                         "$ref": "#/definitions/uno_http_dto.RegistrationAnswerWithQuestionResponse"
                     }
                 },
+                "attended": {
+                    "type": "boolean"
+                },
                 "changedAt": {
                     "type": "string"
                 },
@@ -5827,6 +5885,9 @@ const docTemplate = `{
         "uno_http_dto.HappeningRegistrationResponse": {
             "type": "object",
             "properties": {
+                "attended": {
+                    "type": "boolean"
+                },
                 "changedAt": {
                     "type": "string"
                 },
@@ -6136,6 +6197,9 @@ const docTemplate = `{
         "uno_http_dto.RegistrationResponse": {
             "type": "object",
             "properties": {
+                "attended": {
+                    "type": "boolean"
+                },
                 "changedAt": {
                     "type": "string"
                 },
