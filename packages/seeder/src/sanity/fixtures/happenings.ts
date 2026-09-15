@@ -10,6 +10,31 @@ const HYGGKOM_ID = "5442bf10-3b47-411e-b674-2a3b7f47340a";
 export const makeHappenings = () => [
   // Upcoming events
   {
+    _id: "seed-happening-event-multiday",
+    _type: "happening",
+    title: "Hackathon med Webkom",
+    slug: { _type: "slug", current: "seed-hackathon-med-webkom" },
+    happeningType: "event",
+    date: futureDate(2),
+    endDate: futureDate(4),
+    registrationStart: new Date().toISOString(),
+    registrationEnd: futureDate(1),
+    organizers: [ref(WEBKOM_ID, "org1")],
+    location: ref("seed-location-hib"),
+    spotRanges: [{ _type: "spotRange", _key: "sr1", minYear: 1, maxYear: 5, spots: 40 }],
+    body: [
+      "Webkom inviterer til et hackathon som går over tre kalenderdager!",
+      "",
+      "## Program",
+      "",
+      "- **Dag 1:** Introduksjon, laginndeling og idémyldring.",
+      "- **Dag 2:** Koding, veiledning og sosialt samvær.",
+      "- **Dag 3:** Ferdigstilling og presentasjon av prosjektene.",
+      "",
+      "Ta med egen laptop. Alle er velkomne, uansett erfaring!",
+    ].join("\n"),
+  },
+  {
     _id: "seed-happening-event-1",
     _type: "happening",
     title: "Spillkveld med Webkom",

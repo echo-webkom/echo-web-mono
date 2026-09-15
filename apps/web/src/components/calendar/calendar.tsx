@@ -59,17 +59,24 @@ export const Calendar = ({ events, type }: CalendarProps) => {
   const [activeTypes, setActiveTypes] = useState<Set<CalendarEventType>>(new Set(ALL_TYPES));
   const [showLongEvents, setLongEvents] = useLocalStorage(SHOW_LONG_EVENTS_KEY, true);
   const [weekStartsToday, setWeekStartsToday] = useLocalStorage(WEEK_STARTS_TODAY_KEY, false);
+  const [compactMultiDay, setCompactMultiDay] = useLocalStorage("compactMultiDayEvents", false);
   const [showOptionsModal, setOptionsModal] = useState(false);
 
   const toggleOptionsModal = () => setOptionsModal((b) => !b);
 
   const options = [
+    <ToggleWithText
+      key="compact"
+      active={compactMultiDay}
+      toggle={() => setCompactMultiDay((b) => !b)}
+      text="Kompakte flerdagersarrangementer"
+    />,
     // Show/hide events spanning multiple days. Always shows the first one.
     <ToggleWithText
       key={0}
       active={showLongEvents}
       toggle={() => setLongEvents((b) => !b)}
-      text="Vis arrangementer over flere dager"
+      text="Vis fortsettelser av flerdagersarrangementer"
     />,
     // Should the week start on the current day? (default is false; monday)
     <ToggleWithText
@@ -172,11 +179,18 @@ export const Calendar = ({ events, type }: CalendarProps) => {
               isWeek
               setWeekText={setTopText}
               showLongEvents={showLongEvents}
+              compactMultiDay={compactMultiDay}
               weekStartsToday={weekStartsToday}
             />
           </TabsContent>
           <TabsContent value="month">
-            <MonthCalendar events={filteredEvents} steps={steps} setMonthText={setTopText} />
+            <MonthCalendar
+              events={filteredEvents}
+              steps={steps}
+              setMonthText={setTopText}
+              showLongEvents={showLongEvents}
+              compactMultiDay={compactMultiDay}
+            />
           </TabsContent>
 
           <div className="flex items-center gap-4 border-t px-4 py-3">
@@ -217,10 +231,17 @@ export const Calendar = ({ events, type }: CalendarProps) => {
           isWeek
           setWeekText={setTopText}
           showLongEvents={showLongEvents}
+          compactMultiDay={compactMultiDay}
           weekStartsToday={weekStartsToday}
         />
       ) : (
-        <MonthCalendar events={filteredEvents} steps={steps} setMonthText={setTopText} />
+        <MonthCalendar
+          events={filteredEvents}
+          steps={steps}
+          setMonthText={setTopText}
+          showLongEvents={showLongEvents}
+          compactMultiDay={compactMultiDay}
+        />
       )}
     </div>
   );
@@ -286,7 +307,7 @@ const OptionsModal = ({ items, close, isOpen }: OptionsModalProps) => {
     <>
       <div
         className={cn(
-          "bg-accent absolute top-0 z-1 flex h-full flex-col gap-4 items-start rounded border border-y-0 border-r-0 p-3 px-4 shadow transition-all sm:w-sm w-full",
+          "bg-accent absolute top-0 z-60 flex h-full overflow-y-auto flex-col gap-4 items-start rounded border border-y-0 border-r-0 p-3 px-4 shadow transition-all sm:w-sm w-full",
           isOpen ? "right-0" : "-right-[100vw]",
         )}
       >
@@ -315,6 +336,9 @@ const ToggleWithText = ({ active, toggle, text }: ToggleWithTextProps) => {
       <div className="flex w-full justify-end">
         <button
           onClick={toggle}
+          role="switch"
+          aria-checked={active}
+          aria-label={text}
           className={`relative h-6 w-12 rounded-full transition-colors duration-200 ${
             active ? "bg-primary" : "bg-muted-dark"
           }`}
