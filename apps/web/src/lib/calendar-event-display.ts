@@ -78,3 +78,6 @@ export const calendarMultiDayLayout = (
 
 export const calendarMultiDayHeight = (compact: boolean) =>
   compact ? "var(--calendar-compact-height, 16px)" : "32px";
+
+export const calendarDayPadding = (occupiedRows: number, compact: boolean) =>
+  `calc(${occupiedRows} * (${calendarMultiDayHeight(compact)} + 4px) + 8px)`;

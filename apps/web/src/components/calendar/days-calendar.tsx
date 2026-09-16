@@ -3,7 +3,7 @@
 import { addDays, getWeek, isSameDay, startOfWeek, type Day } from "date-fns";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { calendarMultiDayLayout, calendarMultiDayHeight } from "@/lib/calendar-event-display";
+import { calendarMultiDayLayout, calendarDayPadding } from "@/lib/calendar-event-display";
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
 import { dayStr, shortDateNoTime } from "@/utils/date";
 
@@ -69,7 +69,8 @@ export const DaysCalendar = ({
   );
   const days = Array.from({ length: interval }, (_, i) => addDays(startDate, i));
 
-  const { occupiedRows } = calendarMultiDayLayout(events, days, showLongEvents);
+  const layout = calendarMultiDayLayout(events, days, showLongEvents);
+  const { occupiedRows } = layout;
 
   // Calculate week number to show (eg. Uke 1-2)
   const week = useCallback(() => {
@@ -80,7 +81,7 @@ export const DaysCalendar = ({
     if (firstWeek === lastWeek) return firstWeek;
 
     return `${firstWeek} - ${lastWeek}`;
-  }, [days, weekStartsOn]);
+  }, [days]);
 
   useEffect(() => {
     const onResize = () => {
@@ -137,7 +138,7 @@ export const DaysCalendar = ({
                   <div
                     className="row-span-2 row-start-2 space-y-2"
                     style={{
-                      paddingTop: `calc(${occupiedRows[index]} * (${calendarMultiDayHeight(compactMultiDay)} + 4px) + 8px)`,
+                      paddingTop: calendarDayPadding(occupiedRows[index]!, compactMultiDay),
                     }}
                   >
                     {isEchoBirthday(day) && (
@@ -169,6 +170,7 @@ export const DaysCalendar = ({
           })}
           <div className="pointer-events-none z-10 col-span-full col-start-1 row-start-2 min-w-0">
             <CalendarMultiDayEvents
+              layout={layout}
               compact={compactMultiDay}
               events={events}
               days={days}

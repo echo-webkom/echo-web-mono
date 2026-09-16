@@ -1,7 +1,6 @@
 "use client";
 
 import { addDays } from "date-fns";
-import Link from "next/link";
 
 import {
   calendarEventDayLabel,
@@ -13,14 +12,14 @@ import {
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
 import { cn } from "@/utils/cn";
 
-import { HoverCard, HoverCardContent, HoverCardPortal, HoverCardTrigger } from "../ui/hover-card";
-import { EventHoverPreview } from "./event-hover-prev";
+import { CalendarEventLink } from "./calendar-event-link";
 
 type Props = {
   events: Array<CalendarEvent>;
   days: Array<Date>;
   showLongEvents?: boolean;
   compact?: boolean;
+  layout?: ReturnType<typeof calendarMultiDayLayout>;
 };
 
 const colors = {
@@ -36,8 +35,10 @@ export const CalendarMultiDayEvents = ({
   days,
   showLongEvents = true,
   compact = false,
+  layout,
 }: Props) => {
-  const { eventsByDay, visibleEvents } = calendarMultiDayLayout(events, days, showLongEvents);
+  const { eventsByDay, visibleEvents } =
+    layout ?? calendarMultiDayLayout(events, days, showLongEvents);
   if (visibleEvents.length === 0) return null;
 
   return (
@@ -54,48 +55,41 @@ export const CalendarMultiDayEvents = ({
             const firstVisible = !eventsByDay[index - 1]?.includes(event);
             const endsToday = !occursOnCalendarDay(event, addDays(day, 1));
             return (
-              <HoverCard key={day.toISOString()} openDelay={300} closeDelay={100}>
-                <HoverCardTrigger asChild>
-                  <Link
-                    href={event.link}
-                    aria-label={`${event.title} – ${calendarEventDayLabel(event, day)}`}
+              <CalendarEventLink
+                key={day.toISOString()}
+                event={event}
+                day={day}
+                aria-label={`${event.title} – ${calendarEventDayLabel(event, day)}`}
+                className={cn(
+                  "group focus-visible:ring-ring hover:bg-muted/70 pointer-events-auto relative flex min-w-0 items-center focus-visible:z-10 focus-visible:ring-2",
+                  startsToday && "ml-2",
+                  endsToday && "mr-2",
+                )}
+                style={{ gridColumn: index + 1, height: calendarMultiDayHeight(compact) }}
+              >
+                {firstVisible && (
+                  <span
                     className={cn(
-                      "group focus-visible:ring-ring hover:bg-muted/70 pointer-events-auto relative flex min-w-0 items-center focus-visible:z-10 focus-visible:ring-2",
-                      startsToday && "ml-2",
-                      endsToday && "mr-2",
+                      "block truncate font-semibold",
+                      compact
+                        ? "bg-background text-foreground relative z-10 mx-2 px-1 text-xs"
+                        : "px-2 pb-2 text-sm",
                     )}
-                    style={{ gridColumn: index + 1, height: calendarMultiDayHeight(compact) }}
                   >
-                    {firstVisible && (
-                      <span
-                        className={cn(
-                          "block truncate font-semibold",
-                          compact
-                            ? "bg-background text-foreground relative z-10 mx-2 px-1 text-xs"
-                            : "px-2 pb-2 text-sm",
-                        )}
-                      >
-                        {event.title}
-                      </span>
-                    )}
-                    <span
-                      aria-hidden="true"
-                      className={cn(
-                        "absolute inset-x-0 h-2 group-hover:brightness-90",
-                        colors[event.type],
-                        compact ? "top-1/2 -translate-y-1/2" : "bottom-0",
-                        startsToday && "rounded-l-full",
-                        endsToday && "rounded-r-full",
-                      )}
-                    />
-                  </Link>
-                </HoverCardTrigger>
-                <HoverCardPortal>
-                  <HoverCardContent>
-                    <EventHoverPreview event={event} day={day} />
-                  </HoverCardContent>
-                </HoverCardPortal>
-              </HoverCard>
+                    {event.title}
+                  </span>
+                )}
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "absolute inset-x-0 h-2 group-hover:brightness-90",
+                    colors[event.type],
+                    compact ? "top-1/2 -translate-y-1/2" : "bottom-0",
+                    startsToday && "rounded-l-full",
+                    endsToday && "rounded-r-full",
+                  )}
+                />
+              </CalendarEventLink>
             );
           })}
         </div>

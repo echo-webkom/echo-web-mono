@@ -18,7 +18,7 @@ import { useEffect, useMemo } from "react";
 import { CalendarDayEvents } from "@/components/calendar/calendar-day-events";
 import { CalendarMultiDayEvents } from "@/components/calendar/calendar-multi-day-events";
 import { Heading } from "@/components/typography/heading";
-import { calendarMultiDayLayout, calendarMultiDayHeight } from "@/lib/calendar-event-display";
+import { calendarMultiDayLayout, calendarDayPadding } from "@/lib/calendar-event-display";
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
 import { cn } from "@/utils/cn";
 
@@ -129,7 +129,8 @@ export const MonthCalendar = ({
       </div>
       <div className="min-w-200">
         {weeks.map((days) => {
-          const { occupiedRows } = calendarMultiDayLayout(events, days, showLongEvents);
+          const layout = calendarMultiDayLayout(events, days, showLongEvents);
+          const { occupiedRows } = layout;
           return (
             <div key={days[0]!.toISOString()} className="border-b">
               <div className="bg-border grid grid-cols-7 grid-rows-[auto_auto_1fr] gap-x-0.5">
@@ -149,7 +150,7 @@ export const MonthCalendar = ({
                     <div
                       className="relative row-span-2 row-start-2 min-h-10 p-2"
                       style={{
-                        paddingTop: `calc(${occupiedRows[index]} * (${calendarMultiDayHeight(compactMultiDay)} + 4px) + 8px)`,
+                        paddingTop: calendarDayPadding(occupiedRows[index]!, compactMultiDay),
                       }}
                     >
                       {(() => {
@@ -188,6 +189,7 @@ export const MonthCalendar = ({
                 ))}
                 <div className="pointer-events-none z-10 col-span-full col-start-1 row-start-2 min-w-0">
                   <CalendarMultiDayEvents
+                    layout={layout}
                     compact={compactMultiDay}
                     events={events}
                     days={days}
