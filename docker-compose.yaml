@@ -84,7 +84,7 @@ services:
 
   minio:
     profiles: ["dev"]
-    image: minio/minio
+    image: pgsty/silo
     container_name: echo-web-minio
     command: server /data --console-address ":9001"
     environment:
