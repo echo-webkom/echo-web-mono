@@ -112,7 +112,7 @@ export const MonthCalendar = ({
   const BIRTHDAY = new Date(2025, 10, 7, 12, 0, 0);
 
   return (
-    <div className="border-border w-full overflow-x-scroll md:overflow-hidden">
+    <div className="border-border w-full overflow-x-scroll [--calendar-compact-height:20px] sm:[--calendar-compact-height:16px] md:overflow-hidden">
       <div className="border-border bg-border grid min-w-200 grid-cols-7 gap-0.5 border-b-2">
         {weekdays.map((day) => (
           <Heading
@@ -149,8 +149,7 @@ export const MonthCalendar = ({
                     <div
                       className="relative row-span-2 row-start-2 min-h-10 p-2"
                       style={{
-                        paddingTop:
-                          occupiedRows[index]! * (calendarMultiDayHeight(compactMultiDay) + 4) + 8,
+                        paddingTop: `calc(${occupiedRows[index]} * (${calendarMultiDayHeight(compactMultiDay)} + 4px) + 8px)`,
                       }}
                     >
                       {(() => {

@@ -76,4 +76,5 @@ export const calendarMultiDayLayout = (
   return { eventsByDay, visibleEvents, occupiedRows };
 };
 
-export const calendarMultiDayHeight = (compact: boolean) => (compact ? 24 : 32);
+export const calendarMultiDayHeight = (compact: boolean) =>
+  compact ? "var(--calendar-compact-height, 16px)" : "32px";

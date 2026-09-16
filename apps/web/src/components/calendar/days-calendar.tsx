@@ -102,7 +102,10 @@ export const DaysCalendar = ({
   }, [setWeekText, startDate, steps, week]);
 
   return (
-    <div ref={ref} className="space-y-4">
+    <div
+      ref={ref}
+      className="space-y-4 [--calendar-compact-height:20px] sm:[--calendar-compact-height:16px]"
+    >
       <div className="min-h-72">
         <div
           className="min-h-72 grid-rows-[auto_auto_1fr] divide-x"
@@ -134,8 +137,7 @@ export const DaysCalendar = ({
                   <div
                     className="row-span-2 row-start-2 space-y-2"
                     style={{
-                      paddingTop:
-                        occupiedRows[index]! * (calendarMultiDayHeight(compactMultiDay) + 4) + 8,
+                      paddingTop: `calc(${occupiedRows[index]} * (${calendarMultiDayHeight(compactMultiDay)} + 4px) + 8px)`,
                     }}
                   >
                     {isEchoBirthday(day) && (

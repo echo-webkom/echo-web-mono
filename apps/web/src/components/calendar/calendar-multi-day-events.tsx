@@ -69,8 +69,10 @@ export const CalendarMultiDayEvents = ({
                     {firstVisible && (
                       <span
                         className={cn(
-                          "block truncate px-2 font-semibold",
-                          compact ? "pb-1 text-xs" : "pb-2 text-sm",
+                          "block truncate font-semibold",
+                          compact
+                            ? "bg-background text-foreground relative z-10 mx-2 px-1 text-xs"
+                            : "px-2 pb-2 text-sm",
                         )}
                       >
                         {event.title}
@@ -79,9 +81,9 @@ export const CalendarMultiDayEvents = ({
                     <span
                       aria-hidden="true"
                       className={cn(
-                        "absolute inset-x-0 bottom-0 group-hover:brightness-90",
+                        "absolute inset-x-0 h-2 group-hover:brightness-90",
                         colors[event.type],
-                        compact ? "h-1" : "h-2",
+                        compact ? "top-1/2 -translate-y-1/2" : "bottom-0",
                         startsToday && "rounded-l-full",
                         endsToday && "rounded-r-full",
                       )}
