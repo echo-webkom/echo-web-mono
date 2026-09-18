@@ -17,10 +17,19 @@ func NewCMSRepeatingHappeningRepo(t interface {
 	mock.TestingT
 	Cleanup(func())
 }) *CMSRepeatingHappeningRepo {
+	if helper, ok := t.(interface{ Helper() }); ok {
+		helper.Helper()
+	}
+
 	mock := &CMSRepeatingHappeningRepo{}
 	mock.Mock.Test(t)
 
-	t.Cleanup(func() { mock.AssertExpectations(t) })
+	t.Cleanup(func() {
+		if helper, ok := t.(interface{ Helper() }); ok {
+			helper.Helper()
+		}
+		mock.AssertExpectations(t)
+	})
 
 	return mock
 }
