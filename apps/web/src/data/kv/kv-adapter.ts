@@ -1,5 +1,4 @@
 import { type Database } from "@echo-webkom/db/create";
-import { isPostgresIshError } from "@echo-webkom/db/error";
 import { kv } from "@echo-webkom/db/schemas";
 import { eq } from "drizzle-orm";
 
@@ -56,26 +55,10 @@ export class KVDrizzleAdapter implements KVAdapter {
   };
 
   set = async <T>(key: string, value: T, ttl: Date | null): Promise<void> => {
-    try {
-      await this.db.insert(kv).values({
-        key,
-        value,
-        ttl,
-      });
-    } catch (e) {
-      if (isPostgresIshError(e)) {
-        // If the key already exists, update the value
-        if (e.code === "23505") {
-          await this.db
-            .update(kv)
-            .set({
-              value,
-              ttl,
-            })
-            .where(eq(kv.key, key));
-        }
-      }
-    }
+    await this.db
+      .insert(kv)
+      .values({ key, value, ttl })
+      .onConflictDoUpdate({ target: kv.key, set: { value, ttl } });
   };
 }
 
