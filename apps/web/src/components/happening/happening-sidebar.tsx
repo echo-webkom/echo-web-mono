@@ -40,12 +40,21 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
   // Opt-out of caching
   noStore();
 
-  const [user, spotRanges, registrations, questions] = await Promise.all([
+  const [user, spotRanges, registrations, questions, registrationGroups] = await Promise.all([
     auth(),
     unoWithAdmin.happenings.spotRanges(event._id),
     unoWithAdmin.happenings.registrations(event._id),
     unoWithAdmin.happenings.questions(event._id),
+    event.registrationStartGroups && event.registrationGroups?.length
+      ? unoWithAdmin.sanity.studentGroups.all()
+      : Promise.resolve([]),
   ]);
+
+  const registrationGroupNames = new Intl.ListFormat("nb", { type: "conjunction" }).format(
+    (event.registrationGroups ?? []).map(
+      (slug) => registrationGroups.find((group) => group.slug === slug)?.name ?? slug,
+    ),
+  );
 
   const strikeDetails =
     user && event.happeningType === "bedpres"
@@ -472,7 +481,7 @@ export const HappeningSidebar = async ({ event }: EventSidebarProps) => {
             event?.registrationStartGroups &&
             !isClosed && (
               <SidebarItem>
-                <SidebarItemTitle>Påmelding for grupper åpner:</SidebarItemTitle>
+                <SidebarItemTitle>Påmelding for {registrationGroupNames} åpner:</SidebarItemTitle>
                 <SidebarItemContent>
                   {norwegianDateString(event.registrationStartGroups)}
                 </SidebarItemContent>
