@@ -9,7 +9,7 @@ lastUpdated.setDate(lastUpdated.getDate() - 1);
 
 function getTodaysWord() {
   const file = readFileSync(
-    join(process.cwd(), "src/app/(default)/for-studenter/dagens-ord/words.txt"),
+    join(process.cwd(), "src/app/(default)/for-studenter/spill/dagens-ord/words.txt"),
     "utf-8",
   );
   const words = seededShuffle(file.split("\n").filter(Boolean), 42);

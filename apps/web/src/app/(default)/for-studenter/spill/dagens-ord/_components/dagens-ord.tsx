@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import ConfettiForBDay from "../../../hjem/_components/confetti";
+import ConfettiForBDay from "../../../../hjem/_components/confetti";
 import { validWord } from "../_actions/validere-ord";
 import Row from "./row";
 
@@ -44,7 +44,6 @@ export default function DagensOrd({ solution }: { solution: string }) {
     }
   }, [attempts, currentRow, win, loss]);
 
-  
   //Spillogikk
   useEffect(() => {
     if (win) {
