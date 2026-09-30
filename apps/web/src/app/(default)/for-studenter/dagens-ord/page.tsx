@@ -3,7 +3,11 @@ import { join } from "path";
 
 import DagensOrd from "./_components/dagens-ord";
 
-export default function DagensOrdPage() {
+let todaysWord = "skole";
+let lastUpdated = new Date();
+lastUpdated.setDate(lastUpdated.getDate() - 1);
+
+function getTodaysWord() {
   const file = readFileSync(
     join(process.cwd(), "src/app/(default)/for-studenter/dagens-ord/words.txt"),
     "utf-8",
@@ -11,9 +15,19 @@ export default function DagensOrdPage() {
   const words = seededShuffle(file.split("\n").filter(Boolean), 42);
   const today = new Date();
   const dayIndex = Math.floor(today.getTime() / (1000 * 60 * 60 * 24));
-  const solution = words[dayIndex % words.length] ?? "skole";
+  return words[dayIndex % words.length] ?? "skole";
+}
 
-  return <DagensOrd solution={solution} />;
+export default function DagensOrdPage() {
+  const midnight = new Date();
+  midnight.setHours(0, 0, 0, 0);
+
+  if (lastUpdated < midnight) {
+    todaysWord = getTodaysWord();
+    lastUpdated = new Date();
+  }
+
+  return <DagensOrd solution={todaysWord} />;
 }
 
 function seededShuffle(arr: Array<string>, seed: number) {
