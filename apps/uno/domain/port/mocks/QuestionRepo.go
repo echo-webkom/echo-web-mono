@@ -16,10 +16,19 @@ func NewQuestionRepo(t interface {
 	mock.TestingT
 	Cleanup(func())
 }) *QuestionRepo {
+	if helper, ok := t.(interface{ Helper() }); ok {
+		helper.Helper()
+	}
+
 	mock := &QuestionRepo{}
 	mock.Mock.Test(t)
 
-	t.Cleanup(func() { mock.AssertExpectations(t) })
+	t.Cleanup(func() {
+		if helper, ok := t.(interface{ Helper() }); ok {
+			helper.Helper()
+		}
+		mock.AssertExpectations(t)
+	})
 
 	return mock
 }
@@ -70,7 +79,7 @@ type QuestionRepo_CleanupSensitiveQuestions_Call struct {
 
 // CleanupSensitiveQuestions is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *QuestionRepo_Expecter) CleanupSensitiveQuestions(ctx interface{}) *QuestionRepo_CleanupSensitiveQuestions_Call {
+func (_e *QuestionRepo_Expecter) CleanupSensitiveQuestions(ctx any) *QuestionRepo_CleanupSensitiveQuestions_Call {
 	return &QuestionRepo_CleanupSensitiveQuestions_Call{Call: _e.mock.On("CleanupSensitiveQuestions", ctx)}
 }
 

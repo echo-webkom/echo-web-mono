@@ -17,10 +17,19 @@ func NewUsersToShoppingListItemRepo(t interface {
 	mock.TestingT
 	Cleanup(func())
 }) *UsersToShoppingListItemRepo {
+	if helper, ok := t.(interface{ Helper() }); ok {
+		helper.Helper()
+	}
+
 	mock := &UsersToShoppingListItemRepo{}
 	mock.Mock.Test(t)
 
-	t.Cleanup(func() { mock.AssertExpectations(t) })
+	t.Cleanup(func() {
+		if helper, ok := t.(interface{ Helper() }); ok {
+			helper.Helper()
+		}
+		mock.AssertExpectations(t)
+	})
 
 	return mock
 }
@@ -64,7 +73,7 @@ type UsersToShoppingListItemRepo_AddUserToShoppingListItem_Call struct {
 //   - ctx context.Context
 //   - userID string
 //   - itemID string
-func (_e *UsersToShoppingListItemRepo_Expecter) AddUserToShoppingListItem(ctx interface{}, userID interface{}, itemID interface{}) *UsersToShoppingListItemRepo_AddUserToShoppingListItem_Call {
+func (_e *UsersToShoppingListItemRepo_Expecter) AddUserToShoppingListItem(ctx any, userID any, itemID any) *UsersToShoppingListItemRepo_AddUserToShoppingListItem_Call {
 	return &UsersToShoppingListItemRepo_AddUserToShoppingListItem_Call{Call: _e.mock.On("AddUserToShoppingListItem", ctx, userID, itemID)}
 }
 
@@ -127,7 +136,7 @@ type UsersToShoppingListItemRepo_DeleteUserToShoppingListItem_Call struct {
 //   - ctx context.Context
 //   - userID string
 //   - itemID string
-func (_e *UsersToShoppingListItemRepo_Expecter) DeleteUserToShoppingListItem(ctx interface{}, userID interface{}, itemID interface{}) *UsersToShoppingListItemRepo_DeleteUserToShoppingListItem_Call {
+func (_e *UsersToShoppingListItemRepo_Expecter) DeleteUserToShoppingListItem(ctx any, userID any, itemID any) *UsersToShoppingListItemRepo_DeleteUserToShoppingListItem_Call {
 	return &UsersToShoppingListItemRepo_DeleteUserToShoppingListItem_Call{Call: _e.mock.On("DeleteUserToShoppingListItem", ctx, userID, itemID)}
 }
 
@@ -199,7 +208,7 @@ type UsersToShoppingListItemRepo_GetAllUserToShoppingListItems_Call struct {
 
 // GetAllUserToShoppingListItems is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *UsersToShoppingListItemRepo_Expecter) GetAllUserToShoppingListItems(ctx interface{}) *UsersToShoppingListItemRepo_GetAllUserToShoppingListItems_Call {
+func (_e *UsersToShoppingListItemRepo_Expecter) GetAllUserToShoppingListItems(ctx any) *UsersToShoppingListItemRepo_GetAllUserToShoppingListItems_Call {
 	return &UsersToShoppingListItemRepo_GetAllUserToShoppingListItems_Call{Call: _e.mock.On("GetAllUserToShoppingListItems", ctx)}
 }
 
@@ -263,7 +272,7 @@ type UsersToShoppingListItemRepo_GetUserToShoppingListItem_Call struct {
 //   - ctx context.Context
 //   - userID string
 //   - itemID string
-func (_e *UsersToShoppingListItemRepo_Expecter) GetUserToShoppingListItem(ctx interface{}, userID interface{}, itemID interface{}) *UsersToShoppingListItemRepo_GetUserToShoppingListItem_Call {
+func (_e *UsersToShoppingListItemRepo_Expecter) GetUserToShoppingListItem(ctx any, userID any, itemID any) *UsersToShoppingListItemRepo_GetUserToShoppingListItem_Call {
 	return &UsersToShoppingListItemRepo_GetUserToShoppingListItem_Call{Call: _e.mock.On("GetUserToShoppingListItem", ctx, userID, itemID)}
 }
 

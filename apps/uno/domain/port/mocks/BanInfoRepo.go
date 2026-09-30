@@ -17,10 +17,19 @@ func NewBanInfoRepo(t interface {
 	mock.TestingT
 	Cleanup(func())
 }) *BanInfoRepo {
+	if helper, ok := t.(interface{ Helper() }); ok {
+		helper.Helper()
+	}
+
 	mock := &BanInfoRepo{}
 	mock.Mock.Test(t)
 
-	t.Cleanup(func() { mock.AssertExpectations(t) })
+	t.Cleanup(func() {
+		if helper, ok := t.(interface{ Helper() }); ok {
+			helper.Helper()
+		}
+		mock.AssertExpectations(t)
+	})
 
 	return mock
 }
@@ -72,7 +81,7 @@ type BanInfoRepo_CreateBan_Call struct {
 // CreateBan is a helper method to define mock.On call
 //   - ctx context.Context
 //   - ban model.NewBanInfo
-func (_e *BanInfoRepo_Expecter) CreateBan(ctx interface{}, ban interface{}) *BanInfoRepo_CreateBan_Call {
+func (_e *BanInfoRepo_Expecter) CreateBan(ctx any, ban any) *BanInfoRepo_CreateBan_Call {
 	return &BanInfoRepo_CreateBan_Call{Call: _e.mock.On("CreateBan", ctx, ban)}
 }
 
@@ -129,7 +138,7 @@ type BanInfoRepo_DeleteBanByUserID_Call struct {
 // DeleteBanByUserID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-func (_e *BanInfoRepo_Expecter) DeleteBanByUserID(ctx interface{}, userID interface{}) *BanInfoRepo_DeleteBanByUserID_Call {
+func (_e *BanInfoRepo_Expecter) DeleteBanByUserID(ctx any, userID any) *BanInfoRepo_DeleteBanByUserID_Call {
 	return &BanInfoRepo_DeleteBanByUserID_Call{Call: _e.mock.On("DeleteBanByUserID", ctx, userID)}
 }
 
@@ -185,7 +194,7 @@ type BanInfoRepo_DeleteExpired_Call struct {
 
 // DeleteExpired is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *BanInfoRepo_Expecter) DeleteExpired(ctx interface{}) *BanInfoRepo_DeleteExpired_Call {
+func (_e *BanInfoRepo_Expecter) DeleteExpired(ctx any) *BanInfoRepo_DeleteExpired_Call {
 	return &BanInfoRepo_DeleteExpired_Call{Call: _e.mock.On("DeleteExpired", ctx)}
 }
 
@@ -248,7 +257,7 @@ type BanInfoRepo_GetBanInfoByUserID_Call struct {
 // GetBanInfoByUserID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-func (_e *BanInfoRepo_Expecter) GetBanInfoByUserID(ctx interface{}, userID interface{}) *BanInfoRepo_GetBanInfoByUserID_Call {
+func (_e *BanInfoRepo_Expecter) GetBanInfoByUserID(ctx any, userID any) *BanInfoRepo_GetBanInfoByUserID_Call {
 	return &BanInfoRepo_GetBanInfoByUserID_Call{Call: _e.mock.On("GetBanInfoByUserID", ctx, userID)}
 }
 

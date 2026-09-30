@@ -1,5 +1,5 @@
 import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, primaryKey, text, timestamp, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { registrationStatusEnum } from "./enums";
@@ -23,6 +23,7 @@ export const registrations = pgTable(
     prevStatus: registrationStatusEnum("prev_status"),
     changedAt: timestamp("changed_at").$onUpdate(() => new Date()),
     changedBy: text("changed_by"),
+    attended: boolean("attended").default(false),
   },
   (t) => [primaryKey({ columns: [t.userId, t.happeningId] })],
 ).enableRLS();

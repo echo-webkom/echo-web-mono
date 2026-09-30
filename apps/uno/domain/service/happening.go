@@ -76,6 +76,10 @@ func (hs *HappeningService) GetHappeningQuestions(ctx context.Context, happening
 	return hs.happeningRepo.GetHappeningQuestions(ctx, happeningID)
 }
 
+func (hs *HappeningService) SetAttendance(ctx context.Context, userID string, happeningID string, attended bool) error {
+	return hs.registrationRepo.SetAttendance(ctx, userID, happeningID, attended)
+}
+
 func (hs *HappeningService) UpdateRegistrationStatus(
 	ctx context.Context,
 	userID string,

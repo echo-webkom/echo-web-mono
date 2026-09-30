@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 
+import { ShowQrCode } from "./_components/show-qr-code";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
 import WhitelistNotification from "./_components/whitelist-notification";
 
@@ -135,8 +136,12 @@ export default async function ProfilePage({ params }: Props) {
             />
             <Text className="mt-2 py-0 text-xl font-bold">{profileOwner.name}</Text>
             <Text className="text-muted-dark py-0">{profileOwner.email}</Text>
+            <div className="mt-3">
+              <ShowQrCode userId={user.id} />
+            </div>
           </div>
         </div>
+
         <div className="flex w-full justify-center">
           {memberships.length > 0 && (
             <div>

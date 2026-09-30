@@ -17,10 +17,19 @@ func NewProfilePictureRepo(t interface {
 	mock.TestingT
 	Cleanup(func())
 }) *ProfilePictureRepo {
+	if helper, ok := t.(interface{ Helper() }); ok {
+		helper.Helper()
+	}
+
 	mock := &ProfilePictureRepo{}
 	mock.Mock.Test(t)
 
-	t.Cleanup(func() { mock.AssertExpectations(t) })
+	t.Cleanup(func() {
+		if helper, ok := t.(interface{ Helper() }); ok {
+			helper.Helper()
+		}
+		mock.AssertExpectations(t)
+	})
 
 	return mock
 }
@@ -63,7 +72,7 @@ type ProfilePictureRepo_DeleteProfilePicture_Call struct {
 // DeleteProfilePicture is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-func (_e *ProfilePictureRepo_Expecter) DeleteProfilePicture(ctx interface{}, userID interface{}) *ProfilePictureRepo_DeleteProfilePicture_Call {
+func (_e *ProfilePictureRepo_Expecter) DeleteProfilePicture(ctx any, userID any) *ProfilePictureRepo_DeleteProfilePicture_Call {
 	return &ProfilePictureRepo_DeleteProfilePicture_Call{Call: _e.mock.On("DeleteProfilePicture", ctx, userID)}
 }
 
@@ -132,7 +141,7 @@ type ProfilePictureRepo_GetProfilePicture_Call struct {
 //   - ctx context.Context
 //   - userID string
 //   - size int
-func (_e *ProfilePictureRepo_Expecter) GetProfilePicture(ctx interface{}, userID interface{}, size interface{}) *ProfilePictureRepo_GetProfilePicture_Call {
+func (_e *ProfilePictureRepo_Expecter) GetProfilePicture(ctx any, userID any, size any) *ProfilePictureRepo_GetProfilePicture_Call {
 	return &ProfilePictureRepo_GetProfilePicture_Call{Call: _e.mock.On("GetProfilePicture", ctx, userID, size)}
 }
 
@@ -195,7 +204,7 @@ type ProfilePictureRepo_UploadProfilePicture_Call struct {
 //   - ctx context.Context
 //   - userID string
 //   - picture *model.ProfilePictureUpload
-func (_e *ProfilePictureRepo_Expecter) UploadProfilePicture(ctx interface{}, userID interface{}, picture interface{}) *ProfilePictureRepo_UploadProfilePicture_Call {
+func (_e *ProfilePictureRepo_Expecter) UploadProfilePicture(ctx any, userID any, picture any) *ProfilePictureRepo_UploadProfilePicture_Call {
 	return &ProfilePictureRepo_UploadProfilePicture_Call{Call: _e.mock.On("UploadProfilePicture", ctx, userID, picture)}
 }
 

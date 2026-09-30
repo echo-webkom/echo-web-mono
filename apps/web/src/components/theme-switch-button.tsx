@@ -1,21 +1,35 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { Laptop, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 
+import { useIsMounted } from "@/hooks/use-is-mounted";
 import { cn } from "@/utils/cn";
+
+const THEME_CYCLE = ["light", "dark", "system"] as const;
+type Theme = (typeof THEME_CYCLE)[number];
+
+const THEME_LABELS: Record<Theme, string> = {
+  light: "Light mode",
+  dark: "Dark mode",
+  system: "System preference",
+};
 
 export const ThemeSwitchButton = () => {
   const { theme, setTheme } = useTheme();
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const isDarkMode = theme === "dark";
+  const mounted = useIsMounted();
 
-  const toggleTheme = () => {
+  const currentTheme = (theme as Theme) ?? "system";
+
+  const nextTheme = THEME_CYCLE[(THEME_CYCLE.indexOf(currentTheme) + 1) % THEME_CYCLE.length]!;
+
+  const cycleTheme = () => {
     setIsTransitioning(true);
 
     setTimeout(() => {
-      setTheme(isDarkMode ? "light" : "dark");
+      setTheme(nextTheme);
     }, 200);
 
     setTimeout(() => {
@@ -23,23 +37,21 @@ export const ThemeSwitchButton = () => {
     }, 250);
   };
 
+  if (!mounted) {
+    return <div className="h-8 w-8" />;
+  }
+
   return (
     <button
-      onClick={toggleTheme}
-      className={cn("h-8 w-8 transition", {
-        "opacity-20": isTransitioning,
-      })}
-      style={{ transition: "opacity 0.5s ease" }}
+      onClick={cycleTheme}
+      className={cn("h-8 w-8 transition")}
+      style={{ transition: "opacity 0.5s ease", opacity: isTransitioning ? 0.2 : 1 }}
+      aria-label={THEME_LABELS[currentTheme]}
     >
-      <Moon
-        className="block h-full w-full p-1 dark:hidden"
-        style={{ opacity: isTransitioning ? 0 : 1 }}
-      />
-      <Sun
-        className="hidden h-full w-full p-1 dark:block"
-        style={{ opacity: isTransitioning ? 0 : 1 }}
-      />
-      <span className="sr-only">Toggle theme</span>
+      {currentTheme === "light" && <Sun className="h-full w-full p-1" />}
+      {currentTheme === "dark" && <Moon className="h-full w-full p-1" />}
+      {currentTheme === "system" && <Laptop className="h-full w-full p-1" />}
+      <span className="sr-only">{THEME_LABELS[currentTheme]}</span>
     </button>
   );
 };

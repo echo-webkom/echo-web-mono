@@ -17,10 +17,19 @@ func NewCMSHSApplicationRepo(t interface {
 	mock.TestingT
 	Cleanup(func())
 }) *CMSHSApplicationRepo {
+	if helper, ok := t.(interface{ Helper() }); ok {
+		helper.Helper()
+	}
+
 	mock := &CMSHSApplicationRepo{}
 	mock.Mock.Test(t)
 
-	t.Cleanup(func() { mock.AssertExpectations(t) })
+	t.Cleanup(func() {
+		if helper, ok := t.(interface{ Helper() }); ok {
+			helper.Helper()
+		}
+		mock.AssertExpectations(t)
+	})
 
 	return mock
 }
@@ -73,7 +82,7 @@ type CMSHSApplicationRepo_GetAllHSApplications_Call struct {
 
 // GetAllHSApplications is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *CMSHSApplicationRepo_Expecter) GetAllHSApplications(ctx interface{}) *CMSHSApplicationRepo_GetAllHSApplications_Call {
+func (_e *CMSHSApplicationRepo_Expecter) GetAllHSApplications(ctx any) *CMSHSApplicationRepo_GetAllHSApplications_Call {
 	return &CMSHSApplicationRepo_GetAllHSApplications_Call{Call: _e.mock.On("GetAllHSApplications", ctx)}
 }
 

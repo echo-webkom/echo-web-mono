@@ -45,6 +45,7 @@ export const RegistrationsTab = async ({
         isBedpres={happening.type === "bedpres"}
         happeningDate={happening.date}
         spotRanges={spotRanges}
+        showAttendance={false}
       />
     </div>
   );

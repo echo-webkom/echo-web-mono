@@ -17,10 +17,19 @@ func NewVerificationTokenRepo(t interface {
 	mock.TestingT
 	Cleanup(func())
 }) *VerificationTokenRepo {
+	if helper, ok := t.(interface{ Helper() }); ok {
+		helper.Helper()
+	}
+
 	mock := &VerificationTokenRepo{}
 	mock.Mock.Test(t)
 
-	t.Cleanup(func() { mock.AssertExpectations(t) })
+	t.Cleanup(func() {
+		if helper, ok := t.(interface{ Helper() }); ok {
+			helper.Helper()
+		}
+		mock.AssertExpectations(t)
+	})
 
 	return mock
 }
@@ -72,7 +81,7 @@ type VerificationTokenRepo_CreateVerificationToken_Call struct {
 // CreateVerificationToken is a helper method to define mock.On call
 //   - ctx context.Context
 //   - token model.VerificationToken
-func (_e *VerificationTokenRepo_Expecter) CreateVerificationToken(ctx interface{}, token interface{}) *VerificationTokenRepo_CreateVerificationToken_Call {
+func (_e *VerificationTokenRepo_Expecter) CreateVerificationToken(ctx any, token any) *VerificationTokenRepo_CreateVerificationToken_Call {
 	return &VerificationTokenRepo_CreateVerificationToken_Call{Call: _e.mock.On("CreateVerificationToken", ctx, token)}
 }
 
@@ -130,7 +139,7 @@ type VerificationTokenRepo_DeleteVerificationToken_Call struct {
 //   - ctx context.Context
 //   - identifier string
 //   - token string
-func (_e *VerificationTokenRepo_Expecter) DeleteVerificationToken(ctx interface{}, identifier interface{}, token interface{}) *VerificationTokenRepo_DeleteVerificationToken_Call {
+func (_e *VerificationTokenRepo_Expecter) DeleteVerificationToken(ctx any, identifier any, token any) *VerificationTokenRepo_DeleteVerificationToken_Call {
 	return &VerificationTokenRepo_DeleteVerificationToken_Call{Call: _e.mock.On("DeleteVerificationToken", ctx, identifier, token)}
 }
 
@@ -202,7 +211,7 @@ type VerificationTokenRepo_GetAndMarkTokenAsUsed_Call struct {
 //   - ctx context.Context
 //   - identifier string
 //   - token string
-func (_e *VerificationTokenRepo_Expecter) GetAndMarkTokenAsUsed(ctx interface{}, identifier interface{}, token interface{}) *VerificationTokenRepo_GetAndMarkTokenAsUsed_Call {
+func (_e *VerificationTokenRepo_Expecter) GetAndMarkTokenAsUsed(ctx any, identifier any, token any) *VerificationTokenRepo_GetAndMarkTokenAsUsed_Call {
 	return &VerificationTokenRepo_GetAndMarkTokenAsUsed_Call{Call: _e.mock.On("GetAndMarkTokenAsUsed", ctx, identifier, token)}
 }
 
@@ -274,7 +283,7 @@ type VerificationTokenRepo_GetVerificationToken_Call struct {
 //   - ctx context.Context
 //   - identifier string
 //   - token string
-func (_e *VerificationTokenRepo_Expecter) GetVerificationToken(ctx interface{}, identifier interface{}, token interface{}) *VerificationTokenRepo_GetVerificationToken_Call {
+func (_e *VerificationTokenRepo_Expecter) GetVerificationToken(ctx any, identifier any, token any) *VerificationTokenRepo_GetVerificationToken_Call {
 	return &VerificationTokenRepo_GetVerificationToken_Call{Call: _e.mock.On("GetVerificationToken", ctx, identifier, token)}
 }
 
@@ -337,7 +346,7 @@ type VerificationTokenRepo_MarkTokenAsUsed_Call struct {
 //   - ctx context.Context
 //   - identifier string
 //   - token string
-func (_e *VerificationTokenRepo_Expecter) MarkTokenAsUsed(ctx interface{}, identifier interface{}, token interface{}) *VerificationTokenRepo_MarkTokenAsUsed_Call {
+func (_e *VerificationTokenRepo_Expecter) MarkTokenAsUsed(ctx any, identifier any, token any) *VerificationTokenRepo_MarkTokenAsUsed_Call {
 	return &VerificationTokenRepo_MarkTokenAsUsed_Call{Call: _e.mock.On("MarkTokenAsUsed", ctx, identifier, token)}
 }
 

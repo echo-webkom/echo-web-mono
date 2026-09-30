@@ -24,6 +24,19 @@ type RegistrationTableProps = {
   isBedpres: boolean;
   happeningDate: Date | null;
   spotRanges: Array<SpotRange>;
+  showAttendance: boolean;
+};
+
+const sortByAttendance = (registrations: Array<RegistrationWithUser>) => {
+  return registrations
+    .map((registration, index) => ({ registration, index }))
+    .sort((a, b) => {
+      const attendanceOrder =
+        Number(a.registration.attended ?? false) - Number(b.registration.attended ?? false);
+
+      return attendanceOrder || a.index - b.index;
+    })
+    .map(({ registration }) => registration);
 };
 
 export const RegistrationTable = ({
@@ -32,12 +45,19 @@ export const RegistrationTable = ({
   isBedpres,
   happeningDate,
   spotRanges,
+  showAttendance,
 }: RegistrationTableProps) => {
   const [showIndex, setShowIndex] = useState(false);
   const { filters, resetFilters, setSearchTerm, setYearFilter, setStatusFilter, setGroupFilter } =
     useRegistrationFilter();
 
   const filteredRegistrations = filterRegistrations(registrations, studentGroups, filters);
+  const attendanceRegistrations = showAttendance
+    ? filteredRegistrations.filter((registration) => registration.status === "registered")
+    : filteredRegistrations;
+  const displayedRegistrations = showAttendance
+    ? sortByAttendance(attendanceRegistrations)
+    : attendanceRegistrations;
 
   return (
     <div className="flex flex-col gap-8">
@@ -57,7 +77,9 @@ export const RegistrationTable = ({
 
       <div>
         <div className="flex flex-row justify-between py-2">
-          <p className="text-muted-foreground">Antall resultater: {filteredRegistrations.length}</p>
+          <p className="text-muted-foreground">
+            Antall resultater: {displayedRegistrations.length}
+          </p>
 
           <div className="flex gap-2">
             <Label htmlFor="show-index">Vis nummer</Label>
@@ -82,17 +104,27 @@ export const RegistrationTable = ({
                 Info
               </TableHead>
               <TableHead scope="col">Navn</TableHead>
-              <TableHead scope="col">Status</TableHead>
-              <TableHead scope="col" className="w-16">
-                Mer
-              </TableHead>
+              {showAttendance ? (
+                <TableHead scope="col">Møtt opp</TableHead>
+              ) : (
+                <TableHead scope="col">Status</TableHead>
+              )}
+              {showAttendance ? (
+                <TableHead scope="col" className="w-16">
+                  Registrer
+                </TableHead>
+              ) : (
+                <TableHead scope="col" className="w-16">
+                  Mer
+                </TableHead>
+              )}
               <TableHead scope="col" className="w-12">
                 {/* Empty */}
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredRegistrations.length === 0 && (
+            {displayedRegistrations.length === 0 && (
               <TableRow>
                 <td colSpan={showIndex ? 6 : 5}>
                   <p className="text-muted-foreground py-6 text-center text-xl font-medium">
@@ -101,7 +133,7 @@ export const RegistrationTable = ({
                 </td>
               </TableRow>
             )}
-            {filteredRegistrations.map((registration, i) => (
+            {displayedRegistrations.map((registration, i) => (
               <RegistrationRow
                 key={registration.user.id}
                 index={i}
@@ -110,6 +142,7 @@ export const RegistrationTable = ({
                 isBedpres={isBedpres}
                 happeningDate={happeningDate}
                 spotRanges={spotRanges}
+                showAttendance={showAttendance}
               />
             ))}
           </TableBody>

@@ -3,7 +3,7 @@
 
 FROM mcr.microsoft.com/playwright:v1.57.0-noble AS base
 
-RUN corepack enable && corepack prepare pnpm@10.18.3 --activate
+RUN corepack enable && corepack prepare pnpm@11.1.2 --activate
 
 RUN apt-get update && apt-get install -y postgresql-client golang-go && rm -rf /var/lib/apt/lists/*
 

@@ -19,10 +19,19 @@ func NewRegistrationRepo(t interface {
 	mock.TestingT
 	Cleanup(func())
 }) *RegistrationRepo {
+	if helper, ok := t.(interface{ Helper() }); ok {
+		helper.Helper()
+	}
+
 	mock := &RegistrationRepo{}
 	mock.Mock.Test(t)
 
-	t.Cleanup(func() { mock.AssertExpectations(t) })
+	t.Cleanup(func() {
+		if helper, ok := t.(interface{ Helper() }); ok {
+			helper.Helper()
+		}
+		mock.AssertExpectations(t)
+	})
 
 	return mock
 }
@@ -87,7 +96,7 @@ type RegistrationRepo_CreateRegistration_Call struct {
 //   - hostGroups []string
 //   - canSkipSpotRange bool
 //   - spotAvailable port.SpotAvailabilityFunc
-func (_e *RegistrationRepo_Expecter) CreateRegistration(ctx interface{}, userID interface{}, happeningID interface{}, spotRanges interface{}, hostGroups interface{}, canSkipSpotRange interface{}, spotAvailable interface{}) *RegistrationRepo_CreateRegistration_Call {
+func (_e *RegistrationRepo_Expecter) CreateRegistration(ctx any, userID any, happeningID any, spotRanges any, hostGroups any, canSkipSpotRange any, spotAvailable any) *RegistrationRepo_CreateRegistration_Call {
 	return &RegistrationRepo_CreateRegistration_Call{Call: _e.mock.On("CreateRegistration", ctx, userID, happeningID, spotRanges, hostGroups, canSkipSpotRange, spotAvailable)}
 }
 
@@ -170,7 +179,7 @@ type RegistrationRepo_DeleteAnswersByUserAndHappening_Call struct {
 //   - ctx context.Context
 //   - userID string
 //   - happeningID string
-func (_e *RegistrationRepo_Expecter) DeleteAnswersByUserAndHappening(ctx interface{}, userID interface{}, happeningID interface{}) *RegistrationRepo_DeleteAnswersByUserAndHappening_Call {
+func (_e *RegistrationRepo_Expecter) DeleteAnswersByUserAndHappening(ctx any, userID any, happeningID any) *RegistrationRepo_DeleteAnswersByUserAndHappening_Call {
 	return &RegistrationRepo_DeleteAnswersByUserAndHappening_Call{Call: _e.mock.On("DeleteAnswersByUserAndHappening", ctx, userID, happeningID)}
 }
 
@@ -232,7 +241,7 @@ type RegistrationRepo_DeleteRegistrationsByHappeningID_Call struct {
 // DeleteRegistrationsByHappeningID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - happeningID string
-func (_e *RegistrationRepo_Expecter) DeleteRegistrationsByHappeningID(ctx interface{}, happeningID interface{}) *RegistrationRepo_DeleteRegistrationsByHappeningID_Call {
+func (_e *RegistrationRepo_Expecter) DeleteRegistrationsByHappeningID(ctx any, happeningID any) *RegistrationRepo_DeleteRegistrationsByHappeningID_Call {
 	return &RegistrationRepo_DeleteRegistrationsByHappeningID_Call{Call: _e.mock.On("DeleteRegistrationsByHappeningID", ctx, happeningID)}
 }
 
@@ -301,7 +310,7 @@ type RegistrationRepo_GetByUserAndHappening_Call struct {
 //   - ctx context.Context
 //   - userID string
 //   - happeningID string
-func (_e *RegistrationRepo_Expecter) GetByUserAndHappening(ctx interface{}, userID interface{}, happeningID interface{}) *RegistrationRepo_GetByUserAndHappening_Call {
+func (_e *RegistrationRepo_Expecter) GetByUserAndHappening(ctx any, userID any, happeningID any) *RegistrationRepo_GetByUserAndHappening_Call {
 	return &RegistrationRepo_GetByUserAndHappening_Call{Call: _e.mock.On("GetByUserAndHappening", ctx, userID, happeningID)}
 }
 
@@ -374,7 +383,7 @@ type RegistrationRepo_GetByUserID_Call struct {
 // GetByUserID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - userID string
-func (_e *RegistrationRepo_Expecter) GetByUserID(ctx interface{}, userID interface{}) *RegistrationRepo_GetByUserID_Call {
+func (_e *RegistrationRepo_Expecter) GetByUserID(ctx any, userID any) *RegistrationRepo_GetByUserID_Call {
 	return &RegistrationRepo_GetByUserID_Call{Call: _e.mock.On("GetByUserID", ctx, userID)}
 }
 
@@ -433,7 +442,7 @@ type RegistrationRepo_InsertAnswers_Call struct {
 //   - userID string
 //   - happeningID string
 //   - questions []model.QuestionAnswer
-func (_e *RegistrationRepo_Expecter) InsertAnswers(ctx interface{}, userID interface{}, happeningID interface{}, questions interface{}) *RegistrationRepo_InsertAnswers_Call {
+func (_e *RegistrationRepo_Expecter) InsertAnswers(ctx any, userID any, happeningID any, questions any) *RegistrationRepo_InsertAnswers_Call {
 	return &RegistrationRepo_InsertAnswers_Call{Call: _e.mock.On("InsertAnswers", ctx, userID, happeningID, questions)}
 }
 
@@ -475,6 +484,75 @@ func (_c *RegistrationRepo_InsertAnswers_Call) RunAndReturn(run func(ctx context
 	return _c
 }
 
+// SetAttendance provides a mock function for the type RegistrationRepo
+func (_mock *RegistrationRepo) SetAttendance(ctx context.Context, userID string, happeningID string, attended bool) error {
+	ret := _mock.Called(ctx, userID, happeningID, attended)
+
+	if len(ret) == 0 {
+		panic("no return value specified for SetAttendance")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string, bool) error); ok {
+		r0 = returnFunc(ctx, userID, happeningID, attended)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// RegistrationRepo_SetAttendance_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SetAttendance'
+type RegistrationRepo_SetAttendance_Call struct {
+	*mock.Call
+}
+
+// SetAttendance is a helper method to define mock.On call
+//   - ctx context.Context
+//   - userID string
+//   - happeningID string
+//   - attended bool
+func (_e *RegistrationRepo_Expecter) SetAttendance(ctx any, userID any, happeningID any, attended any) *RegistrationRepo_SetAttendance_Call {
+	return &RegistrationRepo_SetAttendance_Call{Call: _e.mock.On("SetAttendance", ctx, userID, happeningID, attended)}
+}
+
+func (_c *RegistrationRepo_SetAttendance_Call) Run(run func(ctx context.Context, userID string, happeningID string, attended bool)) *RegistrationRepo_SetAttendance_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 bool
+		if args[3] != nil {
+			arg3 = args[3].(bool)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+		)
+	})
+	return _c
+}
+
+func (_c *RegistrationRepo_SetAttendance_Call) Return(err error) *RegistrationRepo_SetAttendance_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *RegistrationRepo_SetAttendance_Call) RunAndReturn(run func(ctx context.Context, userID string, happeningID string, attended bool) error) *RegistrationRepo_SetAttendance_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // UpdateRegistrationStatus provides a mock function for the type RegistrationRepo
 func (_mock *RegistrationRepo) UpdateRegistrationStatus(ctx context.Context, userID string, happeningID string, status model.RegistrationStatus, prevStatus *string, changedBy *string, changedAt *time.Time, unregisterReason *string) error {
 	ret := _mock.Called(ctx, userID, happeningID, status, prevStatus, changedBy, changedAt, unregisterReason)
@@ -506,7 +584,7 @@ type RegistrationRepo_UpdateRegistrationStatus_Call struct {
 //   - changedBy *string
 //   - changedAt *time.Time
 //   - unregisterReason *string
-func (_e *RegistrationRepo_Expecter) UpdateRegistrationStatus(ctx interface{}, userID interface{}, happeningID interface{}, status interface{}, prevStatus interface{}, changedBy interface{}, changedAt interface{}, unregisterReason interface{}) *RegistrationRepo_UpdateRegistrationStatus_Call {
+func (_e *RegistrationRepo_Expecter) UpdateRegistrationStatus(ctx any, userID any, happeningID any, status any, prevStatus any, changedBy any, changedAt any, unregisterReason any) *RegistrationRepo_UpdateRegistrationStatus_Call {
 	return &RegistrationRepo_UpdateRegistrationStatus_Call{Call: _e.mock.On("UpdateRegistrationStatus", ctx, userID, happeningID, status, prevStatus, changedBy, changedAt, unregisterReason)}
 }
 

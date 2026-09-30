@@ -3,6 +3,11 @@ packages:
   - packages/*
   - playwright
 
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
+
 minimumReleaseAge: 10080
 
 minimumReleaseAgeExclude:

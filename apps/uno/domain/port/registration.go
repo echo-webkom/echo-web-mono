@@ -31,4 +31,5 @@ type RegistrationRepo interface {
 	DeleteAnswersByUserAndHappening(ctx context.Context, userID, happeningID string) error
 	UpdateRegistrationStatus(ctx context.Context, userID, happeningID string, status model.RegistrationStatus, prevStatus *string, changedBy *string, changedAt *time.Time, unregisterReason *string) error
 	DeleteRegistrationsByHappeningID(ctx context.Context, happeningID string) error
+	SetAttendance(ctx context.Context, userID string, happeningID string, attended bool) error
 }

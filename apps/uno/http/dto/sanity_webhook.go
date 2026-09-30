@@ -28,8 +28,8 @@ type SanityHappeningData struct {
 	RegistrationStart       *string           `json:"registrationStart"`
 	RegistrationEnd         *string           `json:"registrationEnd"`
 	Groups                  []string          `json:"groups"`
-	SpotRanges              []SanitySpotRange  `json:"spotRanges"`
-	Questions               *[]SanityQuestion  `json:"questions"`
+	SpotRanges              []SanitySpotRange `json:"spotRanges"`
+	Questions               *[]SanityQuestion `json:"questions"`
 }
 
 type SanitySpotRange struct {

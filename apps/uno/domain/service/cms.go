@@ -303,7 +303,7 @@ func (s *CMSService) UnpinHappeningsAfterRegistrationEnd(ctx context.Context) er
 		if h.RegistrationEnd == nil {
 			continue
 		}
-		
+
 		regEnd, err := time.Parse(time.RFC3339, *h.RegistrationEnd)
 		if err != nil {
 			continue
@@ -314,8 +314,8 @@ func (s *CMSService) UnpinHappeningsAfterRegistrationEnd(ctx context.Context) er
 	}
 
 	for _, h := range happenings {
-		
-		if h.Date  == nil {
+
+		if h.Date == nil {
 			continue
 		}
 

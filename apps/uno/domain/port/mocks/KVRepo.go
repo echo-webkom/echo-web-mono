@@ -16,10 +16,19 @@ func NewKVRepo(t interface {
 	mock.TestingT
 	Cleanup(func())
 }) *KVRepo {
+	if helper, ok := t.(interface{ Helper() }); ok {
+		helper.Helper()
+	}
+
 	mock := &KVRepo{}
 	mock.Mock.Test(t)
 
-	t.Cleanup(func() { mock.AssertExpectations(t) })
+	t.Cleanup(func() {
+		if helper, ok := t.(interface{ Helper() }); ok {
+			helper.Helper()
+		}
+		mock.AssertExpectations(t)
+	})
 
 	return mock
 }
@@ -70,7 +79,7 @@ type KVRepo_DeleteExpired_Call struct {
 
 // DeleteExpired is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *KVRepo_Expecter) DeleteExpired(ctx interface{}) *KVRepo_DeleteExpired_Call {
+func (_e *KVRepo_Expecter) DeleteExpired(ctx any) *KVRepo_DeleteExpired_Call {
 	return &KVRepo_DeleteExpired_Call{Call: _e.mock.On("DeleteExpired", ctx)}
 }
 

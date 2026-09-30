@@ -17,10 +17,19 @@ func NewAdventOfCodeRepo(t interface {
 	mock.TestingT
 	Cleanup(func())
 }) *AdventOfCodeRepo {
+	if helper, ok := t.(interface{ Helper() }); ok {
+		helper.Helper()
+	}
+
 	mock := &AdventOfCodeRepo{}
 	mock.Mock.Test(t)
 
-	t.Cleanup(func() { mock.AssertExpectations(t) })
+	t.Cleanup(func() {
+		if helper, ok := t.(interface{ Helper() }); ok {
+			helper.Helper()
+		}
+		mock.AssertExpectations(t)
+	})
 
 	return mock
 }
@@ -75,7 +84,7 @@ type AdventOfCodeRepo_GetAdventOfCodeLeaderboard_Call struct {
 //   - ctx context.Context
 //   - year int
 //   - leaderboardID string
-func (_e *AdventOfCodeRepo_Expecter) GetAdventOfCodeLeaderboard(ctx interface{}, year interface{}, leaderboardID interface{}) *AdventOfCodeRepo_GetAdventOfCodeLeaderboard_Call {
+func (_e *AdventOfCodeRepo_Expecter) GetAdventOfCodeLeaderboard(ctx any, year any, leaderboardID any) *AdventOfCodeRepo_GetAdventOfCodeLeaderboard_Call {
 	return &AdventOfCodeRepo_GetAdventOfCodeLeaderboard_Call{Call: _e.mock.On("GetAdventOfCodeLeaderboard", ctx, year, leaderboardID)}
 }
 

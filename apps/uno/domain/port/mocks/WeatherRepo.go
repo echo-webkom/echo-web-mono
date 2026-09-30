@@ -17,10 +17,19 @@ func NewWeatherRepo(t interface {
 	mock.TestingT
 	Cleanup(func())
 }) *WeatherRepo {
+	if helper, ok := t.(interface{ Helper() }); ok {
+		helper.Helper()
+	}
+
 	mock := &WeatherRepo{}
 	mock.Mock.Test(t)
 
-	t.Cleanup(func() { mock.AssertExpectations(t) })
+	t.Cleanup(func() {
+		if helper, ok := t.(interface{ Helper() }); ok {
+			helper.Helper()
+		}
+		mock.AssertExpectations(t)
+	})
 
 	return mock
 }
@@ -71,7 +80,7 @@ type WeatherRepo_GetCurrentWeather_Call struct {
 
 // GetCurrentWeather is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *WeatherRepo_Expecter) GetCurrentWeather(ctx interface{}) *WeatherRepo_GetCurrentWeather_Call {
+func (_e *WeatherRepo_Expecter) GetCurrentWeather(ctx any) *WeatherRepo_GetCurrentWeather_Call {
 	return &WeatherRepo_GetCurrentWeather_Call{Call: _e.mock.On("GetCurrentWeather", ctx)}
 }
 

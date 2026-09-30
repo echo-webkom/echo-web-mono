@@ -17,10 +17,19 @@ func NewSiteFeedbackRepo(t interface {
 	mock.TestingT
 	Cleanup(func())
 }) *SiteFeedbackRepo {
+	if helper, ok := t.(interface{ Helper() }); ok {
+		helper.Helper()
+	}
+
 	mock := &SiteFeedbackRepo{}
 	mock.Mock.Test(t)
 
-	t.Cleanup(func() { mock.AssertExpectations(t) })
+	t.Cleanup(func() {
+		if helper, ok := t.(interface{ Helper() }); ok {
+			helper.Helper()
+		}
+		mock.AssertExpectations(t)
+	})
 
 	return mock
 }
@@ -72,7 +81,7 @@ type SiteFeedbackRepo_CreateSiteFeedback_Call struct {
 // CreateSiteFeedback is a helper method to define mock.On call
 //   - ctx context.Context
 //   - feedback model.NewSiteFeedback
-func (_e *SiteFeedbackRepo_Expecter) CreateSiteFeedback(ctx interface{}, feedback interface{}) *SiteFeedbackRepo_CreateSiteFeedback_Call {
+func (_e *SiteFeedbackRepo_Expecter) CreateSiteFeedback(ctx any, feedback any) *SiteFeedbackRepo_CreateSiteFeedback_Call {
 	return &SiteFeedbackRepo_CreateSiteFeedback_Call{Call: _e.mock.On("CreateSiteFeedback", ctx, feedback)}
 }
 
@@ -139,7 +148,7 @@ type SiteFeedbackRepo_GetAllSiteFeedbacks_Call struct {
 
 // GetAllSiteFeedbacks is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *SiteFeedbackRepo_Expecter) GetAllSiteFeedbacks(ctx interface{}) *SiteFeedbackRepo_GetAllSiteFeedbacks_Call {
+func (_e *SiteFeedbackRepo_Expecter) GetAllSiteFeedbacks(ctx any) *SiteFeedbackRepo_GetAllSiteFeedbacks_Call {
 	return &SiteFeedbackRepo_GetAllSiteFeedbacks_Call{Call: _e.mock.On("GetAllSiteFeedbacks", ctx)}
 }
 
@@ -200,7 +209,7 @@ type SiteFeedbackRepo_GetSiteFeedbackByID_Call struct {
 // GetSiteFeedbackByID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - feedbackID string
-func (_e *SiteFeedbackRepo_Expecter) GetSiteFeedbackByID(ctx interface{}, feedbackID interface{}) *SiteFeedbackRepo_GetSiteFeedbackByID_Call {
+func (_e *SiteFeedbackRepo_Expecter) GetSiteFeedbackByID(ctx any, feedbackID any) *SiteFeedbackRepo_GetSiteFeedbackByID_Call {
 	return &SiteFeedbackRepo_GetSiteFeedbackByID_Call{Call: _e.mock.On("GetSiteFeedbackByID", ctx, feedbackID)}
 }
 
@@ -257,7 +266,7 @@ type SiteFeedbackRepo_MarkSiteFeedbackAsRead_Call struct {
 // MarkSiteFeedbackAsRead is a helper method to define mock.On call
 //   - ctx context.Context
 //   - feedbackID string
-func (_e *SiteFeedbackRepo_Expecter) MarkSiteFeedbackAsRead(ctx interface{}, feedbackID interface{}) *SiteFeedbackRepo_MarkSiteFeedbackAsRead_Call {
+func (_e *SiteFeedbackRepo_Expecter) MarkSiteFeedbackAsRead(ctx any, feedbackID any) *SiteFeedbackRepo_MarkSiteFeedbackAsRead_Call {
 	return &SiteFeedbackRepo_MarkSiteFeedbackAsRead_Call{Call: _e.mock.On("MarkSiteFeedbackAsRead", ctx, feedbackID)}
 }
 

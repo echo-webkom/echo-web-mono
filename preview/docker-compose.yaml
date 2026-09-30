@@ -72,7 +72,7 @@ services:
     networks: [internal, caddy]
 
   minio:
-    image: minio/minio
+    image: pgsty/silo
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}

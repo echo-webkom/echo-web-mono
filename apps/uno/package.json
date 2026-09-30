@@ -27,5 +27,5 @@
   "devDependencies": {
     "dotenv-cli": "11.0.0"
   },
-  "packageManager": "pnpm@10.18.3"
+  "packageManager": "pnpm@11.1.2"
 }

@@ -17,10 +17,19 @@ func NewCommentRepo(t interface {
 	mock.TestingT
 	Cleanup(func())
 }) *CommentRepo {
+	if helper, ok := t.(interface{ Helper() }); ok {
+		helper.Helper()
+	}
+
 	mock := &CommentRepo{}
 	mock.Mock.Test(t)
 
-	t.Cleanup(func() { mock.AssertExpectations(t) })
+	t.Cleanup(func() {
+		if helper, ok := t.(interface{ Helper() }); ok {
+			helper.Helper()
+		}
+		mock.AssertExpectations(t)
+	})
 
 	return mock
 }
@@ -64,7 +73,7 @@ type CommentRepo_AddReactionToComment_Call struct {
 //   - ctx context.Context
 //   - commentID string
 //   - userID string
-func (_e *CommentRepo_Expecter) AddReactionToComment(ctx interface{}, commentID interface{}, userID interface{}) *CommentRepo_AddReactionToComment_Call {
+func (_e *CommentRepo_Expecter) AddReactionToComment(ctx any, commentID any, userID any) *CommentRepo_AddReactionToComment_Call {
 	return &CommentRepo_AddReactionToComment_Call{Call: _e.mock.On("AddReactionToComment", ctx, commentID, userID)}
 }
 
@@ -129,7 +138,7 @@ type CommentRepo_CreateComment_Call struct {
 //   - postID string
 //   - userID string
 //   - parentCommentID *string
-func (_e *CommentRepo_Expecter) CreateComment(ctx interface{}, content interface{}, postID interface{}, userID interface{}, parentCommentID interface{}) *CommentRepo_CreateComment_Call {
+func (_e *CommentRepo_Expecter) CreateComment(ctx any, content any, postID any, userID any, parentCommentID any) *CommentRepo_CreateComment_Call {
 	return &CommentRepo_CreateComment_Call{Call: _e.mock.On("CreateComment", ctx, content, postID, userID, parentCommentID)}
 }
 
@@ -201,7 +210,7 @@ type CommentRepo_DeleteComment_Call struct {
 // DeleteComment is a helper method to define mock.On call
 //   - ctx context.Context
 //   - id string
-func (_e *CommentRepo_Expecter) DeleteComment(ctx interface{}, id interface{}) *CommentRepo_DeleteComment_Call {
+func (_e *CommentRepo_Expecter) DeleteComment(ctx any, id any) *CommentRepo_DeleteComment_Call {
 	return &CommentRepo_DeleteComment_Call{Call: _e.mock.On("DeleteComment", ctx, id)}
 }
 
@@ -259,7 +268,7 @@ type CommentRepo_DeleteReactionFromComment_Call struct {
 //   - ctx context.Context
 //   - commentID string
 //   - userID string
-func (_e *CommentRepo_Expecter) DeleteReactionFromComment(ctx interface{}, commentID interface{}, userID interface{}) *CommentRepo_DeleteReactionFromComment_Call {
+func (_e *CommentRepo_Expecter) DeleteReactionFromComment(ctx any, commentID any, userID any) *CommentRepo_DeleteReactionFromComment_Call {
 	return &CommentRepo_DeleteReactionFromComment_Call{Call: _e.mock.On("DeleteReactionFromComment", ctx, commentID, userID)}
 }
 
@@ -332,7 +341,7 @@ type CommentRepo_GetAncestorUserIDs_Call struct {
 // GetAncestorUserIDs is a helper method to define mock.On call
 //   - ctx context.Context
 //   - commentID string
-func (_e *CommentRepo_Expecter) GetAncestorUserIDs(ctx interface{}, commentID interface{}) *CommentRepo_GetAncestorUserIDs_Call {
+func (_e *CommentRepo_Expecter) GetAncestorUserIDs(ctx any, commentID any) *CommentRepo_GetAncestorUserIDs_Call {
 	return &CommentRepo_GetAncestorUserIDs_Call{Call: _e.mock.On("GetAncestorUserIDs", ctx, commentID)}
 }
 
@@ -400,7 +409,7 @@ type CommentRepo_GetCommentsByID_Call struct {
 // GetCommentsByID is a helper method to define mock.On call
 //   - ctx context.Context
 //   - id string
-func (_e *CommentRepo_Expecter) GetCommentsByID(ctx interface{}, id interface{}) *CommentRepo_GetCommentsByID_Call {
+func (_e *CommentRepo_Expecter) GetCommentsByID(ctx any, id any) *CommentRepo_GetCommentsByID_Call {
 	return &CommentRepo_GetCommentsByID_Call{Call: _e.mock.On("GetCommentsByID", ctx, id)}
 }
 
@@ -467,7 +476,7 @@ type CommentRepo_IsReactedByUser_Call struct {
 //   - ctx context.Context
 //   - commentID string
 //   - userID string
-func (_e *CommentRepo_Expecter) IsReactedByUser(ctx interface{}, commentID interface{}, userID interface{}) *CommentRepo_IsReactedByUser_Call {
+func (_e *CommentRepo_Expecter) IsReactedByUser(ctx any, commentID any, userID any) *CommentRepo_IsReactedByUser_Call {
 	return &CommentRepo_IsReactedByUser_Call{Call: _e.mock.On("IsReactedByUser", ctx, commentID, userID)}
 }
 
