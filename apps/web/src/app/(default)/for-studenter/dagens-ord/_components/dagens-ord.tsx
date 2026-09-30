@@ -44,6 +44,7 @@ export default function DagensOrd({ solution }: { solution: string }) {
     }
   }, [attempts, currentRow, win, loss]);
 
+  
   //Spillogikk
   useEffect(() => {
     if (win) {
