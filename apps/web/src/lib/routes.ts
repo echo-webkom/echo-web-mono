@@ -18,7 +18,7 @@ import {
   ShoppingCart,
   Users,
   Wallet,
-  Grid3X3,
+  Gamepad2
 } from "lucide-react";
 
 import { mailTo } from "@/utils/prefixes";
@@ -155,11 +155,12 @@ export const headerRoutes: Array<Route> = [
         icon: Heart,
       },
       {
-        label: "Dagens ord",
-        href: "/for-studenter/dagens-ord",
-        description: "Prøv å finne dagen ord",
-        icon: Grid3X3,
+        label: "Spill",
+        href: "/for-studenter/spill",
+        description: "OK gamer",
+        icon: Gamepad2,
       },
+      
     ],
   },
   {

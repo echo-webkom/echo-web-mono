@@ -8,7 +8,7 @@ export async function validWord(currentAttempt: string) {
     return;
   }
   const file = readFileSync(
-    join(process.cwd(), "src/app/(default)/for-studenter/dagens-ord/words.txt"),
+    join(process.cwd(), "src/app/(default)/for-studenter/spill/dagens-ord/words.txt"),
     "utf-8",
   );
   const words = file.split("\n").filter(Boolean);
