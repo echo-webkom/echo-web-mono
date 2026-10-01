@@ -63,8 +63,9 @@ export default async function ManageGroup(props: Props) {
   });
 
   const groupUserProfile = members.find((member) => member.id === user.id);
+  const isWebkom = user.groups.find((g) => g.id === "webkom") !== undefined;
 
-  if (!groupUserProfile) {
+  if (!isWebkom && !groupUserProfile) {
     return (
       <div>
         <Heading className="text-center">Ikke medlem av gruppen</Heading>
@@ -72,7 +73,7 @@ export default async function ManageGroup(props: Props) {
     );
   }
 
-  const isGroupAdmin = groupUserProfile.isLeader;
+  const isGroupAdmin = isWebkom || groupUserProfile?.isLeader;
 
   return (
     <Container className="space-y-8 py-10">
