@@ -61,9 +61,9 @@ export default function Keyboard({ attempts, currentRow, solution, onKeyPress }:
   };
 
   return (
-    <div className="flex flex-col gap-1.5 my-4 w-full max-w-lg px-2 select-none">
+    <div className="my-4 flex w-full max-w-lg flex-col gap-1.5 px-2 select-none">
       {KEYBOARD_ROWS.map((row, rowIndex) => (
-        <div key={rowIndex} className="flex justify-center gap-1 touch-manipulation">
+        <div key={rowIndex} className="flex touch-manipulation justify-center gap-1">
           {row.map((key) => {
             const isSpecialKey = key === "ENTER" || key === "BACKSPACE";
             const label = key === "BACKSPACE" ? "⌫" : key;
@@ -73,11 +73,7 @@ export default function Keyboard({ attempts, currentRow, solution, onKeyPress }:
                 key={key}
                 type="button"
                 onClick={() => onKeyPress(key)}
-                className={`
-                  flex items-center justify-center font-bold uppercase rounded text-sm md:text-base h-14 transition-colors
-                  ${isSpecialKey ? "px-2.5 sm:px-4 text-xs sm:text-sm flex-[1.5]" : "flex-1"}
-                  ${getKeyStyle(key)}
-                `}
+                className={`flex h-14 items-center justify-center rounded text-sm font-bold uppercase transition-colors md:text-base ${isSpecialKey ? "flex-[1.5] px-2.5 text-xs sm:px-4 sm:text-sm" : "flex-1"} ${getKeyStyle(key)} `}
               >
                 {label}
               </button>
