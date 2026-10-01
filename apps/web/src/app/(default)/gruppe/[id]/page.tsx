@@ -63,7 +63,7 @@ export default async function ManageGroup(props: Props) {
   });
 
   const groupUserProfile = members.find((member) => member.id === user.id);
-  const isWebkom = user.groups.find((g) => g.name === "webkom") !== undefined;
+  const isWebkom = user.groups.find((g) => g.id === "webkom") !== undefined;
 
   if (!isWebkom && !groupUserProfile) {
     return (
