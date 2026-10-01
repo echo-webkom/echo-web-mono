@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import ConfettiForBDay from "../../../../hjem/_components/confetti";
 import { validWord } from "../_actions/validere-ord";
+import Keyboard from "./keyboard";
 import Row from "./row";
 
 export default function DagensOrd({ solution }: { solution: string }) {
@@ -44,50 +45,65 @@ export default function DagensOrd({ solution }: { solution: string }) {
     }
   }, [attempts, currentRow, win, loss]);
 
-  //Spillogikk
-  useEffect(() => {
-    if (win) {
-      return;
-    }
-    const handeKeyPressed = async (event: KeyboardEvent) => {
-      if (event.key === "Enter" && currentAttempt.length === 5) {
-        const isValid = await validWord(currentAttempt);
-        if (!isValid) {
-          setIsValidWord(false);
-          return;
-        }
+  // Felles inndata-håndterer for både fysisk og virtuelt tastatur
+  const handleKeyInput = useCallback(
+    async (key: string) => {
+      if (win || loss) return;
 
-        setAttmpts(attempts.map((a, i) => (i === currentRow ? currentAttempt : a)));
-        setCurrentRow(currentRow + 1);
-        setCurrentAttemt("");
-        setIsValidWord(true);
-        if (solution === currentAttempt) {
-          setWin(true);
-        } else if (currentRow === 5) {
-          setLoss(true);
-          return;
+      const upperKey = key.toUpperCase();
+
+      if (upperKey === "ENTER") {
+        if (currentAttempt.length === 5) {
+          const isValid = await validWord(currentAttempt);
+          if (!isValid) {
+            setIsValidWord(false);
+            return;
+          }
+
+          setAttmpts(attempts.map((a, i) => (i === currentRow ? currentAttempt : a)));
+          setCurrentRow(currentRow + 1);
+          setCurrentAttemt("");
+          setIsValidWord(true);
+
+          if (solution.toLowerCase() === currentAttempt.toLowerCase()) {
+            setWin(true);
+          } else if (currentRow === 5) {
+            setLoss(true);
+          }
         }
-      } else if (event.key === "Backspace") {
-        setCurrentAttemt(currentAttempt.slice(0, -1));
-      } else if (/^[a-zA-ZæøåÆØÅ]$/.test(event.key) && currentAttempt.length < 5) {
-        setCurrentAttemt(currentAttempt + event.key.toLowerCase());
+      } else if (upperKey === "BACKSPACE" || upperKey === "DELETE") {
+        setCurrentAttemt((prev) => prev.slice(0, -1));
+        setIsValidWord(true);
+      } else if (/^[a-zA-ZæøåÆØÅ]$/.test(key) && currentAttempt.length < 5) {
+        setCurrentAttemt((prev) => prev + key.toLowerCase());
+        setIsValidWord(true);
       }
+    },
+    [currentAttempt, attempts, currentRow, win, loss, solution],
+  );
+
+  // Lytter på fysisk tastatur
+  useEffect(() => {
+    const handleKeyPressed = (event: KeyboardEvent) => {
+      handleKeyInput(event.key);
     };
 
-    window.addEventListener("keydown", handeKeyPressed);
-
-    return () => window.removeEventListener("keydown", handeKeyPressed);
-  }, [currentAttempt, currentRow, attempts, win, solution]);
+    window.addEventListener("keydown", handleKeyPressed);
+    return () => window.removeEventListener("keydown", handleKeyPressed);
+  }, [handleKeyInput]);
 
   return (
-    <>
+    <div className="flex flex-col items-center">
       {win && <ConfettiForBDay />}
-      <h1 className="self-center p-3 text-4xl">Dagens ord</h1>
+      <h1 className="self-center p-3 text-4xl font-bold">Dagens ord</h1>
+
       {!isVaildWord && (
-        <p className="self-center p-3 text-2xl font-bold">Ordet er ikke i listen, prøv igjen</p>
+        <p className="self-center p-3 text-xl font-semibold text-red-500">
+          Ordet er ikke i listen, prøv igjen
+        </p>
       )}
 
-      <div>
+      <div className="my-2">
         {attempts.map((attempt, index) => {
           const isCuurentAttempt = index === currentRow;
           return (
@@ -100,7 +116,20 @@ export default function DagensOrd({ solution }: { solution: string }) {
           );
         })}
       </div>
-      {loss && <p className="self-center text-2xl font-bold">{`Korrekt ord var ${solution}`}</p>}
-    </>
+
+      {loss && (
+        <p className="my-2 self-center text-2xl font-bold text-red-600">
+          {`Korrekt ord var ${solution}`}
+        </p>
+      )}
+
+      {/* Skjermtastatur */}
+      <Keyboard
+        attempts={attempts}
+        currentRow={currentRow}
+        solution={solution}
+        onKeyPress={handleKeyInput}
+      />
+    </div>
   );
 }
