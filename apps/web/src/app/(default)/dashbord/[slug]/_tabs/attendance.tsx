@@ -32,21 +32,26 @@ export const AttendanceTab = async ({
             Beta feature
           </Chip>
         </div>
-        <Button
-          asChild
-          size="sm"
-          className="ml-auto h-9 w-9 shrink-0 p-0 sm:w-auto sm:px-4"
-          aria-label="La deltagere møte opp selv"
-        >
-          <Link
-            href={`/dashbord/${happening.slug}/qr-code`}
-            target="_blank"
-            rel="noopener noreferrer"
+
+        {happening.type != "bedpres" && (
+          <Button
+            asChild
+            size="sm"
+            className="ml-auto h-9 w-9 shrink-0 p-0 sm:w-auto sm:px-4"
+            aria-label="La deltagere møte opp selv"
           >
-            <QrCode className="size-4 sm:hidden" aria-hidden="true" />
-            <span className="hidden sm:inline">La deltagere møte opp selv</span>
-          </Link>
-        </Button>
+            <Link
+              href={`/dashbord/${happening.slug}/qr-code`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <QrCode className="size-4 sm:hidden" aria-hidden="true" />
+              <span className="hidden sm:inline">
+                La deltagere møte opp selv
+              </span>
+            </Link>
+          </Button>
+        )}
       </div>
       <QrScanner
         registrations={registrations}

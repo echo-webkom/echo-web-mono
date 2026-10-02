@@ -48,7 +48,7 @@ export default async function QrCodePage({ params }: QrProps) {
           </h1>
         </header>
 
-        <HappeningQrCode value={happening.slug} />
+        <HappeningQrCode value={'https://echo.uib.no/arrangement/'+ happening.slug + '/registrer-oppmote'} />
       </div>
     </main>
   );
