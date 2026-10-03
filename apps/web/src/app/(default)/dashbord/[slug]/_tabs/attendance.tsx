@@ -33,7 +33,7 @@ export const AttendanceTab = async ({
           </Chip>
         </div>
 
-        {happening.type != "bedpres" && (
+        {happening.type !== "bedpres" && (
           <Button
             asChild
             size="sm"
@@ -46,9 +46,7 @@ export const AttendanceTab = async ({
               rel="noopener noreferrer"
             >
               <QrCode className="size-4 sm:hidden" aria-hidden="true" />
-              <span className="hidden sm:inline">
-                La deltagere møte opp selv
-              </span>
+              <span className="hidden sm:inline">La deltagere møte opp selv</span>
             </Link>
           </Button>
         )}

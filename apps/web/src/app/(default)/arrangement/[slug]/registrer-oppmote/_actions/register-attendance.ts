@@ -14,7 +14,7 @@ export type AttendanceResult = {
     | "unauthenticated"
     | "not-registered"
     | "not-found"
-    | "error"
+    | "error";
 };
 
 export async function registerOwnAttendance(slug: string): Promise<AttendanceResult> {
@@ -25,11 +25,11 @@ export async function registerOwnAttendance(slug: string): Promise<AttendanceRes
     }
 
     const happening = await db.query.happenings.findFirst({
-      columns: { id: true},
+      columns: { id: true },
       where: (happening, { eq }) => eq(happening.slug, slug),
     });
     if (!happening) {
-      return { status: "not-found" }
+      return { status: "not-found" };
     }
 
     const registrationFilter = and(
