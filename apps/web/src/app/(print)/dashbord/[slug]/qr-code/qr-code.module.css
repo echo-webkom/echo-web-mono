@@ -1,0 +1,21 @@
+.page {
+  color-scheme: light;
+}
+
+@media print {
+  :global(body):has(.page),
+  .page,
+  .page * {
+    transition: none;
+  }
+
+  :global(body):has(.page) {
+    min-height: 0;
+    background: white;
+    color: black;
+  }
+
+  :global(body):has(.page) :global(nextjs-portal) {
+    display: none;
+  }
+}
