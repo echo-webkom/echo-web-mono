@@ -116,6 +116,7 @@ export default async function ManageGroup(props: Props) {
                       }}
                       group={group}
                       isLeader={member.isLeader}
+                      isAdmin={isGroupAdmin}
                     />
                   </TableCell>
                 )}
