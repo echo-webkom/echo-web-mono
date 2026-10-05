@@ -32,14 +32,15 @@ type GroupUserFormProps = {
     name: string;
   };
   isLeader: boolean;
+  isAdmin: boolean;
 };
 
-export const GroupUserForm = ({ user, group, isLeader }: GroupUserFormProps) => {
+export const GroupUserForm = ({ user, group, isLeader, isAdmin }: GroupUserFormProps) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSetIsLeader = async (checked: boolean) => {
-    const { message } = await setGroupLeader(group.id, user.id, checked);
+    const { message } = await setGroupLeader(group.id, user.id, checked, isAdmin);
 
     toast.success(message);
     router.refresh();
