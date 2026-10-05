@@ -3,7 +3,7 @@
 import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
 
-export const setGroupLeader = async (groupId: string, userId: string, leader: boolean) => {
+export const setGroupLeader = async (groupId: string, userId: string, leader: boolean, isAdmin: boolean) => {
   try {
     const members = await unoWithAdmin.groups.members(groupId);
 
@@ -23,7 +23,7 @@ export const setGroupLeader = async (groupId: string, userId: string, leader: bo
       };
     }
 
-    const isRequestUserLeader = members.find(
+    const isRequestUserLeader = isAdmin || members.find(
       (member) => member.isLeader && member.id === requestUser.id,
     );
     if (!isRequestUserLeader) {
