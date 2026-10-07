@@ -95,7 +95,7 @@ export default function DagensOrd({ solution }: { solution: string }) {
   return (
     <div className="flex flex-col items-center">
       {win && <ConfettiForBDay />}
-      <h1 className="self-center sm:p-3  sm:text-4xl text-2xl font-bold">Dagens ord</h1>
+      <h1 className="self-center text-2xl font-bold sm:p-3 sm:text-4xl">Dagens ord</h1>
 
       {!isVaildWord && (
         <p className="self-center p-3 text-xl font-semibold text-red-500">
