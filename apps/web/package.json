@@ -61,6 +61,7 @@
     "dotenv-cli": "11.0.0",
     "jsdom": "29.0.1",
     "postcss": "8.5.8",
+    "react-docgen-typescript": "^2.4.0",
     "server-only": "0.0.1",
     "tailwindcss": "4.2.2",
     "tailwindcss-animate": "1.0.7",
