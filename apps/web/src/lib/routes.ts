@@ -18,7 +18,7 @@ import {
   ShoppingCart,
   Users,
   Wallet,
-  Gamepad2
+  Gamepad2,
 } from "lucide-react";
 
 import { mailTo } from "@/utils/prefixes";
@@ -160,7 +160,6 @@ export const headerRoutes: Array<Route> = [
         description: "OK gamer",
         icon: Gamepad2,
       },
-      
     ],
   },
   {
