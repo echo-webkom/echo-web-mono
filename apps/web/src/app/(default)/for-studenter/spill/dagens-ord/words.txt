@@ -288,7 +288,6 @@ etisk
 etter
 event
 fader
-faens
 fakta
 falle
 false
@@ -518,7 +517,6 @@ hogge
 hogst
 holde
 holdt
-homse
 honda
 hoppe
 horse
@@ -880,7 +878,6 @@ natur
 naust
 nedpå
 nedre
-neger
 neida
 nekte
 neppe
@@ -982,7 +979,6 @@ polar
 polio
 polsk
 poppe
-porno
 porto
 posen
 poste
