@@ -18,6 +18,7 @@ import {
   ShoppingCart,
   Users,
   Wallet,
+  Gamepad2,
 } from "lucide-react";
 
 import { mailTo } from "@/utils/prefixes";
@@ -152,6 +153,12 @@ export const headerRoutes: Array<Route> = [
         href: "/for-studenter/speak-up",
         description: "Opplevd noe kjipt? Speak Up!",
         icon: Heart,
+      },
+      {
+        label: "Spill",
+        href: "/for-studenter/spill",
+        description: "OK gamer",
+        icon: Gamepad2,
       },
     ],
   },
