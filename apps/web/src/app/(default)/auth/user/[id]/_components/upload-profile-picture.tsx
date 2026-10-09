@@ -5,9 +5,9 @@ import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { createProfilePictureUrl } from "@/api/client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { initials } from "@/utils/string";
 
+import { Avatar, AvatarFallback, AvatarImage } from "../../../../../../components/ui/avatar";
 import {
   deleteProfilePictureAction,
   uploadProfilePictureAction,
@@ -86,7 +86,7 @@ export const UploadProfilePicture = ({
 
   return (
     <div className="flex flex-col items-center space-y-2">
-      <Avatar size="xl">
+      <Avatar className="size-64">
         <AvatarImage src={createProfilePictureUrl(userId, 2, imageVersion)} />
         <AvatarFallback className="text-2xl">{initials(name)}</AvatarFallback>
       </Avatar>

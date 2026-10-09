@@ -124,25 +124,20 @@ export default async function ProfilePage({ params }: Props) {
     );
   } else if (isProfileOwner) {
     return (
-      <div className="relative max-w-2xl space-y-4 p-4">
-        <div className="bg-table-background-alt absolute top-0 left-0 h-32 w-full rounded"></div>
-        <div className="pb-10"></div>
+      <div className="relative max-w-4xl min-w-4xl items-center space-y-4">
         <WhitelistNotification />
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex flex-col items-center">
+        <div className="pt-24">
+          <div className="relative flex w-fit flex-col items-start">
             <UploadProfilePicture
               userId={profileOwner.id}
               name={profileOwner.name ?? "Bo Bakseter"}
               hasImage={profileOwner.hasImage}
             />
-            <Text className="mt-2 py-0 text-xl font-bold">{profileOwner.name}</Text>
-            <Text className="text-muted-dark py-0">{profileOwner.email}</Text>
-            <div className="mt-3">
-              <ShowQrCode userId={user.id} />
-            </div>
+            <ShowQrCode userId={user.id} className="absolute right-0 bottom-0 mx-2 my-10" />
           </div>
         </div>
-
+        <Text className="mt-2 py-0 text-3xl font-semibold">{profileOwner.name}</Text>
+        <Text className="text-muted-dark py-0">{profileOwner.email}</Text>
         <p>Du har vært på {achievements.bedpresCount} bedpresser</p>
         <div className="flex w-full justify-center">
           {memberships.length > 0 && (
