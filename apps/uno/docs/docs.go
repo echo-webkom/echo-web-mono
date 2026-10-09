@@ -175,6 +175,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/achievements/{userID}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "achievements"
+                ],
+                "summary": "Get users achievements",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "userID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/uno_http_dto.AchievementResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/advent-of-code/leaderboard": {
             "get": {
                 "produces": [
@@ -4874,6 +4908,14 @@ const docTemplate = `{
                 },
                 "reason": {
                     "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.AchievementResponse": {
+            "type": "object",
+            "properties": {
+                "bedpresCount": {
+                    "type": "integer"
                 }
             }
         },

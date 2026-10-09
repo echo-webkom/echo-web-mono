@@ -257,6 +257,11 @@ definitions:
       reason:
         type: string
     type: object
+  uno_http_dto.AchievementResponse:
+    properties:
+      bedpresCount:
+        type: integer
+    type: object
   uno_http_dto.AddGroupMemberRequest:
     properties:
       userId:
@@ -1484,6 +1489,28 @@ paths:
       summary: Delete access request
       tags:
       - access-request
+  /achievements/{userID}:
+    get:
+      parameters:
+      - description: User ID
+        in: path
+        name: userID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.AchievementResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get users achievements
+      tags:
+      - achievements
   /advent-of-code/leaderboard:
     get:
       produces:

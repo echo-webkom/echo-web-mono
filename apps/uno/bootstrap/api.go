@@ -65,6 +65,7 @@ func RunApi() {
 	notificationRepo := postgres.NewNotificationRepo(db, logger)
 	accountRepo := postgres.NewAccountRepo(db, logger)
 	verificationTokenRepo := postgres.NewVerificationTokenRepo(db, logger)
+	achievementRepo := postgres.NewAchievementRepo(db, logger)
 
 	// Initialize Sanity client and CMS repos
 	sanityClient, err := sanity.New(sanity.Config{
@@ -121,6 +122,7 @@ func RunApi() {
 	reactionService := service.NewReactionService(reactionRepo)
 	quoteService := service.NewQuoteService(quoteRepo)
 	notificationService := service.NewNotificationService(notificationRepo, commentRepo, happeningRepo)
+	achievementService := service.NewAchievementService(achievementRepo)
 	cmsService := service.NewCMSService(
 		cmsHappeningRepo,
 		cmsRepeatingHappeningRepo,
@@ -162,6 +164,7 @@ func RunApi() {
 		QuoteService:         quoteService,
 		CMSService:           cmsService,
 		NotificationService:  notificationService,
+		AchievementService: achievementService,
 	})
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)

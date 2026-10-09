@@ -617,6 +617,7 @@ export class UnoClient {
   sanity: SanityApi;
   auth: AuthApi;
   notifications: NotificationsApi;
+  achievements: AchievementsApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -648,6 +649,7 @@ export class UnoClient {
     this.sanity = new SanityApi(this);
     this.auth = new AuthApi(this);
     this.notifications = new NotificationsApi(this);
+    this.achievements = new AchievementsApi(this);
   }
 
   normalizePath(path: string) {
@@ -687,6 +689,22 @@ export class UnoClient {
 
   async health() {
     return await this.api("").json<{ status: string }>();
+  }
+}
+
+interface Achievement {
+  bedpresCount: number;
+}
+
+class AchievementsApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all(userId: string) {
+    return await this.client.requestJson<Achievement>("GET", `/achievements/${userId}`);
   }
 }
 

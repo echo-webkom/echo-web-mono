@@ -41,6 +41,7 @@ export default async function ProfilePage({ params }: Props) {
 
   const degrees = await uno.degrees.all();
   const memberships = profileOwner.groups.map((group) => ({ group }));
+  const achievements = await uno.achievements.all(user.id);
 
   if (!isProfileOwner && hasAccess) {
     return (
@@ -142,6 +143,7 @@ export default async function ProfilePage({ params }: Props) {
           </div>
         </div>
 
+        <p>Du har vært på {achievements.bedpresCount} bedpresser</p>
         <div className="flex w-full justify-center">
           {memberships.length > 0 && (
             <div>

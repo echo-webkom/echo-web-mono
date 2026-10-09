@@ -57,6 +57,7 @@ type ServerDeps struct {
 	QuoteService         *service.QuoteService
 	CMSService           *service.CMSService
 	NotificationService  *service.NotificationService
+	AchievementService *service.AchievementService
 }
 
 func RunServer(deps ServerDeps) {
@@ -111,6 +112,9 @@ func RunServer(deps ServerDeps) {
 
 	// Advent of Code routes
 	r.Mount("/advent-of-code", api.NewAdventOfCodeMux(deps.Logger, deps.AdventOfCodeService), admin)
+
+	// Achievement routes
+	r.Mount("/achievements", api.NewAchievementMux(deps.Logger, deps.AchievementService))
 
 	// Group routes
 	r.Mount("/groups", api.NewGroupMux(deps.Logger, deps.GroupService, admin))
