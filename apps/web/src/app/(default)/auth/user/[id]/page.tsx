@@ -12,6 +12,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { UserForm } from "@/components/user-form";
 
+import { Button } from "../../../../../components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../../../../components/ui/dialog";
 import { ShowQrCode } from "./_components/show-qr-code";
 import { UploadProfilePicture } from "./_components/upload-profile-picture";
 import WhitelistNotification from "./_components/whitelist-notification";
@@ -124,7 +133,7 @@ export default async function ProfilePage({ params }: Props) {
     );
   } else if (isProfileOwner) {
     return (
-      <div className="relative max-w-4xl min-w-4xl items-center space-y-4">
+      <div className="relative max-w-4xl min-w-4xl items-center">
         <WhitelistNotification />
         <div className="pt-24">
           <div className="relative flex w-fit flex-col items-start">
@@ -136,8 +145,8 @@ export default async function ProfilePage({ params }: Props) {
             <ShowQrCode userId={user.id} className="absolute right-0 bottom-0 mx-2 my-10" />
           </div>
         </div>
-        <Text className="mt-2 py-0 text-3xl font-semibold">{profileOwner.name}</Text>
-        <Text className="text-muted-dark py-0">{profileOwner.email}</Text>
+        <Text className="pb-0 text-3xl font-semibold">{profileOwner.name}</Text>
+        <Text className="text-muted-dark">{profileOwner.email}</Text>
         <p>Du har vært på {achievements.bedpresCount} bedpresser</p>
         <div className="flex w-full justify-center">
           {memberships.length > 0 && (
@@ -157,27 +166,41 @@ export default async function ProfilePage({ params }: Props) {
           )}
         </div>
         {isProfileOwner ? (
-          <UserForm
-            user={{
-              id: profileOwner.id,
-              degree: profileOwner.degree ?? undefined,
-              year: profileOwner.year ?? undefined,
-              alternativeEmail:
-                "alternativeEmail" in profileOwner
-                  ? (profileOwner.alternativeEmail ?? undefined)
-                  : undefined,
-              alternativeEmailVerifiedAt:
-                "alternativeEmailVerifiedAt" in profileOwner
-                  ? (profileOwner.alternativeEmailVerifiedAt ?? undefined)
-                  : undefined,
-              hasReadTerms: !!profileOwner.hasReadTerms,
-              isPublic:
-                "isPublic" in profileOwner ? (profileOwner.isPublic ?? undefined) : undefined,
-              birthday:
-                "birthday" in profileOwner ? (profileOwner.birthday ?? undefined) : undefined,
-            }}
-            degrees={degrees}
-          />
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant={"link"} className="px-0">
+                Rediger
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Rediger bruker</DialogTitle>
+              </DialogHeader>
+              <DialogDescription className="p-4">
+                <UserForm
+                  user={{
+                    id: profileOwner.id,
+                    degree: profileOwner.degree ?? undefined,
+                    year: profileOwner.year ?? undefined,
+                    alternativeEmail:
+                      "alternativeEmail" in profileOwner
+                        ? (profileOwner.alternativeEmail ?? undefined)
+                        : undefined,
+                    alternativeEmailVerifiedAt:
+                      "alternativeEmailVerifiedAt" in profileOwner
+                        ? (profileOwner.alternativeEmailVerifiedAt ?? undefined)
+                        : undefined,
+                    hasReadTerms: !!profileOwner.hasReadTerms,
+                    isPublic:
+                      "isPublic" in profileOwner ? (profileOwner.isPublic ?? undefined) : undefined,
+                    birthday:
+                      "birthday" in profileOwner ? (profileOwner.birthday ?? undefined) : undefined,
+                  }}
+                  degrees={degrees}
+                />
+              </DialogDescription>
+            </DialogContent>
+          </Dialog>
         ) : null}
       </div>
     );
