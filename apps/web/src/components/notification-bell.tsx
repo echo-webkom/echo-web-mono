@@ -20,7 +20,10 @@ export const NotificationBell = () => {
   const [notifications, setNotifications] = useState<Array<Notification>>([]);
 
   usePolling(() => {
-    void client.notifications.all().then(setNotifications);
+    void client.notifications
+      .all()
+      .then(setNotifications)
+      .catch(() => setNotifications([]));
   }, POLL_INTERVAL_MS);
 
   const unreadCount = notifications.filter((n) => n.seenAt === null).length;
@@ -29,13 +32,23 @@ export const NotificationBell = () => {
     const notification = notifications.find((n) => n.id === id);
     if (!notification || notification.seenAt !== null) return;
 
-    await client.notifications.seen(id);
-    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, seenAt: new Date() } : n)));
+    try {
+      await client.notifications.seen(id);
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, seenAt: new Date() } : n)),
+      );
+    } catch {
+      // Ignore transient API failures so the bell does not crash the page.
+    }
   };
 
   const handleArchive = async (id: number) => {
-    await client.notifications.archive(id);
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
+    try {
+      await client.notifications.archive(id);
+      setNotifications((prev) => prev.filter((n) => n.id !== id));
+    } catch {
+      // Ignore transient API failures so the bell does not crash the page.
+    }
   };
 
   return (
@@ -59,8 +72,12 @@ export const NotificationBell = () => {
         <div className="max-h-96 overflow-y-auto">
           {notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center gap-1 py-10 text-center">
-              <p className="text-muted-foreground font-mono text-sm font-semibold">404</p>
-              <p className="text-muted-foreground text-sm">Du har ingen notifikasjoner</p>
+              <p className="text-muted-foreground font-mono text-sm font-semibold">
+                404
+              </p>
+              <p className="text-muted-foreground text-sm">
+                Du har ingen notifikasjoner
+              </p>
             </div>
           ) : (
             notifications.map((notification) => (
@@ -73,7 +90,9 @@ export const NotificationBell = () => {
                   <div
                     className={cn(
                       "h-2 w-2 rounded-full",
-                      notification.seenAt === null ? "bg-blue-500" : "bg-transparent",
+                      notification.seenAt === null
+                        ? "bg-blue-500"
+                        : "bg-transparent",
                     )}
                   />
                 </div>
@@ -87,10 +106,14 @@ export const NotificationBell = () => {
                       {notification.title}
                     </Link>
                   ) : (
-                    <p className="text-sm leading-tight font-medium">{notification.title}</p>
+                    <p className="text-sm leading-tight font-medium">
+                      {notification.title}
+                    </p>
                   )}
                   {notification.content && (
-                    <p className="text-muted-foreground mt-0.5 text-xs">{notification.content}</p>
+                    <p className="text-muted-foreground mt-0.5 text-xs">
+                      {notification.content}
+                    </p>
                   )}
                 </div>
 

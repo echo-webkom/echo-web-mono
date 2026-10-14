@@ -18,25 +18,33 @@ export default async function UserTrophies() {
     return redirect("/auth/logg-inn");
   }
 
-  const trophies = await Promise.all([unoWithAdmin.trophies.all()]);
+  const trophyCollections = await unoWithAdmin.trophies.all();
 
-  if (!trophies) {
+  if (!trophyCollections || trophyCollections.length === 0) {
     return <p>Kunne ikke hente troféer.</p>;
   }
+
+  const trophies = trophyCollections.flatMap((collection) =>
+    collection.trophies.map((trophy) => ({
+      ...trophy,
+      collectionTitle: collection.title,
+      collectionDescription: collection.baseDescription,
+    })),
+  );
 
   return (
     <div>
       <Heading level={2} className="">
         Dine troféer
       </Heading>
-      <p>Denne siden er under produksjon ... </p>
+      <p>Denne siden er under produksjon ...</p>
       <div className="mt-20 grid gap-y-10 sm:grid-cols-3 sm:gap-y-14">
         {trophies.map((trophy) => (
-          <Popover key={trophy._id}>
-            <PopoverTrigger>
+          <Popover key={trophy._key}>
+            <PopoverTrigger className="flex cursor-pointer flex-col items-center gap-3 text-left">
               <Image
-                src={urlFor(trophy.baseImage ?? "").url()}
-                alt="Empty trophy"
+                src={urlFor(trophy.image).url()}
+                alt={trophy.title}
                 width={120}
                 height={120}
               />
@@ -44,13 +52,16 @@ export default async function UserTrophies() {
             </PopoverTrigger>
             <PopoverContent>
               <Image
-                src={urlFor(trophy.baseImage ?? "").url()}
-                alt="Empty trophy"
+                src={urlFor(trophy.image).url()}
+                alt={trophy.title}
                 width={120}
                 height={120}
               />
-              <p className="mb-5 text-lg font-semibold">{trophy.title}</p>
-              <p>{trophy.baseDescription}</p>
+              <p className="mb-2 text-lg font-semibold">{trophy.title}</p>
+              <p className="mb-4 text-sm text-muted-foreground">
+                {trophy.collectionTitle}
+              </p>
+              <p>{trophy.description || trophy.collectionDescription}</p>
             </PopoverContent>
           </Popover>
         ))}

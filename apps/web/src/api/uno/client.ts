@@ -1,7 +1,7 @@
 import { type HappeningType, type PageType, type StudentGroupType } from "@echo-webkom/lib";
 import ky, { type KyInstance, type Options } from "ky";
 
-const DEFAULT_BASE_URL = "https://uno.echo-webkom.no";
+const DEFAULT_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 type UnoClientOptions = {
   baseUrl?: string;
@@ -1615,7 +1615,7 @@ type CMSTrophy = {
   _key: string;
   title: string;
   description: string;
-  level: string;
+  level: number;
   image: CMSImage;
 };
 

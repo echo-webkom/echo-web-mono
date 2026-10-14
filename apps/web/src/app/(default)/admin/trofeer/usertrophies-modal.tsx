@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { CheckIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -50,11 +49,9 @@ export const UserTrophiesModal = ({ users }: { users: AllUsers }) => {
           </div>
         </DialogBody>
         <DialogFooter>
-          <DialogClose asChild>
-            <Button size="sm" variant="ghost">
-              Lukk
-            </Button>
-          </DialogClose>
+          <Button size="sm" variant="ghost">
+            Lukk
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

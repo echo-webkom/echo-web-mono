@@ -66,5 +66,5 @@ type CMSHSApplicationRepo interface {
 }
 
 type CMSTrophyRepo interface {
-	GetAllTrophies(ctx context.Context) ([]model.CMSTrophy, error)
+    GetAllTrophies(ctx context.Context) ([]model.CMSTrophyCollection, error)
 }

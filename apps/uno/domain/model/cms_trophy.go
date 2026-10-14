@@ -14,6 +14,6 @@ type CMSTrophy struct {
 	Key         string `json:"_key"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
-	Level       string `json:"level"`
+	Level       int    `json:"level"`
 	Image       Image  `json:"image"`
 }

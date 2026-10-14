@@ -172,7 +172,7 @@ func (s *CMSService) GetUpcomingMovies(ctx context.Context, n int) ([]model.CMSM
 	return s.movieRepo.GetUpcomingMovies(ctx, n)
 }
 
-func (s *CMSService) GetAllTrophies(ctx context.Context) ([]model.CMSTrophy, error) {
+func (s *CMSService) GetAllTrophies(ctx context.Context) ([]model.CMSTrophyCollection, error) {
 	return s.trophyRepo.GetAllTrophies(ctx)
 }
 

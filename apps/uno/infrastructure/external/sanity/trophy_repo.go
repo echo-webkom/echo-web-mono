@@ -48,14 +48,14 @@ const allTrophiesQuery = `
 type TrophyRepo struct {
 	client      *sanity.Client
 	logger      port.Logger
-	trophyCache port.Cache[[]model.CMSTrophy]
+	trophyCache port.Cache[[]model.CMSTrophyCollection]
 }
 
 func NewTrophyRepo(client *sanity.Client, logger port.Logger, redisClient *redis.Client) port.CMSTrophyRepo {
 	return &TrophyRepo{
-		client:             client,
-		logger:             logger,
-		trophyCache: cache.NewCache[[]model.CMSTrophy](redisClient, CMSTrophyNamespaceTrophies),
+		client: client,
+		logger: logger,
+		trophyCache: cache.NewCache[[]model.CMSTrophyCollection](redisClient, CMSTrophyNamespaceTrophies, logger),
 	}
 }
 
@@ -76,14 +76,14 @@ func NewTrophyRepo(client *sanity.Client, logger port.Logger, redisClient *redis
 // 	return result, nil
 // }
 
-func (r *TrophyRepo) GetAllTrophies(ctx context.Context) ([]model.CMSTrophy, error) {
+func (r *TrophyRepo) GetAllTrophies(ctx context.Context) ([]model.CMSTrophyCollection, error) {
 	r.logger.Info(ctx, "getting all trophies from sanity")
 	if v, ok := r.trophyCache.Get("all"); ok {
 		r.logger.Info(ctx, "cache hit for all trophies")
 		return v, nil
 	}
 	r.logger.Info(ctx, "cache miss for all trophies")
-	result, err := sanity.Query[[]model.CMSTrophy](ctx, r.client, allTrophiesQuery, nil)	
+	result, err := sanity.Query[[]model.CMSTrophyCollection](ctx, r.client, allTrophiesQuery, nil)
 	if err != nil {
 		r.logger.Error(ctx, "failed to get all Trophies from sanity", "error", err)
 		return nil, err

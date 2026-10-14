@@ -1,32 +1,38 @@
 import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import {
-  boolean,
+  integer,
   pgTable,
   primaryKey,
   text,
+  timestamp,
   varchar,
-  integer,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { users } from "./users";
 
-export const usersTrophies = pgTable(
-  "users_to_groups",
+export const userTrophies = pgTable(
+  "user_trophies",
   {
     userId: text("user_id")
       .notNull()
       .references(() => users.id, {
         onDelete: "cascade",
       }),
-    trophyId: varchar("group_id", { length: 255 }).notNull(),
-    level: integer("trophy_level").notNull(),
+    trophyId: varchar("trophy_id", { length: 255 }).notNull(),
+    level: integer("level").notNull().default(1),
+    awardedAt: timestamp("awarded_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    awardedBy: text("awarded_by").references(() => users.id, {
+      onDelete: "set null",
+    }),
   },
   (t) => [primaryKey({ columns: [t.userId, t.trophyId] })],
 ).enableRLS();
 
-export type UsersTrophies = InferSelectModel<typeof usersTrophies>;
-export type UsersTrophiesInsert = InferInsertModel<typeof usersTrophies>;
+export type UserTrophy = InferSelectModel<typeof userTrophies>;
+export type UserTrophyInsert = InferInsertModel<typeof userTrophies>;
 
-export const selectUsersTrophiesSchema = createSelectSchema(usersTrophies);
-export const insertUsersTrophiesSchema = createInsertSchema(usersTrophies);
+export const selectUserTrophySchema = createSelectSchema(userTrophies);
+export const insertUserTrophySchema = createInsertSchema(userTrophies);
