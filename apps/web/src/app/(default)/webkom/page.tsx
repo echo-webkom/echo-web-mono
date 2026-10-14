@@ -104,6 +104,7 @@ export default function WebkomPage() {
           <ListItem>Tracey Malene Holm</ListItem>
           <ListItem>Pontus Rønold</ListItem>
           <ListItem>David Thomassen</ListItem>
+          <ListItem>Natalie Rodrigues</ListItem>
         </UnorderedList>
 
       </div>
