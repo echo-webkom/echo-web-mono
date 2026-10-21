@@ -8,6 +8,8 @@ Full-stack monorepo for nettsiden til <a href="https://echo.uib.no">echo – Lin
 
 Utviklet av frivillige informatikkstudenter fra undergruppen **echo Webkom**. :)
 
+Heihei
+
 <div align="center" >
   <a href="https://sanity.io" target="_blank" rel="noopener">
     <img src="https://cdn.sanity.io/images/3do82whm/next/51af00784c5addcf63ae7f0c416756acca7e63ac-353x71.svg?dl=sanity-logo.svg" width="100" alt="Powered by Sanity" />
