@@ -1,14 +1,12 @@
 <br>
 
-hei
-
 <div align="center">
    <img src=".github/echo-logo.png" alt="" width="40%">
 
    <p></p>
 Full-stack monorepo for nettsiden til <a href="https://echo.uib.no">echo – Linjeforeningen for informatikk</a> ved Universitetet i Bergen.
 
-Utviklet av frivillige informatikkstudenter fra undergruppen **echo Webkom**.
+Utviklet av frivillige informatikkstudenter fra undergruppen **echo Webkom**. :)
 
 <div align="center" >
   <a href="https://sanity.io" target="_blank" rel="noopener">
