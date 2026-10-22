@@ -1,4 +1,9 @@
+import Image from "next/image";
+
+import { unoWithAdmin } from "@/api/server";
 import { Text } from "@/components/typography/text";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { urlFor } from "@/lib/sanity";
 
 import { type UnoReturnType, type User } from "../../../../../../api/uno/client";
 import { EditProfileDialog } from "./edit-profile-dialog";
@@ -12,7 +17,11 @@ type OwnProfileProps = {
   degrees: UnoReturnType["degrees"]["all"];
 };
 
-export function OwnProfile({ user, degrees }: OwnProfileProps) {
+export async function OwnProfile({ user, degrees }: OwnProfileProps) {
+  const achievements = await unoWithAdmin.achievements.all(user.id);
+  const bedpresTrophy = await unoWithAdmin.sanity.trophies.byAmount("Bedpres", achievements.bedpresCount);
+  const trophyDiscovered = achievements.bedpresCount > 0;
+
   return (
     <div className="mx-auto flex w-full max-w-350 flex-col space-y-6 pt-12 md:flex-row md:items-start md:space-y-0 md:pt-24">
       <WhitelistNotification />
@@ -46,14 +55,53 @@ export function OwnProfile({ user, degrees }: OwnProfileProps) {
       </div>
       <div className="pl-0 md:pl-16">
         <Text className="text-2xl font-semibold">Trofeer</Text>
-        <div>
-          <div>
-            <Text className="text-muted-foreground">Oppdaget</Text>
-          </div>
-          <div>
-            <Text className="text-muted-foreground">Uoppdaget</Text>
-          </div>
-        </div>
+        {bedpresTrophy && (
+          <TooltipProvider>
+            <div className="space-y-6">
+              <div>
+                <Text className="text-muted-foreground">Oppdaget</Text>
+                {trophyDiscovered && (
+                  <div className="mt-2 flex items-center gap-3">
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Image
+                          src={urlFor(bedpresTrophy.image).width(96).height(96).url()}
+                          alt={bedpresTrophy.text}
+                          width={96}
+                          height={96}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent className="font-semibold">
+                        {bedpresTrophy.text}
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <Text className="text-muted-foreground">Uoppdaget</Text>
+                {!trophyDiscovered && (
+                  <div className="mt-2 flex items-center gap-3">
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Image
+                          src={urlFor(bedpresTrophy.image).width(96).height(96).url()}
+                          alt={bedpresTrophy.text}
+                          width={96}
+                          height={96}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent className="font-semibold">
+                        {bedpresTrophy.text}
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                )}
+              </div>
+            </div>
+          </TooltipProvider>
+        )}
       </div>
     </div>
   );
