@@ -89,6 +89,7 @@ func RunApi() {
 	cmsMeetingMinuteRepo := sanityinfra.NewMeetingMinuteRepo(sanityClient, logger, redisClient)
 	cmsMovieRepo := sanityinfra.NewMovieRepo(sanityClient, logger, redisClient)
 	cmsHSApplicationRepo := sanityinfra.NewHSApplicationRepo(sanityClient, logger, redisClient)
+	cmsTrophyRepo := sanityinfra.NewTrophyRepo(sanityClient, logger, redisClient)
 
 	// Initialize services
 	feideProvider := providers.NewFeideProvider(providers.FeideConfig{
@@ -135,6 +136,7 @@ func RunApi() {
 		cmsMeetingMinuteRepo,
 		cmsMovieRepo,
 		cmsHSApplicationRepo,
+		cmsTrophyRepo,
 		cacheInvalidator,
 	)
 
@@ -164,7 +166,7 @@ func RunApi() {
 		QuoteService:         quoteService,
 		CMSService:           cmsService,
 		NotificationService:  notificationService,
-		AchievementService: achievementService,
+		AchievementService:   achievementService,
 	})
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)

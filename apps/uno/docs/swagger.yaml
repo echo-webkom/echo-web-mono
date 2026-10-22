@@ -152,6 +152,15 @@ definitions:
       linkedin:
         type: string
     type: object
+  uno_domain_model.CMSTrophy:
+    properties:
+      amount_needed:
+        type: integer
+      image:
+        type: string
+      text:
+        type: string
+    type: object
   uno_domain_model.CMSTtime:
     properties:
       _type:
@@ -625,6 +634,28 @@ definitions:
         type: string
       socials:
         $ref: '#/definitions/uno_domain_model.CMSStudentGroupSocials'
+    type: object
+  uno_http_dto.CMSTrophyCollectionDTO:
+    properties:
+      _id:
+        type: string
+      slug:
+        type: string
+      title:
+        type: string
+      trophies:
+        items:
+          $ref: '#/definitions/uno_domain_model.CMSTrophy'
+        type: array
+    type: object
+  uno_http_dto.CMSTrophyDTO:
+    properties:
+      amount_needed:
+        type: integer
+      image:
+        type: string
+      text:
+        type: string
     type: object
   uno_http_dto.CommentResponse:
     properties:
@@ -3537,6 +3568,59 @@ paths:
           schema:
             type: string
       summary: Get student group by slug from CMS
+      tags:
+      - sanity
+  /sanity/trophies:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.CMSTrophyCollectionDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all trophy collections from CMS
+      tags:
+      - sanity
+  /sanity/trophies/{slug}:
+    get:
+      parameters:
+      - description: Trophy collection slug
+        in: path
+        name: slug
+        required: true
+        type: string
+      - description: Achieved amount
+        in: query
+        name: amount
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/uno_http_dto.CMSTrophyDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get an unlocked trophy from CMS
       tags:
       - sanity
   /sanity/webhook:

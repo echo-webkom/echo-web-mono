@@ -68,6 +68,8 @@ func NewSanityMux(
 
 	mux.GET("/hs-applications", s.getAllHSApplications)
 
+	mux.GET("/trophies/{title}", s.getTrophyByTitleAndAmount)
+
 	return mux
 }
 
@@ -448,6 +450,40 @@ func (s *sanityCMS) getAllHSApplications(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 	return ctx.JSON(applications)
+}
+
+// getTrophyByTitleAndAmount returns the highest unlocked trophy for a collection.
+// @Summary      Get an unlocked trophy from CMS
+// @Tags         sanity
+// @Produce      json
+// @Param        title   path   string true  "Trophy document title"
+// @Param        amount  query  int    true  "Achieved amount"
+// @Success      200     {object} dto.CMSTrophyDTO  "OK"
+// @Failure      400     {string} string             "Bad Request"
+// @Failure      404     {string} string             "Not Found"
+// @Failure      500     {string} string             "Internal Server Error"
+// @Router       /sanity/trophies/{title} [get]
+func (s *sanityCMS) getTrophyByTitleAndAmount(ctx *handler.Context) error {
+	title := ctx.PathValue("title")
+	amountString, ok := ctx.QueryParam("amount")
+	if !ok {
+		return ctx.Error(errors.New("amount is required"), http.StatusBadRequest)
+	}
+
+	amount, err := strconv.Atoi(amountString)
+	if err != nil || amount < 0 {
+		return ctx.Error(errors.New("amount must be a non-negative integer"), http.StatusBadRequest)
+	}
+
+	trophy, err := s.cmsService.GetTrophyByTitleAndAmount(ctx.Context(), title, amount)
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+	if trophy == nil {
+		return ctx.JSON(nil)
+	}
+
+	return ctx.JSON(trophy)
 }
 
 func (s *sanityCMS) getRepeatingHappeningBySlug(ctx *handler.Context) error {
