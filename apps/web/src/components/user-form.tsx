@@ -58,7 +58,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: standardSchemaResolver(userSchema),
     defaultValues: {
-      alternativeEmail: user.alternativeEmail,
+      alternativeEmail: user.alternativeEmail ?? "",
       degree: user.degree?.id,
       year: user.year,
       hasReadTerms: user.hasReadTerms,
@@ -214,7 +214,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                   value={
                     field.value instanceof Date
                       ? field.value.toISOString().split("T")[0]
-                      : field.value
+                      : (field.value ?? "")
                   }
                 />
               </FormControl>

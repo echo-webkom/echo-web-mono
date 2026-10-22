@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "../../../../../../components/ui/dialog";
 import { cn } from "../../../../../../utils/cn";
@@ -27,7 +28,8 @@ export const ShowQrCode = ({ userId, className }: props) => {
         </Button>
       </DialogTrigger>
       <DialogContent className="w-fit max-w-none" showCloseButton={false}>
-        <DialogHeader>
+        <DialogTitle hidden>echo ID qr kode</DialogTitle>
+        <DialogHeader className="bg-white">
           <DialogDescription className="mx-auto">
             <QRCode size={250} bgColor="white" fgColor="black" value={userId} />
           </DialogDescription>
