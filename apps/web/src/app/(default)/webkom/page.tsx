@@ -106,8 +106,8 @@ export default function WebkomPage() {
           <ListItem>David Thomassen</ListItem>
           <ListItem>Natalie Rodrigues</ListItem>
           <ListItem>Trym Misund</ListItem>
+          <ListItem>Sofiya Yasin Ibrahim Ali</ListItem>
         </UnorderedList>
-
       </div>
 
       <div className="mx-auto my-10 max-w-md space-y-8">
