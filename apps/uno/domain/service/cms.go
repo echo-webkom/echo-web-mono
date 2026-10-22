@@ -22,6 +22,7 @@ var cmsTypeNamespaces = map[string][]string{
 	"merch":              {sanityinfra.CMSMerchNamespaceMerch},
 	"meetingMinute":      {sanityinfra.CMSMeetingMinuteNamespaceMeetingMinutes},
 	"movie":              {sanityinfra.CMSMovieNamespaceMovies},
+	"trophy":             {sanityinfra.CMSTrophyNamespaceTrophies},
 }
 
 type CMSService struct {
@@ -36,6 +37,7 @@ type CMSService struct {
 	meetingMinuteRepo      port.CMSMeetingMinuteRepo
 	movieRepo              port.CMSMovieRepo
 	hsApplicationRepo      port.CMSHSApplicationRepo
+	trophyRepo             port.CMSTrophyRepo
 
 	invalidator port.CacheInvalidator
 }
@@ -52,6 +54,7 @@ func NewCMSService(
 	meetingMinuteRepo port.CMSMeetingMinuteRepo,
 	movieRepo port.CMSMovieRepo,
 	hsApplicationRepo port.CMSHSApplicationRepo,
+	trophyRepo port.CMSTrophyRepo,
 	invalidator port.CacheInvalidator,
 ) *CMSService {
 	return &CMSService{
@@ -66,6 +69,7 @@ func NewCMSService(
 		meetingMinuteRepo:      meetingMinuteRepo,
 		movieRepo:              movieRepo,
 		hsApplicationRepo:      hsApplicationRepo,
+		trophyRepo:             trophyRepo,
 
 		invalidator: invalidator,
 	}
@@ -138,6 +142,14 @@ func (s *CMSService) GetAllMovies(ctx context.Context) ([]model.CMSMovie, error)
 
 func (s *CMSService) GetAllHSApplications(ctx context.Context) ([]model.CMSHSApplication, error) {
 	return s.hsApplicationRepo.GetAllHSApplications(ctx)
+}
+
+func (s *CMSService) GetTrophyByTitleAndAmount(
+	ctx context.Context,
+	title string,
+	amount int,
+) (*model.CMSTrophy, error) {
+	return s.trophyRepo.GetTrophyByTitleAndAmount(ctx, title, amount)
 }
 
 func (s *CMSService) GetRepeatingHappeningBySlug(ctx context.Context, slug string) (*model.CMSRepeatingHappening, error) {
