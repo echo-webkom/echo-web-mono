@@ -12,7 +12,7 @@ import {
   MobileNavigationViewport,
 } from "./mobile-navigation";
 import { NotificationBell } from "./notification-bell";
-import { ThemeSwitchButton } from "./theme-switch-button";
+import { ThemeDropdown  } from "./theme-dropdown";
 import { Chip } from "./typography/chip";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";
@@ -80,7 +80,7 @@ export const SiteHeader = async () => {
                 <DesktopNavigation />
               </div>
               <div className="flex items-center space-x-2">
-                <ThemeSwitchButton />
+                <ThemeDropdown />
                 {user && <NotificationBell />}
                 {user ? (
                   <UserMenu user={user} />

@@ -28,6 +28,7 @@ export const Providers = ({
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
+            themes={["light", "dark", "girly", "hacker"]}
           >
             {children}
           </ThemeProvider>
