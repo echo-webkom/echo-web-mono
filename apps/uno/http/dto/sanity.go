@@ -30,6 +30,4 @@ type (
 	CMSMovieDTO                = model.CMSMovie
 	CMSHSApplicationProfileDTO = model.CMSHSApplicationProfile
 	CMSHSApplicationDTO        = model.CMSHSApplication
-	CMSTrophyDTO               = model.CMSTrophy
-	CMSTrophyCollectionDTO     = model.CMSTrophyCollection
 )

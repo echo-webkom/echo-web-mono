@@ -65,7 +65,6 @@ func RunApi() {
 	notificationRepo := postgres.NewNotificationRepo(db, logger)
 	accountRepo := postgres.NewAccountRepo(db, logger)
 	verificationTokenRepo := postgres.NewVerificationTokenRepo(db, logger)
-	achievementRepo := postgres.NewAchievementRepo(db, logger)
 
 	// Initialize Sanity client and CMS repos
 	sanityClient, err := sanity.New(sanity.Config{
@@ -89,7 +88,6 @@ func RunApi() {
 	cmsMeetingMinuteRepo := sanityinfra.NewMeetingMinuteRepo(sanityClient, logger, redisClient)
 	cmsMovieRepo := sanityinfra.NewMovieRepo(sanityClient, logger, redisClient)
 	cmsHSApplicationRepo := sanityinfra.NewHSApplicationRepo(sanityClient, logger, redisClient)
-	cmsTrophyRepo := sanityinfra.NewTrophyRepo(sanityClient, logger, redisClient)
 
 	// Initialize services
 	feideProvider := providers.NewFeideProvider(providers.FeideConfig{
@@ -123,7 +121,6 @@ func RunApi() {
 	reactionService := service.NewReactionService(reactionRepo)
 	quoteService := service.NewQuoteService(quoteRepo)
 	notificationService := service.NewNotificationService(notificationRepo, commentRepo, happeningRepo)
-	achievementService := service.NewAchievementService(achievementRepo)
 	cmsService := service.NewCMSService(
 		cmsHappeningRepo,
 		cmsRepeatingHappeningRepo,
@@ -136,7 +133,6 @@ func RunApi() {
 		cmsMeetingMinuteRepo,
 		cmsMovieRepo,
 		cmsHSApplicationRepo,
-		cmsTrophyRepo,
 		cacheInvalidator,
 	)
 
@@ -166,7 +162,6 @@ func RunApi() {
 		QuoteService:         quoteService,
 		CMSService:           cmsService,
 		NotificationService:  notificationService,
-		AchievementService:   achievementService,
 	})
 
 	notif.NotifyOnSignal(syscall.SIGINT, os.Interrupt)

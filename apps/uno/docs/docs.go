@@ -175,40 +175,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/achievements/{userID}": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "achievements"
-                ],
-                "summary": "Get users achievements",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "userID",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.AchievementResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/advent-of-code/leaderboard": {
             "get": {
                 "produces": [
@@ -3389,87 +3355,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/sanity/trophies": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "sanity"
-                ],
-                "summary": "Get all trophy collections from CMS",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/uno_http_dto.CMSTrophyCollectionDTO"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/sanity/trophies/{slug}": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "sanity"
-                ],
-                "summary": "Get an unlocked trophy from CMS",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Trophy collection slug",
-                        "name": "slug",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Achieved amount",
-                        "name": "amount",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/uno_http_dto.CMSTrophyDTO"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/sanity/webhook": {
             "get": {
                 "security": [
@@ -4830,20 +4715,6 @@ const docTemplate = `{
                 }
             }
         },
-        "uno_domain_model.CMSTrophy": {
-            "type": "object",
-            "properties": {
-                "amount_needed": {
-                    "type": "integer"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "text": {
-                    "type": "string"
-                }
-            }
-        },
         "uno_domain_model.CMSTtime": {
             "type": "object",
             "properties": {
@@ -5003,14 +4874,6 @@ const docTemplate = `{
                 },
                 "reason": {
                     "type": "string"
-                }
-            }
-        },
-        "uno_http_dto.AchievementResponse": {
-            "type": "object",
-            "properties": {
-                "bedpresCount": {
-                    "type": "integer"
                 }
             }
         },
@@ -5567,40 +5430,6 @@ const docTemplate = `{
                 },
                 "socials": {
                     "$ref": "#/definitions/uno_domain_model.CMSStudentGroupSocials"
-                }
-            }
-        },
-        "uno_http_dto.CMSTrophyCollectionDTO": {
-            "type": "object",
-            "properties": {
-                "_id": {
-                    "type": "string"
-                },
-                "slug": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "trophies": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/uno_domain_model.CMSTrophy"
-                    }
-                }
-            }
-        },
-        "uno_http_dto.CMSTrophyDTO": {
-            "type": "object",
-            "properties": {
-                "amount_needed": {
-                    "type": "integer"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "text": {
-                    "type": "string"
                 }
             }
         },

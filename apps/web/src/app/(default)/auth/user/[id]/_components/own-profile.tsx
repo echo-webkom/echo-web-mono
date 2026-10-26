@@ -1,9 +1,4 @@
-import Image from "next/image";
-
-import { unoWithAdmin } from "@/api/server";
 import { Text } from "@/components/typography/text";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { urlFor } from "@/lib/sanity";
 
 import { type UnoReturnType, type User } from "../../../../../../api/uno/client";
 import { EditProfileDialog } from "./edit-profile-dialog";
@@ -18,10 +13,6 @@ type OwnProfileProps = {
 };
 
 export async function OwnProfile({ user, degrees }: OwnProfileProps) {
-  const achievements = await unoWithAdmin.achievements.all(user.id);
-  const bedpresTrophy = await unoWithAdmin.sanity.trophies.byAmount("Bedpres", achievements.bedpresCount);
-  const trophyDiscovered = achievements.bedpresCount > 0;
-
   return (
     <div className="mx-auto flex w-full max-w-350 flex-col space-y-6 pt-12 md:flex-row md:items-start md:space-y-0 md:pt-24">
       <WhitelistNotification />
@@ -55,7 +46,7 @@ export async function OwnProfile({ user, degrees }: OwnProfileProps) {
       </div>
       <div className="pl-0 md:pl-16">
         <Text className="text-2xl font-semibold">Trofeer</Text>
-        {bedpresTrophy && (
+        {/*         {bedpresTrophy && (
           <TooltipProvider>
             <div className="space-y-6">
               <div>
@@ -77,11 +68,11 @@ export async function OwnProfile({ user, degrees }: OwnProfileProps) {
                     </Tooltip>
                   </div>
                 )}
-              </div>
+              </div> */}
 
-              <div>
-                <Text className="text-muted-foreground">Uoppdaget</Text>
-                {!trophyDiscovered && (
+        <div>
+          <Text className="text-muted-foreground">Uoppdaget</Text>
+          {/*                 {!trophyDiscovered && (
                   <div className="mt-2 flex items-center gap-3">
                     <Tooltip>
                       <TooltipTrigger>
@@ -101,7 +92,8 @@ export async function OwnProfile({ user, degrees }: OwnProfileProps) {
               </div>
             </div>
           </TooltipProvider>
-        )}
+        )} */}
+        </div>
       </div>
     </div>
   );

@@ -78,7 +78,6 @@ func RunCron(job string) {
 		nil,
 		nil,
 		nil,
-		nil,
 		cacheInvalidator,
 	)
 
