@@ -5,6 +5,7 @@ export default defineType({
   name: "trophy",
   title: "Trofeer",
   type: "document",
+  description: "Bare lov for Webkom å endre!!! Kontakt oss for ideer eller spørsmål!!",
   icon: StarIcon,
   fields: [
     defineField({
@@ -14,13 +15,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: "trophies",
-      title: "Trofeer",
+      name: "trophyLevels",
+      title: "Trofe nivåer",
       type: "array",
       of: [
         defineArrayMember({
-          name: "trophyType",
-          title: "Trofe",
+          name: "level",
+          title: "Trofenivå",
           type: "object",
           fields: [
             defineField({
@@ -33,14 +34,20 @@ export default defineType({
               validation: (Rule) => Rule.required(),
             }),
             defineField({
+              name: "name",
+              title: "Navn",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
               name: "text",
               title: "Tekst",
               type: "string",
               validation: (Rule) => Rule.required(),
             }),
             defineField({
-              name: "amount_needed",
-              title: "Antall nødvendig",
+              name: "threshold",
+              title: "Antall nødvendig for å ha trofeen",
               type: "number",
               validation: (Rule) => Rule.required().min(0),
             }),
