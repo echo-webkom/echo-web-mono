@@ -1,3 +1,65 @@
 .hacker {
-    
+    --background: #0D0208; /*  Hovedbakgrunn FF69B4 0D0208*/
+    --foreground: #00FF41;  /*  Hovedtekst  */
+
+    --muted: #0f0f0f;   /*  tabbakgrunn dager man-søn + bagrunn uke/måned (etter trykke kalender)  */
+    --muted-foreground: #008F11;   /* schemecolor.com: 0D0208 003B00 008F11 00FF41*/
+    --muted-dark: #4d4d4d;  /*   */
+
+    --table-foreground: #999999;
+    --table-background: #FF69B4; /*  idk */
+    --table-background-alt: #181818;
+    --table-header-background: #242424;
+    --table-header-foreground: #eeeeee;
+
+    --popover: #181818;
+    --popover-foreground: #eeeeee;
+
+    --card: #171717;
+    --card-foreground: #eeeeee;
+
+    --border: #4d4d4d;
+    --input: #171717;
+
+    --primary: #008fa3;
+    --primary-foreground: #f9fafb;
+    --primary-hover: #32a5b5;
+    --primary-dark: #006f83;
+
+    --secondary: #fed879;
+    --secondary-foreground: #24292e;
+    --secondary-hover: #ffe195;
+    --secondary-dark: #f9c652;
+
+    --accent: #14171a;
+    --accent-foreground: #f9fafb;
+
+    --success: #48bb78;
+    --success-foreground: #f9fafb;
+    --success-hover: #6ee7b7;
+    --success-dark: #2f855a;
+
+    --destructive: #e53e3e;
+    --destructive-foreground: #f9fafb;
+    --destructive-hover: #f56565;
+    --destructive-dark: #c53030;
+
+    --warning: #f6ad55;
+    --warning-foreground: #14171a;
+    --warning-hover: #f6c68b;
+    --warning-dark: #b7791f;
+
+    --info: #3182ce;
+    --info-foreground: #f9fafb;
+    --info-hover: #4299e1;
+    --info-dark: #2b6cb0;
+
+    --banner: #53adbd;
+
+    --ring: #94a3b8;
+
+    --selected: #008fa3;
+
+    --footer: #171717;
+    --footer-foreground: #008F11; /* footer tekst */
 }
