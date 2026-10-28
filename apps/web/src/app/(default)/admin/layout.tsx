@@ -39,6 +39,11 @@ const adminRoutes = [
     groups: ["webkom", "hovedstyret"],
   },
   {
+    href: "/admin/intgroup-requests",
+    label: "Interessegrupper",
+    groups: ["webkom", "hovedstyret"],
+  },
+  {
     href: "/admin/studieretninger",
     label: "Studieretninger",
     groups: ["webkom", "hovedstyret"],

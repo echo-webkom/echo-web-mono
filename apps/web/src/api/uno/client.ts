@@ -1163,6 +1163,17 @@ export interface IntgroupRequestInsert {
   contactEmail: string;
 }
 
+export interface IntgroupRequest {
+  id: string;
+  groupName: string;
+  description: string;
+  interestedPeople: string;
+  purpose: string;
+  needsFromHovedstyre: string | null;
+  contactEmail: string;
+  createdAt: Date;
+}
+
 class GroupsApi {
   private client: UnoClient;
 
@@ -1197,6 +1208,15 @@ class GroupsApi {
 
   async createIntgroupRequest(request: IntgroupRequestInsert) {
     return await this.client.requestJson("POST", "groups/intgroup", request);
+  }
+
+  async intgroupRequests() {
+    return await this.client.requestJson<Array<IntgroupRequest>>("GET", "groups/intgroup");
+  }
+
+  async deleteIntgroupRequest(id: string) {
+    const response = await this.client.request("DELETE", `groups/intgroup/${id}`);
+    return response.status === 200;
   }
 
   async members(groupId: string) {
