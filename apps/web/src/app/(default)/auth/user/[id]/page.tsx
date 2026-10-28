@@ -1,20 +1,12 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { createProfilePictureUrl, uno } from "@/api/client";
+import { uno } from "@/api/client";
 import { unoWithAdmin } from "@/api/server";
 import { auth } from "@/auth/session";
-import { Chip } from "@/components/typography/chip";
-import { Heading } from "@/components/typography/heading";
-import { Text } from "@/components/typography/text";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { UserForm } from "@/components/user-form";
 
-import { ShowQrCode } from "./_components/show-qr-code";
-import { UploadProfilePicture } from "./_components/upload-profile-picture";
-import WhitelistNotification from "./_components/whitelist-notification";
+import { OwnProfile } from "./_components/own-profile";
+import { PrivateProfile } from "./_components/private-profile";
+import { PublicProfile } from "./_components/public-profile";
 
 type Props = {
   params: Promise<{
@@ -40,170 +32,11 @@ export default async function ProfilePage({ params }: Props) {
   const hasAccess = profileOwner?.isPublic ?? isProfileOwner;
 
   const degrees = await uno.degrees.all();
-  const memberships = profileOwner.groups.map((group) => ({ group }));
-
   if (!isProfileOwner && hasAccess) {
-    return (
-      <div className="flex min-h-[calc(100vh-200px)] items-center justify-center px-4">
-        <div className="w-full max-w-2xl space-y-6">
-          <div className="flex items-center justify-between">
-            <Heading level={2}>{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
-          </div>
-
-          <Card className="shadow-md">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-xl font-medium">Brukerinformasjon</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-6 md:flex-row">
-                <div className="flex flex-col items-center space-y-2">
-                  <Avatar size="xl">
-                    {profileOwner.hasImage ? (
-                      <AvatarImage
-                        src={createProfilePictureUrl(profileOwner.id, 2)}
-                        alt={profileOwner.name ?? ""}
-                      />
-                    ) : (
-                      <AvatarFallback className="text-2xl">
-                        {profileOwner.name?.slice(0, 1) ?? "?"}
-                      </AvatarFallback>
-                    )}
-                  </Avatar>
-                </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <Label className="text-muted-foreground">Navn</Label>
-                    <Text className="text-lg font-medium">{profileOwner.name}</Text>
-                  </div>
-
-                  <div>
-                    <Label className="text-muted-foreground">E-post</Label>
-                    <Text>{profileOwner.email}</Text>
-                  </div>
-
-                  <div>
-                    <Label className="text-muted-foreground">Studieretning</Label>
-                    <Text>{profileOwner.degree?.name ?? "Ikke angitt"}</Text>
-                  </div>
-
-                  <div>
-                    <Label className="text-muted-foreground">Årstrinn</Label>
-                    <Text>{profileOwner.year ? `${profileOwner.year}. trinn` : "Ikke angitt"}</Text>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {memberships.length > 0 && (
-            <Card className="shadow-sm">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xl font-medium">Medlemskap</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div>
-                  <ul className="flex flex-wrap gap-2">
-                    {memberships.map(({ group }) => (
-                      <li key={group.id}>
-                        <Link href={`/gruppe/${group.id}`}>
-                          <Chip variant="secondary" className="hover:underline">
-                            {group.name}
-                          </Chip>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      </div>
-    );
+    return <PublicProfile profileOwner={profileOwner} />;
   } else if (isProfileOwner) {
-    return (
-      <div className="relative max-w-2xl space-y-4 p-4">
-        <div className="bg-table-background-alt absolute top-0 left-0 h-32 w-full rounded"></div>
-        <div className="pb-10"></div>
-        <WhitelistNotification />
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex flex-col items-center">
-            <UploadProfilePicture
-              userId={profileOwner.id}
-              name={profileOwner.name ?? "Bo Bakseter"}
-              hasImage={profileOwner.hasImage}
-            />
-            <Text className="mt-2 py-0 text-xl font-bold">{profileOwner.name}</Text>
-            <Text className="text-muted-dark py-0">{profileOwner.email}</Text>
-            <div className="mt-3">
-              <ShowQrCode userId={user.id} />
-            </div>
-          </div>
-        </div>
-
-        <div className="flex w-full justify-center">
-          {memberships.length > 0 && (
-            <div>
-              <ul className="flex flex-wrap gap-2">
-                {memberships.map(({ group }) => (
-                  <li key={group.id}>
-                    <Link href={`/gruppe/${group.id}`}>
-                      <Chip key={group.id} variant="outlined" className="hover:underline">
-                        {group.name}
-                      </Chip>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-        {isProfileOwner ? (
-          <UserForm
-            user={{
-              id: profileOwner.id,
-              degree: profileOwner.degree ?? undefined,
-              year: profileOwner.year ?? undefined,
-              alternativeEmail:
-                "alternativeEmail" in profileOwner
-                  ? (profileOwner.alternativeEmail ?? undefined)
-                  : undefined,
-              alternativeEmailVerifiedAt:
-                "alternativeEmailVerifiedAt" in profileOwner
-                  ? (profileOwner.alternativeEmailVerifiedAt ?? undefined)
-                  : undefined,
-              hasReadTerms: !!profileOwner.hasReadTerms,
-              isPublic:
-                "isPublic" in profileOwner ? (profileOwner.isPublic ?? undefined) : undefined,
-              birthday:
-                "birthday" in profileOwner ? (profileOwner.birthday ?? undefined) : undefined,
-            }}
-            degrees={degrees}
-          />
-        ) : null}
-      </div>
-    );
+    return <OwnProfile user={profileOwner} degrees={degrees} />;
   } else {
-    return (
-      <div className="flex min-h-[calc(100vh-200px)] items-center justify-center px-4">
-        <div className="w-full max-w-2xl">
-          <Heading
-            level={2}
-            className="mb-4 text-center"
-          >{`${profileOwner.name?.split(" ")[0]} sin profil`}</Heading>
-          <Card className="border-muted shadow-md">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-center p-8">
-                <div className="text-center">
-                  <Text className="text-lg font-medium">Denne brukeren har privat profil.</Text>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <div className="mt-6 text-center"></div>
-        </div>
-      </div>
-    );
+    return <PrivateProfile profileOwner={profileOwner} />;
   }
 }

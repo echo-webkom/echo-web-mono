@@ -52,6 +52,7 @@ func NewCMSService(
 	meetingMinuteRepo port.CMSMeetingMinuteRepo,
 	movieRepo port.CMSMovieRepo,
 	hsApplicationRepo port.CMSHSApplicationRepo,
+
 	invalidator port.CacheInvalidator,
 ) *CMSService {
 	return &CMSService{
