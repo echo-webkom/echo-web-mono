@@ -42,3 +42,12 @@
   --footer-border: #f472b6;
   --footer-foreground: #4a1d3a;
 }
+
+.girly body {
+  font-family: var(--font-girly), ui-sans-serif, system-ui, sans-serif;
+}
+
+.girly h1,
+.girly h2 {
+  font-family: var(--font-girly-header), ui-sans-serif, system-ui, sans-serif;
+}
