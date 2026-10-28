@@ -15,21 +15,21 @@
     --popover: #181818;
     --popover-foreground: #eeeeee;
 
-    --card: #171717;
+    --card: #0f0f0f;
     --card-foreground: #eeeeee;
 
     --border: #4d4d4d;
     --input: #171717;
 
-    --primary: #008fa3;
-    --primary-foreground: #f9fafb;
-    --primary-hover: #32a5b5;
-    --primary-dark: #006f83;
+    --primary: #003B00; /* BEDPRES */
+    --primary-foreground: #00FF41;
+    --primary-hover: #003B00;
+    --primary-dark: #00FF41;
 
-    --secondary: #fed879;
-    --secondary-foreground: #24292e;
-    --secondary-hover: #ffe195;
-    --secondary-dark: #f9c652;
+    --secondary: #468146; /* ARRANGEMENT */
+    --secondary-foreground: #e6dc27;
+    --secondary-hover: #468146;
+    --secondary-dark: #003B00;
 
     --accent: #14171a;
     --accent-foreground: #f9fafb;
@@ -63,3 +63,9 @@
     --footer: #171717;
     --footer-foreground: #008F11; /* footer tekst */
 }
+
+/*
+.hacker body {
+    font-family: ;
+}
+*/
