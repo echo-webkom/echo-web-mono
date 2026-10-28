@@ -103,7 +103,12 @@ export const AnimatedSnowfall = ({ n, children }: AnimatedIconsProps) => {
   if (!((month === 10 && date.getDate() >= 16) || month === 11)) return children;
 
   const keys = [...new Array(n).keys()];
-  const colors = theme === "light" ? ["#1C274C"] : ["#F3F7F2"]; // Can add different colors for the snowflakes here
+  const colors =
+    theme === "light"
+      ? ["#1C274C"]
+      : theme === "girly"
+        ? ["#ec4899", "#f472b6", "#a78bfa"]
+        : ["#F3F7F2"]; // Can add different colors for the snowflakes here
 
   return (
     <div className="relative h-full w-full">
