@@ -650,7 +650,7 @@ export class UnoClient {
   sanity: SanityApi;
   auth: AuthApi;
   notifications: NotificationsApi;
-  achievements: AchievementsApi;
+  trophy: TrophyApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -682,7 +682,7 @@ export class UnoClient {
     this.sanity = new SanityApi(this);
     this.auth = new AuthApi(this);
     this.notifications = new NotificationsApi(this);
-    this.achievements = new AchievementsApi(this);
+    this.trophy = new TrophyApi(this);
   }
 
   normalizePath(path: string) {
@@ -725,11 +725,25 @@ export class UnoClient {
   }
 }
 
-interface Achievement {
-  bedpresCount: number;
+export interface UserTrophy {
+  trophy: Trophy;
+  progress: number;
+  currentLevel: TrophyLevel;
 }
 
-class AchievementsApi {
+interface Trophy {
+  title: string;
+  trophyLeves: Array<TrophyLevel>;
+}
+
+interface TrophyLevel {
+  image: string;
+  name: string;
+  text: string;
+  threshold: number;
+}
+
+class TrophyApi {
   private client: UnoClient;
 
   constructor(client: UnoClient) {
@@ -737,7 +751,7 @@ class AchievementsApi {
   }
 
   async all(userId: string) {
-    return await this.client.requestJson<Achievement>("GET", `/achievements/${userId}`);
+    return await this.client.requestJson<Array<UserTrophy>>("GET", `/trophy/${userId}`);
   }
 }
 
