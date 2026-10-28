@@ -7,7 +7,7 @@ require (
 	github.com/air-verse/air v1.64.5
 	github.com/brianvoe/gofakeit/v7 v7.14.1
 	github.com/echo-webkom/cenv v1.16.0
-	github.com/go-chi/chi/v5 v5.2.5
+	github.com/go-chi/chi/v5 v5.4.0
 	github.com/go-chi/cors v1.2.2
 	github.com/gocolly/colly/v2 v2.3.0
 	github.com/golang-jwt/jwt/v5 v5.3.1
