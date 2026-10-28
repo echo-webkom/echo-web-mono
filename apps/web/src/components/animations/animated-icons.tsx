@@ -9,6 +9,8 @@ import { useIsMounted } from "@/hooks/use-is-mounted";
 
 import { Snowflake } from "../icons/snowflake";
 
+const HIDE_SEASONAL_FOR = ["girly", "hacker"];
+
 type AnimatedIconsProps = {
   n: number;
   children: React.ReactNode;
@@ -17,6 +19,8 @@ type AnimatedIconsProps = {
 export const AnimatedIcons = ({ n, children }: AnimatedIconsProps) => {
   const month = getMonth(new Date());
   const isMounted = useIsMounted();
+  const { theme } = useTheme();
+  const hideSeasonal = HIDE_SEASONAL_FOR.includes(theme ?? "");
 
   // Halloween
   if (month !== 9) return children;
@@ -28,7 +32,7 @@ export const AnimatedIcons = ({ n, children }: AnimatedIconsProps) => {
   return (
     <div className="relative h-full w-full">
       <div className="relative min-h-screen w-full">{children}</div>
-      {isMounted && (
+      {isMounted && !hideSeasonal && (
         <div className="pointer-events-none absolute top-0 left-0 -z-10 h-full w-full overflow-hidden">
           {keys.map((key) => {
             // eslint-disable-next-line react-hooks/purity

@@ -1,3 +1,53 @@
 .girly {
+  --background: #fff5f9;
+  --foreground: #4a1d3a;
 
+  --muted: #fde4ef;
+  --muted-foreground: #a3587f;
+  --muted-dark: #f4a6c8;
+
+  --table-foreground: #4a1d3a;
+  --table-background: #fff0f6;
+  --table-background-alt: #fde4ef;
+  --table-header-background: #fbcfe2;
+  --table-header-foreground: #4a1d3a;
+
+  --popover: #fff5f9;
+  --popover-foreground: #4a1d3a;
+
+  --card: #ffffff;
+  --card-foreground: #4a1d3a;
+
+  --border: #f4a6c8;
+  --input: #fde4ef;
+
+  --primary: #ec4899;
+  --primary-foreground: #ffffff;
+  --primary-hover: #f472b6;
+  --primary-dark: #be185d;
+
+  --secondary: #c4b5fd;
+  --secondary-foreground: #4a1d3a;
+  --secondary-hover: #ddd6fe;
+  --secondary-dark: #a78bfa;
+
+  --accent: #fde4ef;
+  --accent-foreground: #4a1d3a;
+
+  --banner: #f472b6;
+  --ring: #f9a8d4;
+  --selected: #fbcfe8;
+
+  --footer: #fbcfe2;
+  --footer-border: #f472b6;
+  --footer-foreground: #4a1d3a;
+}
+
+.girly body {
+  font-family: var(--font-girly), ui-sans-serif, system-ui, sans-serif;
+}
+
+.girly h1,
+.girly h2 {
+  font-family: var(--font-girly-header), ui-sans-serif, system-ui, sans-serif;
 }
