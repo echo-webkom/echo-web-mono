@@ -108,7 +108,7 @@ export function IntgroupRequestList({ requests: initialRequests }: IntgroupReque
               />
               <RequestDetail label="Formål og målgruppe" value={selectedRequest.purpose} />
               <RequestDetail
-                label="Behov fra Hovedstyre"
+                label="Behov fra hovedstyret"
                 value={selectedRequest.needsFromHovedstyre || "Ikke oppgitt"}
               />
               <RequestDetail label="Kontakt-e-post" value={selectedRequest.contactEmail} />

@@ -139,7 +139,7 @@ export function IntgroupRequestDialog() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Trenger dere noe fra Hovedstyre for å komme i gang?{" "}
+                      Trenger dere noe fra hovedstyret for å komme i gang?{" "}
                       <span className="text-muted-foreground font-normal">(valgfritt)</span>
                     </FormLabel>
                     <FormControl>
