@@ -13,6 +13,10 @@ type GroupRepo interface {
 	CreateGroup(ctx context.Context, group model.NewGroup) (model.Group, error)
 	UpdateGroup(ctx context.Context, group model.Group) (model.Group, error)
 	DeleteGroup(ctx context.Context, id string) error
+	CreateIntgroupRequest(ctx context.Context, request model.NewIntgroupRequest) (model.IntgroupRequest, error)
+	GetIntgroupRequests(ctx context.Context) ([]model.IntgroupRequest, error)
+	GetIntgroupRequestByID(ctx context.Context, id string) (model.IntgroupRequest, error)
+	DeleteIntgroupRequestByID(ctx context.Context, id string) error
 	SetGroupMemberLeader(ctx context.Context, groupID string, userID string, isLeader bool) error
 	AddUserToGroup(ctx context.Context, groupID string, userID string) error
 	RemoveUserFromGroup(ctx context.Context, groupID string, userID string) error

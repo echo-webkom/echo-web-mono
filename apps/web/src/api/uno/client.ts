@@ -1154,6 +1154,15 @@ interface GroupMember {
   isLeader: boolean;
 }
 
+export interface IntgroupRequestInsert {
+  groupName: string;
+  description: string;
+  interestedPeople: string;
+  purpose: string;
+  needsFromHovedstyre?: string;
+  contactEmail: string;
+}
+
 class GroupsApi {
   private client: UnoClient;
 
@@ -1184,6 +1193,10 @@ class GroupsApi {
 
   async byId(id: string) {
     return await this.client.requestJson<Group>("GET", `groups/${id}`);
+  }
+
+  async createIntgroupRequest(request: IntgroupRequestInsert) {
+    return await this.client.requestJson("POST", "groups/intgroup", request);
   }
 
   async members(groupId: string) {

@@ -44,6 +44,22 @@ func (s *GroupService) DeleteGroup(ctx context.Context, id string) error {
 	return s.groupRepo.DeleteGroup(ctx, id)
 }
 
+func (s *GroupService) CreateIntgroupRequest(ctx context.Context, request model.NewIntgroupRequest) (model.IntgroupRequest, error) {
+	return s.groupRepo.CreateIntgroupRequest(ctx, request)
+}
+
+func (s *GroupService) GetIntgroupRequests(ctx context.Context) ([]model.IntgroupRequest, error) {
+	return s.groupRepo.GetIntgroupRequests(ctx)
+}
+
+func (s *GroupService) GetIntgroupRequestByID(ctx context.Context, id string) (model.IntgroupRequest, error) {
+	return s.groupRepo.GetIntgroupRequestByID(ctx, id)
+}
+
+func (s *GroupService) DeleteIntgroupRequestByID(ctx context.Context, id string) error {
+	return s.groupRepo.DeleteIntgroupRequestByID(ctx, id)
+}
+
 func (s *GroupService) SetGroupMemberLeader(ctx context.Context, groupID string, userID string, isLeader bool) error {
 	return s.groupRepo.SetGroupMemberLeader(ctx, groupID, userID, isLeader)
 }

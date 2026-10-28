@@ -3,6 +3,7 @@ package model
 import (
 	"strconv"
 	"strings"
+	"time"
 )
 
 // IsBoardID checks if a string matches the board slug pattern (e.g. "2023/2024").
@@ -27,6 +28,26 @@ type Group struct {
 type NewGroup struct {
 	ID   *string
 	Name string
+}
+
+type IntgroupRequest struct {
+	ID                  string
+	GroupName           string
+	Description         string
+	InterestedPeople    string
+	Purpose             string
+	NeedsFromHovedstyre *string
+	ContactEmail        string
+	CreatedAt           time.Time
+}
+
+type NewIntgroupRequest struct {
+	GroupName           string
+	Description         string
+	InterestedPeople    string
+	Purpose             string
+	NeedsFromHovedstyre *string
+	ContactEmail        string
 }
 
 // UsersToGroups represents the relationship between users and groups
