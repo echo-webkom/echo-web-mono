@@ -9,3 +9,4 @@ export function PizzaFormel({ count }: { count: number }) {
   const pizza_count = Math.ceil(count * (3 / 8));
   return <p>Du må bestille: {pizza_count} pizza</p>;
 }
+  
