@@ -130,7 +130,7 @@ export const DaysCalendar = ({
             return (
               <div key={day.toString()} className="bg-background">
                 <div className="flex flex-col gap-2">
-                  <div className="bg-muted flex h-16 flex-col items-center justify-center border-b py-2 font-medium">
+                  <div className="bg-card flex h-16 flex-col items-center justify-center border-b py-2 font-medium">
                     {isToday ? (
                       <p>I dag</p>
                     ) : (
