@@ -7,7 +7,6 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-
   --font-weight-normal: 300;
   --font-weight-medium: 400;
   --font-weight-semibold: 500;
