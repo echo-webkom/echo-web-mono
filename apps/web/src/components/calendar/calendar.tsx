@@ -286,7 +286,7 @@ const OptionsModal = ({ items, close, isOpen }: OptionsModalProps) => {
     <>
       <div
         className={cn(
-          "bg-accent absolute top-0 z-1 flex h-full flex-col gap-4 items-start rounded border border-y-0 border-r-0 p-3 px-4 shadow transition-all sm:w-sm w-full",
+          "bg-card absolute top-0 z-1 flex h-full flex-col gap-4 items-start rounded border border-y-0 border-r-0 p-3 px-4 shadow transition-all sm:w-sm w-full",
           isOpen ? "right-0" : "-right-[100vw]",
         )}
       >
