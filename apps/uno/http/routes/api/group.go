@@ -18,13 +18,22 @@ type group struct {
 	groupService *service.GroupService
 }
 
-func NewGroupMux(logger port.Logger, groupService *service.GroupService, admin handler.Middleware) *router.Mux {
+func NewGroupMux(
+	logger port.Logger,
+	groupService *service.GroupService,
+	admin handler.Middleware,
+	session handler.Middleware,
+) *router.Mux {
 	gh := &group{
 		logger:       logger,
 		groupService: groupService,
 	}
 
 	mux := router.NewMux()
+	mux.POST("/intgroup", gh.createIntgroupRequest, session)
+	mux.GET("/intgroup", gh.getIntgroupRequests, admin)
+	mux.GET("/intgroup/{id}", gh.getIntgroupRequestByID, admin)
+	mux.DELETE("/intgroup/{id}", gh.deleteIntgroupRequestByID, admin)
 	mux.GET("/", gh.getGroups)
 	mux.GET("/{id}", gh.getGroupByID)
 
@@ -37,6 +46,109 @@ func NewGroupMux(logger port.Logger, groupService *service.GroupService, admin h
 	mux.POST("/{id}/members/{userId}/leader", gh.setGroupMemberLeader, admin)
 
 	return mux
+}
+
+// createIntgroupRequest submits a request to create a new interessegruppe.
+// @Summary Create an interessegruppe request
+// @Tags groups
+// @Accept json
+// @Produce json
+// @Param request body dto.CreateIntgroupRequestRequest true "Interessegruppe request"
+// @Success 200 {object} dto.IntgroupRequestResponse "OK"
+// @Failure 400 {object} string "Bad Request"
+// @Failure 401 {object} string "Unauthorized"
+// @Failure 500 {object} string "Internal Server Error"
+// @Security BearerAuth
+// @Router /groups/intgroup [post]
+func (gh *group) createIntgroupRequest(ctx *handler.Context) error {
+	var req dto.CreateIntgroupRequestRequest
+	if err := ctx.ReadJSON(&req); err != nil {
+		return ctx.BadRequest(ErrFailedToReadJSON)
+	}
+
+	request, err := gh.groupService.CreateIntgroupRequest(ctx.Context(), req.ToDomain())
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.JSON(dto.IntgroupRequestResponseFromDomain(request))
+}
+
+// getIntgroupRequests returns all interessegruppe requests.
+// @Summary Get interessegruppe requests
+// @Tags groups
+// @Produce json
+// @Success 200 {array} dto.IntgroupRequestResponse "OK"
+// @Failure 401 {object} string "Unauthorized"
+// @Failure 500 {object} string "Internal Server Error"
+// @Security AdminAPIKey
+// @Router /groups/intgroup [get]
+func (gh *group) getIntgroupRequests(ctx *handler.Context) error {
+	requests, err := gh.groupService.GetIntgroupRequests(ctx.Context())
+	if err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.JSON(dto.IntgroupRequestResponsesFromDomain(requests))
+}
+
+// getIntgroupRequestByID returns an interessegruppe request by ID.
+// @Summary Get an interessegruppe request
+// @Tags groups
+// @Param id path string true "Request ID"
+// @Success 200 {object} dto.IntgroupRequestResponse "OK"
+// @Failure 400 {object} string "Bad Request"
+// @Failure 401 {object} string "Unauthorized"
+// @Failure 404 {object} string "Not Found"
+// @Failure 500 {object} string "Internal Server Error"
+// @Security AdminAPIKey
+// @Router /groups/intgroup/{id} [get]
+func (gh *group) getIntgroupRequestByID(ctx *handler.Context) error {
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.BadRequest(errors.New("missing intgroup request id"))
+	}
+
+	request, err := gh.groupService.GetIntgroupRequestByID(ctx.Context(), id)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return ctx.NotFound(errors.New("intgroup request not found"))
+		}
+		return ctx.InternalServerError()
+	}
+
+	return ctx.JSON(dto.IntgroupRequestResponseFromDomain(request))
+}
+
+// deleteIntgroupRequestByID deletes an interessegruppe request by ID.
+// @Summary Delete an interessegruppe request
+// @Tags groups
+// @Param id path string true "Request ID"
+// @Success 200 {string} string "OK"
+// @Failure 400 {object} string "Bad Request"
+// @Failure 401 {object} string "Unauthorized"
+// @Failure 404 {object} string "Not Found"
+// @Failure 500 {object} string "Internal Server Error"
+// @Security AdminAPIKey
+// @Router /groups/intgroup/{id} [delete]
+func (gh *group) deleteIntgroupRequestByID(ctx *handler.Context) error {
+	id := ctx.PathValue("id")
+	if id == "" {
+		return ctx.BadRequest(errors.New("missing intgroup request id"))
+	}
+
+	if _, err := gh.groupService.GetIntgroupRequestByID(ctx.Context(), id); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return ctx.NotFound(errors.New("intgroup request not found"))
+		}
+		return ctx.InternalServerError()
+	}
+
+	if err := gh.groupService.DeleteIntgroupRequestByID(ctx.Context(), id); err != nil {
+		return ctx.InternalServerError()
+	}
+
+	return ctx.Ok()
 }
 
 // getGroups returns a list of all groups.

@@ -166,6 +166,109 @@ func (g *GroupRepo) DeleteGroup(ctx context.Context, id string) error {
 	return nil
 }
 
+func (g *GroupRepo) CreateIntgroupRequest(ctx context.Context, request model.NewIntgroupRequest) (model.IntgroupRequest, error) {
+	g.logger.Info(ctx, "creating intgroup request",
+		"group_name", request.GroupName,
+		"contact_email", request.ContactEmail,
+	)
+
+	id, err := randid.Generate(21)
+	if err != nil {
+		return model.IntgroupRequest{}, err
+	}
+
+	query := `--sql
+		INSERT INTO intgroup_request (
+			id,
+			group_name,
+			description,
+			interested_people,
+			purpose,
+			needs_from_hovedstyre,
+			contact_email
+		)
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
+		RETURNING id, group_name, description, interested_people, purpose,
+			needs_from_hovedstyre, contact_email, created_at
+	`
+	var dbModel record.IntgroupRequestDB
+	err = g.db.GetContext(ctx, &dbModel, query,
+		id,
+		request.GroupName,
+		request.Description,
+		request.InterestedPeople,
+		request.Purpose,
+		request.NeedsFromHovedstyre,
+		request.ContactEmail,
+	)
+	if err != nil {
+		g.logger.Error(ctx, "failed to create intgroup request",
+			"error", err,
+			"group_name", request.GroupName,
+		)
+		return model.IntgroupRequest{}, err
+	}
+
+	return dbModel.ToDomain(), nil
+}
+
+func (g *GroupRepo) GetIntgroupRequests(ctx context.Context) ([]model.IntgroupRequest, error) {
+	g.logger.Info(ctx, "getting intgroup requests")
+
+	query := `--sql
+		SELECT id, group_name, description, interested_people, purpose,
+			needs_from_hovedstyre, contact_email, created_at
+		FROM intgroup_request
+		ORDER BY created_at DESC
+	`
+	var dbModels []record.IntgroupRequestDB
+	if err := g.db.SelectContext(ctx, &dbModels, query); err != nil {
+		g.logger.Error(ctx, "failed to get intgroup requests", "error", err)
+		return nil, err
+	}
+
+	return record.IntgroupRequestsToDomainList(dbModels), nil
+}
+
+func (g *GroupRepo) GetIntgroupRequestByID(ctx context.Context, id string) (model.IntgroupRequest, error) {
+	g.logger.Info(ctx, "getting intgroup request by id", "intgroup_request_id", id)
+
+	query := `--sql
+		SELECT id, group_name, description, interested_people, purpose,
+			needs_from_hovedstyre, contact_email, created_at
+		FROM intgroup_request
+		WHERE id = $1
+	`
+	var dbModel record.IntgroupRequestDB
+	if err := g.db.GetContext(ctx, &dbModel, query, id); err != nil {
+		g.logger.Error(ctx, "failed to get intgroup request by id",
+			"error", err,
+			"intgroup_request_id", id,
+		)
+		return model.IntgroupRequest{}, err
+	}
+
+	return dbModel.ToDomain(), nil
+}
+
+func (g *GroupRepo) DeleteIntgroupRequestByID(ctx context.Context, id string) error {
+	g.logger.Info(ctx, "deleting intgroup request by id", "intgroup_request_id", id)
+
+	query := `--sql
+		DELETE FROM intgroup_request
+		WHERE id = $1
+	`
+	if _, err := g.db.ExecContext(ctx, query, id); err != nil {
+		g.logger.Error(ctx, "failed to delete intgroup request by id",
+			"error", err,
+			"intgroup_request_id", id,
+		)
+		return err
+	}
+
+	return nil
+}
+
 // UpdateGroup updates an existing group in the database.
 func (g *GroupRepo) UpdateGroup(ctx context.Context, group model.Group) (model.Group, error) {
 	g.logger.Info(ctx, "updating group",

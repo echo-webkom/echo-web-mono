@@ -113,7 +113,7 @@ func RunServer(deps ServerDeps) {
 	r.Mount("/advent-of-code", api.NewAdventOfCodeMux(deps.Logger, deps.AdventOfCodeService), admin)
 
 	// Group routes
-	r.Mount("/groups", api.NewGroupMux(deps.Logger, deps.GroupService, admin))
+	r.Mount("/groups", api.NewGroupMux(deps.Logger, deps.GroupService, admin, session))
 
 	// Reaction routes
 	r.Mount("/reactions", api.NewReactionMux(deps.Logger, deps.ReactionService, admin))

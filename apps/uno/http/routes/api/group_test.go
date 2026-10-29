@@ -55,7 +55,7 @@ func TestGetGroupByIDHandler(t *testing.T) {
 			tt.setupMocks(mockGroupRepo)
 
 			groupService := service.NewGroupService(mockGroupRepo)
-			mux := api.NewGroupMux(testutil.NewTestLogger(), groupService, handler.NoMiddleware)
+			mux := api.NewGroupMux(testutil.NewTestLogger(), groupService, handler.NoMiddleware, handler.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodGet, "/"+tt.groupID, nil)
 			r.SetPathValue("id", tt.groupID)
@@ -132,7 +132,7 @@ func TestAddUserToGroupHandler(t *testing.T) {
 			tt.setupMocks(mockGroupRepo)
 
 			groupService := service.NewGroupService(mockGroupRepo)
-			mux := api.NewGroupMux(testutil.NewTestLogger(), groupService, handler.NoMiddleware)
+			mux := api.NewGroupMux(testutil.NewTestLogger(), groupService, handler.NoMiddleware, handler.NoMiddleware)
 
 			body, _ := json.Marshal(map[string]string{"userId": tt.userID})
 			r := httptest.NewRequest(http.MethodPost, "/"+tt.groupID+"/members", bytes.NewReader(body))
@@ -202,7 +202,7 @@ func TestRemoveUserFromGroupHandler(t *testing.T) {
 			tt.setupMocks(mockGroupRepo)
 
 			groupService := service.NewGroupService(mockGroupRepo)
-			mux := api.NewGroupMux(testutil.NewTestLogger(), groupService, handler.NoMiddleware)
+			mux := api.NewGroupMux(testutil.NewTestLogger(), groupService, handler.NoMiddleware, handler.NoMiddleware)
 
 			r := httptest.NewRequest(http.MethodDelete, "/"+tt.groupID+"/members/"+tt.userID, nil)
 			r.SetPathValue("id", tt.groupID)
@@ -263,7 +263,7 @@ func TestSetGroupMemberLeaderHandler(t *testing.T) {
 			tt.setupMocks(mockGroupRepo)
 
 			groupService := service.NewGroupService(mockGroupRepo)
-			mux := api.NewGroupMux(testutil.NewTestLogger(), groupService, handler.NoMiddleware)
+			mux := api.NewGroupMux(testutil.NewTestLogger(), groupService, handler.NoMiddleware, handler.NoMiddleware)
 
 			body, _ := json.Marshal(map[string]bool{"leader": tt.leader})
 			r := httptest.NewRequest(http.MethodPost, "/"+tt.groupID+"/members/"+tt.userID+"/leader", bytes.NewReader(body))
@@ -276,4 +276,59 @@ func TestSetGroupMemberLeaderHandler(t *testing.T) {
 			assert.Equal(t, tt.expectedStatus, w.Code)
 		})
 	}
+}
+
+func TestCreateIntgroupRequestHandler(t *testing.T) {
+	mockGroupRepo := mocks.NewGroupRepo(t)
+	mockGroupRepo.EXPECT().
+		CreateIntgroupRequest(mock.Anything, model.NewIntgroupRequest{
+			GroupName:           "Robotics",
+			Description:         "Build robots",
+			InterestedPeople:    "Ada, Grace",
+			Purpose:             "For students interested in robotics",
+			NeedsFromHovedstyre: nil,
+			ContactEmail:        "robotics@example.com",
+		}).
+		Return(model.IntgroupRequest{ID: "request-1", GroupName: "Robotics"}, nil).
+		Once()
+
+	groupService := service.NewGroupService(mockGroupRepo)
+	mux := api.NewGroupMux(testutil.NewTestLogger(), groupService, handler.NoMiddleware, handler.NoMiddleware)
+
+	body, _ := json.Marshal(map[string]string{
+		"groupName":        "Robotics",
+		"description":      "Build robots",
+		"interestedPeople": "Ada, Grace",
+		"purpose":          "For students interested in robotics",
+		"contactEmail":     "robotics@example.com",
+	})
+	r := httptest.NewRequest(http.MethodPost, "/intgroup", bytes.NewReader(body))
+	w := httptest.NewRecorder()
+
+	mux.ServeHTTP(w, r)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+}
+
+func TestDeleteIntgroupRequestHandler(t *testing.T) {
+	mockGroupRepo := mocks.NewGroupRepo(t)
+	mockGroupRepo.EXPECT().
+		GetIntgroupRequestByID(mock.Anything, "request-1").
+		Return(model.IntgroupRequest{ID: "request-1"}, nil).
+		Once()
+	mockGroupRepo.EXPECT().
+		DeleteIntgroupRequestByID(mock.Anything, "request-1").
+		Return(nil).
+		Once()
+
+	groupService := service.NewGroupService(mockGroupRepo)
+	mux := api.NewGroupMux(testutil.NewTestLogger(), groupService, handler.NoMiddleware, handler.NoMiddleware)
+
+	r := httptest.NewRequest(http.MethodDelete, "/intgroup/request-1", nil)
+	r.SetPathValue("id", "request-1")
+	w := httptest.NewRecorder()
+
+	mux.ServeHTTP(w, r)
+
+	assert.Equal(t, http.StatusOK, w.Code)
 }

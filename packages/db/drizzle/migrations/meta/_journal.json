@@ -267,6 +267,13 @@
       "when": 1787660907755,
       "tag": "0037_colossal_ozymandias",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1793202823796,
+      "tag": "0038_silly_cassandra_nova",
+      "breakpoints": true
     }
   ]
 }
