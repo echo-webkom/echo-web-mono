@@ -53,7 +53,7 @@ export default function EchoBirthdayBanner() {
 
   if (echoBirthday > today && countDownStart < today) {
     return (
-      <div className="mt-10 -mb-20">
+      <div className="mt-10">
         <div className="mx-auto w-full px-3 sm:w-[50vw]">
           <p className="p-4 text-center text-xl font-semibold sm:text-2xl">
             🎉 echo bursdag nedtelling 🎈
