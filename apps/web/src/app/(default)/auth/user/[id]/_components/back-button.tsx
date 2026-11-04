@@ -8,7 +8,7 @@ export const BackButton = () => {
 
   const handleClick = () => {
     if (window.history.length > 1) {
-      router.back();        
+      router.back();
       return;
     }
 
