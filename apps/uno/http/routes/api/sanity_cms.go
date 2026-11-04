@@ -68,8 +68,6 @@ func NewSanityMux(
 
 	mux.GET("/hs-applications", s.getAllHSApplications)
 
-	mux.GET("/trophies", s.getAllTrophies)
-
 	return mux
 }
 
@@ -435,21 +433,6 @@ func (s *sanityCMS) getAllMovies(ctx *handler.Context) error {
 		return ctx.InternalServerError()
 	}
 	return ctx.JSON(movies)
-}
-
-// getAllTrophies returns all trophies from Sanity CMS
-// @Summary      Get all trophies from CMS
-// @Tags         sanity
-// @Produce      json
-// @Success      200  {array}   dto.CMSTrophyDTO  "OK"
-// @Failure      500  {string}  string           "Internal Server Error"
-// @Router       /sanity/trophies [get]
-func (s *sanityCMS) getAllTrophies(ctx *handler.Context) error {
-	trophies, err := s.cmsService.GetAllTrophies(ctx.Context())
-	if err != nil {
-		return ctx.InternalServerError()
-	}
-	return ctx.JSON(trophies)
 }
 
 // getAllHSApplications returns all HS applications from Sanity CMS

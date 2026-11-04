@@ -17,6 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { type AllUsers } from "../brukere/page";
 
+// infra postgres, lag ny fil der som heter trophy.go
+
 export const UserTrophiesModal = ({ users }: { users: AllUsers }) => {
   const [searchQuery, setSearchQuery] = useState("");
   return (

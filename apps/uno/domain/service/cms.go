@@ -22,7 +22,6 @@ var cmsTypeNamespaces = map[string][]string{
 	"merch":              {sanityinfra.CMSMerchNamespaceMerch},
 	"meetingMinute":      {sanityinfra.CMSMeetingMinuteNamespaceMeetingMinutes},
 	"movie":              {sanityinfra.CMSMovieNamespaceMovies},
-	"trophy": 			  {sanityinfra.CMSTrophyNamespaceTrophies},
 }
 
 type CMSService struct {
@@ -37,7 +36,6 @@ type CMSService struct {
 	meetingMinuteRepo      port.CMSMeetingMinuteRepo
 	movieRepo              port.CMSMovieRepo
 	hsApplicationRepo      port.CMSHSApplicationRepo
-	trophyRepo             port.CMSTrophyRepo
 
 	invalidator port.CacheInvalidator
 }
@@ -54,7 +52,7 @@ func NewCMSService(
 	meetingMinuteRepo port.CMSMeetingMinuteRepo,
 	movieRepo port.CMSMovieRepo,
 	hsApplicationRepo port.CMSHSApplicationRepo,
-	trophyRepo port.CMSTrophyRepo,
+
 	invalidator port.CacheInvalidator,
 ) *CMSService {
 	return &CMSService{
@@ -68,7 +66,6 @@ func NewCMSService(
 		merchRepo:              merchRepo,
 		meetingMinuteRepo:      meetingMinuteRepo,
 		movieRepo:              movieRepo,
-		trophyRepo:             trophyRepo,
 		hsApplicationRepo:      hsApplicationRepo,
 
 		invalidator: invalidator,
@@ -170,10 +167,6 @@ func (s *CMSService) GetMeetingMinuteById(ctx context.Context, id string) (*mode
 
 func (s *CMSService) GetUpcomingMovies(ctx context.Context, n int) ([]model.CMSMovie, error) {
 	return s.movieRepo.GetUpcomingMovies(ctx, n)
-}
-
-func (s *CMSService) GetAllTrophies(ctx context.Context) ([]model.CMSTrophyCollection, error) {
-	return s.trophyRepo.GetAllTrophies(ctx)
 }
 
 // CMSHappeningFilter holds filter parameters for GetFilteredHappenings.

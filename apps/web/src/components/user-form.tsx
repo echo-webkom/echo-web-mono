@@ -58,7 +58,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: standardSchemaResolver(userSchema),
     defaultValues: {
-      alternativeEmail: user.alternativeEmail,
+      alternativeEmail: user.alternativeEmail ?? "",
       degree: user.degree?.id,
       year: user.year,
       hasReadTerms: user.hasReadTerms,
@@ -161,7 +161,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
             name="degree"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel htmlFor="degree">Studieretning</FormLabel>
+                <FormLabel htmlFor="degree">Studieretning *</FormLabel>
                 <FormControl>
                   <Select id="degree" {...field}>
                     <option hidden>Velg studieretning</option>
@@ -182,7 +182,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
             name="year"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="year">Årstrinn</FormLabel>
+                <FormLabel htmlFor="year">Årstrinn *</FormLabel>
                 <FormControl>
                   <Select id="year" {...field}>
                     <option hidden>Velg årstrinn</option>
@@ -214,7 +214,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                   value={
                     field.value instanceof Date
                       ? field.value.toISOString().split("T")[0]
-                      : field.value
+                      : (field.value ?? "")
                   }
                 />
               </FormControl>
@@ -235,7 +235,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                 <FormControl>
                   <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                 </FormControl>
-                <div className="space-y-1 leading-none">
+                <div className="leading-none">
                   <FormLabel className="leading-relaxed">
                     Jeg bekrefter at jeg har lest{" "}
                     <Link
@@ -244,7 +244,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
                     >
                       de etiske retnlingslinjene
                     </Link>
-                    .
+                    .*
                   </FormLabel>
                 </div>
               </FormItem>
@@ -275,9 +275,7 @@ export const UserForm = ({ user, degrees }: UserFormProps) => {
           />
         </div>
 
-        <div>
-          <Button type="submit">{isLoading ? "Lagrer..." : "Lagre"}</Button>
-        </div>
+        <Button type="submit">{isLoading ? "Lagrer..." : "Lagre"}</Button>
       </form>
     </Form>
   );

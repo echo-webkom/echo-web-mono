@@ -1189,6 +1189,26 @@ definitions:
     - emojiId
     - userId
     type: object
+  uno_http_dto.Trophy:
+    properties:
+      title:
+        type: string
+      trophyLevels:
+        items:
+          $ref: '#/definitions/uno_http_dto.TrophyLevel'
+        type: array
+    type: object
+  uno_http_dto.TrophyLevel:
+    properties:
+      image:
+        type: string
+      name:
+        type: string
+      text:
+        type: string
+      threshold:
+        type: integer
+    type: object
   uno_http_dto.UpdateDegreeRequest:
     properties:
       id:
@@ -1336,6 +1356,15 @@ definitions:
     required:
     - itemId
     - userId
+    type: object
+  uno_http_dto.UserTrophyResponse:
+    properties:
+      currentLevel:
+        $ref: '#/definitions/uno_http_dto.TrophyLevel'
+      progress:
+        type: integer
+      trophy:
+        $ref: '#/definitions/uno_http_dto.Trophy'
     type: object
   uno_http_dto.UserWithStrikeDetailsResponse:
     properties:
@@ -3661,6 +3690,38 @@ paths:
       summary: Toggle like on shopping list item
       tags:
       - shopping_list
+  /trophy/{userID}:
+    get:
+      parameters:
+      - description: User ID
+        in: path
+        name: userID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/uno_http_dto.UserTrophyResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "404":
+          description: User Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Gets a list of all trophies the user has unlocked
+      tags:
+      - Trophy
   /users:
     get:
       produces:

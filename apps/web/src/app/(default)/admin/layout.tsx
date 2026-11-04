@@ -53,11 +53,6 @@ const adminRoutes = [
     label: "Pizza",
     groups: ["webkom", "hovedstyret"],
   },
-  {
-    href: "/admin/trofeer",
-    label: "Troféer",
-    groups: ["webkom", "hovedstyret"],
-  },
 ];
 
 export default async function AdminDashboardLayout({ children }: Props) {

@@ -1,7 +1,7 @@
 import { type HappeningType, type PageType, type StudentGroupType } from "@echo-webkom/lib";
 import ky, { type KyInstance, type Options } from "ky";
 
-const DEFAULT_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+const DEFAULT_BASE_URL = "https://uno.echo-webkom.no";
 
 type UnoClientOptions = {
   baseUrl?: string;
@@ -317,6 +317,18 @@ interface CMSHSApplication {
   poster: string;
 }
 
+interface CMSTrophy {
+  image: CMSImage;
+  text: string;
+  amount_needed: number;
+}
+
+interface CMSTrophyCollection {
+  _id: string;
+  title: string;
+  trophies: Array<CMSTrophy>;
+}
+
 class SanityHappeningsApi {
   private client: UnoClient;
 
@@ -550,6 +562,25 @@ class SanityHSApplicationsApi {
   }
 }
 
+class SanityTrophiesApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all() {
+    return await this.client.requestJson<Array<CMSTrophyCollection>>("GET", "sanity/trophies");
+  }
+
+  async byAmount(title: string, amount: number) {
+    return await this.client.requestJson<CMSTrophy | null>(
+      "GET",
+      `sanity/trophies/${encodeURIComponent(title)}?amount=${amount}`,
+    );
+  }
+}
+
 class SanityApi {
   happenings: SanityHappeningsApi;
   posts: SanityPostsApi;
@@ -560,6 +591,7 @@ class SanityApi {
   minutes: SanityMinutesApi;
   movies: SanityMoviesApi;
   hsApplications: SanityHSApplicationsApi;
+  trophies: SanityTrophiesApi;
 
   private client: UnoClient;
 
@@ -574,6 +606,7 @@ class SanityApi {
     this.minutes = new SanityMinutesApi(client);
     this.movies = new SanityMoviesApi(client);
     this.hsApplications = new SanityHSApplicationsApi(client);
+    this.trophies = new SanityTrophiesApi(client);
   }
 
   async banner() {
@@ -617,7 +650,7 @@ export class UnoClient {
   sanity: SanityApi;
   auth: AuthApi;
   notifications: NotificationsApi;
-  trophies: TrophiesApi;
+  trophy: TrophyApi;
 
   constructor(options: UnoClientOptions) {
     this.api = ky.create({
@@ -649,7 +682,7 @@ export class UnoClient {
     this.sanity = new SanityApi(this);
     this.auth = new AuthApi(this);
     this.notifications = new NotificationsApi(this);
-    this.trophies = new TrophiesApi(this);
+    this.trophy = new TrophyApi(this);
   }
 
   normalizePath(path: string) {
@@ -689,6 +722,36 @@ export class UnoClient {
 
   async health() {
     return await this.api("").json<{ status: string }>();
+  }
+}
+
+export interface UserTrophy {
+  trophy: Trophy;
+  progress: number;
+  currentLevel: TrophyLevel;
+}
+
+interface Trophy {
+  title: string;
+  trophyLeves: Array<TrophyLevel>;
+}
+
+interface TrophyLevel {
+  image: string;
+  name: string;
+  text: string;
+  threshold: number;
+}
+
+class TrophyApi {
+  private client: UnoClient;
+
+  constructor(client: UnoClient) {
+    this.client = client;
+  }
+
+  async all(userId: string) {
+    return await this.client.requestJson<Array<UserTrophy>>("GET", `/trophy/${userId}`);
   }
 }
 
@@ -1599,34 +1662,5 @@ class NotificationsApi {
   async archive(id: number) {
     const response = await this.client.request("PATCH", `notifications/${id}/archive`);
     return response.status === 200;
-  }
-}
-
-type CMSTrophyCollection = {
-  _id: string;
-  title: string;
-  slug: string;
-  baseImage: CMSImage;
-  baseDescription: string;
-  trophies: Array<CMSTrophy>;
-};
-
-type CMSTrophy = {
-  _key: string;
-  title: string;
-  description: string;
-  level: number;
-  image: CMSImage;
-};
-
-class TrophiesApi {
-  private client: UnoClient;
-
-  constructor(client: UnoClient) {
-    this.client = client;
-  }
-
-  async all() {
-    return this.client.requestJson<Array<CMSTrophyCollection>>("GET", "sanity/trophies");
   }
 }

@@ -34,9 +34,7 @@ export const NotificationBell = () => {
 
     try {
       await client.notifications.seen(id);
-      setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, seenAt: new Date() } : n)),
-      );
+      setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, seenAt: new Date() } : n)));
     } catch {
       // Ignore transient API failures so the bell does not crash the page.
     }
@@ -72,12 +70,8 @@ export const NotificationBell = () => {
         <div className="max-h-96 overflow-y-auto">
           {notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center gap-1 py-10 text-center">
-              <p className="text-muted-foreground font-mono text-sm font-semibold">
-                404
-              </p>
-              <p className="text-muted-foreground text-sm">
-                Du har ingen notifikasjoner
-              </p>
+              <p className="text-muted-foreground font-mono text-sm font-semibold">404</p>
+              <p className="text-muted-foreground text-sm">Du har ingen notifikasjoner</p>
             </div>
           ) : (
             notifications.map((notification) => (
@@ -90,9 +84,7 @@ export const NotificationBell = () => {
                   <div
                     className={cn(
                       "h-2 w-2 rounded-full",
-                      notification.seenAt === null
-                        ? "bg-blue-500"
-                        : "bg-transparent",
+                      notification.seenAt === null ? "bg-blue-500" : "bg-transparent",
                     )}
                   />
                 </div>
@@ -106,14 +98,10 @@ export const NotificationBell = () => {
                       {notification.title}
                     </Link>
                   ) : (
-                    <p className="text-sm leading-tight font-medium">
-                      {notification.title}
-                    </p>
+                    <p className="text-sm leading-tight font-medium">{notification.title}</p>
                   )}
                   {notification.content && (
-                    <p className="text-muted-foreground mt-0.5 text-xs">
-                      {notification.content}
-                    </p>
+                    <p className="text-muted-foreground mt-0.5 text-xs">{notification.content}</p>
                   )}
                 </div>
 

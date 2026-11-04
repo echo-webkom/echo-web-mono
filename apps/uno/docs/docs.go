@@ -3592,6 +3592,55 @@ const docTemplate = `{
                 }
             }
         },
+        "/trophy/{userID}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trophy"
+                ],
+                "summary": "Gets a list of all trophies the user has unlocked",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "userID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/uno_http_dto.UserTrophyResponse"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "User Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "security": [
@@ -6301,6 +6350,37 @@ const docTemplate = `{
                 }
             }
         },
+        "uno_http_dto.Trophy": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "trophyLevels": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/uno_http_dto.TrophyLevel"
+                    }
+                }
+            }
+        },
+        "uno_http_dto.TrophyLevel": {
+            "type": "object",
+            "properties": {
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "threshold": {
+                    "type": "integer"
+                }
+            }
+        },
         "uno_http_dto.UpdateDegreeRequest": {
             "type": "object",
             "properties": {
@@ -6526,6 +6606,20 @@ const docTemplate = `{
                 },
                 "userId": {
                     "type": "string"
+                }
+            }
+        },
+        "uno_http_dto.UserTrophyResponse": {
+            "type": "object",
+            "properties": {
+                "currentLevel": {
+                    "$ref": "#/definitions/uno_http_dto.TrophyLevel"
+                },
+                "progress": {
+                    "type": "integer"
+                },
+                "trophy": {
+                    "$ref": "#/definitions/uno_http_dto.Trophy"
                 }
             }
         },
