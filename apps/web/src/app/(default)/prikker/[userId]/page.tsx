@@ -30,12 +30,10 @@ export default async function UserStrikesPage({ params }: Props) {
     <Container>
       <Heading className="mb-8">Prikker for {user.name}</Heading>
       {user.dots.length === 0 && user.banInfo === null ? (
-        <p className="text-muted-foreground">
-            {user.name} har ingen prikker eller ban.
-        </p>
-        ) : (
+        <p className="text-muted-foreground">{user.name} har ingen prikker eller ban.</p>
+      ) : (
         <StrikesList users={[user]} />
-        )}
+      )}
       <div className="mt-10">
         <Heading className="mb-8">Legg til prikker</Heading>
 

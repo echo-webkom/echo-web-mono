@@ -63,14 +63,14 @@ export const NewStrikesForm = ({ users, initialUserId }: StrikeButton) => {
     return new Map(users.map((user) => [user.id, user]));
   }, [users]);
 
-useEffect(() => {
-  const initialUser = initialUserId ? usersById.get(initialUserId) : undefined;
-  if (!initialUser) {
-    return;
-  }
-  setUser(initialUser.name);
-  form.setValue("userId", initialUser.id);
-}, [form, initialUserId, usersById]);
+  useEffect(() => {
+    const initialUser = initialUserId ? usersById.get(initialUserId) : undefined;
+    if (!initialUser) {
+      return;
+    }
+    setUser(initialUser.name);
+    form.setValue("userId", initialUser.id);
+  }, [form, initialUserId, usersById]);
 
   const newDots =
     Number(existingDots) +
