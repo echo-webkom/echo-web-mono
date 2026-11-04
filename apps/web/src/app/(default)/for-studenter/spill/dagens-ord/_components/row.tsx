@@ -24,7 +24,7 @@ export default function Row({
     tiles.push(
       <div
         key={i}
-        className={`m-1 flex h-8 w-8 items-center justify-center border-2 border-gray-400 text-2xl uppercase sm:h-12 sm:w-12 sm:text-3xl ${color}`}
+        className={`m-1 flex h-8 w-8 items-center justify-center border-2 border-gray-400 text-xl uppercase sm:h-12 sm:w-12 sm:text-3xl ${color}`}
       >
         {char}
       </div>,
