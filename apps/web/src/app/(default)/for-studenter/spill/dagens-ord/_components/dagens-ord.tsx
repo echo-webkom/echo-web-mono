@@ -93,15 +93,24 @@ export default function DagensOrd({ solution }: { solution: string }) {
   }, [handleKeyInput]);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="inline-flex w-full sm:w-2/3 flex-col self-center items-center rounded-3xl border-2 border-gray-300 px-4 pt-3 pb-5 shadow-lg sm:px-8 sm:pt-4 sm:pb-6 dark:border-gray-600 dark:bg-gray-900">
       {win && <ConfettiForBDay />}
-      <h1 className="self-center text-2xl font-bold sm:p-3 sm:text-4xl">Dagens ord</h1>
+      <h1 className="self-center text-2xl font-bold tracking-tight sm:p-3 sm:text-4xl">
+        Dagens ord
+      </h1>
 
-      {!isVaildWord && (
-        <p className="self-center p-3 text-xl font-semibold text-red-500">
-          Ordet er ikke i listen, prøv igjen
-        </p>
-      )}
+      <div className="flex h-12 items-center justify-center">
+  {!isVaildWord && (
+    <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-1.5 text-base font-semibold text-red-600 dark:border-red-900 dark:bg-red-950 dark:text-red-400">
+      Ordet er ikke i listen, prøv igjen
+    </p>
+  )}
+  {loss && (
+    <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-1.5 text-lg font-bold text-red-600 dark:border-red-900 dark:bg-red-950 dark:text-red-400">
+      {`Korrekt ord var ${solution}`}
+    </p>
+  )}
+</div>
 
       <div className="my-2">
         {attempts.map((attempt, index) => {
