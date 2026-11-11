@@ -2,15 +2,14 @@ package service
 
 import (
 	"context"
-	"errors"
 	"uno/domain/model"
 	"uno/domain/port"
 )
 
 type TrophyService struct {
-	trophyRepo       port.TrophyRepo
-	userStatsRepo    port.UserStatsRepo
-	logger           port.Logger
+	trophyRepo    port.TrophyRepo
+	userStatsRepo port.UserStatsRepo
+	logger        port.Logger
 }
 
 func NewTrophyService(
@@ -19,9 +18,9 @@ func NewTrophyService(
 	logger port.Logger,
 ) *TrophyService {
 	return &TrophyService{
-		trophyRepo: trophyRepo,
+		trophyRepo:    trophyRepo,
 		userStatsRepo: userStatsRepo,
-		logger: logger,
+		logger:        logger,
 	}
 }
 
@@ -38,21 +37,18 @@ func (t *TrophyService) GetUserTrophies(ctx context.Context, userID string) ([]m
 		return nil, err
 	}
 
-	bedpressThrophy, err := getUserBedpresTrophy(trophies, userStats.BedpresCount)
-	if err != nil {
-		t.logger.Error(ctx, "failed to resolve bedpres trophy", "error", err, "user_id", userID)
-		return nil, err
+	userTrophies := []model.UserTrophy{}
+
+	if bedpresTrophy, ok := getUserBedpresTrophy(trophies, userStats.BedpresCount); ok {
+		userTrophies = append(userTrophies, bedpresTrophy)
+	} else {
+		t.logger.Info(ctx, "no bedpres trophy for user", "user_id", userID, "bedpres_count", userStats.BedpresCount)
 	}
 
-	return []model.UserTrophy{bedpressThrophy}, nil
+	return userTrophies, nil
 }
 
-func getUserBedpresTrophy(trophies []model.Trophy, bedpresCount int) (model.UserTrophy, error) {
-
-	if bedpresCount < 0 {
-		return model.UserTrophy{}, errors.New("bedpres count cannot be negative")
-	}
-
+func getUserBedpresTrophy(trophies []model.Trophy, bedpresCount int) (model.UserTrophy, bool) {
 	var bedpresTrophy *model.Trophy
 	for i := range trophies {
 		if trophies[i].Title == "bedpres" {
@@ -61,7 +57,7 @@ func getUserBedpresTrophy(trophies []model.Trophy, bedpresCount int) (model.User
 		}
 	}
 	if bedpresTrophy == nil {
-		return model.UserTrophy{}, errors.New("bedpres trophy not found")
+		return model.UserTrophy{}, false
 	}
 
 	var currentLevel *model.TrophyLevel
@@ -74,8 +70,8 @@ func getUserBedpresTrophy(trophies []model.Trophy, bedpresCount int) (model.User
 	}
 
 	if currentLevel == nil {
-		return model.UserTrophy{}, errors.New("no trophy level reached")
+		return model.UserTrophy{}, false
 	}
 
-	return model.UserTrophy{Trophy: *bedpresTrophy, Progress: bedpresCount, CurrentLevel: *currentLevel}, nil
+	return model.UserTrophy{Trophy: *bedpresTrophy, Progress: bedpresCount, CurrentLevel: *currentLevel}, true
 }
