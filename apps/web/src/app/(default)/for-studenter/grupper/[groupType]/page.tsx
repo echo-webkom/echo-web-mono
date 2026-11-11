@@ -10,6 +10,8 @@ import { Heading } from "@/components/typography/heading";
 import { studentGroupTypeName } from "@/lib/mappers";
 import { StaticPageSidebar } from "@/lib/static-page-sidebar";
 
+import { IntgroupRequestDialog } from "./_components/intgroup-request-dialog";
+
 type Props = {
   params: Promise<{
     groupType: string;
@@ -53,7 +55,10 @@ export default async function StudentGroupOverview(props: Props) {
       <StaticPageSidebar />
 
       <div>
-        <Heading className="mb-4">{studentGroupTypeName[groupTypeFromPath]}</Heading>
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <Heading>{studentGroupTypeName[groupTypeFromPath]}</Heading>
+          {groupTypeFromPath === "intgroup" && <IntgroupRequestDialog />}
+        </div>
 
         <ul className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           {groups.map((group) => (

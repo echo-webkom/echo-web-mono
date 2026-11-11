@@ -176,6 +176,72 @@ func (_c *GroupRepo_CreateGroup_Call) RunAndReturn(run func(ctx context.Context,
 	return _c
 }
 
+// CreateIntgroupRequest provides a mock function for the type GroupRepo
+func (_mock *GroupRepo) CreateIntgroupRequest(ctx context.Context, request model.NewIntgroupRequest) (model.IntgroupRequest, error) {
+	ret := _mock.Called(ctx, request)
+
+	if len(ret) == 0 {
+		panic("no return value specified for CreateIntgroupRequest")
+	}
+
+	var r0 model.IntgroupRequest
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewIntgroupRequest) (model.IntgroupRequest, error)); ok {
+		return returnFunc(ctx, request)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, model.NewIntgroupRequest) model.IntgroupRequest); ok {
+		r0 = returnFunc(ctx, request)
+	} else {
+		r0 = ret.Get(0).(model.IntgroupRequest)
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, model.NewIntgroupRequest) error); ok {
+		r1 = returnFunc(ctx, request)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// GroupRepo_CreateIntgroupRequest_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreateIntgroupRequest'
+type GroupRepo_CreateIntgroupRequest_Call struct {
+	*mock.Call
+}
+
+// CreateIntgroupRequest is a helper method to define mock.On call
+//   - ctx context.Context
+//   - request model.NewIntgroupRequest
+func (_e *GroupRepo_Expecter) CreateIntgroupRequest(ctx any, request any) *GroupRepo_CreateIntgroupRequest_Call {
+	return &GroupRepo_CreateIntgroupRequest_Call{Call: _e.mock.On("CreateIntgroupRequest", ctx, request)}
+}
+
+func (_c *GroupRepo_CreateIntgroupRequest_Call) Run(run func(ctx context.Context, request model.NewIntgroupRequest)) *GroupRepo_CreateIntgroupRequest_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 model.NewIntgroupRequest
+		if args[1] != nil {
+			arg1 = args[1].(model.NewIntgroupRequest)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *GroupRepo_CreateIntgroupRequest_Call) Return(intgroupRequest model.IntgroupRequest, err error) *GroupRepo_CreateIntgroupRequest_Call {
+	_c.Call.Return(intgroupRequest, err)
+	return _c
+}
+
+func (_c *GroupRepo_CreateIntgroupRequest_Call) RunAndReturn(run func(ctx context.Context, request model.NewIntgroupRequest) (model.IntgroupRequest, error)) *GroupRepo_CreateIntgroupRequest_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // DeleteGroup provides a mock function for the type GroupRepo
 func (_mock *GroupRepo) DeleteGroup(ctx context.Context, id string) error {
 	ret := _mock.Called(ctx, id)
@@ -229,6 +295,63 @@ func (_c *GroupRepo_DeleteGroup_Call) Return(err error) *GroupRepo_DeleteGroup_C
 }
 
 func (_c *GroupRepo_DeleteGroup_Call) RunAndReturn(run func(ctx context.Context, id string) error) *GroupRepo_DeleteGroup_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// DeleteIntgroupRequestByID provides a mock function for the type GroupRepo
+func (_mock *GroupRepo) DeleteIntgroupRequestByID(ctx context.Context, id string) error {
+	ret := _mock.Called(ctx, id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteIntgroupRequestByID")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = returnFunc(ctx, id)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// GroupRepo_DeleteIntgroupRequestByID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteIntgroupRequestByID'
+type GroupRepo_DeleteIntgroupRequestByID_Call struct {
+	*mock.Call
+}
+
+// DeleteIntgroupRequestByID is a helper method to define mock.On call
+//   - ctx context.Context
+//   - id string
+func (_e *GroupRepo_Expecter) DeleteIntgroupRequestByID(ctx any, id any) *GroupRepo_DeleteIntgroupRequestByID_Call {
+	return &GroupRepo_DeleteIntgroupRequestByID_Call{Call: _e.mock.On("DeleteIntgroupRequestByID", ctx, id)}
+}
+
+func (_c *GroupRepo_DeleteIntgroupRequestByID_Call) Run(run func(ctx context.Context, id string)) *GroupRepo_DeleteIntgroupRequestByID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *GroupRepo_DeleteIntgroupRequestByID_Call) Return(err error) *GroupRepo_DeleteIntgroupRequestByID_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *GroupRepo_DeleteIntgroupRequestByID_Call) RunAndReturn(run func(ctx context.Context, id string) error) *GroupRepo_DeleteIntgroupRequestByID_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -425,6 +548,134 @@ func (_c *GroupRepo_GetGroupMembers_Call) Return(groupMembers []model.GroupMembe
 }
 
 func (_c *GroupRepo_GetGroupMembers_Call) RunAndReturn(run func(ctx context.Context, groupID string) ([]model.GroupMember, error)) *GroupRepo_GetGroupMembers_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetIntgroupRequestByID provides a mock function for the type GroupRepo
+func (_mock *GroupRepo) GetIntgroupRequestByID(ctx context.Context, id string) (model.IntgroupRequest, error) {
+	ret := _mock.Called(ctx, id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetIntgroupRequestByID")
+	}
+
+	var r0 model.IntgroupRequest
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (model.IntgroupRequest, error)); ok {
+		return returnFunc(ctx, id)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) model.IntgroupRequest); ok {
+		r0 = returnFunc(ctx, id)
+	} else {
+		r0 = ret.Get(0).(model.IntgroupRequest)
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, id)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// GroupRepo_GetIntgroupRequestByID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetIntgroupRequestByID'
+type GroupRepo_GetIntgroupRequestByID_Call struct {
+	*mock.Call
+}
+
+// GetIntgroupRequestByID is a helper method to define mock.On call
+//   - ctx context.Context
+//   - id string
+func (_e *GroupRepo_Expecter) GetIntgroupRequestByID(ctx any, id any) *GroupRepo_GetIntgroupRequestByID_Call {
+	return &GroupRepo_GetIntgroupRequestByID_Call{Call: _e.mock.On("GetIntgroupRequestByID", ctx, id)}
+}
+
+func (_c *GroupRepo_GetIntgroupRequestByID_Call) Run(run func(ctx context.Context, id string)) *GroupRepo_GetIntgroupRequestByID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *GroupRepo_GetIntgroupRequestByID_Call) Return(intgroupRequest model.IntgroupRequest, err error) *GroupRepo_GetIntgroupRequestByID_Call {
+	_c.Call.Return(intgroupRequest, err)
+	return _c
+}
+
+func (_c *GroupRepo_GetIntgroupRequestByID_Call) RunAndReturn(run func(ctx context.Context, id string) (model.IntgroupRequest, error)) *GroupRepo_GetIntgroupRequestByID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetIntgroupRequests provides a mock function for the type GroupRepo
+func (_mock *GroupRepo) GetIntgroupRequests(ctx context.Context) ([]model.IntgroupRequest, error) {
+	ret := _mock.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetIntgroupRequests")
+	}
+
+	var r0 []model.IntgroupRequest
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]model.IntgroupRequest, error)); ok {
+		return returnFunc(ctx)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context) []model.IntgroupRequest); ok {
+		r0 = returnFunc(ctx)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]model.IntgroupRequest)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context) error); ok {
+		r1 = returnFunc(ctx)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// GroupRepo_GetIntgroupRequests_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetIntgroupRequests'
+type GroupRepo_GetIntgroupRequests_Call struct {
+	*mock.Call
+}
+
+// GetIntgroupRequests is a helper method to define mock.On call
+//   - ctx context.Context
+func (_e *GroupRepo_Expecter) GetIntgroupRequests(ctx any) *GroupRepo_GetIntgroupRequests_Call {
+	return &GroupRepo_GetIntgroupRequests_Call{Call: _e.mock.On("GetIntgroupRequests", ctx)}
+}
+
+func (_c *GroupRepo_GetIntgroupRequests_Call) Run(run func(ctx context.Context)) *GroupRepo_GetIntgroupRequests_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *GroupRepo_GetIntgroupRequests_Call) Return(intgroupRequests []model.IntgroupRequest, err error) *GroupRepo_GetIntgroupRequests_Call {
+	_c.Call.Return(intgroupRequests, err)
+	return _c
+}
+
+func (_c *GroupRepo_GetIntgroupRequests_Call) RunAndReturn(run func(ctx context.Context) ([]model.IntgroupRequest, error)) *GroupRepo_GetIntgroupRequests_Call {
 	_c.Call.Return(run)
 	return _c
 }
