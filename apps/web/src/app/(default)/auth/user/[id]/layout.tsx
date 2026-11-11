@@ -6,6 +6,8 @@ import {
   SidebarLayoutRoot,
 } from "@/components/sidebar-layout";
 
+import { BackButton } from "./_components/back-button";
+
 const getRoutes = (profileOwnerId: string) => {
   return [
     {
@@ -32,7 +34,10 @@ export default async function ProfileLayout(props: LayoutProps<"/auth/user/[id]"
 
   if (currentUser.id !== profileOwnerId) {
     return (
-      <SidebarLayoutContent className="px-4 pt-5 sm:px-6 lg:px-8">{children}</SidebarLayoutContent>
+      <div className="flex w-full flex-col">
+        <BackButton />
+        <main className="px-4 pt-5 sm:px-6 lg:px-8">{children}</main>
+      </div>
     );
   }
 
