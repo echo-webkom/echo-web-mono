@@ -11,6 +11,8 @@ test("update profile", async ({ page }) => {
   await expect(page.getByText("Student", { exact: true })).toBeVisible();
   await expect(page.getByText("student@echo.uib.no", { exact: true })).toBeVisible();
 
+  await page.getByRole("button", { name: "Rediger bruker" }).click();
+
   await page.getByLabel("Studieretning").selectOption("Datateknologi");
   await page.getByLabel("Årstrinn").selectOption("3. trinn");
 
