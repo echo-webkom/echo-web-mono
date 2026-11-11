@@ -29,15 +29,10 @@ const LEGEND_ITEMS: Array<{
   bgClass: string;
   borderClass: string;
 }> = [
-  { type: "bedpres", label: "Bedpres", bgClass: "bg-primary", borderClass: "border-primary" },
-  { type: "event", label: "Arrangement", bgClass: "bg-secondary", borderClass: "border-secondary" },
-  {
-    type: "boardgame",
-    label: "Brettspill",
-    bgClass: "bg-green-600",
-    borderClass: "border-green-600",
-  },
-  { type: "other", label: "Annet", bgClass: "bg-gray-600", borderClass: "border-gray-600" },
+  { type: "bedpres", label: "Bedpres", bgClass: "bg-bedpres", borderClass: "border-bedpres" },
+  { type: "event", label: "Arrangement", bgClass: "bg-arrangement", borderClass: "border-arrangement" },
+  { type: "boardgame", label: "Brettspill", bgClass: "bg-brettspill", borderClass: "border-brettspill" },
+  { type: "other", label: "Annet", bgClass: "bg-annet", borderClass: "border-annet" },
 ];
 
 type CalendarTabType = "week" | "month";
