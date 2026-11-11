@@ -12,7 +12,7 @@ import {
   MobileNavigationViewport,
 } from "./mobile-navigation";
 import { NotificationBell } from "./notification-bell";
-import { ThemeDropdown  } from "./theme-dropdown";
+import { ThemeDropdown } from "./theme-dropdown";
 import { Chip } from "./typography/chip";
 import { Button } from "./ui/button";
 import { HeaderLogo } from "./ui/header-logo";

@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import { type Metadata, type Viewport } from "next";
-import { IBM_Plex_Mono, Inter, VT323 } from "next/font/google";
+import { IBM_Plex_Mono, Inter, VT323, Crafty_Girls, Pacifico } from "next/font/google";
 import Script from "next/script";
 import NextTopLoader from "nextjs-toploader";
 
@@ -15,6 +15,18 @@ import { BASE_URL, IS_DEVTOOLS_ENABLED } from "@/config";
 import { cn } from "@/utils/cn";
 
 import { Providers } from "./providers";
+
+const pacifico = Pacifico({
+  subsets: ["latin"],
+  variable: "--font-girly-header",
+  weight: "400",
+});
+
+const girly = Crafty_Girls({
+  subsets: ["latin"],
+  variable: "--font-girly",
+  weight: "400",
+});
 
 const inter = Inter({
   subsets: ["latin"],
@@ -98,6 +110,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           inter.variable,
           ibmPlexMono.variable,
           vt323.variable,
+          girly.variable,
+          pacifico.variable,
         )}
       >
         {umamiUrl && umamiWebsiteId && (
