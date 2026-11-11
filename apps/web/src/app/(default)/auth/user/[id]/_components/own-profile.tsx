@@ -1,10 +1,17 @@
 import Image from "next/image";
 
 import { Text } from "@/components/typography/text";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 import { uno } from "../../../../../../api/client";
-import { type UnoReturnType, type User } from "../../../../../../api/uno/client";
+import {
+  type UnoReturnType,
+  type User,
+} from "../../../../../../api/uno/client";
 import { urlFor } from "../../../../../../lib/sanity";
 import { cn } from "../../../../../../utils/cn";
 import { EditProfileDialog } from "./edit-profile-dialog";
@@ -31,7 +38,10 @@ export async function OwnProfile({ user, degrees }: OwnProfileProps) {
             name={user.name ?? "Fant ikke brukernavn  "}
             hasImage={user.hasImage}
           />
-          <ShowQrCode userId={user.id} className="absolute right-0 bottom-0 mx-2 my-2" />
+          <ShowQrCode
+            userId={user.id}
+            className="absolute right-0 bottom-0 mx-2 my-2"
+          />
         </div>
         <div className="flex flex-col space-y-8 md:px-6">
           <div>
@@ -45,7 +55,9 @@ export async function OwnProfile({ user, degrees }: OwnProfileProps) {
               </Text>
             )}
             <Text className="text-md">
-              {user.birthday ? user.birthday.toLocaleDateString("nb-NO") : "Bursdag ikke satt"}
+              {user.birthday
+                ? user.birthday.toLocaleDateString("nb-NO")
+                : "Bursdag ikke satt"}
             </Text>
           </div>
           <ProfileMemberships groups={user.groups} variant="profile" />
@@ -53,7 +65,9 @@ export async function OwnProfile({ user, degrees }: OwnProfileProps) {
         </div>
       </div>
       <div className="px-4 md:pr-0 md:pl-16">
-        <Text className="mb-6 text-center text-4xl font-semibold md:text-left">Trofeer</Text>
+        <Text className="mb-6 text-center text-4xl font-semibold md:text-left">
+          Trofeer
+        </Text>
         <div className="flex flex-wrap justify-center gap-6">
           {userTrophies.map((trophy) => (
             <Popover key={trophy.trophy.title}>
@@ -68,7 +82,9 @@ export async function OwnProfile({ user, degrees }: OwnProfileProps) {
                     trophy.currentLevel.threshold === 0 && "opacity-30",
                   )}
                 />
-                <p className="text-lg font-semibold">{trophy.currentLevel.name}</p>
+                <p className="text-lg font-semibold">
+                  {trophy.currentLevel.name}
+                </p>
               </PopoverTrigger>
               <PopoverContent className="w-60 rounded-xl">
                 <p className="mb-3 font-bold">{trophy.currentLevel.name}</p>
