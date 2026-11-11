@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { CheckIcon } from "lucide-react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
 import { type AllUsers } from "../brukere/page";
 
 // infra postgres, lag ny fil der som heter trophy.go
