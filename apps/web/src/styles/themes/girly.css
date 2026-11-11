@@ -62,16 +62,10 @@
 
 .girly .rounded-md,
 .girly .rounded-lg {
-  border-radius: 1.25rem;
   box-shadow: 0 4px 14px rgba(236, 72, 153, 0.18);
 }
 
 .girly ::selection {
   background: #f9a8d4;
   color: #831843;
-}
-
-.girly ::-webkit-scrollbar-thumb {
-  background: #f472b6;
-  border-radius: 999px;
 }
