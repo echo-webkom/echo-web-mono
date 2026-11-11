@@ -17,6 +17,7 @@ import profile from "./profile";
 import repeatingHappening from "./repeating-happening";
 import staticInfo from "./static-info";
 import studentGroup from "./student-group";
+import trophy from "./trophy";
 
 export const schemaTypes = [
   hsApplication,
@@ -38,4 +39,5 @@ export const schemaTypes = [
   time,
   merch,
   hungerGames,
+  trophy,
 ];

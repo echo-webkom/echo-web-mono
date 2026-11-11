@@ -74,19 +74,19 @@ func (_e *Logger_Expecter) Debug(ctx any, msg any, args ...any) *Logger_Debug_Ca
 }
 
 func (_c *Logger_Debug_Call) Run(run func(ctx context.Context, msg string, args ...any)) *Logger_Debug_Call {
-	_c.Call.Run(func(args mock.Arguments) {
+	_c.Call.Run(func(args1 mock.Arguments) {
 		var arg0 context.Context
-		if args[0] != nil {
-			arg0 = args[0].(context.Context)
+		if args1[0] != nil {
+			arg0 = args1[0].(context.Context)
 		}
 		var arg1 string
-		if args[1] != nil {
-			arg1 = args[1].(string)
+		if args1[1] != nil {
+			arg1 = args1[1].(string)
 		}
 		var arg2 []any
 		var variadicArgs []any
-		if len(args) > 2 {
-			variadicArgs = args[2].([]any)
+		if len(args1) > 2 {
+			variadicArgs = args1[2].([]any)
 		}
 		arg2 = variadicArgs
 		run(
@@ -134,19 +134,19 @@ func (_e *Logger_Expecter) Error(ctx any, msg any, args ...any) *Logger_Error_Ca
 }
 
 func (_c *Logger_Error_Call) Run(run func(ctx context.Context, msg string, args ...any)) *Logger_Error_Call {
-	_c.Call.Run(func(args mock.Arguments) {
+	_c.Call.Run(func(args1 mock.Arguments) {
 		var arg0 context.Context
-		if args[0] != nil {
-			arg0 = args[0].(context.Context)
+		if args1[0] != nil {
+			arg0 = args1[0].(context.Context)
 		}
 		var arg1 string
-		if args[1] != nil {
-			arg1 = args[1].(string)
+		if args1[1] != nil {
+			arg1 = args1[1].(string)
 		}
 		var arg2 []any
 		var variadicArgs []any
-		if len(args) > 2 {
-			variadicArgs = args[2].([]any)
+		if len(args1) > 2 {
+			variadicArgs = args1[2].([]any)
 		}
 		arg2 = variadicArgs
 		run(
@@ -194,19 +194,19 @@ func (_e *Logger_Expecter) Info(ctx any, msg any, args ...any) *Logger_Info_Call
 }
 
 func (_c *Logger_Info_Call) Run(run func(ctx context.Context, msg string, args ...any)) *Logger_Info_Call {
-	_c.Call.Run(func(args mock.Arguments) {
+	_c.Call.Run(func(args1 mock.Arguments) {
 		var arg0 context.Context
-		if args[0] != nil {
-			arg0 = args[0].(context.Context)
+		if args1[0] != nil {
+			arg0 = args1[0].(context.Context)
 		}
 		var arg1 string
-		if args[1] != nil {
-			arg1 = args[1].(string)
+		if args1[1] != nil {
+			arg1 = args1[1].(string)
 		}
 		var arg2 []any
 		var variadicArgs []any
-		if len(args) > 2 {
-			variadicArgs = args[2].([]any)
+		if len(args1) > 2 {
+			variadicArgs = args1[2].([]any)
 		}
 		arg2 = variadicArgs
 		run(
@@ -300,19 +300,19 @@ func (_e *Logger_Expecter) Warn(ctx any, msg any, args ...any) *Logger_Warn_Call
 }
 
 func (_c *Logger_Warn_Call) Run(run func(ctx context.Context, msg string, args ...any)) *Logger_Warn_Call {
-	_c.Call.Run(func(args mock.Arguments) {
+	_c.Call.Run(func(args1 mock.Arguments) {
 		var arg0 context.Context
-		if args[0] != nil {
-			arg0 = args[0].(context.Context)
+		if args1[0] != nil {
+			arg0 = args1[0].(context.Context)
 		}
 		var arg1 string
-		if args[1] != nil {
-			arg1 = args[1].(string)
+		if args1[1] != nil {
+			arg1 = args1[1].(string)
 		}
 		var arg2 []any
 		var variadicArgs []any
-		if len(args) > 2 {
-			variadicArgs = args[2].([]any)
+		if len(args1) > 2 {
+			variadicArgs = args1[2].([]any)
 		}
 		arg2 = variadicArgs
 		run(
@@ -372,11 +372,11 @@ func (_e *Logger_Expecter) With(args ...any) *Logger_With_Call {
 }
 
 func (_c *Logger_With_Call) Run(run func(args ...any)) *Logger_With_Call {
-	_c.Call.Run(func(args mock.Arguments) {
+	_c.Call.Run(func(args1 mock.Arguments) {
 		var arg0 []any
 		var variadicArgs []any
-		if len(args) > 0 {
-			variadicArgs = args[0].([]any)
+		if len(args1) > 0 {
+			variadicArgs = args1[0].([]any)
 		}
 		arg0 = variadicArgs
 		run(

@@ -20,7 +20,10 @@ export const NotificationBell = () => {
   const [notifications, setNotifications] = useState<Array<Notification>>([]);
 
   usePolling(() => {
-    void client.notifications.all().then(setNotifications);
+    void client.notifications
+      .all()
+      .then(setNotifications)
+      .catch(() => setNotifications([]));
   }, POLL_INTERVAL_MS);
 
   const unreadCount = notifications.filter((n) => n.seenAt === null).length;
@@ -29,13 +32,21 @@ export const NotificationBell = () => {
     const notification = notifications.find((n) => n.id === id);
     if (!notification || notification.seenAt !== null) return;
 
-    await client.notifications.seen(id);
-    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, seenAt: new Date() } : n)));
+    try {
+      await client.notifications.seen(id);
+      setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, seenAt: new Date() } : n)));
+    } catch {
+      // Ignore transient API failures so the bell does not crash the page.
+    }
   };
 
   const handleArchive = async (id: number) => {
-    await client.notifications.archive(id);
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
+    try {
+      await client.notifications.archive(id);
+      setNotifications((prev) => prev.filter((n) => n.id !== id));
+    } catch {
+      // Ignore transient API failures so the bell does not crash the page.
+    }
   };
 
   return (
