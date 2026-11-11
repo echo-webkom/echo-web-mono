@@ -37,33 +37,45 @@ func (t *TrophyService) GetUserTrophies(ctx context.Context, userID string) ([]m
 		return nil, err
 	}
 
-	userTrophies := []model.UserTrophy{}
+	// The title must match the title of the trophy in Sanity.
+	progress := []struct {
+		title string
+		count int
+	}{
+		{title: "bedpres", count: userStats.BedpresCount},
+		{title: "gokart", count: userStats.GokartCount},
+	}
 
-	if bedpresTrophy, ok := getUserBedpresTrophy(trophies, userStats.BedpresCount); ok {
-		userTrophies = append(userTrophies, bedpresTrophy)
-	} else {
-		t.logger.Info(ctx, "no bedpres trophy for user", "user_id", userID, "bedpres_count", userStats.BedpresCount)
+	userTrophies := []model.UserTrophy{}
+	for _, p := range progress {
+		if userTrophy, ok := getUserTrophy(trophies, p.title, p.count); ok {
+			userTrophies = append(userTrophies, userTrophy)
+		} else {
+			t.logger.Info(ctx, "no trophy for user", "user_id", userID, "trophy", p.title, "count", p.count)
+		}
 	}
 
 	return userTrophies, nil
 }
 
-func getUserBedpresTrophy(trophies []model.Trophy, bedpresCount int) (model.UserTrophy, bool) {
-	var bedpresTrophy *model.Trophy
+// getUserTrophy returns the highest level of the trophy with the given title that the user has reached.
+// It returns false if the trophy is not defined in Sanity or no level has been reached yet.
+func getUserTrophy(trophies []model.Trophy, title string, count int) (model.UserTrophy, bool) {
+	var trophy *model.Trophy
 	for i := range trophies {
-		if trophies[i].Title == "bedpres" {
-			bedpresTrophy = &trophies[i]
+		if trophies[i].Title == title {
+			trophy = &trophies[i]
 			break
 		}
 	}
-	if bedpresTrophy == nil {
+	if trophy == nil {
 		return model.UserTrophy{}, false
 	}
 
 	var currentLevel *model.TrophyLevel
-	for i := range bedpresTrophy.TrophyLevels {
-		level := &bedpresTrophy.TrophyLevels[i]
-		if level.Threshold <= bedpresCount &&
+	for i := range trophy.TrophyLevels {
+		level := &trophy.TrophyLevels[i]
+		if level.Threshold <= count &&
 			(currentLevel == nil || level.Threshold > currentLevel.Threshold) {
 			currentLevel = level
 		}
@@ -73,5 +85,5 @@ func getUserBedpresTrophy(trophies []model.Trophy, bedpresCount int) (model.User
 		return model.UserTrophy{}, false
 	}
 
-	return model.UserTrophy{Trophy: *bedpresTrophy, Progress: bedpresCount, CurrentLevel: *currentLevel}, true
+	return model.UserTrophy{Trophy: *trophy, Progress: count, CurrentLevel: *currentLevel}, true
 }
