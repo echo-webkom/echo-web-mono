@@ -2,7 +2,7 @@
     --background: #0D0208; /*  Hovedbakgrunn FF69B4 0D0208*/
     --foreground: #00FF41;  /*  Hovedtekst  */
 
-    --muted: #0f0f0f;   /*  tabbakgrunn dager man-søn + bagrunn uke/måned (etter trykke kalender)  */
+    --muted: #0f0f0f;   /*  tab-bakgrunn dager man-søn + bagrunn uke/måned (etter trykke kalender)  */
     --muted-foreground: #008F11;   /* schemecolor.com: 0D0208 003B00 008F11 00FF41*/
     --muted-dark: #4d4d4d;  /*   */
 
@@ -21,13 +21,13 @@
     --border: #4d4d4d;
     --input: #171717;
 
-    --primary: #003B00; /* BEDPRES */
+    --primary: #003B00; 
     --primary-foreground: #00FF41;
     --primary-hover: #003B00;
     --primary-dark: #00FF41;
 
-    --secondary: #468146; /* ARRANGEMENT */
-    --secondary-foreground: #e6dc27;
+    --secondary: #fed879;  /* farge liten boks nede høyre i siste nytt boks */
+    --secondary-foreground: #171923; /* Farge tekst liten boks nede høyre i siste nytt boks */
     --secondary-hover: #468146;
     --secondary-dark: #003B00;
 
@@ -62,6 +62,11 @@
 
     --footer: #171717;
     --footer-foreground: #008F11; /* footer tekst */
+
+    --bedpres: #C9D1B0;
+    --arrangement: #5C7A4A;
+    --brettspill: #003B00;
+    --annet: #475565;
 }
 
 /*
