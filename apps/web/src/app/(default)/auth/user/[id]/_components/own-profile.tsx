@@ -17,7 +17,7 @@ type OwnProfileProps = {
 };
 
 export async function OwnProfile({ user, degrees }: OwnProfileProps) {
-  const userTrophies = await uno.trophy.all(user.id);
+  const userTrophies = await uno.trophy.all(user.id).catch(() => []);
 
   return (
     <div className="mx-auto flex w-full max-w-350 flex-col space-y-6 pt-12 md:flex-row md:items-start md:space-y-0 md:pt-24">
