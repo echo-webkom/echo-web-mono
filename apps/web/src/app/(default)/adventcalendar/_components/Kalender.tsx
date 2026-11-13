@@ -8,7 +8,7 @@ const luker = [
   { dag: 5, innhold: "", kategrori: "liten" },
   { dag: 6, innhold: "", kategrori: "liten" },
   { dag: 7, innhold: "", kategrori: "stor" },
-  { dag: 8, innhold: "", kategrori: "liten" },
+  { dag: 8, innhold: "", kategrori: "stor" },
   { dag: 9, innhold: "", kategrori: "liten" },
   { dag: 10, innhold: "", kategrori: "medium" },
   { dag: 11, innhold: "", kategrori: "liten" },
