@@ -7,6 +7,13 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-weight-normal: 300;
+  --font-weight-medium: 400;
+  --font-weight-semibold: 500;
+  --font-weight-bold: 600;
+  --font-weight-extrabold: 700;
+  --font-weight-black: 800;
+
   --font-*: initial;
   --font-primary:
     var(--font-inter), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
@@ -157,7 +164,7 @@
 
 @layer base {
   :root {
-    --background: #f9fafb;
+    --background: white;
     --foreground: #171923;
 
     --muted: #ebeef4;
@@ -237,7 +244,7 @@
   }
 
   .dark {
-    --background: #151210;
+    --background: #0e0e11;
     --foreground: #eeeeee;
 
     --muted: #181818;
@@ -245,15 +252,15 @@
     --muted-dark: #4d4d4d;
 
     --table-foreground: #999999;
-    --table-background: #151210;
+    --table-background: #0e0e11;
     --table-background-alt: #181818;
     --table-header-background: #242424;
     --table-header-foreground: #eeeeee;
 
-    --popover: #181818;
+    --popover: #151210;
     --popover-foreground: #eeeeee;
 
-    --card: #171717;
+    --card: #0e0e11;
     --card-foreground: #eeeeee;
 
     --border: #4d4d4d;
