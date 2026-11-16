@@ -3,27 +3,37 @@ import Link from "next/link";
 
 import { cn } from "@/utils/cn";
 
+import { Chip } from "../../../../components/typography/chip";
+
 type BentoBoxProps = {
   children?: React.ReactNode;
   title: string;
   href?: string;
   className?: string;
+  subtitle?: string;
 };
 
-export const BentoBox = ({ title, href, children, className }: BentoBoxProps) => {
+export const BentoBox = ({ title, href, children, className, subtitle }: BentoBoxProps) => {
   return (
     <section
       className={cn("flex flex-col rounded-md overflow-hidden border bg-card shadow-sm", className)}
     >
       <div className="flex items-center border-b px-5 py-3">
         {href ? (
-          <Link
-            href={href}
-            className="group flex items-center gap-1 underline-offset-4 hover:underline"
-          >
-            <span className="text-lg font-semibold">{title}</span>
-            <ChevronRight className="text-muted-foreground size-4 transition-transform group-hover:translate-x-0.5" />
-          </Link>
+          <>
+            <Link
+              href={href}
+              className="group flex items-center gap-1 underline-offset-4 hover:underline"
+            >
+              <span className="text-lg font-semibold">{title}</span>
+              <ChevronRight className="text-muted-foreground size-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+            {subtitle && (
+              <Chip className="ml-2" variant={"outlined"}>
+                {subtitle}
+              </Chip>
+            )}
+          </>
         ) : (
           <span className="text-lg font-semibold">{title}</span>
         )}
