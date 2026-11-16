@@ -21,7 +21,7 @@ export const Banner = ({ banner }: { banner: CMSBanner | null }) => {
       <div className="block">
         <Link href={linkTo}>
           <div
-            className="flex h-fit min-h-14 w-full cursor-pointer items-center justify-center"
+            className="flex h-fit min-h-14 w-full cursor-pointer items-center justify-center rounded-lg"
             style={{ backgroundColor }}
           >
             <p

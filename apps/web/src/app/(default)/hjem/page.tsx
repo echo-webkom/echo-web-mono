@@ -36,11 +36,14 @@ export default async function Home() {
   return (
     <>
       <Cookies />
-      <Banner banner={banner} />
       <BirthdayBanner />
       <EchoBirthdayBanner />
 
-      <div className="space-y-8 py-10">
+      <Container layout="larger" className="py-6">
+        <Banner banner={banner} />
+      </Container>
+
+      <div className="space-y-8">
         <Container layout="larger">
           <FPCalendar calendarEvents={calendarEvents} />
         </Container>
