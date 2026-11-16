@@ -244,7 +244,7 @@
   }
 
   .dark {
-    --background: #151210;
+    --background: #0e0e11;
     --foreground: #eeeeee;
 
     --muted: #181818;
@@ -252,15 +252,15 @@
     --muted-dark: #4d4d4d;
 
     --table-foreground: #999999;
-    --table-background: #151210;
+    --table-background: #0e0e11;
     --table-background-alt: #181818;
     --table-header-background: #242424;
     --table-header-foreground: #eeeeee;
 
-    --popover: #181818;
+    --popover: #151210;
     --popover-foreground: #eeeeee;
 
-    --card: #151210;
+    --card: #0e0e11;
     --card-foreground: #eeeeee;
 
     --border: #4d4d4d;
