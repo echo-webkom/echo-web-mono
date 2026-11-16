@@ -1,3 +1,71 @@
 .girly {
+  --background: #fff0f6;
+  --foreground: #4a1d3a;
 
+  --muted: #fde4ef;
+  --muted-foreground: #a3587f;
+  --muted-dark: #f4a6c8;
+
+  --table-foreground: #4a1d3a;
+  --table-background: #f6f1f3;
+  --table-background-alt: #fde4ef;
+  --table-header-background: #fbcfe2;
+  --table-header-foreground: #4a1d3a;
+
+  --popover: #fff5f9;
+  --popover-foreground: #4a1d3a;
+
+  --card: #ffd6e8;
+  --card-foreground: #4a1d3a;
+
+  --border: #f9a8d4;
+  --input: #fde4ef;
+
+  --radius: 2rem;
+
+  --primary: #ec4899;
+  --primary-foreground: #ffffff;
+  --primary-hover: #f472b6;
+  --primary-dark: #be185d;
+
+  --secondary: #c4b5fd;
+  --secondary-foreground: #4a1d3a;
+  --secondary-hover: #ddd6fe;
+  --secondary-dark: #a78bfa;
+
+  --accent: #f8e5ed;
+  --accent-foreground: #4a1d3a;
+
+  --banner: #f35da8;
+  --ring: #ec4899;
+  --selected: #fbcfe8;
+
+  --footer: #fbcfe2;
+  --footer-border: #f472b6;
+  --footer-foreground: #4a1d3a;
+}
+
+.girly body {
+  font-family: var(--font-girly), ui-sans-serif, system-ui, sans-serif;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 80 80'><path fill-opacity='0.75' d='M14 21s-6-3.8-6-8a3.2 3.2 0 0 1 6-1.6A3.2 3.2 0 0 1 20 13c0 4.2-6 8-6 8z' fill='%23f9a8d4'/></svg>");
+  background-size: 60px 60px;
+}
+
+.girly h1,
+.girly h2 {
+  font-family: var(--font-girly-header), ui-sans-serif, system-ui, sans-serif;
+  background: linear-gradient(90deg, #ec4899, #a855f7);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.girly .rounded-md,
+.girly .rounded-lg {
+  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.18);
+}
+
+.girly ::selection {
+  background: #f9a8d4;
+  color: #831843;
 }
