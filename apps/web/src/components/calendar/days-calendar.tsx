@@ -162,11 +162,11 @@ export const DaysCalendar = ({
                           <HoverCardTrigger asChild>
                             <div
                               className={cn("hover:bg-muted-dark overflow-hidden border-l-4 p-2", {
-                                "border-primary hover:bg-primary-hover": event.type === "bedpres",
-                                "border-secondary hover:bg-secondary dark:hover:text-muted":
+                                "border-bedpres hover:bg-bedpres": event.type === "bedpres",
+                                "border-arrangement hover:bg-arrangement dark:hover:text-muted":
                                   event.type === "event",
-                                "border-pink-400 hover:bg-pink-400": event.type === "movie",
-                                "border-green-600 hover:bg-green-600": event.type === "boardgame",
+                                "border-annet hover:bg-annet": event.type === "other",
+                                "border-brettspill hover:bg-brettspill": event.type === "boardgame",
                               })}
                             >
                               <Link

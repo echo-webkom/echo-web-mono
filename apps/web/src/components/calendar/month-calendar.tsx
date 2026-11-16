@@ -157,10 +157,10 @@ export const MonthCalendar = ({ events, steps, setMonthText }: Props) => {
                   <HoverCardTrigger asChild>
                     <div
                       className={cn("hover:bg-muted-dark overflow-hidden border-l-4 p-2", {
-                        "border-primary hover:bg-primary-hover": event.type === "bedpres",
-                        "border-secondary hover:bg-secondary": event.type === "event",
-                        "border-pink-400 hover:bg-pink-400": event.type === "movie",
-                        "border-green-600 hover:bg-green-600": event.type === "boardgame",
+                        "border-bedpres hover:bg-bedpres": event.type === "bedpres",
+                        "border-arrangement hover:bg-arrangement": event.type === "event",
+                        "border-annet hover:bg-annet": event.type === "other",
+                        "border-brettspill hover:bg-brettspill": event.type === "boardgame",
                       })}
                     >
                       <Link href={event.link} className="line-clamp-1 text-sm font-semibold">
