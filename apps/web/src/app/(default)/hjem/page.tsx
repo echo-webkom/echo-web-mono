@@ -45,6 +45,10 @@ export default async function Home() {
           <FPCalendar calendarEvents={calendarEvents} />
         </Container>
 
+        <Container layout="larger">
+          <JobAds jobAds={jobAds} />
+        </Container>
+
         {/* <Container layout="larger">
           <HSApplications />
         </Container> */}
@@ -69,11 +73,6 @@ export default async function Home() {
           />
           <Posts posts={posts} className="col-span-2 row-span-1" />
         </Container>
-
-        <Container layout="larger">
-          <JobAds jobAds={jobAds} />
-        </Container>
-
         <Container
           layout="larger"
           className="space-y-8 md:grid md:grid-cols-3 md:gap-8 md:space-y-0"

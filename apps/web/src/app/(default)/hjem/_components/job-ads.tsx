@@ -17,11 +17,12 @@ export const JobAds = ({ jobAds, className }: { jobAds: Array<CMSJobAd>; classNa
   return (
     <BentoBox
       title="Stillingsannonser"
+      subtitle={jobAds.length.toString()}
       href="/for-studenter/stillingsannonser"
       className={className}
     >
       <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
-        {jobAds.map((jobAd) => (
+        {jobAds.slice(0, 2).map((jobAd) => (
           <li key={jobAd._id}>
             <JobAdPreview jobAd={jobAd} className="border-transparent shadow-none" />
           </li>
