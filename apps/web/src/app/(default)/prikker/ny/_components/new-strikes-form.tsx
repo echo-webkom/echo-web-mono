@@ -37,9 +37,10 @@ type User = {
 
 type StrikeButton = {
   users: Array<User>;
+  initialUserId?: string;
 };
 
-export const NewStrikesForm = ({ users }: StrikeButton) => {
+export const NewStrikesForm = ({ users, initialUserId }: StrikeButton) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof addStrikesSchema>>({
     resolver: standardSchemaResolver(addStrikesSchema),
@@ -61,6 +62,15 @@ export const NewStrikesForm = ({ users }: StrikeButton) => {
   const usersById = useMemo(() => {
     return new Map(users.map((user) => [user.id, user]));
   }, [users]);
+
+  useEffect(() => {
+    const initialUser = initialUserId ? usersById.get(initialUserId) : undefined;
+    if (!initialUser) {
+      return;
+    }
+    setUser(initialUser.name);
+    form.setValue("userId", initialUser.id);
+  }, [form, initialUserId, usersById]);
 
   const newDots =
     Number(existingDots) +
