@@ -10,6 +10,7 @@ import { TailwindIndicator } from "@/components/devtools/tailwind-indicator";
 import { EasterEgg } from "@/components/easter-egg";
 import { FeedbackBlob } from "@/components/feedback-blob";
 import { GlobalSearch } from "@/components/global-search";
+import { SiteOverlays } from "@/components/site-overlays";
 import { Toaster } from "@/components/toaster";
 import { BASE_URL, IS_DEVTOOLS_ENABLED } from "@/config";
 import { cn } from "@/utils/cn";
@@ -111,12 +112,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <Providers user={user} sessionToken={sessionToken}>
           <NextTopLoader color="#ffeabb" height={5} showSpinner={false} />
           {children}
-          <Toaster />
-          <FeedbackBlob />
-          <TailwindIndicator />
-          <EasterEgg />
-          <GlobalSearch />
-          {IS_DEVTOOLS_ENABLED && <DevtoolsLoginDialog />}
+          <SiteOverlays>
+            <Toaster />
+            <FeedbackBlob />
+            <TailwindIndicator />
+            <EasterEgg />
+            <GlobalSearch />
+            {IS_DEVTOOLS_ENABLED && <DevtoolsLoginDialog />}
+          </SiteOverlays>
         </Providers>
       </body>
     </html>
