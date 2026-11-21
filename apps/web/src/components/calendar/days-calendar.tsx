@@ -1,15 +1,14 @@
 "use client";
 
 import { addDays, getWeek, isSameDay, startOfWeek, type Day } from "date-fns";
-import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { calendarMultiDayLayout, calendarDayPadding } from "@/lib/calendar-event-display";
 import { type CalendarEvent } from "@/lib/calendar-event-helpers";
-import { cn } from "@/utils/cn";
-import { dateIsBetween, dayStr, shortDateNoTime } from "@/utils/date";
+import { dayStr, shortDateNoTime } from "@/utils/date";
 
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
-import { EventHoverPreview } from "./event-hover-prev";
+import { CalendarDayEvents } from "./calendar-day-events";
+import { CalendarMultiDayEvents } from "./calendar-multi-day-events";
 
 type Props = {
   events: Array<CalendarEvent>;
@@ -17,6 +16,7 @@ type Props = {
   setWeekText?: (topText: string) => void;
   isWeek?: boolean;
   showLongEvents: boolean;
+  compactMultiDay?: boolean;
   weekStartsToday: boolean;
 };
 
@@ -55,6 +55,7 @@ export const DaysCalendar = ({
   setWeekText,
   showLongEvents,
   weekStartsToday,
+  compactMultiDay = false,
 }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [calendarWidth, setCalendarWidth] = useState(1024);
@@ -68,6 +69,9 @@ export const DaysCalendar = ({
   );
   const days = Array.from({ length: interval }, (_, i) => addDays(startDate, i));
 
+  const layout = calendarMultiDayLayout(events, days, showLongEvents);
+  const { occupiedRows } = layout;
+
   // Calculate week number to show (eg. Uke 1-2)
   const week = useCallback(() => {
     const firstWeek = getWeek(days[0]!, { weekStartsOn: 1 });
@@ -77,7 +81,7 @@ export const DaysCalendar = ({
     if (firstWeek === lastWeek) return firstWeek;
 
     return `${firstWeek} - ${lastWeek}`;
-  }, [days, weekStartsOn]);
+  }, [days]);
 
   useEffect(() => {
     const onResize = () => {
@@ -99,37 +103,28 @@ export const DaysCalendar = ({
   }, [setWeekText, startDate, steps, week]);
 
   return (
-    <div ref={ref} className="space-y-4">
-      <div className="h-72 overflow-hidden">
+    <div
+      ref={ref}
+      className="space-y-4 [--calendar-compact-height:20px] sm:[--calendar-compact-height:16px]"
+    >
+      <div className="min-h-72">
         <div
-          className="h-full divide-x"
+          className="min-h-72 grid-rows-[auto_auto_1fr] divide-x"
           style={{
             display: "grid",
             gridTemplateColumns: `repeat(${interval}, 1fr)`,
           }}
         >
-          {days.map((day) => {
+          {days.map((day, index) => {
             const isToday = isSameDay(day, new Date());
-            const eventsThisDay = events
-              .filter((event) => {
-                return event.endDate
-                  ? isSameDay(event.date, day) ||
-                      (dateIsBetween(day, event.date, event.endDate) && showLongEvents)
-                  : isSameDay(event.date, day);
-              })
-              .sort((a, b) => {
-                const aIsMultiDay = a.endDate && !isSameDay(a.endDate, a.date);
-                const bIsMultiDay = b.endDate && !isSameDay(b.endDate, b.date);
-
-                if (aIsMultiDay && !bIsMultiDay) return -1;
-                if (bIsMultiDay && !aIsMultiDay) return 1;
-
-                return a.date.getTime() - b.date.getTime();
-              });
 
             return (
-              <div key={day.toString()} className="bg-background">
-                <div className="flex flex-col gap-2">
+              <div
+                key={day.toString()}
+                className="bg-background row-span-3 row-start-1 grid min-w-0 grid-rows-subgrid"
+                style={{ gridColumn: index + 1 }}
+              >
+                <div className="contents">
                   <div className="bg-muted flex h-16 flex-col items-center justify-center border-b py-2 font-medium">
                     {isToday ? (
                       <p>I dag</p>
@@ -140,54 +135,48 @@ export const DaysCalendar = ({
                       </>
                     )}
                   </div>
-                  {isEchoBirthday(day) && (
-                    <>
-                      <div className="-mt-1 px-2">
-                        <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/60 bg-amber-50/70 px-2 py-0.5 text-[11px] font-semibold text-amber-900 dark:bg-amber-900/30 dark:text-amber-100">
-                          🎂 Gratulerer med dagen echo!
-                        </span>
-                      </div>
-                      <div className="px-2 pt-2">
-                        <div className="h-10 text-center text-xl leading-snug font-semibold">
-                          🎊 echo 30 år 🎊
+                  <div
+                    className="row-span-2 row-start-2 space-y-2"
+                    style={{
+                      paddingTop: calendarDayPadding(occupiedRows[index]!, compactMultiDay),
+                    }}
+                  >
+                    {isEchoBirthday(day) && (
+                      <>
+                        <div className="-mt-1 px-2">
+                          <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/60 bg-amber-50/70 px-2 py-0.5 text-[11px] font-semibold text-amber-900 dark:bg-amber-900/30 dark:text-amber-100">
+                            🎂 Gratulerer med dagen echo!
+                          </span>
                         </div>
-                      </div>
-                    </>
-                  )}
+                        <div className="px-2 pt-2">
+                          <div className="h-10 text-center text-xl leading-snug font-semibold">
+                            🎊 echo 30 år 🎊
+                          </div>
+                        </div>
+                      </>
+                    )}
 
-                  <ul className="flex flex-col px-1">
-                    {eventsThisDay.map((event) => {
-                      return (
-                        <HoverCard key={event.id} openDelay={300} closeDelay={100}>
-                          <HoverCardTrigger asChild>
-                            <div
-                              className={cn("hover:bg-muted-dark overflow-hidden border-l-4 p-2", {
-                                "border-primary hover:bg-primary-hover": event.type === "bedpres",
-                                "border-secondary hover:bg-secondary dark:hover:text-muted":
-                                  event.type === "event",
-                                "border-pink-400 hover:bg-pink-400": event.type === "movie",
-                                "border-green-600 hover:bg-green-600": event.type === "boardgame",
-                              })}
-                            >
-                              <Link
-                                href={event.link}
-                                className="line-clamp-1 text-sm font-semibold"
-                              >
-                                {event.title}
-                              </Link>
-                            </div>
-                          </HoverCardTrigger>
-                          <HoverCardContent>
-                            <EventHoverPreview event={event} />
-                          </HoverCardContent>
-                        </HoverCard>
-                      );
-                    })}
-                  </ul>
+                    <div className="px-1">
+                      <CalendarDayEvents
+                        events={events}
+                        day={day}
+                        showLongEvents={showLongEvents}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             );
           })}
+          <div className="pointer-events-none z-10 col-span-full col-start-1 row-start-2 min-w-0">
+            <CalendarMultiDayEvents
+              layout={layout}
+              compact={compactMultiDay}
+              events={events}
+              days={days}
+              showLongEvents={showLongEvents}
+            />
+          </div>
         </div>
       </div>
     </div>
