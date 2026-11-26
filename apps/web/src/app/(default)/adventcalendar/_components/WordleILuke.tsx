@@ -1,0 +1,3 @@
+interface dagensOrd {
+  ord?: string; 
+}
