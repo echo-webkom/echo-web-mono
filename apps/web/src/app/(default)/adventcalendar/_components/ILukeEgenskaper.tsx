@@ -5,7 +5,7 @@
   andrer filene, men vi vil ha den bare der det er nødvendig*/
 
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Kategori = "liten" | "medium" | "stor" | "lucia" | "julaften";
 
@@ -35,8 +35,6 @@ export function Luke({ dag, innhold, kategori}: ILukeEgenskaper){
 
     if (dato){
       setErÅpnet(true);
-
-
     }
     else{
       //liten melding om å vente
@@ -48,31 +46,37 @@ export function Luke({ dag, innhold, kategori}: ILukeEgenskaper){
     setErÅpnet(false);
   }
 
+  useEffect(() => {
+    if (!erÅpnet) return;
+
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [erÅpnet]);
+
   return(
     <> 
       <button 
         onClick={håndterKlikk}
-        className={`rounded p-2 text-white ${kategoriStil[kategori]}`}
-        > 
-          {erÅpnet ? innhold : dag}
+        className={`rounded p-2 text-white ${kategoriStil[kategori]}`}> 
+          {dag}
       </button>
       {erÅpnet && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="p-4 w-4/5 h-3/5 ">
-            <div className="relative rounded-xl bg-[#fdf6f6] text-black">
-            <button 
-              onClick={lukk}
-              className="absolute top-3 p right-3 text-2l"
-              >
-                ×
-              </button> 
-            <h2 className="p-10">{dag}. desember</h2>
-            {innhold}
+          <div className="relative flex max-h-[90vh] w-full max-w-xl flex-col overflow-hidden rounded-2xl bg-[#fdf6f6] text-[#8e613c]">
+            <button onClick={lukk} className="absolute top-3 p right-3 text-2l">
+              ×
+            </button> 
+            <div className="min-h-0 flex-1 overflow-y-auto px-4 pt-3 pb-4 ">
+              <h2 className="mb-1 text-center bg-[#fdf6f6] text-[#8e613c]">
+                {dag}. desember
+              </h2>
+              {innhold}
+            </div>
           </div>
-          </div>
-          
         </div>
-    )}
+      )}
     </>
   );
 }
